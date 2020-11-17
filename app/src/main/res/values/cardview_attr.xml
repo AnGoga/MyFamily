@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <declare-styleable name="CardView">
+            <attr name="itemCardDrawable" format="reference"/>
+            <attr name="itemCardName" format="string"/>
+            <attr name="itemCardSubscript" format="string"/>
+        </declare-styleable>
+</resources>

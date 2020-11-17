@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <drawable name="splashActivityDrawable">@drawable/ic_launcher_background</drawable>
+
+<!--    MainActivity -->
+    <drawable name="mainActivityHeaderWelcome">@drawable/welcome</drawable>
+    <drawable name="mainActivityIcoCalendar">@drawable/ic_dashboard_calendar</drawable>
+    <drawable name="mainActivityIcoTimeTable">@drawable/ic_dashboard_timetable</drawable>
+    <drawable name="mainActivityIcoBuyList">@drawable/ic_dashboard_list</drawable>
+    <drawable name="mainActivityIcoChat">@drawable/ic_dashboard_chat</drawable>
+
+
+
+    <drawable name="btnNext">@drawable/ic_btn_next</drawable>
+    <drawable name="icoRegisterTelephone">@drawable/ic_telephone</drawable>
+    <drawable name="icoEnterCode">@drawable/register_image</drawable>
+</resources>

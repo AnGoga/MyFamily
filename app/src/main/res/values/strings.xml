@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Моя семья</string>
+
+    <string name="event_calendar">Календарь событий</string>
+    <string name="time_table">Мои дела</string>
+    <string name="chat">Чат</string>
+    <string name="buy_list">Список покупок</string>
+    <string name="clock">Будильник</string>
+    <string name="storage">Хранлище</string>
+
+    <string name="yourNumberPhone">Ваш номер телефона</string>
+    <string name="registerOrLoginString">Чтобы войти или зарегестироваться введите свой номер телефона</string>
+    <string name="verificationCode">Проверочный код</string>
+    <string name="enterCode">Введите код</string>
+    <string name="weEnterSMSWithCode">Мы отправили SMS с кодом на Ваш телефон  </string>
+
+
+</resources>

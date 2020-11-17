@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CardViewSubscriptText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12.5sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="CardViewNameText" parent="CardViewSubscriptText">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="BaseCardView">
+        <item name="android:layout_height">@dimen/mainActivityCardViewHeight</item>
+        <item name="layout_marginPercent">3%</item>
+        <item name="layout_widthPercent">44%</item>
+    </style>
+    <style name="LeftCardView" parent="BaseCardView">
+        <item name="android:layout_alignParentStart">true</item>
+    </style>
+    <style name="RightCardView" parent="BaseCardView">
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+</resources>
