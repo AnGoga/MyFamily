@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Моя семья</string>
 
+    <string name="toast_message">Toast message</string>
+
     <string name="event_calendar">Календарь событий</string>
     <string name="time_table">Мои дела</string>
     <string name="chat">Чат</string>
@@ -13,6 +15,7 @@
     <string name="verificationCode">Проверочный код</string>
     <string name="enterCode">Введите код</string>
     <string name="weEnterSMSWithCode">Мы отправили SMS с кодом на Ваш телефон  </string>
+    <string name="enter_your_number_phone">Введите номер телефона</string>
 
 
 </resources>

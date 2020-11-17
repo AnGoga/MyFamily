@@ -13,4 +13,15 @@
     <color name="appColorDark">#84B61E</color>
     <color name="appColorLight">#B1F429</color>
     <color name="gray">#E3E3E3</color>
+
+
+
+
+<!--    toaster-->
+    <color name="defaultTextColor">#FFFFFF</color>
+    <color name="errorColor">#D50000</color>
+    <color name="infoColor">#3F51B5</color>
+    <color name="successColor">#388E3C</color>
+    <color name="warningColor">#FFA900</color>
+    <color name="normalColor">#353A3E</color>
 </resources>

@@ -3,13 +3,15 @@ package com.angogasapps.myfamily.ui.activites;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.percentlayout.widget.PercentRelativeLayout;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.ui.customview.CardView;
 
 public class MainActivity extends AppCompatActivity {
-    private PercentRelativeLayout chatCard;
+    private CardView chatCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
         chatCard.setOnClickListener(view -> {
 
         });
+
+        if (true){
+            startActivity(new Intent(this, RegisterActivity.class));
+        }
     }
 
 }

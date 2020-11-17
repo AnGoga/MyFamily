@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFamily">
-        <activity android:name=".ui.activites.RegisterActivity"></activity>
+        <activity
+            android:name=".ui.activites.RegisterActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".ui.activites.SplashActivity"
             android:theme="@style/SplashTheme">
