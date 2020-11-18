@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1055673164309",
+    "firebase_url": "https://myfamily-1601b.firebaseio.com",
+    "project_id": "myfamily-1601b",
+    "storage_bucket": "myfamily-1601b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055673164309:android:d7972ba8422be94110a41c",
+        "android_client_info": {
+          "package_name": "com.angogasapps.myfamily"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1055673164309-5ofnb6sq3ak4so1ig1pkv6r6huald1li.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArUqpByZZzxPZ7jDIDhXpQ60NwU3CIkQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1055673164309-5ofnb6sq3ak4so1ig1pkv6r6huald1li.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
