@@ -36,7 +36,9 @@ public class EnterCodeFragment extends Fragment {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 String code = inputCode.getText().toString();
-                if (code.length() == 6){};
+                if (code.length() == 6){
+
+                }
             }
 
             @Override
