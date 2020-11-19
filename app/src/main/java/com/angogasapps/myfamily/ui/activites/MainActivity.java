@@ -10,6 +10,8 @@ import android.os.Bundle;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.ui.customview.CardView;
 
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
+
 public class MainActivity extends AppCompatActivity {
     private CardView chatCard;
 
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         chatCard = findViewById(R.id.mainActivityChatCard);
         chatCard.setOnClickListener(view -> {
-
+            AUTH.signOut();
         });
 
     }

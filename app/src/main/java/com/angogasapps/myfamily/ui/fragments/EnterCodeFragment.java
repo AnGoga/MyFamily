@@ -15,7 +15,7 @@ import com.angogasapps.myfamily.R;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
-import static com.angogasapps.myfamily.firebase.Functions.signInWithCredential;
+import static com.angogasapps.myfamily.firebase.AuthFunctions.trySignInWithCredential;
 
 
 public class EnterCodeFragment extends Fragment {
@@ -44,21 +44,23 @@ public class EnterCodeFragment extends Fragment {
         //Прослушиваем набор текста пользователем
         inputCode.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            // после набота текста
+            public void afterTextChanged(Editable s) {
                 String code = inputCode.getText().toString();
                 if (code.length() == 6){
                     enterCode();
                 }
             }
-
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void afterTextChanged(Editable s) {}
         });
     }
+    // функция для отправки и проверки введённого пользователем кода
     private void enterCode(){
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(id, inputCode.getText().toString());
-        signInWithCredential(getActivity(), credential);
+        String code = inputCode.getText().toString();
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(id, code);
+        trySignInWithCredential(getActivity(), credential);
     }
 }
