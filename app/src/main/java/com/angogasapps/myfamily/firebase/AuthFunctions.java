@@ -1,11 +1,11 @@
 package com.angogasapps.myfamily.firebase;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.angogasapps.myfamily.objects.User;
 import com.angogasapps.myfamily.ui.activites.RegisterActivity;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -24,6 +24,8 @@ import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_ID;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_PHONE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_USERS;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
 
 public class AuthFunctions {
 
@@ -57,6 +59,7 @@ public class AuthFunctions {
             }
         });
     }
+    // оправка пользователю SMS сообщения с кодом
     public static void authorizationUser(String mPhoneNumber, int I, TimeUnit timeUnit,
                                        Activity activity, PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallback) {
 
@@ -67,11 +70,14 @@ public class AuthFunctions {
                 mCallback
         );
     }
+    // регистрация нового пользователя
     public static void registerNewUser(Activity activity){
+        // создаём словарь по шаблону класса User
         String uid = AUTH.getCurrentUser().getUid();
         HashMap userAttrMap = new HashMap<String, Object>();
         userAttrMap.put(CHILD_ID, uid);
         userAttrMap.put(CHILD_PHONE, AUTH.getCurrentUser().getPhoneNumber());
+        //загружаем даные в баду даных
         DATABASE_ROOT.child(NODE_USERS).child(uid).updateChildren(userAttrMap)
                 .addOnCompleteListener(task -> {
                     // если даные в базу данных успешно добавились
@@ -81,5 +87,17 @@ public class AuthFunctions {
                         Toaster.error(activity, task.getException().getMessage()).show();
                     }
                 });
+    }
+    // загружаем из базы даный актуальное состояние данного пользователя
+    public static void downloadUser(){
+        DATABASE_ROOT.child(NODE_USERS).child(UID)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                USER = snapshot.getValue(User.class);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error){}
+        });
     }
 }
