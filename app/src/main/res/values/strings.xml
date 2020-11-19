@@ -16,6 +16,7 @@
     <string name="enterCode">Введите код</string>
     <string name="weEnterSMSWithCode">Мы отправили SMS с кодом на Ваш телефон  </string>
     <string name="enter_your_number_phone">Введите номер телефона</string>
+    <string name="welcome">Добро пожаловать!</string>
 
 
 </resources>
