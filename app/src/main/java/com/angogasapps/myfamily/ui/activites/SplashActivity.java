@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-
+import static com.angogasapps.myfamily.firebase.AuthFunctions.downloadUser;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.initFirebase;
 
@@ -21,17 +19,15 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
-
         if (AUTH.getCurrentUser() != null) {
             // если пользователь уже авторизован, пропускаем его в MainActivity
             startActivity(new Intent(this, MainActivity.class));
-        }else{
+        } else {
             // если пользователь не автаризован, начинаем процес авторизации/регистрации
             startActivity(new Intent(this, RegisterActivity.class));
         }
         finish();
-
     }
 }

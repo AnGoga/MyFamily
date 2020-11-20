@@ -1,11 +1,13 @@
 package com.angogasapps.myfamily.firebase;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.angogasapps.myfamily.objects.User;
+import com.angogasapps.myfamily.ui.activites.MainActivity;
 import com.angogasapps.myfamily.ui.activites.RegisterActivity;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -94,7 +96,7 @@ public class AuthFunctions {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                USER = snapshot.getValue(User.class);
+                USER = snapshot.getValue(User.class);// <-- допиши нормально функцию и обнови себя в firebase (поля: family и ?photoURL?)
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error){}

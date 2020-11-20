@@ -6,8 +6,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import static com.angogasapps.myfamily.firebase.AuthFunctions.downloadUser;
-
 
 public class FirebaseHelper{
     public static FirebaseAuth AUTH;
@@ -30,6 +28,5 @@ public class FirebaseHelper{
         AUTH = FirebaseAuth.getInstance();
         DATABASE_ROOT = FirebaseDatabase.getInstance().getReference();
         UID = AUTH.getCurrentUser().getUid();
-        downloadUser();
     }
 }
