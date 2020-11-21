@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:layout_margin="@dimen/normal_margin"
-        android:hint="@string/yourNumberPhone"
+        android:hint="@string/you_phone_number"
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

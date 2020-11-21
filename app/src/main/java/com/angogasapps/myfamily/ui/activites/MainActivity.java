@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.AuthFunctions;
+import com.angogasapps.myfamily.firebase.interfaces.IAuthUser;
 import com.angogasapps.myfamily.ui.customview.CardView;
 
 import java.util.Objects;
@@ -21,14 +22,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AuthFunctions.downloadUser(() -> {
+            if(USER.family.equals("")) {
+                //startActivity(new Intent(this, null));
+                //finish();
+            }
+        });
         super.onCreate(savedInstanceState);
-        AuthFunctions.downloadUser();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-/*
-        if(USER.family.equals("")){
-            startActivity(new Intent(this, null));
-            finish();
-        }*/
     }
 }

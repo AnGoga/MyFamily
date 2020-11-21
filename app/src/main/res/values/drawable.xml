@@ -14,4 +14,5 @@
     <drawable name="btnNext">@drawable/ic_btn_next</drawable>
     <drawable name="icoRegisterTelephone">@drawable/ic_telephone</drawable>
     <drawable name="icoEnterCode">@drawable/register_image</drawable>
+    <drawable name="ic_calendar">@drawable/ic_calendar_today_24</drawable>
 </resources>

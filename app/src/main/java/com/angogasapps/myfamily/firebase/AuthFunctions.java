@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.angogasapps.myfamily.firebase.interfaces.IAuthUser;
 import com.angogasapps.myfamily.objects.User;
 import com.angogasapps.myfamily.ui.activites.MainActivity;
 import com.angogasapps.myfamily.ui.activites.RegisterActivity;
@@ -22,7 +23,10 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_BIRTHDAY;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_FAMILY;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_ID;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_NAME;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_PHONE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_USERS;
@@ -42,13 +46,13 @@ public class AuthFunctions {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.getValue() == null){
                                 //новый пользователь
-                                registerNewUser(activity);
+                                //registerNewUser(activity);
+                                RegisterActivity.iNewUser.getUserPersonalData();
                             }else{
                                 //старый пользователь
                                 if (authResultTask.isSuccessful()) {
                                     Log.e("tag", "СТАРЫЙ ПОЛЬЗОВАТЕЛЬ!!!!");
                                     RegisterActivity.welcomeFunc(activity);
-
                                 }
                             }
                         }
@@ -73,12 +77,15 @@ public class AuthFunctions {
         );
     }
     // регистрация нового пользователя
-    public static void registerNewUser(Activity activity){
+    public static void registerNewUser(Activity activity, String userName, Long userBirthdayTimeMillis){
         // создаём словарь по шаблону класса User
         String uid = AUTH.getCurrentUser().getUid();
         HashMap userAttrMap = new HashMap<String, Object>();
         userAttrMap.put(CHILD_ID, uid);
         userAttrMap.put(CHILD_PHONE, AUTH.getCurrentUser().getPhoneNumber());
+        userAttrMap.put(CHILD_FAMILY, "");
+        userAttrMap.put(CHILD_NAME, userName);
+        userAttrMap.put(CHILD_BIRTHDAY, userBirthdayTimeMillis);
         //загружаем даные в баду даных
         DATABASE_ROOT.child(NODE_USERS).child(uid).updateChildren(userAttrMap)
                 .addOnCompleteListener(task -> {
@@ -91,12 +98,13 @@ public class AuthFunctions {
                 });
     }
     // загружаем из базы даный актуальное состояние данного пользователя
-    public static void downloadUser(){
+    public static void downloadUser(IAuthUser iAuthUser){
         DATABASE_ROOT.child(NODE_USERS).child(UID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 USER = snapshot.getValue(User.class);// <-- допиши нормально функцию и обнови себя в firebase (поля: family и ?photoURL?)
+                iAuthUser.onEndDownloadUser();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error){}

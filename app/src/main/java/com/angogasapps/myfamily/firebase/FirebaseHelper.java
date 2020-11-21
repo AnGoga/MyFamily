@@ -20,13 +20,17 @@ public class FirebaseHelper{
     public static final String CHILD_ID = "id";
     public static final String CHILD_PHONE = "phone";
     public static final String CHILD_FAMILY = "family";
-    public static final String CHILD_PHOTO_URL = "photoURL";
-
+    public static final String CHILD_NAME = "name";
+    public static final String CHILD_BIRTHDAY = "birthday";
 
     //инициализация Firebase и связаных с ней компонентов
     public static void initFirebase(){
         AUTH = FirebaseAuth.getInstance();
         DATABASE_ROOT = FirebaseDatabase.getInstance().getReference();
-        UID = AUTH.getCurrentUser().getUid();
+        try {
+            UID = AUTH.getCurrentUser().getUid();
+        }catch (Exception e){}
+
+        USER = new User();
     }
 }

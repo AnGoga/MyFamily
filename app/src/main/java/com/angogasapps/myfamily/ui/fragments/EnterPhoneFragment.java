@@ -64,7 +64,7 @@ public class EnterPhoneFragment extends Fragment {
             if (editTextPhone.getText().toString().isEmpty()) {
                 Toaster.error(getActivity(), R.string.enter_your_number_phone).show();
             } else {
-                authorizationUser(editTextPhone.getText().toString(), 120, TimeUnit.SECONDS, getActivity(), mCallback);
+                authorizationUser(editTextPhone.getText().toString(), 60, TimeUnit.SECONDS, getActivity(), mCallback);
             }
         });
     }

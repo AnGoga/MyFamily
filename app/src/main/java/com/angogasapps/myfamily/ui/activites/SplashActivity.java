@@ -21,6 +21,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        //startActivity(new Intent(this, RegisterActivity.class));
         if (AUTH.getCurrentUser() != null) {
             // если пользователь уже авторизован, пропускаем его в MainActivity
             startActivity(new Intent(this, MainActivity.class));
