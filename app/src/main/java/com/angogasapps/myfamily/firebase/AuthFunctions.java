@@ -1,15 +1,13 @@
 package com.angogasapps.myfamily.firebase;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.angogasapps.myfamily.firebase.interfaces.IAuthUser;
 import com.angogasapps.myfamily.objects.User;
-import com.angogasapps.myfamily.ui.activites.MainActivity;
-import com.angogasapps.myfamily.ui.activites.RegisterActivity;
+import com.angogasapps.myfamily.ui.activities.RegisterActivity;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -51,7 +49,7 @@ public class AuthFunctions {
                             }else{
                                 //старый пользователь
                                 if (authResultTask.isSuccessful()) {
-                                    Log.e("tag", "СТАРЫЙ ПОЛЬЗОВАТЕЛЬ!!!!");
+                                    Log.w("tag", "СТАРЫЙ ПОЛЬЗОВАТЕЛЬ!!!!");
                                     RegisterActivity.welcomeFunc(activity);
                                 }
                             }

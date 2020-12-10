@@ -10,14 +10,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+        style="@style/boldTextView"
         android:textSize="@dimen/small_text_size"
         android:text="@string/welcome_text_enter_personal_data_fragment" />
     
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/pale_text_color"
         android:id="@+id/fragmentPersonalDataNumberPhone"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,9 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/you_name"
-            android:textColor="@color/black"
             android:textSize="@dimen/small_text_size"
-            android:textStyle="bold"
+            style="@style/boldTextView"
             android:layout_marginRight="@dimen/normal_margin"/>
         <EditText
             android:id="@+id/fragmentEnterPersonalDataUserNameEditText"
@@ -45,18 +44,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/birthday"
-            android:textColor="@color/black"
             android:textSize="@dimen/small_text_size"
-            android:textStyle="bold"
+            style="@style/boldTextView"
             android:layout_marginRight="@dimen/normal_margin"/>
         <TextView
             android:id="@+id/fragmentEnterPersonalDataDayOfBirthTextView"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:text=""
-            android:textColor="@color/black"
-            android:textSize="@dimen/small_text_size"
-            android:textStyle="bold"/>
+            style="@style/boldTextView"
+            android:textSize="@dimen/small_text_size" />
         <ImageButton
             android:id="@+id/fragmentEnterPersonalDataSelectDataBirthday"
             android:layout_width="wrap_content"

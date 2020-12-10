@@ -15,4 +15,8 @@
 
     <dimen name="registerActivityPhoneHeight">200dp</dimen>
     <dimen name="registerActivityPhoneWidth">200dp</dimen>
+
+
+    <dimen name="fragment_create_family_add_emblem_photo_size">64dp</dimen>
+
 </resources>

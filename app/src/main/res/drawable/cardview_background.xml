@@ -1,3 +1,5 @@
+
+
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle"
     android:padding="10dp">
@@ -10,6 +12,121 @@
 <!--    <solid android:color="#42000000" />-->
 <!--    <corners android:radius="5dp" />-->
 </shape>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<layer-list xmlns:android="http://schemas.android.com/apk/res/android">-->
+<!--    <item-->
+<!--        android:top="@dimen/card_view_radius">-->
+<!--        <shape xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--            android:shape="rectangle"-->
+<!--            android:padding="10dp">-->
+<!--            <solid android:color="#CABBBBBB" />-->
+<!--&lt;!&ndash;            <corners android:radius="@dimen/card_view_radius"/>&ndash;&gt;-->
+<!--        </shape>-->
+<!--    </item>-->
+<!--    <item-->
+<!--        android:left="0dp"-->
+<!--        android:right="10dp"-->
+<!--        android:top="0dp"-->
+<!--        android:bottom="10dp">-->
+<!--        <shape>-->
+<!--            <solid android:color="#F8F8F8"/>-->
+<!--            <corners android:radius="@dimen/card_view_radius"/>-->
+<!--        </shape>-->
+<!--    </item>-->
+<!--</layer-list>-->
+
+
+
+
+
+<!--<layer-list xmlns:android="http://schemas.android.com/apk/res/android">-->
+<!--    &lt;!&ndash; Drop Shadow Stack &ndash;&gt;-->
+<!--    <item>-->
+<!--        <shape>-->
+<!--            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />-->
+<!--            <solid android:color="#02000000" />-->
+<!--            <corners android:radius="8dp" />-->
+<!--        </shape>-->
+<!--    </item>-->
+<!--    <item>-->
+<!--        <shape>-->
+<!--            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />-->
+<!--            <solid android:color="#05000000" />-->
+<!--            <corners android:radius="7dp" />-->
+<!--        </shape>-->
+<!--    </item>-->
+<!--    <item>-->
+<!--        <shape>-->
+<!--            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />-->
+<!--            <solid android:color="#10000000" />-->
+<!--            <corners android:radius="6dp" />-->
+<!--        </shape>-->
+<!--    </item>-->
+<!--    <item>-->
+<!--        <shape>-->
+<!--            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />-->
+<!--            <solid android:color="#15000000" />-->
+<!--            <corners android:radius="5dp" />-->
+<!--        </shape>-->
+<!--    </item>-->
+<!--    <item>-->
+<!--        <shape>-->
+<!--            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />-->
+<!--            <solid android:color="#20000000" />-->
+<!--            <corners android:radius="4dp" />-->
+<!--        </shape>-->
+<!--    </item>-->
+<!--    <item>-->
+<!--        <shape>-->
+<!--            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />-->
+<!--            <solid android:color="#25000000" />-->
+<!--            <corners android:radius="3dp" />-->
+<!--        </shape>-->
+<!--    </item>-->
+<!--    <item>-->
+<!--        <shape>-->
+<!--            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />-->
+<!--            <solid android:color="#30000000" />-->
+<!--            <corners android:radius="3dp" />-->
+<!--        </shape>-->
+<!--    </item>-->
+
+<!--    &lt;!&ndash; Background &ndash;&gt;-->
+<!--    <item>-->
+
+<!--&lt;!&ndash;        <shape xmlns:android="http://schemas.android.com/apk/res/android"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:shape="rectangle"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:padding="10dp">&ndash;&gt;-->
+
+<!--&lt;!&ndash;            <solid android:color="#F8F8F8"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <corners&ndash;&gt;-->
+<!--&lt;!&ndash;                android:bottomRightRadius="@dimen/card_view_radius"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:bottomLeftRadius="@dimen/card_view_radius"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:topLeftRadius="@dimen/card_view_radius"&ndash;&gt;-->
+<!--&lt;!&ndash;                android:topRightRadius="@dimen/card_view_radius"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            &lt;!&ndash;    <solid android:color="#42000000" />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            &lt;!&ndash;    <corners android:radius="5dp" />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        </shape>&ndash;&gt;-->
+<!--        <shape>-->
+<!--            <solid android:color="#ffffff" />-->
+<!--            <corners android:radius="3dp" />-->
+<!--        </shape>-->
+<!--    </item>-->
+<!--</layer-list>-->
+
+
+
 
 <!--<ripple xmlns:android="http://schemas.android.com/apk/res/android"-->
 <!--    xmlns:tools="http://schemas.android.com/tools"-->

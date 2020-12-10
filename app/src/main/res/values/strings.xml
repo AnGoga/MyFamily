@@ -21,6 +21,13 @@
     <string name="you_phone_number">Ваш номер телефона</string>
     <string name="birthday">День рождения</string>
     <string name="register">Зарегестрироваться</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_family">Создать семью</string>
+    <string name="join">присоедениться</string>
+    <string name="family_last_name">Фамилия семьи</string>
+    <string name="create">Создать</string>
+    <string name="enter_family_last_name">Введите фамилию семьи</string>
 
 
 </resources>

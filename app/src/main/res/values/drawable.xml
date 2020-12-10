@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <drawable name="splashActivityDrawable">@drawable/ic_launcher_background</drawable>
+<!--    <drawable name="splashActivityDrawable">@drawable/ic_launcher_background</drawable>-->
+    <drawable name="splashActivityDrawable">@drawable/jetbrains_neiro_splash</drawable>
 
 <!--    MainActivity -->
     <drawable name="mainActivityHeaderWelcome">@drawable/welcome</drawable>
@@ -15,4 +16,6 @@
     <drawable name="icoRegisterTelephone">@drawable/ic_telephone</drawable>
     <drawable name="icoEnterCode">@drawable/register_image</drawable>
     <drawable name="ic_calendar">@drawable/ic_calendar_today_24</drawable>
+
+    <drawable name="fragment_create_family_add_emblem_photo">@drawable/ic_add_a_photo_24</drawable>
 </resources>

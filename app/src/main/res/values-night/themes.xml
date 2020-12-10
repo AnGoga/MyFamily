@@ -13,4 +13,24 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+
+    <color name="appColor">#A0DE23</color>
+    <color name="appColorDark">#84B61E</color>
+    <color name="appColorLight">#B1F429</color>
+    <color name="gray">#E3E3E3</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="bold_text_color">@color/white</color>
+    <color name="pale_text_color">@color/white</color>
+
+
+    <!--    toaster-->
+    <color name="defaultTextColor">#FFFFFF</color>
+    <color name="errorColor">#D50000</color>
+    <color name="infoColor">#3F51B5</color>
+    <color name="successColor">#388E3C</color>
+    <color name="warningColor">#FFA900</color>
+    <color name="normalColor">#353A3E</color>
+    
 </resources>

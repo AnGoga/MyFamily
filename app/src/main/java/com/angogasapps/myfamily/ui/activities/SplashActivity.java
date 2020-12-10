@@ -1,12 +1,15 @@
-package com.angogasapps.myfamily.ui.activites;
+package com.angogasapps.myfamily.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
-import static com.angogasapps.myfamily.firebase.AuthFunctions.downloadUser;
+import com.angogasapps.myfamily.firebase.AuthFunctions;
+
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.initFirebase;
 
 public class SplashActivity extends AppCompatActivity {
@@ -16,19 +19,24 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //инициализируем Firebase
         initFirebase();
+        //setTheme(AppCompatDelegate.MODE_NIGHT_YES);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        //startActivity(new Intent(this, RegisterActivity.class));
         if (AUTH.getCurrentUser() != null) {
-            // если пользователь уже авторизован, пропускаем его в MainActivity
-            startActivity(new Intent(this, MainActivity.class));
+            // если пользователь уже авторизован, скачиваем данные про него, а потом пропускаем его в MainActivity
+
+            AuthFunctions.downloadUser(() -> {
+                Log.d("tag", "\n" + USER.toString());
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            });
         } else {
             // если пользователь не автаризован, начинаем процес авторизации/регистрации
             startActivity(new Intent(this, RegisterActivity.class));
+            finish();
         }
-        finish();
     }
 }

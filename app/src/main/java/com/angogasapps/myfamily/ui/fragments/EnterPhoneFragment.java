@@ -35,7 +35,7 @@ public class EnterPhoneFragment extends Fragment {
         super.onStart();
 
         AUTH = FirebaseAuth.getInstance();
-        //callback который сработает после верификации пользователя
+        //callback, который сработает после верификации пользователя
         mCallback = new PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
             @Override
             // если верификация успешная
@@ -49,7 +49,7 @@ public class EnterPhoneFragment extends Fragment {
             }
 
             @Override
-            //выполниться когда смс с кодом только отправят
+            //выполниться когда смс с кодом только что отправили
             public void onCodeSent(@NonNull String id, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.registerDataContainer, new EnterCodeFragment(mPhoneNumber, id)).commit();

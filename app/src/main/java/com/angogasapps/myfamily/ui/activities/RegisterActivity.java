@@ -1,7 +1,6 @@
-package com.angogasapps.myfamily.ui.activites;
+package com.angogasapps.myfamily.ui.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
      */
     public static void welcomeFunc(Activity activity) {
         Toaster.success(activity, R.string.welcome).show();
-        activity.startActivity(new Intent(activity, MainActivity.class));
+        activity.startActivity(new Intent(activity, SplashActivity.class));
         activity.finish();
     }
     public interface INewUser{

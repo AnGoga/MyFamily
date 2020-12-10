@@ -1,44 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--<androidx.percentlayout.widget.PercentRelativeLayout-->
-<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:layout_width="match_parent">-->
-<!--    <LinearLayout-->
-<!--        android:orientation="horizontal"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="60"-->
-<!--            android:orientation="vertical">-->
-
-<!--            <TextView-->
-<!--                style="@style/CardViewNameText"-->
-<!--                android:id="@+id/cardViewTextViewTextName"/>-->
-<!--            <TextView-->
-<!--                style="@style/CardViewSubscriptText"-->
-<!--                android:id="@+id/cardViewTextSubscript"/>-->
-<!--        </LinearLayout>-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="40">-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/cardViewDrawable"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginBottom="5dp" />-->
-<!--        </LinearLayout>-->
-<!--    </LinearLayout>-->
-
-<!--</androidx.percentlayout.widget.PercentRelativeLayout>-->
 
 <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/cardview_background"
@@ -51,10 +15,12 @@
         android:orientation="vertical">
         <TextView
             style="@style/CardViewNameText"
-            android:id="@+id/cardViewTextViewTextName" />
+            android:id="@+id/cardViewTextViewTextName"
+            tools:text="@string/event_calendar"/>
         <TextView
             style="@style/CardViewSubscriptText"
-            android:id="@+id/cardViewTextSubscript"/>
+            android:id="@+id/cardViewTextSubscript"
+            tools:text="@string/event_calendar"/>
     </LinearLayout>
 
     <ImageView
@@ -62,6 +28,6 @@
         android:layout_height="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/cardViewDrawable" />
+        android:id="@+id/cardViewDrawable"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
