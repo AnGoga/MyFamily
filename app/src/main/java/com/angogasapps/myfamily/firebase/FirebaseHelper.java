@@ -5,11 +5,14 @@ import com.angogasapps.myfamily.objects.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 public class FirebaseHelper{
     public static FirebaseAuth AUTH;
     public static DatabaseReference DATABASE_ROOT;
+    public static StorageReference STORAGE_ROOT;
     public static User USER;
     public static String UID;
 
@@ -27,10 +30,19 @@ public class FirebaseHelper{
     public static final String CHILD_MESSANGES = "messanges";
     public static final String CHILD_MEMBERS = "members";
     public static final String CHILD_EMBLEM = "emblem";
+    public static final String CHILD_ROLE = "role";
+
+    public static final String ROLE_CREATOR = "creator";
+    public static final String ROLE_MEMBER = "member";
+
+    public static final String FOLDER_FAMILY_EMBLEMS = "family_emblems";
+    public static final String DEFAULT_EMBLEM = "https://firebasestorage.googleapis.com/v0/b/myfamily-1601b.appspot.com/o/family_emblems%2Fwelcome.jpg?alt=media&token=223a6607-416d-4f71-857d-e741ed20d5ce";
+
     //инициализация Firebase и связаных с ней компонентов
     public static void initFirebase(){
         AUTH = FirebaseAuth.getInstance();
         DATABASE_ROOT = FirebaseDatabase.getInstance().getReference();
+        STORAGE_ROOT = FirebaseStorage.getInstance().getReference();
         try {
             UID = AUTH.getCurrentUser().getUid();
         }catch (Exception e){}

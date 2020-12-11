@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.RegisterFamilyFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndRegisterNewFamily;
+import com.angogasapps.myfamily.ui.activities.MainActivity;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -57,9 +58,15 @@ public class CreateFamilyFragment extends Fragment {
             }
             if(mFamilyEmblemUri == null){
                 //mFamilyEmblemUri = defaultPhoto
+                mFamilyEmblemUri = Uri.EMPTY;
             }
-            RegisterFamilyFunks.createNewFamily(familyName, mFamilyEmblemUri, () -> {
-                //когда регистрация в базе данных прошла успешно
+            RegisterFamilyFunks.createNewFamily(getActivity().getApplicationContext(),
+                    familyName, mFamilyEmblemUri, () -> {
+                //когда регистрация новой семьи в базе данных прошла успешно
+                Toaster.success(getActivity().getApplicationContext(),
+                        R.string.everything_went_well).show();
+                startActivity(new Intent(getActivity().getApplicationContext(), MainActivity.class));
+                getActivity().finish();
             });
         });
 
