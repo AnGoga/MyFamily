@@ -30,7 +30,8 @@ public class FindOrCreateFamilyFragment extends Fragment {
                     .replace(R.id.findOrCreateFamilyDataContainer, new CreateFamilyFragment()).commit();
         });
         findFamilyBtn.setOnClickListener(v -> {
-
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.findOrCreateFamilyDataContainer, new FindFamilyFragment()).commit();
         });
         return rootView;
 

@@ -29,6 +29,13 @@
     <string name="enter_family_last_name">Введите фамилию семьи</string>
     <string name="wait_a_bit">Подождите немного</string>
     <string name="everything_went_well">Всё прошло успешно</string>
+    <string name="enter_family_identification">Чтобы присоедениться к семье, введите её уникальный идентификатор (можно узнать в настройках семьи)</string>
+
+    <string name="enter_identification">Введите идентификатор</string>
+    <string name="you_canceled_searches">Вы отменили поиск</string>
+    <string name="family_not_found">Семья с таким идентификатором не найдена</string>
+    <string name="you_success_join_to_you_family">Вы успешно присоеденились к своей семье</string>
+    <string name="error">Что-то пошло не так</string>
 
 
 </resources>

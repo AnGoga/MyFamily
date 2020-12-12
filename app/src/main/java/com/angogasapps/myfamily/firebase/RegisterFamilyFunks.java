@@ -28,7 +28,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
 
 public class RegisterFamilyFunks {
-    public static void createNewFamily(Context context, String familyName, Uri familyEmblemUri,
+    public static synchronized void createNewFamily(Context context, String familyName, Uri familyEmblemUri,
                                        IOnEndRegisterNewFamily iOnEndRegisterNewFamily){
         Toaster.info(context.getApplicationContext(), R.string.wait_a_bit).show();
         String familyId = DATABASE_ROOT.child(NODE_FAMILIES).push().getKey();
@@ -43,7 +43,7 @@ public class RegisterFamilyFunks {
         }
     }
 
-    private static void loadFamilyToFirebase(String familyName, String linkToEmblem, String familyId,
+    private static synchronized void loadFamilyToFirebase(String familyName, String linkToEmblem, String familyId,
                                              IOnEndRegisterNewFamily iOnEndRegisterNewFamily){
         DATABASE_ROOT.child(NODE_FAMILIES).child(familyId).
                 updateChildren(getFamilyByItems(familyName, linkToEmblem))
