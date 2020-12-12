@@ -1,8 +1,7 @@
-package com.angogasapps.myfamily.ui.fragments;
+package com.angogasapps.myfamily.ui.fragments.findorcreatefamily;
 
 import android.os.Bundle;
 
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -11,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.ui.fragments.findorcreatefamily.CreateFamilyFragment;
+import com.angogasapps.myfamily.ui.fragments.findorcreatefamily.FindFamilyFragment;
 
 
 public class FindOrCreateFamilyFragment extends Fragment {

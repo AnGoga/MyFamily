@@ -7,10 +7,12 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.ui.customview.CardView;
 
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
 
 public class MainActivity extends AppCompatActivity {
+    CardView myFamilyCard, chatCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +21,16 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, FindOrCreateFamilyActivity.class));
             finish();
         }
-
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
+
+        myFamilyCard = findViewById(R.id.mainActivityMyFamilyCard);
+        chatCard = findViewById(R.id.mainActivityChatCard);
+
+        chatCard.setOnClickListener(v -> {
+            startActivity(new Intent(this, ChatActivity.class));
+            finish();
+        });
     }
 }

@@ -36,6 +36,7 @@
     <string name="family_not_found">Семья с таким идентификатором не найдена</string>
     <string name="you_success_join_to_you_family">Вы успешно присоеденились к своей семье</string>
     <string name="error">Что-то пошло не так</string>
+    <string name="my_family">моя семья</string>
 
 
 </resources>

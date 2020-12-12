@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.ui.fragments.FindOrCreateFamilyFragment;
+import com.angogasapps.myfamily.ui.fragments.findorcreatefamily.FindOrCreateFamilyFragment;
 
 public class FindOrCreateFamilyActivity extends AppCompatActivity {
     @Override

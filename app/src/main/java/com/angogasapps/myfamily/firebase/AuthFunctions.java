@@ -33,7 +33,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
 
 public class AuthFunctions {
 
-    public static void trySignInWithCredential(Activity activity, PhoneAuthCredential credential){
+    public static synchronized void trySignInWithCredential(Activity activity, PhoneAuthCredential credential){
         AUTH.signInWithCredential(credential).addOnCompleteListener(authResultTask -> {
             //Если верификация пользователя прошла успешно
             if (authResultTask.isSuccessful()) {
@@ -64,7 +64,7 @@ public class AuthFunctions {
         });
     }
     // оправка пользователю SMS сообщения с кодом
-    public static void authorizationUser(String mPhoneNumber, int I, TimeUnit timeUnit,
+    public static synchronized void authorizationUser(String mPhoneNumber, int I, TimeUnit timeUnit,
                                        Activity activity, PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallback) {
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -75,7 +75,7 @@ public class AuthFunctions {
         );
     }
     // регистрация нового пользователя
-    public static void registerNewUser(Activity activity, String userName, Long userBirthdayTimeMillis){
+    public static synchronized void registerNewUser(Activity activity, String userName, Long userBirthdayTimeMillis){
         // создаём словарь по шаблону класса User
         String uid = AUTH.getCurrentUser().getUid();
         HashMap userAttrMap = new HashMap<String, Object>();
@@ -96,7 +96,7 @@ public class AuthFunctions {
                 });
     }
     // загружаем из базы даный актуальное состояние данного пользователя
-    public static void downloadUser(IAuthUser iAuthUser){
+    public static synchronized void downloadUser(IAuthUser iAuthUser){
         DATABASE_ROOT.child(NODE_USERS).child(UID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

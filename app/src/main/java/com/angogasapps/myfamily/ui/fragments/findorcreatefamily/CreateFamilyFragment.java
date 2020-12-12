@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.fragments;
+package com.angogasapps.myfamily.ui.fragments.findorcreatefamily;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;

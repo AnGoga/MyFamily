@@ -6,8 +6,8 @@ import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.ui.fragments.EnterPersonalDataFragment;
-import com.angogasapps.myfamily.ui.fragments.EnterPhoneFragment;
+import com.angogasapps.myfamily.ui.fragments.registeractivity.EnterPersonalDataFragment;
+import com.angogasapps.myfamily.ui.fragments.registeractivity.EnterPhoneFragment;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 
 

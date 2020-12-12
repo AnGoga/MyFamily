@@ -62,9 +62,24 @@
                 app:itemCardName="@string/clock"
                 app:itemCardSubscript="@string/clock" />
             <com.angogasapps.myfamily.ui.customview.CardView
+                android:id="@+id/mainActivityMyFamilyCard"
                 style="@style/RightCardView"
+                app:itemCardDrawable="@drawable/ic_my_family"
+                app:itemCardName="@string/my_family"
+                app:itemCardSubscript="@string/my_family" />
+        </androidx.percentlayout.widget.PercentRelativeLayout>
+
+        <androidx.percentlayout.widget.PercentRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.angogasapps.myfamily.ui.customview.CardView
+                style="@style/LeftCardView"
                 app:itemCardName="@string/storage"
                 app:itemCardSubscript="@string/storage" />
+<!--            <com.angogasapps.myfamily.ui.customview.CardView-->
+<!--                style="@style/RightCardView"-->
+<!--                app:itemCardName="@string/clock"-->
+<!--                app:itemCardSubscript="@string/clock" />-->
         </androidx.percentlayout.widget.PercentRelativeLayout>
 
     </LinearLayout>

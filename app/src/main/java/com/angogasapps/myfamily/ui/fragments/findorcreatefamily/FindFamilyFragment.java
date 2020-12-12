@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.fragments;
+package com.angogasapps.myfamily.ui.fragments.findorcreatefamily;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -68,7 +68,6 @@ public class FindFamilyFragment extends Fragment {
                         Toaster.error(getActivity().getApplicationContext(),
                                 R.string.family_not_found).show();
                     }
-
                     @Override
                     public void onCancelled() {
                         Toaster.error(getActivity().getApplicationContext(),

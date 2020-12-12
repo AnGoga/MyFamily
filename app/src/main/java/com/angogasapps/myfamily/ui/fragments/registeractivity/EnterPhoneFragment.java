@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.fragments;
+package com.angogasapps.myfamily.ui.fragments.registeractivity;
 
 import android.os.Bundle;
 
@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.ui.fragments.registeractivity.EnterCodeFragment;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseException;
