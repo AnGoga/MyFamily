@@ -18,4 +18,7 @@
     <drawable name="ic_calendar">@drawable/ic_calendar_today_24</drawable>
 
     <drawable name="fragment_create_family_add_emblem_photo">@drawable/ic_add_a_photo_24</drawable>
+
+
+    <drawable name="default_user_photo">@drawable/ic_default_user_photo</drawable>
 </resources>

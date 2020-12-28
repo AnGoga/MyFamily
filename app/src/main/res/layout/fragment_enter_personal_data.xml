@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,6 +20,29 @@
         android:layout_height="wrap_content"
         android:textColor="@color/pale_text_color"
         android:id="@+id/fragmentPersonalDataNumberPhone"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragmentEnterPersonalDataSelectUserPhotoLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/fragmentEnterPersonalDataUserImage"
+            android:layout_width="@dimen/fragment_enter_personal_data_user_photo"
+            android:layout_height="200dp"
+            android:background="@drawable/default_user_photo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:layout_width="@dimen/fragment_create_family_add_emblem_photo_size"
+            android:layout_height="@dimen/fragment_create_family_add_emblem_photo_size"
+            android:src="@drawable/fragment_create_family_add_emblem_photo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,8 +86,10 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <Button
+            android:gravity="center"
             android:id="@+id/fragmentEnterPersonalDataRegisterButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

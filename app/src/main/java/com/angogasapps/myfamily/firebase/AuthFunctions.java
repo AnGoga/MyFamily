@@ -1,15 +1,19 @@
 package com.angogasapps.myfamily.firebase;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.angogasapps.myfamily.firebase.interfaces.IAuthUser;
 import com.angogasapps.myfamily.objects.User;
 import com.angogasapps.myfamily.ui.activities.RegisterActivity;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,37 +68,20 @@ public class AuthFunctions {
         });
     }
     // оправка пользователю SMS сообщения с кодом
-    public static synchronized void authorizationUser(String mPhoneNumber, int I, TimeUnit timeUnit,
+    public static synchronized void authorizationUser(String mPhoneNumber, long I, TimeUnit timeUnit,
                                        Activity activity, PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallback) {
 
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                mPhoneNumber,
-                I, timeUnit,
-                activity,
-                mCallback
+        PhoneAuthProvider.verifyPhoneNumber(
+                PhoneAuthOptions
+                        .newBuilder(FirebaseAuth.getInstance())
+                        .setActivity(activity)
+                        .setPhoneNumber(mPhoneNumber)
+                        .setTimeout(I, timeUnit)
+                        .setCallbacks(mCallback)
+                        .build()
         );
     }
-    // регистрация нового пользователя
-    public static synchronized void registerNewUser(Activity activity, String userName, Long userBirthdayTimeMillis){
-        // создаём словарь по шаблону класса User
-        String uid = AUTH.getCurrentUser().getUid();
-        HashMap userAttrMap = new HashMap<String, Object>();
-        userAttrMap.put(CHILD_ID, uid);
-        userAttrMap.put(CHILD_PHONE, AUTH.getCurrentUser().getPhoneNumber());
-        userAttrMap.put(CHILD_FAMILY, "");
-        userAttrMap.put(CHILD_NAME, userName);
-        userAttrMap.put(CHILD_BIRTHDAY, userBirthdayTimeMillis);
-        //загружаем даные в баду даных
-        DATABASE_ROOT.child(NODE_USERS).child(uid).updateChildren(userAttrMap)
-                .addOnCompleteListener(task -> {
-                    // если даные в базу данных успешно добавились
-                    if (task.isSuccessful()){
-                        RegisterActivity.welcomeFunc(activity);
-                    }else {
-                        Toaster.error(activity, task.getException().getMessage()).show();
-                    }
-                });
-    }
+
     // загружаем из базы даный актуальное состояние данного пользователя
     public static synchronized void downloadUser(IAuthUser iAuthUser){
         DATABASE_ROOT.child(NODE_USERS).child(UID)

@@ -3,6 +3,7 @@ package com.angogasapps.myfamily.firebase;
 
 import androidx.annotation.NonNull;
 
+import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
 import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily;
 import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily;
 import com.google.firebase.database.DataSnapshot;
@@ -43,10 +44,15 @@ public class FindFamilyFunks {
                 .addOnCompleteListener(task1 -> {
             if (task1.isSuccessful()){
                 //устанавлеваем в юзера значение поля family
-                DATABASE_ROOT.child(NODE_USERS).child(UID).child(CHILD_FAMILY).setValue(id).addOnCompleteListener(task2 -> {
-                    if (task2.isSuccessful()) {
-                        USER.family = id;
+                USER.setFamily(id, new IOnEndSetUserField() {
+                    @Override
+                    public void onSuccessEnd() {
                         iOnJoinToFamily.onSuccess();
+                    }
+
+                    @Override
+                    public void onFailureEnd() {
+                        iOnJoinToFamily.onFailure();
                     }
                 });
             }

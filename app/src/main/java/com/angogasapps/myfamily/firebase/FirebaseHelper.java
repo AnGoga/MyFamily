@@ -26,6 +26,7 @@ public class FirebaseHelper{
     public static final String CHILD_FAMILY = "family";
     public static final String CHILD_NAME = "name";
     public static final String CHILD_BIRTHDAY = "birthday";
+    public static final String CHILD_PHOTO = "photo";
 
     public static final String CHILD_MESSANGES = "messanges";
     public static final String CHILD_MEMBERS = "members";
@@ -36,7 +37,10 @@ public class FirebaseHelper{
     public static final String ROLE_MEMBER = "member";
 
     public static final String FOLDER_FAMILY_EMBLEMS = "family_emblems";
-    public static final String DEFAULT_EMBLEM = "https://firebasestorage.googleapis.com/v0/b/myfamily-1601b.appspot.com/o/family_emblems%2Fwelcome.jpg?alt=media&token=223a6607-416d-4f71-857d-e741ed20d5ce";
+    public static final String FOLDER_USERS_PHOTOS = "users_photos";
+
+    public static final String DEFAULT_URL = "default";
+    //public static final String DEFAULT_EMBLEM = "https://firebasestorage.googleapis.com/v0/b/myfamily-1601b.appspot.com/o/family_emblems%2Fwelcome.jpg?alt=media&token=223a6607-416d-4f71-857d-e741ed20d5ce";
 
     //инициализация Firebase и связаных с ней компонентов
     public static void initFirebase(){

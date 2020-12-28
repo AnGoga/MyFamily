@@ -2,6 +2,7 @@ package com.angogasapps.myfamily.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,8 +15,8 @@ import com.angogasapps.myfamily.ui.toaster.Toaster;
 public class RegisterActivity extends AppCompatActivity {
     public static INewUser iNewUser;
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         iNewUser = () -> {
             getSupportFragmentManager().beginTransaction().replace(R.id.registerDataContainer, new EnterPersonalDataFragment()).commit();
@@ -30,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
      * и для перехода из RegisterActivity в MainActivity если пользователь старый
      */
     public static void welcomeFunc(Activity activity) {
-        Toaster.success(activity, R.string.welcome).show();
+        Toaster.success(activity, activity.getString(R.string.welcome)).show();
         activity.startActivity(new Intent(activity, SplashActivity.class));
         activity.finish();
     }

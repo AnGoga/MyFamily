@@ -90,7 +90,5 @@ public class CreateFamilyFragment extends Fragment {
             e.printStackTrace();
             Toaster.error(getActivity().getApplicationContext(), "неизвестная ошибка").show();
         }
-
-
     }
 }

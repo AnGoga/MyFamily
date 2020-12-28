@@ -9,8 +9,10 @@ import com.angogasapps.myfamily.ui.fragments.findorcreatefamily.FindOrCreateFami
 
 public class FindOrCreateFamilyActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+    protected void onStart(){
+        super.onStart();
         setContentView(R.layout.activity_find_or_create_family);
 
         getSupportFragmentManager().beginTransaction()

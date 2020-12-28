@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndRegisterNewFamily;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSentToStorageEmblem;
+import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
@@ -18,7 +19,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_MEMBERS;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_NAME;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_ROLE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.DEFAULT_EMBLEM;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.DEFAULT_URL;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.FOLDER_FAMILY_EMBLEMS;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_FAMILIES;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_USERS;
@@ -39,27 +40,27 @@ public class RegisterFamilyFunks {
             });
         //дефолтная эмблема
         }else{
-            loadFamilyToFirebase(familyName, DEFAULT_EMBLEM, familyId, iOnEndRegisterNewFamily);
+            loadFamilyToFirebase(familyName, DEFAULT_URL, familyId, iOnEndRegisterNewFamily);
         }
     }
 
     private static synchronized void loadFamilyToFirebase(String familyName, String linkToEmblem, String familyId,
                                              IOnEndRegisterNewFamily iOnEndRegisterNewFamily){
-        DATABASE_ROOT.child(NODE_FAMILIES).child(familyId).
-                updateChildren(getFamilyByItems(familyName, linkToEmblem))
+        DATABASE_ROOT.child(NODE_FAMILIES).child(familyId)
+                .updateChildren(getFamilyByItems(familyName, linkToEmblem))
                 .addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful()){
                         //ставлю в юзера значение поля family
-                        DATABASE_ROOT.child(NODE_USERS).child(UID).child(CHILD_FAMILY)
-                                .setValue(familyId).addOnCompleteListener(task2 -> {
-                                    if (task2.isSuccessful()){
-                                        USER.family = familyId;
-                                        iOnEndRegisterNewFamily.onEndRegister();
-                                    }
+                        USER.setFamily(familyId, new IOnEndSetUserField() {
+                            @Override
+                            public void onSuccessEnd() {
+                                iOnEndRegisterNewFamily.onEndRegister();
+                            }
+                            @Override
+                            public void onFailureEnd() {}
                         });
                     }
                 });
-        /*iOnEndRegisterNewFamily.onEndRegister()*/
     }
     private static void loadEmblemToStorage(Uri familyEmblemUri, String familyId,
                                      IOnEndSentToStorageEmblem iOnEndSentToStorageEmblem){
