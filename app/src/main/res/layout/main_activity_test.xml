@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mainActivityHeaderHeight"
+            android:id="@+id/mainActivityHeaderLayout"
+            android:background="@drawable/mainActivityHeaderWelcome"
+            tools:ignore="MissingConstraints">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+            <com.angogasapps.myfamily.ui.customview.CardView
+                android:layout_height="@dimen/mainActivityCardViewHeight"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+
+                android:id="@+id/cardView"
+                android:layout_margin="16dp"
+                app:itemCardDrawable="@drawable/mainActivityIcoCalendar"
+                app:itemCardName="@string/event_calendar"
+                app:itemCardSubscript="@string/event_calendar" />
+
+            <com.angogasapps.myfamily.ui.customview.CardView
+                android:layout_margin="16dp"
+                android:layout_height="@dimen/mainActivityCardViewHeight"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+
+                style="@style/RightCardView"
+                app:itemCardDrawable="@drawable/mainActivityIcoTimeTable"
+                app:itemCardName="@string/time_table"
+                app:itemCardSubscript="@string/time_table" />
+        </LinearLayout>
+
+
+
+
+
+
+        <androidx.percentlayout.widget.PercentRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.angogasapps.myfamily.ui.customview.CardView
+                style="@style/LeftCardView"
+                android:id="@+id/mainActivityChatCard"
+                app:itemCardDrawable="@drawable/mainActivityIcoChat"
+                app:itemCardName="@string/chat"
+                app:itemCardSubscript="@string/chat" />
+            <com.angogasapps.myfamily.ui.customview.CardView
+                style="@style/RightCardView"
+                app:itemCardDrawable="@drawable/mainActivityIcoBuyList"
+                app:itemCardName="@string/buy_list"
+                app:itemCardSubscript="@string/buy_list" />
+        </androidx.percentlayout.widget.PercentRelativeLayout>
+
+        <androidx.percentlayout.widget.PercentRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.angogasapps.myfamily.ui.customview.CardView
+                style="@style/LeftCardView"
+                app:itemCardName="@string/clock"
+                app:itemCardSubscript="@string/clock" />
+            <com.angogasapps.myfamily.ui.customview.CardView
+                android:id="@+id/mainActivityMyFamilyCard"
+                style="@style/RightCardView"
+                app:itemCardDrawable="@drawable/ic_my_family"
+                app:itemCardName="@string/my_family"
+                app:itemCardSubscript="@string/my_family" />
+        </androidx.percentlayout.widget.PercentRelativeLayout>
+
+        <androidx.percentlayout.widget.PercentRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.angogasapps.myfamily.ui.customview.CardView
+                style="@style/LeftCardView"
+                app:itemCardName="@string/storage"
+                app:itemCardSubscript="@string/storage" />
+            <!--            <com.angogasapps.myfamily.ui.customview.CardView-->
+            <!--                style="@style/RightCardView"-->
+            <!--                app:itemCardName="@string/clock"-->
+            <!--                app:itemCardSubscript="@string/clock" />-->
+        </androidx.percentlayout.widget.PercentRelativeLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <androidx.cardview.widget.CardView
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mainActivityCardViewHeight"
+            app:cardElevation="20dp"/>
+</LinearLayout>
+    </LinearLayout>
+</ScrollView>

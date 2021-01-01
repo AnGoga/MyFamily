@@ -14,6 +14,8 @@
     <color name="appColorLight">#B1F429</color>
     <color name="gray">#E3E3E3</color>
 
+    <color name="green">#00FF00</color>
+
 <!--   белая тема-->
     <color name="bold_text_color">@color/black</color>
     <color name="pale_text_color">#808080</color>

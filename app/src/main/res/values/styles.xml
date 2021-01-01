@@ -14,6 +14,12 @@
         <item name="android:layout_height">@dimen/mainActivityCardViewHeight</item>
         <item name="layout_marginPercent">3%</item>
         <item name="layout_widthPercent">44%</item>
+
+        <item name="cardElevation">20dp</item>
+        <item name="cornerRadius">10dp</item>
+<!--        app:cardElevation="20dp"-->
+<!--        android:background="@null"-->
+
     </style>
     <style name="LeftCardView" parent="BaseCardView">
         <item name="android:layout_alignParentStart">true</item>

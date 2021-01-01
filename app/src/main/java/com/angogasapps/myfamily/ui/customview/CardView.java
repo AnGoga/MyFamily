@@ -15,7 +15,7 @@ import com.angogasapps.myfamily.R;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
-public class CardView extends LinearLayout {
+public class CardView extends androidx.cardview.widget.CardView {
     public int mCardDrawable;
     public String mCardName;
     public String mCardSubscript;

@@ -15,10 +15,15 @@ public class FirebaseHelper{
     public static StorageReference STORAGE_ROOT;
     public static User USER;
     public static String UID;
+//    public static String FAMILY_ID;
+
+    public static final String TYPE_MESSAGE = "message";
+    public static final String TYPE_IMAGE = "image";
 
     //firebase realtime database nodes
     public static final String NODE_USERS = "users";
     public static final String NODE_FAMILIES = "families";
+    public static final String NODE_CHAT = "chat";
 
     //firebase realtime database childes
     public static final String CHILD_ID = "id";
@@ -27,6 +32,10 @@ public class FirebaseHelper{
     public static final String CHILD_NAME = "name";
     public static final String CHILD_BIRTHDAY = "birthday";
     public static final String CHILD_PHOTO = "photo";
+    public static final String CHILD_TYPE = "type";
+    public static final String CHILD_FROM = "from";
+    public static final String CHILD_VALUE = "value";
+    public static final String CHILD_TIME = "time";
 
     public static final String CHILD_MESSANGES = "messanges";
     public static final String CHILD_MEMBERS = "members";
