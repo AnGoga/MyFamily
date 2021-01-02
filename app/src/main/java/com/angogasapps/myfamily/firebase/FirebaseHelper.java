@@ -15,7 +15,7 @@ public class FirebaseHelper{
     public static StorageReference STORAGE_ROOT;
     public static User USER;
     public static String UID;
-//    public static String FAMILY_ID;
+
 
     public static final String TYPE_MESSAGE = "message";
     public static final String TYPE_IMAGE = "image";

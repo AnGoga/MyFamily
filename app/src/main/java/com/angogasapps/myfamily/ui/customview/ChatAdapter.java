@@ -14,7 +14,6 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.objects.Message;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -43,15 +42,22 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageHolder>
     public void onBindViewHolder(@NonNull MessageHolder holder, int position) {
         if (messages.get(position).getFrom().equals(UID)){
             holder.leftLayout.setVisibility(View.INVISIBLE);
-            holder.fromName = holder.view.findViewById(R.id.leftMessageFromName);
-            holder.text = holder.view.findViewById(R.id.leftMessageText);
-            holder.timestampText = holder.view.findViewById(R.id.leftMessageTime);
-        }else{
-            holder.rightLayout.setVisibility(View.INVISIBLE);
             holder.fromName = holder.view.findViewById(R.id.rightMessageFromName);
             holder.text = holder.view.findViewById(R.id.rightMessageText);
             holder.timestampText = holder.view.findViewById(R.id.rightMessageTime);
+        }else{
+            holder.rightLayout.setVisibility(View.INVISIBLE);
+            holder.fromName = holder.view.findViewById(R.id.leftMessageFromName);
+            holder.text = holder.view.findViewById(R.id.leftMessageText);
+            holder.timestampText = holder.view.findViewById(R.id.leftMessageTime);
         }
+
+        holder.fromName.setText(messages.get(position).getFrom());
+        //object -> text <- image
+        holder.text.setText(messages.get(position).getValue().toString());
+        //time
+        holder.timestampText.setText(String.valueOf(messages.get(position).getTime()));
+
     }
 
 
@@ -60,9 +66,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageHolder>
         return messages.size();
     }
 
-    public void addMessage(ArrayList<Message> messageArrayList){
-        messages.addAll(messageArrayList);
-
+    public void setMessanges(ArrayList<Message> messageArrayList){
+        this.messages = messageArrayList;
+        //from -> to
+        notifyDataSetChanged();
     }
 
     public static class MessageHolder extends RecyclerView.ViewHolder{

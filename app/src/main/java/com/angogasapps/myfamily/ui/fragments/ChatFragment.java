@@ -1,10 +1,15 @@
 package com.angogasapps.myfamily.ui.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +17,32 @@ import android.widget.EditText;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.ChatFunks;
-import com.angogasapps.myfamily.ui.customview.ChatTextWatcher;
+import com.angogasapps.myfamily.objects.ChatTextWatcher;
+import com.angogasapps.myfamily.objects.Message;
+import com.angogasapps.myfamily.ui.customview.ChatAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_CHAT;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
 
 
 public class ChatFragment extends Fragment {
     public RecyclerView chatRecycleView;
     public CircleImageView sendMessageBtn, sendAudioBtn;
     public EditText chatEditText;
+    private ChatAdapter mAdapter;
+    private ValueEventListener mChatListener;
+    private DatabaseReference path;
+    private ArrayList<Message> messageArray;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,8 +58,45 @@ public class ChatFragment extends Fragment {
 
         sendMessageBtn.setOnClickListener(v -> {
             ChatFunks.sendMessage(TYPE_MESSAGE, chatEditText.getText().toString());
+            chatEditText.setText("");
         });
+        initRecycleView();
 
         return rootView;
+    }
+
+    private void initRecycleView(){
+        messageArray = new ArrayList<>();
+        path = DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily());
+
+        mAdapter = new ChatAdapter(getActivity().getApplicationContext(), messageArray);
+        chatRecycleView.setAdapter(mAdapter);
+
+        chatRecycleView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+
+        mChatListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.i("tag", "onDataChange");
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Message post = postSnapshot.getValue(Message.class);
+                    messageArray.add(post);
+                }
+                mAdapter.setMessanges(messageArray);
+                chatRecycleView.setAdapter(mAdapter);
+                chatRecycleView.smoothScrollToPosition(mAdapter.getItemCount());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        path.addValueEventListener(mChatListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        path.removeEventListener(mChatListener);
     }
 }

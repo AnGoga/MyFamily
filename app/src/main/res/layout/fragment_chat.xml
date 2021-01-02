@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <!--                android:orientation="vertical"-->
             <androidx.recyclerview.widget.RecyclerView
                 android:background="@drawable/chat_background"
                 android:id="@+id/chatRecycleView"

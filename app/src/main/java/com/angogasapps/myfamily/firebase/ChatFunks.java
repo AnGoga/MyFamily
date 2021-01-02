@@ -25,7 +25,7 @@ public class ChatFunks {
         messageMap.put(CHILD_TYPE, type);
         messageMap.put(CHILD_VALUE, value);
 //        TODO:
-        messageMap.put(CHILD_TIME, CHILD_TIME);
+        messageMap.put(CHILD_TIME, ServerValue.TIMESTAMP);
 
         String key = path.push().getKey();
         path.child(key).updateChildren(messageMap).addOnCompleteListener(task -> {

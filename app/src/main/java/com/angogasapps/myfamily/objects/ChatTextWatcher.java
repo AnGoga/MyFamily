@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.customview;
+package com.angogasapps.myfamily.objects;
 
 import android.text.Editable;
 import android.text.TextWatcher;
