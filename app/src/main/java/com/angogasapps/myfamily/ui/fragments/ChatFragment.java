@@ -1,15 +1,12 @@
 package com.angogasapps.myfamily.ui.fragments;
 
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +15,7 @@ import android.widget.EditText;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.objects.ChatTextWatcher;
+import com.angogasapps.myfamily.objects.LoadFamilyThread;
 import com.angogasapps.myfamily.objects.Message;
 import com.angogasapps.myfamily.ui.customview.ChatAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -42,7 +40,9 @@ public class ChatFragment extends Fragment {
     private ChatAdapter mAdapter;
     private ValueEventListener mChatListener;
     private DatabaseReference path;
-    private ArrayList<Message> messageArray;
+    private ArrayList<Message> messagesList;
+
+    public static IRedrawRecyclerView iRedrawRecyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,41 +62,60 @@ public class ChatFragment extends Fragment {
         });
         initRecycleView();
 
+        //test
+
+
+
+        iRedrawRecyclerView = () -> {
+            ChatFragment.this.mAdapter.notifyDataSetChanged();
+        };
+
         return rootView;
     }
 
     private void initRecycleView(){
-        messageArray = new ArrayList<>();
+        messagesList = new ArrayList<>();
         path = DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily());
 
-        mAdapter = new ChatAdapter(getActivity().getApplicationContext(), messageArray);
+        mAdapter = new ChatAdapter(getActivity().getApplicationContext(), messagesList);
         chatRecycleView.setAdapter(mAdapter);
 
         chatRecycleView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        chatRecycleView.setHasFixedSize(true);
 
         mChatListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.i("tag", "onDataChange");
+                ArrayList<Message> cachedMessages = new ArrayList<>();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Message post = postSnapshot.getValue(Message.class);
-                    messageArray.add(post);
+                    cachedMessages.add(post);
                 }
-                mAdapter.setMessanges(messageArray);
-                chatRecycleView.setAdapter(mAdapter);
+                messagesList = cachedMessages;
+                mAdapter.setMessanges(messagesList);
                 chatRecycleView.smoothScrollToPosition(mAdapter.getItemCount());
+
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         };
-        path.addValueEventListener(mChatListener);
     }
-
     @Override
     public void onPause() {
         super.onPause();
         path.removeEventListener(mChatListener);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        path.addValueEventListener(mChatListener);
+    }
+
+    public static void redrawRecyclerView(){
+    }
+
+    public interface IRedrawRecyclerView{
+         public void redrawRecyclerView();
     }
 }

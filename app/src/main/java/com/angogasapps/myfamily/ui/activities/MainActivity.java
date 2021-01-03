@@ -10,6 +10,7 @@ import android.view.View;
 import android.webkit.JavascriptInterface;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.objects.LoadFamilyThread;
 import com.angogasapps.myfamily.ui.customview.CardView;
 
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, FindOrCreateFamilyActivity.class));
             finish();
         }
+        new LoadFamilyThread(this).execute(USER);
+
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
@@ -35,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         chatCard.setOnClickListener(v -> {
             startActivity(new Intent(this, ChatActivity.class));
 
-//            AUTH.signOut();
         });
 
         myFamilyCard.setOnClickListener(v -> {

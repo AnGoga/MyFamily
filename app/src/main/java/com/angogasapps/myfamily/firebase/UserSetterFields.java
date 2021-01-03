@@ -5,16 +5,14 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.Objects;
 
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_PHOTO;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_PHOTO_URL;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.DEFAULT_URL;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_USERS;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
 
 public class UserSetterFields {
 
@@ -34,7 +32,7 @@ public class UserSetterFields {
         if (photoUri != Uri.EMPTY){
             RegisterUserFunks.loadUserPhotoToStorage(photoUri, iOnEndSetUserField);
         }else{
-            setField(CHILD_PHOTO, DEFAULT_URL, iOnEndSetUserField);
+            setField(CHILD_PHOTO_URL, DEFAULT_URL, iOnEndSetUserField);
         }
     }
 }

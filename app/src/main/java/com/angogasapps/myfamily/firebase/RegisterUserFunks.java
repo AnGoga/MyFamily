@@ -13,15 +13,13 @@ import java.util.HashMap;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_BIRTHDAY;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_FAMILY;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_ID;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_NAME;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_PHONE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_PHOTO;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_PHOTO_URL;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.FOLDER_USERS_PHOTOS;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_USERS;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.STORAGE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
 
 public class RegisterUserFunks {
@@ -32,7 +30,7 @@ public class RegisterUserFunks {
             @Override
             public void onSuccessEnd() {
                 String uid = AUTH.getCurrentUser().getUid();
-                HashMap userAttrMap = new HashMap<String, Object>();
+                HashMap<String, Object> userAttrMap = new HashMap<>();
                 //userAttrMap.put(CHILD_ID, uid);
                 userAttrMap.put(CHILD_PHONE, AUTH.getCurrentUser().getPhoneNumber());
                 userAttrMap.put(CHILD_FAMILY, "");
@@ -64,7 +62,7 @@ public class RegisterUserFunks {
                 path.getDownloadUrl().addOnCompleteListener(task2 -> {
                     if (task2.isSuccessful()){
                         String photoLink = task2.getResult().toString();
-                        UserSetterFields.setField(CHILD_PHOTO, photoLink, iOnEndSetUserField);
+                        UserSetterFields.setField(CHILD_PHOTO_URL, photoLink, iOnEndSetUserField);
                     }else {
                         iOnEndSetUserField.onFailureEnd();
                     }

@@ -1,12 +1,17 @@
 package com.angogasapps.myfamily.firebase;
 
 
+import android.graphics.Bitmap;
+
 import com.angogasapps.myfamily.objects.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class FirebaseHelper{
@@ -15,6 +20,9 @@ public class FirebaseHelper{
     public static StorageReference STORAGE_ROOT;
     public static User USER;
     public static String UID;
+
+    public static volatile HashMap<String, User> familyMembersMap = new HashMap<>();
+    public static volatile HashMap<String, Bitmap> familyMembersImagesMap = new HashMap<>();
 
 
     public static final String TYPE_MESSAGE = "message";
@@ -31,7 +39,7 @@ public class FirebaseHelper{
     public static final String CHILD_FAMILY = "family";
     public static final String CHILD_NAME = "name";
     public static final String CHILD_BIRTHDAY = "birthday";
-    public static final String CHILD_PHOTO = "photo";
+    public static final String CHILD_PHOTO_URL = "photoURL";
     public static final String CHILD_TYPE = "type";
     public static final String CHILD_FROM = "from";
     public static final String CHILD_VALUE = "value";
@@ -49,7 +57,7 @@ public class FirebaseHelper{
     public static final String FOLDER_USERS_PHOTOS = "users_photos";
 
     public static final String DEFAULT_URL = "default";
-    //public static final String DEFAULT_EMBLEM = "https://firebasestorage.googleapis.com/v0/b/myfamily-1601b.appspot.com/o/family_emblems%2Fwelcome.jpg?alt=media&token=223a6607-416d-4f71-857d-e741ed20d5ce";
+    //public static final StringFormater DEFAULT_EMBLEM = "https://firebasestorage.googleapis.com/v0/b/myfamily-1601b.appspot.com/o/family_emblems%2Fwelcome.jpg?alt=media&token=223a6607-416d-4f71-857d-e741ed20d5ce";
 
     //инициализация Firebase и связаных с ней компонентов
     public static void initFirebase(){

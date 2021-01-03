@@ -1,6 +1,7 @@
 package com.angogasapps.myfamily.ui.customview;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.objects.Message;
+import com.angogasapps.myfamily.utils.StringFormater;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.familyMembersMap;
+import static com.angogasapps.myfamily.utils.WithUsers.*;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageHolder> {
 
@@ -40,23 +44,32 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageHolder>
 
     @Override
     public void onBindViewHolder(@NonNull MessageHolder holder, int position) {
-        if (messages.get(position).getFrom().equals(UID)){
+
+        if (messages.get(position).getFrom().equals(UID)) {
+            holder.rightLayout.setVisibility(View.VISIBLE);
             holder.leftLayout.setVisibility(View.INVISIBLE);
             holder.fromName = holder.view.findViewById(R.id.rightMessageFromName);
             holder.text = holder.view.findViewById(R.id.rightMessageText);
             holder.timestampText = holder.view.findViewById(R.id.rightMessageTime);
-        }else{
+        } else {
+            holder.leftLayout.setVisibility(View.VISIBLE);
             holder.rightLayout.setVisibility(View.INVISIBLE);
             holder.fromName = holder.view.findViewById(R.id.leftMessageFromName);
             holder.text = holder.view.findViewById(R.id.leftMessageText);
             holder.timestampText = holder.view.findViewById(R.id.leftMessageTime);
+            holder.userAvatar = holder.view.findViewById(R.id.messageUserAvatar);
+
+            holder.userAvatar.setImageBitmap(getMemberImageById(messages.get(position).getFrom(), this.context));
         }
 
-        holder.fromName.setText(messages.get(position).getFrom());
+        holder.fromName.setText(getMemberNameById(messages.get(position).getFrom()));
         //object -> text <- image
         holder.text.setText(messages.get(position).getValue().toString());
         //time
-        holder.timestampText.setText(String.valueOf(messages.get(position).getTime()));
+        holder.timestampText.setText(StringFormater.formatLongToTime(messages.get(position).getTime()));
+
+
+        Log.i("tag", getMemberNameById(messages.get(position).getFrom()));
 
     }
 

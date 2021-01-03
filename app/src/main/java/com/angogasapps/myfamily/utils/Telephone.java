@@ -7,7 +7,7 @@ public class Telephone {
             return false;
         return false;
     }
-    public static String formatPhoneNumber(String telNumber){
+    public static String  formatPhoneNumber(String telNumber){
         telNumber = telNumber.replace("+7", "8");
 
         return telNumber;

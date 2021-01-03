@@ -13,6 +13,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_NAME;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
 
 public class User {
+    private String id = "";
     private String phone = "";
     private String family = "";
     private String name = "";
@@ -20,6 +21,7 @@ public class User {
     private String photoURL = "";
 
     public User(){
+        this.id = "";
         this.phone = "";
         this.family = "";
         this.name = "";
@@ -27,6 +29,9 @@ public class User {
         this.photoURL = "";
     }
 
+    public String getId() {
+        return id;
+    }
     public String getName() {
         return name;
     }

@@ -2,6 +2,7 @@ package com.angogasapps.myfamily.firebase;
 
 import android.net.Uri;
 
+import com.angogasapps.myfamily.utils.StringFormater;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
 
@@ -13,6 +14,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_TYPE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_VALUE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_CHAT;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_MESSAGE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
 
@@ -20,7 +22,11 @@ public class ChatFunks {
     public static void sendMessage(String type, String value){
         DatabaseReference path = DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily());
 
-        HashMap messageMap = new HashMap<String, Object>();
+        if (type == TYPE_MESSAGE){
+            value = StringFormater.formatStringToSend(value);
+        }
+
+        HashMap<String, Object> messageMap = new HashMap<>();
         messageMap.put(CHILD_FROM, UID);
         messageMap.put(CHILD_TYPE, type);
         messageMap.put(CHILD_VALUE, value);
