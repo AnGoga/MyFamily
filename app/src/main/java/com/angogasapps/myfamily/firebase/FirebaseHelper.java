@@ -18,7 +18,7 @@ public class FirebaseHelper{
     public static FirebaseAuth AUTH;
     public static DatabaseReference DATABASE_ROOT;
     public static StorageReference STORAGE_ROOT;
-    public static User USER;
+    public static volatile User USER;
     public static String UID;
 
     public static volatile HashMap<String, User> familyMembersMap = new HashMap<>();

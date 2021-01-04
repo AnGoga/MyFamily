@@ -64,7 +64,6 @@ public class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> 
     }
 
     private void downloadFamilyMembers(int pos) {
-//        for (String id : familyMembersId) {
         String id = familyMembersId.get(pos);
         DATABASE_ROOT.child(NODE_USERS).child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -79,8 +78,7 @@ public class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
-
-
+        
 
     }
     private void downloadImages() {
@@ -99,19 +97,8 @@ public class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> 
         for (User member : familyMembersList) {
             FirebaseHelper.familyMembersMap.put(member.getId(), member);
         }
-        try {
-            ChatFragment.iRedrawRecyclerView.redrawRecyclerView();
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
     }
 
-    class getMembersIds extends Thread{
-        @Override
-        public void run() {
-            super.run();
-        }
-    }
 
     class MemberImagesDownloaderThread extends Thread{
         @Override

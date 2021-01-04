@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
         chatCard.setOnClickListener(v -> {
             startActivity(new Intent(this, ChatActivity.class));
-
         });
 
         myFamilyCard.setOnClickListener(v -> {

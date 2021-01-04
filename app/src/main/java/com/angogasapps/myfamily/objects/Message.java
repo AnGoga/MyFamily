@@ -1,6 +1,8 @@
 package com.angogasapps.myfamily.objects;
 
-public class Message {
+import androidx.annotation.Nullable;
+
+public class Message implements Comparable<Message>{
     private String from = "";
     private String type = "";
     private long time;
@@ -20,5 +22,24 @@ public class Message {
 
     public Object getValue() {
         return value;
+    }
+
+
+    public boolean equals(Message obj) {
+        return (this.time == obj.getTime());
+    }
+
+
+    @Override
+    public int compareTo(Message obj) {
+        if (this.time > obj.getTime()) {
+            return 1;
+        }
+        else if (this.time <  obj.getTime()) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
     }
 }
