@@ -3,4 +3,6 @@
     <dimen name="chat_fragment_enter_text_height">55dp</dimen>
     <dimen name="fragment_enter_personal_data_user_photo">200dp</dimen>
     <dimen name="max_message_width">200dp</dimen>
+    <dimen name="chat_image_width">200dp</dimen>
+    <dimen name="chat_image_height">200dp</dimen>
 </resources>

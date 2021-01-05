@@ -1,5 +1,6 @@
 package com.angogasapps.myfamily.ui.customview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.objects.Message;
 import com.angogasapps.myfamily.ui.customview.holders.AppBaseViewHolder;
 import com.angogasapps.myfamily.ui.customview.holders.ImageMessageHolder;
@@ -26,12 +28,14 @@ import static com.angogasapps.myfamily.utils.WithUsers.*;
 public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
 
     private ArrayList<Message> messagesList;
+    private Activity activity;
     private Context context;
     private LayoutInflater inflater;
 
-    public ChatAdapter(Context context, ArrayList<Message> messageArrayList) {
+    public ChatAdapter(Activity activity, ArrayList<Message> messageArrayList) {
         this.messagesList = messageArrayList;
-        this.context = context;
+        this.activity = activity;
+        this.context = activity.getApplicationContext();
         this.inflater = LayoutInflater.from(this.context);
     }
 
@@ -84,7 +88,12 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
         if (typeOfThisElement.equals(TYPE_TEXT_MESSAGE))
             ((TextMessageHolder)holder).text.setText(messagesList.get(position).getValue().toString());
         else if (typeOfThisElement.equals(TYPE_IMAGE_MESSAGE))
-            ((ImageMessageHolder)holder).imageView.setImageBitmap(null);
+            ChatFunks.downloadImageAndSetBitmap(
+                    messagesList.get(position).getValue().toString(),
+                    ((ImageMessageHolder)holder).imageView,
+                    activity
+            );
+
     }
 
 
@@ -115,12 +124,12 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
         messagesList = ChatAdapterUtils.sortMessagesList(messagesList);
 
         if (!isContains) {
-            if (!scrollToBottom) {
-                messagesList.add(0, message);
-                notifyItemInserted(0);
-            } else {
+            if (scrollToBottom) {
                 messagesList.add(message);
                 notifyItemInserted(messagesList.size() - 1);
+            } else {
+                messagesList.add(0, message);
+                notifyItemInserted(0);
             }
         }
     }

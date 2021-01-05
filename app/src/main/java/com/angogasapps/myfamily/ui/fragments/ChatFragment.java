@@ -23,6 +23,7 @@ import com.angogasapps.myfamily.objects.ChatTextWatcher;
 import com.angogasapps.myfamily.objects.Message;
 import com.angogasapps.myfamily.ui.customview.ChatAdapter;
 import com.angogasapps.myfamily.ui.customview.ChatChildEventListener;
+import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.google.firebase.database.DatabaseReference;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -43,7 +44,7 @@ public class ChatFragment extends Fragment {
     public static final int dangerFirstVisibleItemPosition = 3;
     private int messagesCount = 15;
     private boolean isScrolling = false;
-    public boolean isFirstDownload = true;
+    public boolean isScrollToBottom = true;
 
     public RecyclerView mRecycleView;
     public CircleImageView sendMessageBtn, sendAudioBtn;
@@ -71,7 +72,7 @@ public class ChatFragment extends Fragment {
         chatEditText.addTextChangedListener(new ChatTextWatcher(ChatFragment.this));
 
         sendMessageBtn.setOnClickListener(v -> {
-            isFirstDownload = true;
+            isScrollToBottom = true;
             ChatFunks.sendMessage(TYPE_TEXT_MESSAGE, chatEditText.getText().toString());
             chatEditText.setText("");
             mRecycleView.smoothScrollToPosition(mAdapter.getItemCount());
@@ -96,7 +97,7 @@ public class ChatFragment extends Fragment {
         messagesList = new ArrayList<>();
         chatPath = DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily());
 
-        mAdapter = new ChatAdapter(getActivity().getApplicationContext(), messagesList);
+        mAdapter = new ChatAdapter(getActivity(), messagesList);
         mRecycleView.setAdapter(mAdapter);
 
         mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -123,7 +124,7 @@ public class ChatFragment extends Fragment {
     }
     private void updateData() {
         isScrolling = false;
-        isFirstDownload = false;
+        isScrollToBottom = false;
 
         messagesCount += downloadMessagesCountStep;
         chatPath.removeEventListener(mChatListener);
@@ -143,7 +144,11 @@ public class ChatFragment extends Fragment {
                 && resultCode == Activity.RESULT_OK) {
 
             Uri photoUri = CropImage.getActivityResult(data).getUri();
-            System.out.println(data.toString());
+            if (photoUri != null)
+                ChatFunks.sendImage(photoUri);
+            else
+                Toaster.error(getActivity().getApplicationContext(), "Что-то пошло не так").show();
+
         }
     }
 

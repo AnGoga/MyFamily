@@ -3,7 +3,6 @@ package com.angogasapps.myfamily.objects;
 
 import android.net.Uri;
 
-import com.angogasapps.myfamily.firebase.RegisterUserFunks;
 import com.angogasapps.myfamily.firebase.UserSetterFields;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
 
