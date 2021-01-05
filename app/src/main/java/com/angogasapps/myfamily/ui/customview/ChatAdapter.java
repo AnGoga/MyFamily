@@ -1,7 +1,6 @@
 package com.angogasapps.myfamily.ui.customview;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.objects.Message;
-import com.angogasapps.myfamily.ui.customview.holders.MessageHolder;
+import com.angogasapps.myfamily.ui.customview.holders.AppBaseViewHolder;
+import com.angogasapps.myfamily.ui.customview.holders.ImageMessageHolder;
+import com.angogasapps.myfamily.ui.customview.holders.TextMessageHolder;
 import com.angogasapps.myfamily.utils.ChatAdapterUtils;
 import com.angogasapps.myfamily.utils.StringFormater;
 
 import java.util.ArrayList;
 
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_IMAGE_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_TEXT_MESSAGE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
 import static com.angogasapps.myfamily.utils.WithUsers.*;
 
-public class ChatAdapter extends RecyclerView.Adapter<MessageHolder> {
+public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
 
     private ArrayList<Message> messagesList;
     private Context context;
@@ -34,55 +37,75 @@ public class ChatAdapter extends RecyclerView.Adapter<MessageHolder> {
 
     @NonNull
     @Override
-    public MessageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View rootView = inflater.inflate(R.layout.messsage_layout, parent, false);
-        return new MessageHolder(rootView);
+    public AppBaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == 0)
+            return new TextMessageHolder(inflater.inflate(R.layout.text_messsage_layout, parent, false));
+        else if (viewType == 1)
+            return  new ImageMessageHolder(inflater.inflate(R.layout.image_message_holder, parent, false));
+        return null;
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull MessageHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AppBaseViewHolder holder, int position) {
+
+        String typeOfThisElement = messagesList.get(position).getType();
 
         if (messagesList.get(position).getFrom().equals(UID)) {
             holder.rightLayout.setVisibility(View.VISIBLE);
             holder.leftLayout.setVisibility(View.INVISIBLE);
             holder.fromName = holder.view.findViewById(R.id.rightMessageFromName);
-            holder.text = holder.view.findViewById(R.id.rightMessageText);
             holder.timestampText = holder.view.findViewById(R.id.rightMessageTime);
+
+            if (typeOfThisElement.equals(TYPE_TEXT_MESSAGE))
+                ((TextMessageHolder)holder).text = holder.view.findViewById(R.id.rightMessageText);
+            else if (typeOfThisElement.equals(TYPE_IMAGE_MESSAGE))
+                ((ImageMessageHolder)holder).imageView = holder.view.findViewById(R.id.rightMessageImage);
+
         } else {
             holder.leftLayout.setVisibility(View.VISIBLE);
             holder.rightLayout.setVisibility(View.INVISIBLE);
             holder.fromName = holder.view.findViewById(R.id.leftMessageFromName);
-            holder.text = holder.view.findViewById(R.id.leftMessageText);
             holder.timestampText = holder.view.findViewById(R.id.leftMessageTime);
-            holder.userAvatar = holder.view.findViewById(R.id.messageUserAvatar);
+
+            if (typeOfThisElement.equals(TYPE_TEXT_MESSAGE))
+                ((TextMessageHolder)holder).text = holder.view.findViewById(R.id.leftMessageText);
+            else if (typeOfThisElement.equals(TYPE_IMAGE_MESSAGE))
+                ((ImageMessageHolder)holder).imageView = holder.view.findViewById(R.id.leftMessageImage);
+
+
 
             holder.userAvatar.setImageBitmap(getMemberImageById(messagesList.get(position).getFrom(), this.context));
         }
 
         holder.fromName.setText(getMemberNameById(messagesList.get(position).getFrom()));
-        //object -> text <- image
-        holder.text.setText(messagesList.get(position).getValue().toString());
-        //time
         holder.timestampText.setText(StringFormater.formatLongToTime(messagesList.get(position).getTime()));
 
-
-        Log.i("tag", getMemberNameById(messagesList.get(position).getFrom()));
-
+        if (typeOfThisElement.equals(TYPE_TEXT_MESSAGE))
+            ((TextMessageHolder)holder).text.setText(messagesList.get(position).getValue().toString());
+        else if (typeOfThisElement.equals(TYPE_IMAGE_MESSAGE))
+            ((ImageMessageHolder)holder).imageView.setImageBitmap(null);
     }
 
+
+    @Override
+    public int getItemViewType(int position) {
+        switch (messagesList.get(position).getType()) {
+            case TYPE_TEXT_MESSAGE:
+                return 0;
+            case TYPE_IMAGE_MESSAGE:
+                return 1;
+        }
+        return -1;
+    }
 
     @Override
     public int getItemCount() {
         return messagesList.size();
     }
 
-    public void setMessanges(ArrayList<Message> messageArrayList){
-        this.messagesList = messageArrayList;
-        //from -> to
-        notifyDataSetChanged();
-    }
 
-    public void addMessage(Message message, boolean scrollToTop){
+    public void addMessage(Message message, boolean scrollToBottom){
         boolean isContains = false;
         for (Message element : messagesList){
             if (element.equals(message))
@@ -92,7 +115,7 @@ public class ChatAdapter extends RecyclerView.Adapter<MessageHolder> {
         messagesList = ChatAdapterUtils.sortMessagesList(messagesList);
 
         if (!isContains) {
-            if (!scrollToTop) {
+            if (!scrollToBottom) {
                 messagesList.add(0, message);
                 notifyItemInserted(0);
             } else {
@@ -101,6 +124,5 @@ public class ChatAdapter extends RecyclerView.Adapter<MessageHolder> {
             }
         }
     }
-
-
 }
+

@@ -26,4 +26,5 @@
 
     <drawable name="ic_chat_send_message">@drawable/ic_send_message</drawable>
     <drawable name="ic_chat_send_audio">@drawable/ic_send_audio</drawable>
+    <drawable name="ic_chat_clip">@drawable/ic_clip</drawable>
 </resources>

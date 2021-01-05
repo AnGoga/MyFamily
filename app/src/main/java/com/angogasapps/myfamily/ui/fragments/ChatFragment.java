@@ -1,5 +1,8 @@
 package com.angogasapps.myfamily.ui.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.ChatFunks;
@@ -19,11 +23,9 @@ import com.angogasapps.myfamily.objects.ChatTextWatcher;
 import com.angogasapps.myfamily.objects.Message;
 import com.angogasapps.myfamily.ui.customview.ChatAdapter;
 import com.angogasapps.myfamily.ui.customview.ChatChildEventListener;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
 
@@ -31,13 +33,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_CHAT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_TEXT_MESSAGE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
 
 
 public class ChatFragment extends Fragment {
 
     public static final int downloadMessagesCountStep = 10;
+    public static final int dangerFirstVisibleItemPosition = 3;
     private int messagesCount = 15;
     private boolean isScrolling = false;
     public boolean isFirstDownload = true;
@@ -46,6 +49,9 @@ public class ChatFragment extends Fragment {
     public CircleImageView sendMessageBtn, sendAudioBtn;
     public EditText chatEditText;
     public ChatAdapter mAdapter;
+    private ImageView mImageViewClip;
+
+    private LinearLayoutManager mLayoutManager;
     private ChatChildEventListener mChatListener;
     private DatabaseReference chatPath;
     private ArrayList<Message> messagesList;
@@ -60,15 +66,21 @@ public class ChatFragment extends Fragment {
         sendMessageBtn = rootView.findViewById(R.id.chatSendMessageButton);
         chatEditText = rootView.findViewById(R.id.chatEditText);
         sendAudioBtn = rootView.findViewById(R.id.chatAudioButton);
+        mImageViewClip = rootView.findViewById(R.id.chat_btn_clip);
 
         chatEditText.addTextChangedListener(new ChatTextWatcher(ChatFragment.this));
 
         sendMessageBtn.setOnClickListener(v -> {
             isFirstDownload = true;
-            ChatFunks.sendMessage(TYPE_MESSAGE, chatEditText.getText().toString());
+            ChatFunks.sendMessage(TYPE_TEXT_MESSAGE, chatEditText.getText().toString());
             chatEditText.setText("");
             mRecycleView.smoothScrollToPosition(mAdapter.getItemCount());
         });
+
+        mImageViewClip.setOnClickListener(v -> {
+            getPhotoUri();
+        });
+
         initRecycleView();
         initChatListener();
 
@@ -87,8 +99,10 @@ public class ChatFragment extends Fragment {
         mAdapter = new ChatAdapter(getActivity().getApplicationContext(), messagesList);
         mRecycleView.setAdapter(mAdapter);
 
-        mRecycleView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mRecycleView.setLayoutManager(mLayoutManager);
         mRecycleView.setHasFixedSize(true);
+
 
         mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -101,7 +115,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (isScrolling && dy < 0){
+                if (isScrolling && dy < 0 && mLayoutManager.findFirstVisibleItemPosition() <= dangerFirstVisibleItemPosition){
                     updateData();
                 }
             }
@@ -116,6 +130,25 @@ public class ChatFragment extends Fragment {
         chatPath.limitToLast(messagesCount).addChildEventListener(mChatListener);
     }
 
+    private void getPhotoUri() {
+        CropImage.activity().setAspectRatio(1, 1)
+                .setRequestedSize(300, 300)
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
+                .start(getActivity(), this);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE
+                && resultCode == Activity.RESULT_OK) {
+
+            Uri photoUri = CropImage.getActivityResult(data).getUri();
+            System.out.println(data.toString());
+        }
+    }
+
+
+
     @Override
     public void onPause() {
         super.onPause();
@@ -127,4 +160,5 @@ public class ChatFragment extends Fragment {
         super.onStart();
         chatPath.limitToLast(messagesCount).addChildEventListener(mChatListener);
     }
+
 }

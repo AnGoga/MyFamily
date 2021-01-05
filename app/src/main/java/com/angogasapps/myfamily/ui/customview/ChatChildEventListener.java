@@ -20,7 +20,7 @@ public class ChatChildEventListener implements ChildEventListener {
 
     @Override
     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-        Message message = snapshot.getValue(Message.class);
+        Message message = new Message(snapshot);
         chatFragment.mAdapter.addMessage(message, chatFragment.isFirstDownload);
         if (chatFragment.isFirstDownload)
             chatFragment.mRecycleView.smoothScrollToPosition(chatFragment.mAdapter.getItemCount());

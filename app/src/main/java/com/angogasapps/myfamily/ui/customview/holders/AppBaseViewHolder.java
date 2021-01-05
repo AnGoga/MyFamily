@@ -11,15 +11,18 @@ import com.angogasapps.myfamily.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MessageHolder extends RecyclerView.ViewHolder{
+public class AppBaseViewHolder extends RecyclerView.ViewHolder {
     public LinearLayout leftLayout, rightLayout;
-    public TextView fromName, text, timestampText;
+    public TextView fromName, timestampText;
     public CircleImageView userAvatar;
     public View view;
-    public MessageHolder(@NonNull View itemView) {
+
+    public AppBaseViewHolder(@NonNull View itemView) {
         super(itemView);
         leftLayout = itemView.findViewById(R.id.leftChatLayout);
         rightLayout = itemView.findViewById(R.id.rightChatLayout);
+        userAvatar = itemView.findViewById(R.id.messageUserAvatar);
+
         view = itemView;
     }
 }

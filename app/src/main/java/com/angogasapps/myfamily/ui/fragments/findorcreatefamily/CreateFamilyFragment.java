@@ -57,7 +57,6 @@ public class CreateFamilyFragment extends Fragment {
                 return;
             }
             if(mFamilyEmblemUri == null){
-                //mFamilyEmblemUri = defaultPhoto
                 mFamilyEmblemUri = Uri.EMPTY;
             }
             RegisterFamilyFunks.createNewFamily(getActivity().getApplicationContext(),

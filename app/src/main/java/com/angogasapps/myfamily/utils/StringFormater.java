@@ -1,12 +1,6 @@
 package com.angogasapps.myfamily.utils;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.firebase.FirebaseHelper;
-import com.google.firebase.storage.StreamDownloadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
