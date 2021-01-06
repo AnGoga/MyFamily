@@ -13,11 +13,11 @@
 
         <!--                android:orientation="vertical"-->
             <androidx.recyclerview.widget.RecyclerView
-                android:background="@drawable/chat_background"
                 android:id="@+id/chatRecycleView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/chat_fragment_enter_text_height"
+                android:background="@drawable/chat_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -42,21 +42,21 @@
                     android:src="@drawable/ic_chat_clip"/>
                 <RelativeLayout
                     android:layout_width="@dimen/chat_fragment_enter_text_height"
-                    android:layout_height="@dimen/chat_fragment_enter_text_height"
-                    android:background="@color/green">
+                    android:layout_height="@dimen/chat_fragment_enter_text_height">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:visibility="invisible"
                         android:id="@+id/chatSendMessageButton"
                         android:layout_height="match_parent"
                         android:layout_width="match_parent"
+                        app:civ_circle_background_color="@color/green"
                         android:src="@drawable/ic_chat_send_message"/>
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/chatAudioButton"
-                        android:layout_height="55dp"
-                        android:layout_width="55dp"
-                        android:src="@drawable/ic_chat_send_audio"
-                        android:background="@color/green"/>
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        app:civ_circle_background_color="@color/green"
+                        android:src="@drawable/ic_chat_send_audio" />
                 </RelativeLayout>
             </LinearLayout>
 

@@ -71,4 +71,8 @@ public class FirebaseHelper{
 
         USER = new User();
     }
+
+    public static String getMessageKey(){
+        return DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily()).push().getKey();
+    }
 }

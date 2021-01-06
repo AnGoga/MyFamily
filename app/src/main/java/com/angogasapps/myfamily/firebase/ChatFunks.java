@@ -12,6 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
@@ -64,6 +65,9 @@ public class ChatFunks {
                 });
             }
         });
+    }
+    public static void sendVoice(File voiceFile){
+
     }
 
     public static void downloadImageAndSetBitmap(String path, ImageView imageView, Activity activity) {

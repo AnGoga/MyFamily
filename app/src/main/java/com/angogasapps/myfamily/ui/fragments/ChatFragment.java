@@ -1,5 +1,6 @@
 package com.angogasapps.myfamily.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -24,10 +26,13 @@ import com.angogasapps.myfamily.objects.Message;
 import com.angogasapps.myfamily.ui.customview.ChatAdapter;
 import com.angogasapps.myfamily.ui.customview.ChatChildEventListener;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
+import com.angogasapps.myfamily.utils.AudioRecorder;
+import com.angogasapps.myfamily.utils.Permissions;
 import com.google.firebase.database.DatabaseReference;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -36,6 +41,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_CHAT;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_TEXT_MESSAGE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.getMessageKey;
 
 
 public class ChatFragment extends Fragment {
@@ -45,6 +51,8 @@ public class ChatFragment extends Fragment {
     private int messagesCount = 15;
     private boolean isScrolling = false;
     public boolean isScrollToBottom = true;
+
+    private AudioRecorder mRecorder;
 
     public RecyclerView mRecycleView;
     public CircleImageView sendMessageBtn, sendAudioBtn;
@@ -58,6 +66,7 @@ public class ChatFragment extends Fragment {
     private ArrayList<Message> messagesList;
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,6 +78,7 @@ public class ChatFragment extends Fragment {
         sendAudioBtn = rootView.findViewById(R.id.chatAudioButton);
         mImageViewClip = rootView.findViewById(R.id.chat_btn_clip);
 
+
         chatEditText.addTextChangedListener(new ChatTextWatcher(ChatFragment.this));
 
         sendMessageBtn.setOnClickListener(v -> {
@@ -76,6 +86,24 @@ public class ChatFragment extends Fragment {
             ChatFunks.sendMessage(TYPE_TEXT_MESSAGE, chatEditText.getText().toString());
             chatEditText.setText("");
             mRecycleView.smoothScrollToPosition(mAdapter.getItemCount());
+        });
+
+        sendAudioBtn.setOnTouchListener((v, event) -> {
+
+            if (Permissions.havePermission(Permissions.AUDIO_RECORD_PERM, getActivity())) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    mRecorder = new AudioRecorder(getActivity(), getMessageKey());
+                    mRecorder.startRecording();
+                }else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    mRecorder.stopRecording(() -> {
+                        File voiceFile = mRecorder.getFile();
+                        ChatFunks.sendVoice(voiceFile);
+
+                    });
+
+                }
+            }
+            return true;
         });
 
         mImageViewClip.setOnClickListener(v -> {
@@ -151,8 +179,6 @@ public class ChatFragment extends Fragment {
 
         }
     }
-
-
 
     @Override
     public void onPause() {
