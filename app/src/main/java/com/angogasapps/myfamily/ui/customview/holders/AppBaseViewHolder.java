@@ -25,4 +25,8 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder {
 
         view = itemView;
     }
+
+    public void baseInitHolder(){
+        
+    }
 }

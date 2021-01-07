@@ -24,9 +24,9 @@ import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.objects.ChatTextWatcher;
 import com.angogasapps.myfamily.objects.Message;
 import com.angogasapps.myfamily.ui.customview.ChatAdapter;
-import com.angogasapps.myfamily.ui.customview.ChatChildEventListener;
+import com.angogasapps.myfamily.utils.ChatChildEventListener;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
-import com.angogasapps.myfamily.utils.AudioRecorder;
+import com.angogasapps.myfamily.utils.ChatAudioRecorder;
 import com.angogasapps.myfamily.utils.Permissions;
 import com.google.firebase.database.DatabaseReference;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -52,7 +52,7 @@ public class ChatFragment extends Fragment {
     private boolean isScrolling = false;
     public boolean isScrollToBottom = true;
 
-    private AudioRecorder mRecorder;
+    private ChatAudioRecorder mRecorder;
 
     public RecyclerView mRecycleView;
     public CircleImageView sendMessageBtn, sendAudioBtn;
@@ -92,13 +92,14 @@ public class ChatFragment extends Fragment {
 
             if (Permissions.havePermission(Permissions.AUDIO_RECORD_PERM, getActivity())) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    mRecorder = new AudioRecorder(getActivity(), getMessageKey());
+                    mRecorder = new ChatAudioRecorder(getActivity(), getMessageKey());
                     mRecorder.startRecording();
                 }else if (event.getAction() == MotionEvent.ACTION_UP) {
                     mRecorder.stopRecording(() -> {
                         File voiceFile = mRecorder.getFile();
-                        ChatFunks.sendVoice(voiceFile);
-
+                        ChatFunks.sendVoice(voiceFile, mRecorder.getKey());
+                        Toaster.success(getActivity(), "Звук").show();
+                        System.out.println(voiceFile.toString());
                     });
 
                 }

@@ -6,7 +6,7 @@ import android.media.MediaRecorder;
 import java.io.File;
 import java.io.IOException;
 
-public class AudioRecorder{
+public class ChatAudioRecorder {
 
     private volatile Activity activity;
     private volatile File file;
@@ -14,7 +14,7 @@ public class AudioRecorder{
     private volatile MediaRecorder recorder;
 
 
-    public AudioRecorder(Activity activity, String key) {
+    public ChatAudioRecorder(Activity activity, String key) {
         this.activity = activity;
         this.key = key;
         this.recorder = new MediaRecorder();
@@ -30,7 +30,7 @@ public class AudioRecorder{
                 super.run();
                 try {
 
-                    AudioRecorder.this.file = createNewFile();
+                    ChatAudioRecorder.this.file = createNewFile();
                     prepareRecorder();
                     recorder.start();
 

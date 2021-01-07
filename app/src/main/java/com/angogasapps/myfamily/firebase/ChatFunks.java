@@ -1,12 +1,12 @@
 package com.angogasapps.myfamily.firebase;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.widget.ImageView;
 
+import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
 import com.angogasapps.myfamily.utils.StringFormater;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
@@ -23,16 +23,20 @@ import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_TYPE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_VALUE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.FOLDER_IMAGE_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.FOLDER_VOICE_MESSAGE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_CHAT;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.STORAGE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_IMAGE_MESSAGE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_TEXT_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_VOICE_MESSAGE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.familyMembersImagesMap;
 
 public class ChatFunks {
     public static void sendMessage(String type, String value) {
+        sendMessageWithKey(type, value, FirebaseHelper.getMessageKey());
+    }
+    public static void sendMessageWithKey(String type, String value, String key){
         DatabaseReference path = DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily());
 
         if (type == TYPE_TEXT_MESSAGE) {
@@ -45,29 +49,41 @@ public class ChatFunks {
         messageMap.put(CHILD_VALUE, value);
         messageMap.put(CHILD_TIME, ServerValue.TIMESTAMP);
 
-        String key = path.push().getKey();
         path.child(key).updateChildren(messageMap).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-            }
+            if (task.isSuccessful()) {}
         });
     }
 
     public static void sendImage(Uri imageUri) {
-        StorageReference path = STORAGE_ROOT.child(FOLDER_IMAGE_MESSAGE).child(USER.getFamily());
+        String key = FirebaseHelper.getMessageKey();
+        StorageReference path = STORAGE_ROOT.child(FOLDER_IMAGE_MESSAGE).child(USER.getFamily()).child(key);
+
 
         path.putFile(imageUri).addOnCompleteListener(task1 -> {
             if (task1.isSuccessful()) {
                 path.getDownloadUrl().addOnCompleteListener(task2 -> {
                     if (task2.isSuccessful()) {
                         String url = task2.getResult().toString();
-                        sendMessage(TYPE_IMAGE_MESSAGE, url);
+                        sendMessageWithKey(TYPE_IMAGE_MESSAGE, url, key);
                     }
                 });
             }
         });
     }
-    public static void sendVoice(File voiceFile){
+    public static void sendVoice(File voiceFile, String key){
+        StorageReference path = STORAGE_ROOT.child(FOLDER_VOICE_MESSAGE).child(USER.getFamily()).child(key);
 
+        path.putFile(Uri.fromFile(voiceFile)).addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful()){
+                path.getDownloadUrl().addOnCompleteListener(task2 -> {
+                    if (task2.isSuccessful()){
+                        String url = task2.getResult().toString();
+                        sendMessageWithKey(TYPE_VOICE_MESSAGE, url, key);
+                    }
+                });
+            }
+//            voiceFile.delete();
+        });
     }
 
     public static void downloadImageAndSetBitmap(String path, ImageView imageView, Activity activity) {
@@ -89,5 +105,15 @@ public class ChatFunks {
                 }
             }
         }.start();
+    }
+
+    public static void getFileFromStorage(File file, String url, IOnEndCommunicationWithFirebase i){
+        STORAGE_ROOT.getStorage().getReference(url).getFile(file).addOnCompleteListener(task -> {
+           if (task.isSuccessful()){
+               i.onSuccess();
+           }else{
+               i.onFailure();
+           }
+        });
     }
 }

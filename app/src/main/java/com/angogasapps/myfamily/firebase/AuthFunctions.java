@@ -89,8 +89,12 @@ public class AuthFunctions {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //TODO:
                 USER = snapshot.getValue(User.class);// <-- допиши нормально функцию и обнови себя в firebase (поля: family и ?photoURL?)
-                iAuthUser.onEndDownloadUser();
+                if (USER != null)
+                    iAuthUser.onEndDownloadUser();
+                else
+                    downloadUser(iAuthUser);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error){}

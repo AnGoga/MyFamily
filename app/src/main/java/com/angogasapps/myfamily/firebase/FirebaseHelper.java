@@ -18,7 +18,7 @@ public class FirebaseHelper{
     public static FirebaseAuth AUTH;
     public static DatabaseReference DATABASE_ROOT;
     public static StorageReference STORAGE_ROOT;
-    public static volatile User USER;
+    public static User USER;
     public static String UID;
 
     public static volatile HashMap<String, User> familyMembersMap = new HashMap<>();
@@ -27,6 +27,7 @@ public class FirebaseHelper{
 
     public static final String TYPE_TEXT_MESSAGE = "message";
     public static final String TYPE_IMAGE_MESSAGE = "image";
+    public static final String TYPE_VOICE_MESSAGE = "voice";
 
     //firebase realtime database nodes
     public static final String NODE_USERS = "users";
@@ -56,6 +57,7 @@ public class FirebaseHelper{
     public static final String FOLDER_FAMILY_EMBLEMS = "family_emblems";
     public static final String FOLDER_USERS_PHOTOS = "users_photos";
     public static final String FOLDER_IMAGE_MESSAGE = "image_message";
+    public static final String FOLDER_VOICE_MESSAGE = "voice_message";
 
     public static final String DEFAULT_URL = "default";
     //public static final StringFormater DEFAULT_EMBLEM = "https://firebasestorage.googleapis.com/v0/b/myfamily-1601b.appspot.com/o/family_emblems%2Fwelcome.jpg?alt=media&token=223a6607-416d-4f71-857d-e741ed20d5ce";

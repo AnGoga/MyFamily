@@ -15,6 +15,7 @@ import com.angogasapps.myfamily.objects.Message;
 import com.angogasapps.myfamily.ui.customview.holders.AppBaseViewHolder;
 import com.angogasapps.myfamily.ui.customview.holders.ImageMessageHolder;
 import com.angogasapps.myfamily.ui.customview.holders.TextMessageHolder;
+import com.angogasapps.myfamily.ui.customview.holders.VoiceMessageHolder;
 import com.angogasapps.myfamily.utils.ChatAdapterUtils;
 import com.angogasapps.myfamily.utils.StringFormater;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_IMAGE_MESSAGE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_TEXT_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_VOICE_MESSAGE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
 import static com.angogasapps.myfamily.utils.WithUsers.*;
 
@@ -43,9 +45,11 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
     @Override
     public AppBaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == 0)
-            return new TextMessageHolder(inflater.inflate(R.layout.text_messsage_layout, parent, false));
+            return new TextMessageHolder(inflater.inflate(R.layout.text_messsage_holder, parent, false));
         else if (viewType == 1)
             return  new ImageMessageHolder(inflater.inflate(R.layout.image_message_holder, parent, false));
+        else if (viewType == 2)
+            return new VoiceMessageHolder(inflater.inflate(R.layout.voice_message_holder, parent, false));
         return null;
     }
 
@@ -54,6 +58,11 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
     public void onBindViewHolder(@NonNull AppBaseViewHolder holder, int position) {
 
         String typeOfThisElement = messagesList.get(position).getType();
+
+        if (typeOfThisElement.equals(TYPE_VOICE_MESSAGE)) {
+            ((VoiceMessageHolder)holder).initVoiceHolder(activity, messagesList.get(position));
+            return;
+        }
 
         if (messagesList.get(position).getFrom().equals(UID)) {
             holder.rightLayout.setVisibility(View.VISIBLE);
@@ -104,6 +113,8 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
                 return 0;
             case TYPE_IMAGE_MESSAGE:
                 return 1;
+            case TYPE_VOICE_MESSAGE:
+                return 2;
         }
         return -1;
     }

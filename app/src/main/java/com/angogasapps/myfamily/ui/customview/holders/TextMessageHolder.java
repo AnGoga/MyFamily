@@ -17,5 +17,7 @@ public class TextMessageHolder extends AppBaseViewHolder{
     public TextMessageHolder(@NonNull View itemView) {
         super(itemView);
 
+
+
     }
 }
