@@ -6,11 +6,9 @@ import android.media.MediaPlayer;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
-import com.angogasapps.myfamily.ui.customview.ChatVoiceMessageView;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 
 import java.io.File;
-import java.io.IOException;
 
 
 public class ChatVoicePlayer {
@@ -37,7 +35,9 @@ public class ChatVoicePlayer {
                     }
 
                     @Override
-                    public void onFailure() {}
+                    public void onFailure() {
+
+                    }
                 });
             } catch (Exception e) {
                 e.printStackTrace();
