@@ -26,24 +26,19 @@ public class VoiceMessageHolder extends AppBaseViewHolder{
         rightVoiceMessageView = view.findViewById(R.id.right_voice_view);
     }
 
-    public void initVoiceHolder(Activity activity, Message message) {
-        if (message.getFrom().equals(UID)){
-            leftLayout.setVisibility(View.INVISIBLE);
-            rightLayout.setVisibility(View.VISIBLE);
+    @Override
+    protected void initLeftFields() {
+        leftVoiceMessageView.setFromName(from);
+        leftVoiceMessageView.setMessageKey(messageKey);
+        leftVoiceMessageView.setTime(time);
+        leftVoiceMessageView.setVoiceFileUrl(value);
+    }
 
-            rightVoiceMessageView.setFromName(getMemberNameById(message.getFrom()));
-            rightVoiceMessageView.setMessageKey(message.getId());
-            rightVoiceMessageView.setTime(StringFormater.formatLongToTime(message.getTime()));
-            rightVoiceMessageView.setVoiceFileUrl(message.getValue().toString());
-        }else{
-            leftLayout.setVisibility(View.VISIBLE);
-            rightLayout.setVisibility(View.INVISIBLE);
-
-            leftVoiceMessageView.setFromName(getMemberNameById(message.getFrom()));
-            leftVoiceMessageView.setMessageKey(message.getId());
-            leftVoiceMessageView.setTime(StringFormater.formatLongToTime(message.getTime()));
-            leftVoiceMessageView.setVoiceFileUrl(message.getValue().toString());
-            userAvatar.setImageBitmap(getMemberImageById(message.getFrom(), activity));
-        }
+    @Override
+    protected void initRightFields() {
+        rightVoiceMessageView.setFromName(from);
+        rightVoiceMessageView.setMessageKey(messageKey);
+        rightVoiceMessageView.setTime(time);
+        rightVoiceMessageView.setVoiceFileUrl(value);
     }
 }

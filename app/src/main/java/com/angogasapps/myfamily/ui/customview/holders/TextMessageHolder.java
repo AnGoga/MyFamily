@@ -12,12 +12,20 @@ import com.angogasapps.myfamily.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TextMessageHolder extends AppBaseViewHolder{
-    public TextView text;
 
     public TextMessageHolder(@NonNull View itemView) {
         super(itemView);
+    }
 
+    @Override
+    protected void initLeftFields() {
+        super.initLeftFields();
+        ((TextView)view.findViewById(R.id.leftMessageText)).setText(value);
+    }
 
-
+    @Override
+    protected void initRightFields() {
+        super.initRightFields();
+        ((TextView)view.findViewById(R.id.rightMessageText)).setText(value);
     }
 }

@@ -25,6 +25,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_IMAGE_MESSAG
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_TEXT_MESSAGE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_VOICE_MESSAGE;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
+import static com.angogasapps.myfamily.utils.WithMessages.arrayContainsMessage;
 import static com.angogasapps.myfamily.utils.WithUsers.*;
 
 public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
@@ -56,53 +57,14 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull AppBaseViewHolder holder, int position) {
+        Message message = messagesList.get(position);
 
-        String typeOfThisElement = messagesList.get(position).getType();
-
-        if (typeOfThisElement.equals(TYPE_VOICE_MESSAGE)) {
-            ((VoiceMessageHolder)holder).initVoiceHolder(activity, messagesList.get(position));
-            return;
+        holder.init(message.getFrom(), message.getTime(), message.getId(), message.getValue(), activity);
+        if (message.getFrom().equals(UID)){
+            holder.initRightLayout();
+        }else{
+            holder.initLeftLayout();
         }
-
-        if (messagesList.get(position).getFrom().equals(UID)) {
-            holder.rightLayout.setVisibility(View.VISIBLE);
-            holder.leftLayout.setVisibility(View.INVISIBLE);
-            holder.fromName = holder.view.findViewById(R.id.rightMessageFromName);
-            holder.timestampText = holder.view.findViewById(R.id.rightMessageTime);
-
-            if (typeOfThisElement.equals(TYPE_TEXT_MESSAGE))
-                ((TextMessageHolder)holder).text = holder.view.findViewById(R.id.rightMessageText);
-            else if (typeOfThisElement.equals(TYPE_IMAGE_MESSAGE))
-                ((ImageMessageHolder)holder).imageView = holder.view.findViewById(R.id.rightMessageImage);
-
-        } else {
-            holder.leftLayout.setVisibility(View.VISIBLE);
-            holder.rightLayout.setVisibility(View.INVISIBLE);
-            holder.fromName = holder.view.findViewById(R.id.leftMessageFromName);
-            holder.timestampText = holder.view.findViewById(R.id.leftMessageTime);
-
-            if (typeOfThisElement.equals(TYPE_TEXT_MESSAGE))
-                ((TextMessageHolder)holder).text = holder.view.findViewById(R.id.leftMessageText);
-            else if (typeOfThisElement.equals(TYPE_IMAGE_MESSAGE))
-                ((ImageMessageHolder)holder).imageView = holder.view.findViewById(R.id.leftMessageImage);
-
-
-
-            holder.userAvatar.setImageBitmap(getMemberImageById(messagesList.get(position).getFrom(), this.context));
-        }
-
-        holder.fromName.setText(getMemberNameById(messagesList.get(position).getFrom()));
-        holder.timestampText.setText(StringFormater.formatLongToTime(messagesList.get(position).getTime()));
-
-        if (typeOfThisElement.equals(TYPE_TEXT_MESSAGE))
-            ((TextMessageHolder)holder).text.setText(messagesList.get(position).getValue().toString());
-        else if (typeOfThisElement.equals(TYPE_IMAGE_MESSAGE))
-            ChatFunks.downloadImageAndSetBitmap(
-                    messagesList.get(position).getValue().toString(),
-                    ((ImageMessageHolder)holder).imageView,
-                    activity
-            );
-
     }
 
 
@@ -126,15 +88,10 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
 
 
     public void addMessage(Message message, boolean scrollToBottom){
-        boolean isContains = false;
-        for (Message element : messagesList){
-            if (element.equals(message))
-                isContains = true;
-        }
 
         messagesList = ChatAdapterUtils.sortMessagesList(messagesList);
 
-        if (!isContains) {
+        if (!arrayContainsMessage(messagesList, message)) {
             if (scrollToBottom) {
                 messagesList.add(message);
                 notifyItemInserted(messagesList.size() - 1);

@@ -8,7 +8,7 @@ public class Message implements Comparable<Message>{
     private String from;
     private String type;
     private long time;
-    private Object value;
+    private String  value;
     private String id = "";
 
     public String getFrom() {
@@ -23,7 +23,7 @@ public class Message implements Comparable<Message>{
         return time;
     }
 
-    public Object getValue() {
+    public String getValue() {
         return value;
     }
 
