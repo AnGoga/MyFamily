@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.fragments;
+package com.angogasapps.myfamily.ui.screens.chat;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -37,11 +37,11 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_CHAT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_TEXT_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.getMessageKey;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_CHAT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_TEXT_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 
 public class ChatFragment extends Fragment {

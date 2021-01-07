@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.fragments.registeractivity;
+package com.angogasapps.myfamily.ui.screens.registeractivity;
 
 import android.os.Bundle;
 
@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.ui.fragments.registeractivity.EnterCodeFragment;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseException;
@@ -23,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.angogasapps.myfamily.firebase.AuthFunctions.authorizationUser;
 import static com.angogasapps.myfamily.firebase.AuthFunctions.trySignInWithCredential;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 
 public class EnterPhoneFragment extends Fragment {
     private EditText editTextPhone;

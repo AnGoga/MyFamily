@@ -8,11 +8,11 @@ import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
 
 import java.util.Objects;
 
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_PHOTO_URL;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.DEFAULT_URL;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_USERS;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_PHOTO_URL;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DEFAULT_URL;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_USERS;
 
 public class UserSetterFields {
 

@@ -6,10 +6,10 @@ import android.net.Uri;
 import com.angogasapps.myfamily.firebase.UserSetterFields;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
 
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_BIRTHDAY;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_FAMILY;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_NAME;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_BIRTHDAY;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_FAMILY;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_NAME;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.UID;
 
 public class User {
     private String id = "";

@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.fragments.registeractivity;
+package com.angogasapps.myfamily.ui.screens.registeractivity;
 
 import android.os.Bundle;
 

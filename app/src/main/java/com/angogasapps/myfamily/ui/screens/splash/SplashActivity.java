@@ -1,20 +1,18 @@
-package com.angogasapps.myfamily.ui.activities;
+package com.angogasapps.myfamily.ui.screens.splash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.angogasapps.myfamily.firebase.AuthFunctions;
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
-import com.angogasapps.myfamily.ui.toaster.Toaster;
+import com.angogasapps.myfamily.ui.screens.main.MainActivity;
+import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity;
 
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.initFirebase;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class SplashActivity extends AppCompatActivity {
 

@@ -6,6 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.FamilySettingsActivity">
+    tools:context=".ui.screens.family_settings.FamilySettingsActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

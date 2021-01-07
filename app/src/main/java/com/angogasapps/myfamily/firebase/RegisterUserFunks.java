@@ -4,23 +4,23 @@ import android.app.Activity;
 import android.net.Uri;
 
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
-import com.angogasapps.myfamily.ui.activities.RegisterActivity;
+import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_BIRTHDAY;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_FAMILY;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_NAME;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_PHONE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_PHOTO_URL;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.FOLDER_USERS_PHOTOS;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_USERS;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.STORAGE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_BIRTHDAY;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_FAMILY;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_NAME;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_PHONE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_PHOTO_URL;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.FOLDER_USERS_PHOTOS;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_USERS;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.STORAGE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class RegisterUserFunks {
 

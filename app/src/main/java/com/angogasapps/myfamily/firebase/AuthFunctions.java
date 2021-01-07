@@ -1,15 +1,13 @@
 package com.angogasapps.myfamily.firebase;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.angogasapps.myfamily.firebase.interfaces.IAuthUser;
 import com.angogasapps.myfamily.objects.User;
-import com.angogasapps.myfamily.ui.activities.RegisterActivity;
+import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -20,21 +18,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-
 import java.util.concurrent.TimeUnit;
 
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_BIRTHDAY;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_FAMILY;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_ID;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_NAME;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_PHONE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_PHONE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
 
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_USERS;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_USERS;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.UID;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class AuthFunctions {
 

@@ -1,11 +1,11 @@
-package com.angogasapps.myfamily.ui.activities;
+package com.angogasapps.myfamily.ui.screens.chat;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.ui.fragments.ChatFragment;
+import com.angogasapps.myfamily.ui.screens.chat.ChatFragment;
 
 public class ChatActivity extends AppCompatActivity {
 

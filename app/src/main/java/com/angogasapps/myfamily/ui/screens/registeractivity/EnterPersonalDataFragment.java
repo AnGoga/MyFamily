@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.fragments.registeractivity;
+package com.angogasapps.myfamily.ui.screens.registeractivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.firebase.AuthFunctions;
 import com.angogasapps.myfamily.firebase.RegisterUserFunks;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -28,7 +27,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.Calendar;
 
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 
 public class EnterPersonalDataFragment extends Fragment {
     EditText userNameEditText;

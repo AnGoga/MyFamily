@@ -1,20 +1,18 @@
-package com.angogasapps.myfamily.ui.activities;
+package com.angogasapps.myfamily.ui.screens.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.webkit.JavascriptInterface;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.objects.LoadFamilyThread;
 import com.angogasapps.myfamily.ui.customview.CardView;
+import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
+import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity;
 
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.AUTH;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class MainActivity extends AppCompatActivity {
     CardView myFamilyCard, chatCard;

@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.activities;
+package com.angogasapps.myfamily.ui.screens.family_settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 

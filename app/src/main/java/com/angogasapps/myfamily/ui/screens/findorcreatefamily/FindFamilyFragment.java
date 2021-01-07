@@ -1,11 +1,9 @@
-package com.angogasapps.myfamily.ui.fragments.findorcreatefamily;
+package com.angogasapps.myfamily.ui.screens.findorcreatefamily;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -17,14 +15,8 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.FindFamilyFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily;
 import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily;
-import com.angogasapps.myfamily.ui.activities.MainActivity;
+import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_FAMILIES;
 
 
 public class FindFamilyFragment extends Fragment {

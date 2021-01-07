@@ -4,13 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 
-import com.angogasapps.myfamily.firebase.FirebaseHelper;
-import com.angogasapps.myfamily.ui.fragments.ChatFragment;
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -21,16 +19,14 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_MEMBERS;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.DEFAULT_URL;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_FAMILIES;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_USERS;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.familyMembersImagesMap;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_MEMBERS;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DEFAULT_URL;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_FAMILIES;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_USERS;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.familyMembersImagesMap;
 
 
 public class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> {
@@ -95,7 +91,7 @@ public class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> 
 
     private void initUsersCollections(){
         for (User member : familyMembersList) {
-            FirebaseHelper.familyMembersMap.put(member.getId(), member);
+            FirebaseVarsAndConsts.familyMembersMap.put(member.getId(), member);
         }
     }
 

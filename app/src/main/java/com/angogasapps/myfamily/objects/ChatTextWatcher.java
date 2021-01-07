@@ -4,7 +4,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
-import com.angogasapps.myfamily.ui.fragments.ChatFragment;
+import com.angogasapps.myfamily.ui.screens.chat.ChatFragment;
 
 public class ChatTextWatcher implements TextWatcher {
     private ChatFragment chatFragment;

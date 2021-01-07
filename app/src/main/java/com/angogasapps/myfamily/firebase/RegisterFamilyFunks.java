@@ -8,25 +8,22 @@ import com.angogasapps.myfamily.firebase.interfaces.IOnEndRegisterNewFamily;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSentToStorageEmblem;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_EMBLEM;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_FAMILY;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_MEMBERS;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_NAME;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_ROLE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.DEFAULT_URL;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.FOLDER_FAMILY_EMBLEMS;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_FAMILIES;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_USERS;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.ROLE_CREATOR;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.STORAGE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_EMBLEM;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_MEMBERS;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_NAME;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_ROLE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DEFAULT_URL;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.FOLDER_FAMILY_EMBLEMS;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_FAMILIES;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.ROLE_CREATOR;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.STORAGE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.UID;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class RegisterFamilyFunks {
     public static synchronized void createNewFamily(Context context, String familyName, Uri familyEmblemUri,

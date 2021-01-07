@@ -17,24 +17,26 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_FROM;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_TIME;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_TYPE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.CHILD_VALUE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.DATABASE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.FOLDER_IMAGE_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.FOLDER_VOICE_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.NODE_CHAT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.STORAGE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_IMAGE_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_TEXT_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_VOICE_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.USER;
+import static com.angogasapps.myfamily.firebase.FirebaseHelper.getMessageKey;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_FROM;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_TIME;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_TYPE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_VALUE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.FOLDER_IMAGE_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.FOLDER_VOICE_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_CHAT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.STORAGE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_IMAGE_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_TEXT_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_VOICE_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.UID;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.chatImageMessangesMap;
 
 public class ChatFunks {
     public static void sendMessage(String type, String value) {
-        sendMessageWithKey(type, value, FirebaseHelper.getMessageKey());
+        sendMessageWithKey(type, value, getMessageKey());
     }
     public static void sendMessageWithKey(String type, String value, String key){
         DatabaseReference path = DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily());
@@ -55,7 +57,7 @@ public class ChatFunks {
     }
 
     public static void sendImage(Uri imageUri) {
-        String key = FirebaseHelper.getMessageKey();
+        String key = getMessageKey();
         StorageReference path = STORAGE_ROOT.child(FOLDER_IMAGE_MESSAGE).child(USER.getFamily()).child(key);
 
 
@@ -86,25 +88,33 @@ public class ChatFunks {
         });
     }
 
-    public static void downloadImageAndSetBitmap(String path, ImageView imageView, Activity activity) {
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                try {
-                    URL photoUrl = new URL(path);
-                    InputStream downloadStream = photoUrl.openStream();
-                    Bitmap bitmap = BitmapFactory.decodeStream(downloadStream);
+    public static void downloadImageAndSetBitmap(String path, String key, ImageView imageView, Activity activity) {
+        if (chatImageMessangesMap.containsKey(key)){
+            activity.runOnUiThread(() -> {
+                imageView.setImageBitmap(chatImageMessangesMap.get(key));
+            });
+        }else {
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    try {
+                        URL photoUrl = new URL(path);
+                        InputStream downloadStream = photoUrl.openStream();
+                        Bitmap bitmap = BitmapFactory.decodeStream(downloadStream);
 
-                    activity.runOnUiThread(() -> {
-                        imageView.setImageBitmap(bitmap);
-                    });
+                        chatImageMessangesMap.put(key, bitmap);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                        activity.runOnUiThread(() -> {
+                            imageView.setImageBitmap(bitmap);
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }.start();
+            }.start();
+        }
     }
 
     public static void getFileFromStorage(File file, String url, IOnEndCommunicationWithFirebase i){

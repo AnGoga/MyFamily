@@ -2,7 +2,7 @@ package com.angogasapps.myfamily.utils;
 
 
 import com.angogasapps.myfamily.objects.Message;
-import com.angogasapps.myfamily.ui.fragments.ChatFragment;
+import com.angogasapps.myfamily.ui.screens.chat.ChatFragment;
 
 import java.util.ArrayList;
 

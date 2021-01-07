@@ -1,11 +1,6 @@
-package com.angogasapps.myfamily.ui.fragments.findorcreatefamily;
+package com.angogasapps.myfamily.ui.screens.findorcreatefamily;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -18,12 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.RegisterFamilyFunks;
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndRegisterNewFamily;
-import com.angogasapps.myfamily.ui.activities.MainActivity;
+import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;

@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.fragments.findorcreatefamily;
+package com.angogasapps.myfamily.ui.screens.findorcreatefamily;
 
 import android.os.Bundle;
 
@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.ui.fragments.findorcreatefamily.CreateFamilyFragment;
-import com.angogasapps.myfamily.ui.fragments.findorcreatefamily.FindFamilyFragment;
 
 
 public class FindOrCreateFamilyFragment extends Fragment {

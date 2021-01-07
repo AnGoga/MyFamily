@@ -19,6 +19,7 @@ public class ImageMessageHolder extends AppBaseViewHolder {
 
         ChatFunks.downloadImageAndSetBitmap(
                 value,
+                messageKey,
                 ((ImageView)view.findViewById(R.id.leftMessageImage)),
                 activity
         );
@@ -30,6 +31,7 @@ public class ImageMessageHolder extends AppBaseViewHolder {
 
         ChatFunks.downloadImageAndSetBitmap(
                 value,
+                messageKey,
                 ((ImageView)view.findViewById(R.id.rightMessageImage)),
                 activity
         );

@@ -3,30 +3,26 @@ package com.angogasapps.myfamily.ui.customview;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.objects.Message;
 import com.angogasapps.myfamily.ui.customview.holders.AppBaseViewHolder;
 import com.angogasapps.myfamily.ui.customview.holders.ImageMessageHolder;
 import com.angogasapps.myfamily.ui.customview.holders.TextMessageHolder;
 import com.angogasapps.myfamily.ui.customview.holders.VoiceMessageHolder;
 import com.angogasapps.myfamily.utils.ChatAdapterUtils;
-import com.angogasapps.myfamily.utils.StringFormater;
 
 import java.util.ArrayList;
 
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_IMAGE_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_TEXT_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.TYPE_VOICE_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.UID;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_IMAGE_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_TEXT_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_VOICE_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.UID;
 import static com.angogasapps.myfamily.utils.WithMessages.arrayContainsMessage;
-import static com.angogasapps.myfamily.utils.WithUsers.*;
 
 public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
 
