@@ -7,15 +7,14 @@ import androidx.annotation.NonNull;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.ui.customview.ChatVoiceMessageView;
 
-import static com.angogasapps.myfamily.utils.WithFiles.setVoiceLenToTextView;
 
 
 public class VoiceMessageHolder extends AppBaseViewHolder{
     ChatVoiceMessageView leftVoiceMessageView, rightVoiceMessageView;
     public VoiceMessageHolder(@NonNull View itemView) {
         super(itemView);
-        leftVoiceMessageView = view.findViewById(R.id.left_voice_view);
-        rightVoiceMessageView = view.findViewById(R.id.right_voice_view);
+        leftVoiceMessageView = itemView.findViewById(R.id.left_voice_view);
+        rightVoiceMessageView = itemView.findViewById(R.id.right_voice_view);
     }
 
     @Override
@@ -25,7 +24,6 @@ public class VoiceMessageHolder extends AppBaseViewHolder{
         leftVoiceMessageView.setTime(time);
         leftVoiceMessageView.setVoiceFileUrl(value);
 
-//        setVoiceLenToTextView(messageKey, value, leftVoiceMessageView.getVoiceLenTextView(), activity);
     }
 
     @Override
@@ -35,6 +33,7 @@ public class VoiceMessageHolder extends AppBaseViewHolder{
         rightVoiceMessageView.setTime(time);
         rightVoiceMessageView.setVoiceFileUrl(value);
 
-//        setVoiceLenToTextView(messageKey, value, rightVoiceMessageView.getVoiceLenTextView(), activity);
+
     }
+
 }

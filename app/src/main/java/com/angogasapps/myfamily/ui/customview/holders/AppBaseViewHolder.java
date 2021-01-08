@@ -53,6 +53,7 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder implements Initia
     protected void initLeftFields() {
         ((TextView)view.findViewById(R.id.leftMessageFromName)).setText(from);
         ((TextView)view.findViewById(R.id.leftMessageTime)).setText(time);
+
     }
 
 

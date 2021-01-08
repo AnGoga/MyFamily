@@ -10,6 +10,10 @@ import com.angogasapps.myfamily.ui.toaster.Toaster;
 
 import java.io.File;
 
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.FOLDER_VOICE_MESSAGE;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.STORAGE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
+
 
 public class ChatVoicePlayer {
     private MediaPlayer mMediaPlayer;

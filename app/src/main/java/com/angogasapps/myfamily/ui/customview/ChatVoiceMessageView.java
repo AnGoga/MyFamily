@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -16,7 +17,7 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.utils.ChatVoicePlayer;
 
 public class ChatVoiceMessageView extends LinearLayout {
-    private TextView fromNameView, voiceLenTextView, timeTextView;
+    private TextView fromNameView, timeTextView;
     private ImageView playButton, pauseButton;
 
     public String messageKey;
@@ -25,6 +26,7 @@ public class ChatVoiceMessageView extends LinearLayout {
 
     private ChatVoicePlayer mVoicePlayer;
     private Context context;
+
 
 
     public ChatVoiceMessageView(Context context) {
@@ -45,7 +47,8 @@ public class ChatVoiceMessageView extends LinearLayout {
     private void initializeViews(Context context) {
         this.context = context;
         @SuppressLint("ServiceCast")
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = LayoutInflater.from(context);
         inflater.inflate(R.layout.voice_message_view, this);
     }
 
@@ -68,7 +71,6 @@ public class ChatVoiceMessageView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         fromNameView = findViewById(R.id.voice_message_from_name_text);
-        voiceLenTextView = findViewById(R.id.message_voice_len_text);
         timeTextView = findViewById(R.id.voice_message_message_time_text);
         playButton = findViewById(R.id.voice_message_btn_play);
         pauseButton = findViewById(R.id.voice_message_btn_pause);
