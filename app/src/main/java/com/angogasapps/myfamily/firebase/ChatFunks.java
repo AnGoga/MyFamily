@@ -126,4 +126,13 @@ public class ChatFunks {
            }
         });
     }
+
+    public static void getVoiceFileFromStorage(File file, String key, IOnEndCommunicationWithFirebase i){
+        STORAGE_ROOT.child(FOLDER_VOICE_MESSAGE).child(USER.getFamily()).child(key).getFile(file).addOnCompleteListener(task -> {
+            if (task.isSuccessful())
+                i.onSuccess();
+            else
+                i.onFailure();
+        });
+    }
 }

@@ -8,8 +8,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        android:visibility="invisible"
-        tools:visibility="visible"
         android:id="@+id/leftChatLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,14 +24,14 @@
             android:src="@drawable/default_user_photo" />
 
         <com.angogasapps.myfamily.ui.customview.ChatVoiceMessageView
+            android:background="@drawable/text_message_left_bg"
             android:id="@+id/left_voice_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="invisible"
-        tools:visibility="visible"
+        android:background="@drawable/text_message_right_bg"
         android:id="@+id/rightChatLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,8 +41,7 @@
             android:id="@+id/right_voice_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

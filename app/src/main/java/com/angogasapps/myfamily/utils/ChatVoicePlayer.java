@@ -10,10 +10,6 @@ import com.angogasapps.myfamily.ui.toaster.Toaster;
 
 import java.io.File;
 
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.FOLDER_VOICE_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.STORAGE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-
 
 public class ChatVoicePlayer {
     private MediaPlayer mMediaPlayer;
@@ -32,7 +28,8 @@ public class ChatVoicePlayer {
         }else {
             try {
                 voiceFile.createNewFile();
-                ChatFunks.getFileFromStorage(voiceFile, fileUrl, new IOnEndCommunicationWithFirebase() {
+//                ChatFunks.getFileFromStorage(voiceFile, fileUrl, new IOnEndCommunicationWithFirebase() {
+                ChatFunks.getVoiceFileFromStorage(voiceFile, messageKey, new IOnEndCommunicationWithFirebase() {
                     @Override
                     public void onSuccess() {
                         startPlayer(iOnEndPlay);

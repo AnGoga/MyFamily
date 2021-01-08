@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if (USER != null)
+
         if (USER.getFamily().equals("")) {
             startActivity(new Intent(this, FindOrCreateFamilyActivity.class));
             finish();

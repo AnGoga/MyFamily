@@ -46,8 +46,7 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
         else if (viewType == 1)
             return  new ImageMessageHolder(inflater.inflate(R.layout.image_message_holder, parent, false));
         else if (viewType == 2)
-//            return new VoiceMessageHolder(inflater.inflate(R.layout.voice_message_holder, parent, false));
-            return new VoiceMessageHolder(inflater.inflate(R.layout.test_voice_message_holder, parent, false));
+            return new VoiceMessageHolder(inflater.inflate(R.layout.voice_message_holder, parent, false));
         return null;
     }
 

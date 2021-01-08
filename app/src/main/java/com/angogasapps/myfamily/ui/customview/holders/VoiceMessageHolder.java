@@ -24,6 +24,7 @@ public class VoiceMessageHolder extends AppBaseViewHolder{
         leftVoiceMessageView.setTime(time);
         leftVoiceMessageView.setVoiceFileUrl(value);
 
+
     }
 
     @Override
