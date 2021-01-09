@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.customview.holders;
+package com.angogasapps.myfamily.ui.customview.message_recycle_view.holders;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -17,7 +17,7 @@ public class ImageMessageHolder extends AppBaseViewHolder {
     protected void initLeftFields() {
         super.initLeftFields();
 
-        ChatFunks.downloadImageAndSetBitmap(
+        ChatFunks.downloadImageMessageAndSetBitmap(
                 value,
                 messageKey,
                 ((ImageView)view.findViewById(R.id.leftMessageImage)),
@@ -29,7 +29,7 @@ public class ImageMessageHolder extends AppBaseViewHolder {
     protected void initRightFields() {
         super.initRightFields();
 
-        ChatFunks.downloadImageAndSetBitmap(
+        ChatFunks.downloadImageMessageAndSetBitmap(
                 value,
                 messageKey,
                 ((ImageView)view.findViewById(R.id.rightMessageImage)),

@@ -8,4 +8,30 @@
     android:layout_height="match_parent"
     tools:context=".ui.screens.family_settings.FamilySettingsActivity">
 
+    <ImageView
+        android:id="@+id/family_settings_emblem"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/family_settings_emblem_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        app:cardElevation="16dp"
+        android:layout_margin="@dimen/normal_margin"
+        android:padding="@dimen/normal_margin"
+        app:cardCornerRadius="@dimen/normal_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/family_settings_emblem" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/family_settings_recycleview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

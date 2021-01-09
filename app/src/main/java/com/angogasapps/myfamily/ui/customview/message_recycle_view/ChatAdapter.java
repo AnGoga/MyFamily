@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.customview;
+package com.angogasapps.myfamily.ui.customview.message_recycle_view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.objects.Message;
-import com.angogasapps.myfamily.ui.customview.holders.AppBaseViewHolder;
-import com.angogasapps.myfamily.ui.customview.holders.ImageMessageHolder;
-import com.angogasapps.myfamily.ui.customview.holders.TextMessageHolder;
-import com.angogasapps.myfamily.ui.customview.holders.VoiceMessageHolder;
+import com.angogasapps.myfamily.ui.customview.message_recycle_view.holders.AppBaseViewHolder;
+import com.angogasapps.myfamily.ui.customview.message_recycle_view.holders.ImageMessageHolder;
+import com.angogasapps.myfamily.ui.customview.message_recycle_view.holders.TextMessageHolder;
+import com.angogasapps.myfamily.ui.customview.message_recycle_view.holders.VoiceMessageHolder;
 import com.angogasapps.myfamily.utils.ChatAdapterUtils;
 
 import java.util.ArrayList;
@@ -76,6 +76,7 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
         }
         return -1;
     }
+
 
     @Override
     public int getItemCount() {

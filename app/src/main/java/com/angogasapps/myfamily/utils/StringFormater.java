@@ -5,6 +5,7 @@ package com.angogasapps.myfamily.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*;
 
 public class StringFormater {
     public static String formatStringToSend(String text){
@@ -23,6 +24,16 @@ public class StringFormater {
     public static String formatLongToTime(Long time){
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         return timeFormat.format(new Date(time));
+    }
+
+    public static String formatToRole(String role){
+        if (role.equals(ROLE_MEMBER))
+            return "Участник";
+        if (role.equals(ROLE_CREATOR))
+            return "Создатель";
+
+
+        return role;
     }
 
 

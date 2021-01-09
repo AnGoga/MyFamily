@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <dimen name="mainActivityHeaderHeight">230dp</dimen>
+    <dimen name="mainActivityCardViewHeight">130dp</dimen>
+    <dimen name="card_view_radius">20dp</dimen>
+
+
+    <dimen name="normal_margin">16dp</dimen>
+    <dimen name="big_normal_margin">32dp</dimen>
+
+
+    <dimen name="normal_text_size">30sp</dimen>
+    <dimen name="small_text_size">20sp</dimen>
+
+
+    <dimen name="registerActivityPhoneHeight">200dp</dimen>
+    <dimen name="registerActivityPhoneWidth">200dp</dimen>
+
+
+    <dimen name="fragment_create_family_add_emblem_photo_size">64dp</dimen>
+
+
+
     <dimen name="chat_fragment_enter_text_height">55dp</dimen>
     <dimen name="fragment_enter_personal_data_user_photo">200dp</dimen>
     <dimen name="max_message_width">200dp</dimen>
@@ -9,4 +31,7 @@
     <dimen name="message_top_text_margin">5dp</dimen>
     <dimen name="message_bottom_text_margin">10dp</dimen>
     <dimen name="message_center_text_padding">10dp</dimen>
+    <dimen name="family_settings_emblem_height">200dp</dimen>
+    <dimen name="user_photo_size">50dp</dimen>
+    <dimen name="member_holder_margin">5dp</dimen>
 </resources>

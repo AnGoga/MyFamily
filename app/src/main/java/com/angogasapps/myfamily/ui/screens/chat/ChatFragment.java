@@ -23,7 +23,7 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.objects.ChatTextWatcher;
 import com.angogasapps.myfamily.objects.Message;
-import com.angogasapps.myfamily.ui.customview.ChatAdapter;
+import com.angogasapps.myfamily.ui.customview.message_recycle_view.ChatAdapter;
 import com.angogasapps.myfamily.utils.ChatChildEventListener;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.angogasapps.myfamily.utils.ChatAudioRecorder;

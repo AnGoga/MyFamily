@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.customview.holders;
+package com.angogasapps.myfamily.ui.customview.message_recycle_view.holders;
 
 import android.view.View;
 
@@ -19,7 +19,7 @@ public class VoiceMessageHolder extends AppBaseViewHolder{
 
     @Override
     protected void initLeftFields() {
-        leftVoiceMessageView.setFromName(from);
+        leftVoiceMessageView.setFromName(name);
         leftVoiceMessageView.setMessageKey(messageKey);
         leftVoiceMessageView.setTime(time);
         leftVoiceMessageView.setVoiceFileUrl(value);
@@ -29,7 +29,7 @@ public class VoiceMessageHolder extends AppBaseViewHolder{
 
     @Override
     protected void initRightFields() {
-        rightVoiceMessageView.setFromName(from);
+        rightVoiceMessageView.setFromName(name);
         rightVoiceMessageView.setMessageKey(messageKey);
         rightVoiceMessageView.setTime(time);
         rightVoiceMessageView.setVoiceFileUrl(value);

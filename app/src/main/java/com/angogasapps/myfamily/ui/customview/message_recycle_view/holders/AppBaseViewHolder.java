@@ -1,7 +1,7 @@
-package com.angogasapps.myfamily.ui.customview.holders;
+package com.angogasapps.myfamily.ui.customview.message_recycle_view.holders;
 
 import android.app.Activity;
-import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,8 +21,7 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder implements Initia
     public CircleImageView userAvatar;
     public View view;
 
-    protected String from, messageKey, value;
-    protected String time;
+    protected String from, messageKey, value, time, name;
     protected Activity activity;
 
     public AppBaseViewHolder(@NonNull View itemView) {
@@ -35,7 +34,8 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder implements Initia
     }
 
     public final void init(String from, Long time, String messageKey, String value, Activity activity){
-        this.from = getMemberNameById(from);
+        this.from = from;
+        this.name = getMemberNameById(from);
         this.time = StringFormater.formatLongToTime(time);
         this.messageKey = messageKey;
         this.value = value;
@@ -46,12 +46,13 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder implements Initia
     public final void initLeftLayout() {
         leftLayout.setVisibility(View.VISIBLE);
         rightLayout.setVisibility(View.INVISIBLE);
-        userAvatar.setImageBitmap(getMemberImageById(from, activity));
+        Bitmap bitmap = getMemberImageById(from, activity);
+        userAvatar.setImageBitmap(bitmap);
         initLeftFields();
     }
 
     protected void initLeftFields() {
-        ((TextView)view.findViewById(R.id.leftMessageFromName)).setText(from);
+        ((TextView)view.findViewById(R.id.leftMessageFromName)).setText(name);
         ((TextView)view.findViewById(R.id.leftMessageTime)).setText(time);
 
     }
@@ -66,7 +67,7 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder implements Initia
     }
 
     protected void initRightFields() {
-        ((TextView)view.findViewById(R.id.rightMessageFromName)).setText(from);
+        ((TextView)view.findViewById(R.id.rightMessageFromName)).setText(name);
         ((TextView)view.findViewById(R.id.rightMessageTime)).setText(time);
     }
 

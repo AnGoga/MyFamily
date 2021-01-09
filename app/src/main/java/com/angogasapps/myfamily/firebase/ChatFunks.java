@@ -88,7 +88,7 @@ public class ChatFunks {
         });
     }
 
-    public static void downloadImageAndSetBitmap(String path, String key, ImageView imageView, Activity activity) {
+    public static void downloadImageMessageAndSetBitmap(String path, String key, ImageView imageView, Activity activity) {
         if (chatImageMessangesMap.containsKey(key)){
             activity.runOnUiThread(() -> {
                 imageView.setImageBitmap(chatImageMessangesMap.get(key));

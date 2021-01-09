@@ -8,8 +8,10 @@ import android.os.Bundle;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.objects.LoadFamilyThread;
+import com.angogasapps.myfamily.objects.TestLoadFamilyThread;
 import com.angogasapps.myfamily.ui.customview.CardView;
 import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
+import com.angogasapps.myfamily.ui.screens.family_settings.FamilySettingsActivity;
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         new LoadFamilyThread(this).execute(USER);
+//        new TestLoadFamilyThread(this).execute(USER);
 
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         myFamilyCard.setOnClickListener(v -> {
-
+            startActivity(new Intent(MainActivity.this, FamilySettingsActivity.class));
         });
 
     }

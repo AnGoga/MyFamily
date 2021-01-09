@@ -1,6 +1,7 @@
 package com.angogasapps.myfamily.objects;
 
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.angogasapps.myfamily.firebase.UserSetterFields;
@@ -18,6 +19,8 @@ public class User {
     private String name = "";
     private Long birthday = 0L;
     private String photoURL = "";
+    private String role = "";
+    private Bitmap userPhoto;
 
     public User(){
         this.id = "";
@@ -26,6 +29,8 @@ public class User {
         this.name = "";
         this.birthday = 0L;
         this.photoURL = "";
+        this.role = "";
+        this.userPhoto = null;
     }
 
     public String getId() {
@@ -42,6 +47,19 @@ public class User {
     }
     public Long getBirthday() {
         return birthday;
+    }
+    public String getRole() {
+        return role;
+    }
+    public Bitmap getUserPhoto() {
+        return userPhoto;
+    }
+
+    public void setBitmap(Bitmap bitmap){
+        this.userPhoto = bitmap;
+    }
+    public void setRole(String role){
+        this.role = role;
     }
 
     @Override
