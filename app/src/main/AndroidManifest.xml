@@ -20,7 +20,6 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".ui.screens.findorcreatefamily.FindOrCreateFamilyActivity" />
         <activity
             android:name=".ui.screens.registeractivity.RegisterActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
@@ -40,6 +39,21 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.screens.findorcreatefamily.FindOrCreateFamilyActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="angogasapps.page.link"
+                    android:scheme="https"/>
+            </intent-filter>
+
+        </activity>
     </application>
+
+
 
 </manifest>

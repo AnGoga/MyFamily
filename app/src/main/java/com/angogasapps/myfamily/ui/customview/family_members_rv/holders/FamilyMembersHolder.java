@@ -30,9 +30,9 @@ public class FamilyMembersHolder extends RecyclerView.ViewHolder {
 
     public void initHolder(User user, Context context){
         userNameTextView.setText(familyMembersMap.get(user.getId()).getName());
-        userRoleTextView.setText(StringFormater.formatToRole(familyMembersRolesMap.get(user.getId())));
+        userRoleTextView.setText(StringFormater.formatToRole(familyMembersMap.get(user.getId()).getRole()));
 
-        Bitmap bitmap = familyMembersImagesMap.get(user.getId());
+        Bitmap bitmap = familyMembersMap.get(user.getId()).getUserPhoto();
         if (bitmap != null)
             userImage.setImageBitmap(bitmap);
 

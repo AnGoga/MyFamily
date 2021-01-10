@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.objects;
+package com.angogasapps.myfamily.async;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
+import com.angogasapps.myfamily.objects.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -26,8 +27,8 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_FAMIL
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_USERS;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.STORAGE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.familyMembersImagesMap;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.familyMembersRolesMap;
+//import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.familyMembersImagesMap;
+//import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.familyMembersRolesMap;
 
 
 public class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> {
@@ -50,7 +51,7 @@ public class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> 
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             familyMembersId.add(dataSnapshot.getKey());
                             String string = dataSnapshot.getValue(String.class);
-                            familyMembersRolesMap.put(dataSnapshot.getKey(), string);
+//                            familyMembersRolesMap.put(dataSnapshot.getKey(), string);
                         }
                         downloadFamilyMembers(0);
                     }
@@ -105,13 +106,13 @@ public class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> 
             super.run();
             for (int i = 0; i < familyMembersList.size(); i++) {
                 if (familyMembersList.get(i).getPhotoURL().equals(DEFAULT_URL)) {
-                    familyMembersImagesMap.put(familyMembersList.get(i).getId(), null);
+//                    familyMembersImagesMap.put(familyMembersList.get(i).getId(), null);
                 } else {
                     try {
                         URL photoUrl = new URL(familyMembersList.get(i).getPhotoURL());
                         InputStream downloadStream = photoUrl.openStream();
                         Bitmap bitmap = BitmapFactory.decodeStream(downloadStream);
-                        familyMembersImagesMap.put(familyMembersList.get(i).getId(), bitmap);
+//                        familyMembersImagesMap.put(familyMembersList.get(i).getId(), bitmap);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

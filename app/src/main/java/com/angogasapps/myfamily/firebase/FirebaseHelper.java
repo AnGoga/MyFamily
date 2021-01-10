@@ -3,6 +3,7 @@ package com.angogasapps.myfamily.firebase;
 import com.angogasapps.myfamily.objects.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.storage.FirebaseStorage;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*;
@@ -13,6 +14,7 @@ public class FirebaseHelper {
         AUTH = FirebaseAuth.getInstance();
         DATABASE_ROOT = FirebaseDatabase.getInstance().getReference();
         STORAGE_ROOT = FirebaseStorage.getInstance().getReference();
+        DYNAMIC_LINK_ROOT = FirebaseDynamicLinks.getInstance();
         try {
             UID = AUTH.getCurrentUser().getUid();
         }catch (Exception e){}

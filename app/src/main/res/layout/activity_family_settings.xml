@@ -12,6 +12,7 @@
         android:id="@+id/family_settings_emblem"
         android:layout_width="match_parent"
         android:layout_height="@dimen/family_settings_emblem_height"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

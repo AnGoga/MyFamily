@@ -17,7 +17,8 @@ public class WithUsers {
     }
 
     public static Bitmap getMemberImageById(String id, Context context){
-        Bitmap image = FirebaseVarsAndConsts.familyMembersImagesMap.get(id);
+//        Bitmap image = FirebaseVarsAndConsts.familyMembersImagesMap.get(id);
+        Bitmap image = FirebaseVarsAndConsts.familyMembersMap.get(id).getUserPhoto();
         if (image == null){
             image = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_default_user_photo);
         }

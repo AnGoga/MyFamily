@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.objects;
+package com.angogasapps.myfamily.async;
 
 import android.content.Context;
 
@@ -10,6 +10,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
+import com.angogasapps.myfamily.objects.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -19,11 +21,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_EMBLEM;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_MEMBERS;
@@ -36,7 +36,6 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_FAMIL
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_USERS;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.familyMembersMap;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.familyMembersRolesMap;
 
 
 public final class TestLoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> {
@@ -48,8 +47,11 @@ public final class TestLoadFamilyThread extends AsyncTask<User, Integer, ArrayLi
     volatile Bitmap familyEmblem;
     volatile String familyName;
 
-    volatile ExecutorService pull;
+    volatile ExecutorService pool;
 
+//    volatile static Lock lock = new ReentrantLock();
+
+    volatile static CountDownLatch lock = new CountDownLatch(1);
 
     public TestLoadFamilyThread(Context context) {
         this.context = context;
@@ -64,11 +66,12 @@ public final class TestLoadFamilyThread extends AsyncTask<User, Integer, ArrayLi
 
             familyDownloaderThread.start();
             familyDownloaderThread.join();
-            System.out.println("Конец ожидания");
 
             downloadMembers();
 
             downloadMembersPhoto();
+
+            ArrayList<User> a = familyMembersList;
 
             emblemDownloaderThread.start();
 
@@ -87,20 +90,33 @@ public final class TestLoadFamilyThread extends AsyncTask<User, Integer, ArrayLi
     }
 
     private void downloadMembers(){
-        pull = Executors.newFixedThreadPool(2);
+        pool = Executors.newFixedThreadPool(2);
+        CountDownLatch monitor = new CountDownLatch(familyMembersId.size());
         for (int i = 0; i < familyMembersId.size(); i++) {
-            pull.submit(new MemberDownloaderThread(familyMembersId.get(i)));
+            pool.submit(new MemberDownloaderThread(familyMembersId.get(i), monitor));
         }
-        pull.shutdown();
+        pool.shutdown();
+        try {
+            monitor.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
+
     private void downloadMembersPhoto(){
-        pull = Executors.newFixedThreadPool(2);
+        pool = Executors.newFixedThreadPool(2);
+        CountDownLatch monitor = new CountDownLatch(familyMembersList.size());
         for (int i = 0; i < familyMembersList.size(); i++) {
-            pull.submit(new PhotoDownloaderThread(familyMembersList.get(i).getPhotoURL(), i));
+            pool.submit(new PhotoDownloaderThread(familyMembersList.get(i).getPhotoURL(), i, monitor));
         }
-        pull.shutdown();
+        pool.shutdown();
+        try {
+            monitor.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private Bitmap downloadBitmapByURL(String url){
@@ -110,14 +126,15 @@ public final class TestLoadFamilyThread extends AsyncTask<User, Integer, ArrayLi
             Bitmap bitmap = BitmapFactory.decodeStream(downloadStream);
             return bitmap;
         }catch (Exception e) {
-            e.printStackTrace();
+            if (!url.equals(DEFAULT_URL))
+                e.printStackTrace();
         }
         return null;
     }
 
 
     private class FamilyDownloaderThread extends Thread {
-        boolean isDownload = false;
+
         @Override
         public void run() {
             DATABASE_ROOT.child(NODE_FAMILIES).child(USER.getFamily())
@@ -131,26 +148,31 @@ public final class TestLoadFamilyThread extends AsyncTask<User, Integer, ArrayLi
                             }
                             familyEmblemURL = snapshot.child(CHILD_EMBLEM).getValue(String.class);
                             familyName = snapshot.child(CHILD_NAME).getValue(String.class);
-                            System.out.println("Конец потока");
 
-                            isDownload = true;
+                            lock.countDown();
                         }
 
                         @Override
-                        public void onCancelled(@NonNull DatabaseError error) {}
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
                     });
-            while (!isDownload){
-                continue;
+            try {
+                lock.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
+
     }
 
     private class MemberDownloaderThread extends Thread{
         String memberId;
-        boolean isDownload = false;
+        CountDownLatch monitor;
 
-        public MemberDownloaderThread(String id){
+
+        public MemberDownloaderThread(String id, CountDownLatch monitor){
             this.memberId = id;
+            this.monitor = monitor;
         }
 
         @Override
@@ -160,30 +182,32 @@ public final class TestLoadFamilyThread extends AsyncTask<User, Integer, ArrayLi
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     familyMembersList.add(snapshot.getValue(User.class));
-                    isDownload = true;
+
+                    MemberDownloaderThread.this.monitor.countDown();
+
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {}
             });
-            while (!isDownload){
-                continue;
-            }
         }
     }
 
     private class PhotoDownloaderThread extends Thread{
         String photoUrl;
         int pos;
+        CountDownLatch monitor;
 
-        public PhotoDownloaderThread(String photoUrl, int pos) {
+        public PhotoDownloaderThread(String photoUrl, int pos, CountDownLatch monitor) {
             this.photoUrl = photoUrl;
             this.pos = pos;
+            this.monitor = monitor;
         }
 
         @Override
         public void run() {
             familyMembersList.get(pos).setBitmap(downloadBitmapByURL(this.photoUrl));
+            PhotoDownloaderThread.this.monitor.countDown();
         }
     }
 
@@ -195,6 +219,7 @@ public final class TestLoadFamilyThread extends AsyncTask<User, Integer, ArrayLi
     }
 
     private void initConnections(){
+        FirebaseVarsAndConsts.familyEmblemImage = this.familyEmblem;
         for (User user : familyMembersList){
             user.setRole(usersRoleMap.get(user.getId()));
             familyMembersMap.put(user.getId(), user);

@@ -21,6 +21,7 @@
 
 
     <drawable name="default_user_photo">@drawable/ic_default_user_photo</drawable>
+    <drawable name="default_family_emblem">@drawable/welcome</drawable>
 
     <drawable name="default_chat_background">@drawable/chat_background</drawable>
     <drawable name="default_chat_image_message">@drawable/ic_default_chat_image</drawable>

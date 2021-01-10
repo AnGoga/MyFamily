@@ -40,7 +40,7 @@
                 android:textSize="10sp" />
 
             <ImageView
-                android:padding="@dimen/message_center_text_padding"
+                android:padding="@dimen/image_message_padding"
                 android:src="@drawable/default_chat_image_message"
                 android:id="@+id/leftMessageImage"
                 android:layout_width="@dimen/chat_image_width"
@@ -78,7 +78,7 @@
             tools:text="Вы"/>
 
         <ImageView
-            android:padding="@dimen/message_center_text_padding"
+            android:padding="@dimen/image_message_padding"
             android:src="@drawable/default_chat_image_message"
             android:id="@+id/rightMessageImage"
             android:layout_width="@dimen/chat_image_width"

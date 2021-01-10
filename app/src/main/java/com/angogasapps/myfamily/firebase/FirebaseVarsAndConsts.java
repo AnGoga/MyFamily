@@ -6,25 +6,28 @@ import android.graphics.Bitmap;
 import com.angogasapps.myfamily.objects.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
 public class FirebaseVarsAndConsts {
+
+    public static final String FIREBASE_URL = "https://myfamily-1601b.firebaseio.com";
+    public static final String FIREBASE_DYNAMIC_LINKS_HOST = "https://angogasapps.page.link";
+    public static final String FIREBASE_DYNAMIC_LINKS_HOST_FAMILY_INVITE = "https://angogasapps.page.link/families";
+
     public static FirebaseAuth AUTH;
     public static DatabaseReference DATABASE_ROOT;
     public static StorageReference STORAGE_ROOT;
+    public static FirebaseDynamicLinks DYNAMIC_LINK_ROOT;
     public static User USER;
     public static String UID;
 
     public static volatile HashMap<String, User> familyMembersMap = new HashMap<>();
-    public static volatile HashMap<String, Bitmap> familyMembersImagesMap = new HashMap<>();
-    public static volatile HashMap<String, String> familyMembersRolesMap = new HashMap<>();
     public static volatile HashMap<String, Bitmap> chatImageMessangesMap = new HashMap<>();
+    public static volatile Bitmap familyEmblemImage = null;
 
 
     public static final String TYPE_TEXT_MESSAGE = "message";

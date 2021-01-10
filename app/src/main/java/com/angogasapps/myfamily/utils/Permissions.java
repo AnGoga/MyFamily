@@ -20,7 +20,6 @@ public class Permissions {
         if (Build.VERSION.SDK_INT >= 23
                 && ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED){
 
-            //get this permission
             ActivityCompat.requestPermissions(activity, new String[]{permission}, PERMISSION_CALLBACK);
 
             return false;

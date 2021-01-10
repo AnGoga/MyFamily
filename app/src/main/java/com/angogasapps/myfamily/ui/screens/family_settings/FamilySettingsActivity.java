@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.ChatFunks;
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
 import com.angogasapps.myfamily.ui.customview.family_members_rv.FamilyMembersAdapter;
 
 public class FamilySettingsActivity extends AppCompatActivity {
@@ -26,8 +29,7 @@ public class FamilySettingsActivity extends AppCompatActivity {
         mFamilyEmblemImage = findViewById(R.id.family_settings_emblem);
 
         initRecycleView();
-
-//        ChatFunks.downloadImageMessageAndSetBitmap();
+        setFamilyEmblemBitmap();
     }
 
     private void initRecycleView(){
@@ -38,4 +40,15 @@ public class FamilySettingsActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
+
+    private void setFamilyEmblemBitmap() {
+        Bitmap bitmap = FirebaseVarsAndConsts.familyEmblemImage;
+        if (bitmap == null){
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_family_emblem);
+        }
+        mFamilyEmblemImage.setImageBitmap(bitmap);
+    }
 }
+
+
+
