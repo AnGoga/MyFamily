@@ -10,8 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyFragment;
+import com.angogasapps.myfamily.ui.screens.splash.SplashActivity;
+import com.angogasapps.myfamily.utils.FamilyManager;
 
 import java.util.Set;
+
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class FindOrCreateFamilyActivity extends AppCompatActivity {
 
@@ -23,21 +27,9 @@ public class FindOrCreateFamilyActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
 
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        Uri data = intent.getData();
-
-        //TODO:
-        /*
-        Log.i("tag1", "\naction = " + action + "\ndata = " + data.toString());
-        Log.i("tag", "Uri params = " + data.getQueryParameter("q"));
-        Log.i("tag", "Uri params = " + data.getQueryParameter("w"));
-        Log.i("tag", "Uri params = " + data.getQueryParameter("e"));
-        Log.i("tag", "Uri params = " + data.getQueryParameter("r"));
-        */
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.findOrCreateFamilyDataContainer, new FindOrCreateFamilyFragment()).commit();

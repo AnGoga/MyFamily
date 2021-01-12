@@ -38,6 +38,8 @@
     <string name="error">Что-то пошло не так</string>
     <string name="my_family">моя семья</string>
     <string name="something_went_wrong">Что-то пошло не так</string>
+    <string name="link_to_invite">Ссылка для пришлашения</string>
+    <string name="copy_to_clipboard_manager">Скопировано в буфер обмена</string>
 
 
 </resources>

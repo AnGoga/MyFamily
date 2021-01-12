@@ -5,16 +5,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.utils.ChatVoicePlayer;
+import com.angogasapps.myfamily.objects.ChatVoicePlayer;
 
 public class ChatVoiceMessageView extends LinearLayout {
     private TextView fromNameView, timeTextView;

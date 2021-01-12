@@ -32,4 +32,6 @@
 
     <drawable name="ic_voice_message_play">@drawable/ic_play</drawable>
     <drawable name="ic_voice_message_pause">@drawable/ic_pause</drawable>
+    <drawable name="ic_add_user">@drawable/ic_add_user</drawable>
+    <drawable name="ic_copy_text">@drawable/ic_copy_text</drawable>
 </resources>

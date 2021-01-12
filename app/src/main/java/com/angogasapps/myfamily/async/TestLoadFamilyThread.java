@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -126,6 +127,7 @@ public final class TestLoadFamilyThread extends AsyncTask<User, Integer, ArrayLi
             Bitmap bitmap = BitmapFactory.decodeStream(downloadStream);
             return bitmap;
         }catch (Exception e) {
+            if (url != null)
             if (!url.equals(DEFAULT_URL))
                 e.printStackTrace();
         }

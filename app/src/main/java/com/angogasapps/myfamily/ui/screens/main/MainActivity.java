@@ -48,13 +48,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //TODO:
-        /*HashMap<String, String> map = new HashMap<>();
-        map.put("q", "1");
-        map.put("w", "2");
-        map.put("e", "3");
-        map.put("r", "4");
-        DynamicLinksManager.createDynamicLinkWithParams(map);*/
 
     }
 }

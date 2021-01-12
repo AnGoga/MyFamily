@@ -31,7 +31,7 @@ public class DynamicLinksManager {
         Uri cacheLink = createDynamicLink();
         Uri link;
 
-        Uri.Builder uriBuilder = Uri.parse(cacheLink.toString()).buildUpon(); //.appendQueryParameter("p", "267196").build();
+        Uri.Builder uriBuilder = Uri.parse(cacheLink.toString()).buildUpon();
 
         if (paramsMap != null)
         for(Map.Entry<String, String> entry : paramsMap.entrySet()){

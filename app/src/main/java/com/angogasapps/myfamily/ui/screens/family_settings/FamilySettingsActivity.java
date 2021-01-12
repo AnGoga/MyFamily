@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -15,7 +16,7 @@ import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
 import com.angogasapps.myfamily.ui.customview.family_members_rv.FamilyMembersAdapter;
 
 public class FamilySettingsActivity extends AppCompatActivity {
-    ImageView mFamilyEmblemImage;
+    ImageView mFamilyEmblemImage, mInviteUserBtn;
     RecyclerView mRecyclerView;
     FamilyMembersAdapter mAdapter;
     LinearLayoutManager mLayoutManager;
@@ -27,6 +28,11 @@ public class FamilySettingsActivity extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.family_settings_recycleview);
         mFamilyEmblemImage = findViewById(R.id.family_settings_emblem);
+        mInviteUserBtn = findViewById(R.id.inviteUserToFamilyButton);
+
+        mInviteUserBtn.setOnClickListener(v -> {
+            startActivity(new Intent(this, InviteUserActivity.class));
+        });
 
         initRecycleView();
         setFamilyEmblemBitmap();
