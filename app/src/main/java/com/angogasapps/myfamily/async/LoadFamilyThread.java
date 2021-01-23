@@ -1,9 +1,11 @@
 package com.angogasapps.myfamily.async;
 
 import android.content.Context;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -18,106 +20,214 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_EMBLEM;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_MEMBERS;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_NAME;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
+
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DEFAULT_URL;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.FOLDER_FAMILY_EMBLEMS;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_FAMILIES;
+
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_USERS;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.STORAGE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-//import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.familyMembersImagesMap;
-//import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.familyMembersRolesMap;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.familyMembersMap;
+import static com.angogasapps.myfamily.utils.WithUsers.getUserFromSnapshot;
 
 
-public class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> {
+public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> {
     Context context;
     volatile ArrayList<String> familyMembersId = new ArrayList<>();
     volatile ArrayList<User> familyMembersList = new ArrayList<>();
+    volatile HashMap<String, String> usersRoleMap = new HashMap<>();
+    volatile String familyEmblemURL;
+    volatile Bitmap familyEmblem;
+    volatile String familyName;
 
+    volatile ExecutorService pull;
+
+//    volatile static Lock lock = new ReentrantLock();
+
+    volatile static CountDownLatch lock = new CountDownLatch(1);
 
     public LoadFamilyThread(Context context) {
         this.context = context;
-    }
 
+    }
 
     @Override
     protected ArrayList<User> doInBackground(User... users) {
-        DATABASE_ROOT.child(NODE_FAMILIES).child(USER.getFamily()).child(CHILD_MEMBERS)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            familyMembersId.add(dataSnapshot.getKey());
-                            String string = dataSnapshot.getValue(String.class);
-//                            familyMembersRolesMap.put(dataSnapshot.getKey(), string);
-                        }
-                        downloadFamilyMembers(0);
-                    }
+        try {
+            Log.v("tag", "Thread = " + Thread.currentThread());
+            FamilyDownloaderThread familyDownloaderThread = new FamilyDownloaderThread();
+            FamilyEmblemDownloaderThread emblemDownloaderThread = new FamilyEmblemDownloaderThread();
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                    }
-                });
+            familyDownloaderThread.start();
+            familyDownloaderThread.join();
+
+            downloadMembers();
+
+            downloadMembersPhoto();
+
+            ArrayList<User> a = familyMembersList;
+
+            emblemDownloaderThread.start();
+
+            initConnections();
+
+            if (emblemDownloaderThread.isAlive())
+                emblemDownloaderThread.join();
+
+            Log.i("tag", "Загрузка завершена");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        HashMap<String, User> aStringUserHashMap = familyMembersMap;
         return null;
     }
 
-    private void downloadFamilyMembers(int pos) {
-        String id = familyMembersId.get(pos);
-        DATABASE_ROOT.child(NODE_USERS).child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                familyMembersList.add(snapshot.getValue(User.class));
-                if (pos < familyMembersId.size() - 1)
-                    downloadFamilyMembers(pos + 1);
-                else
-                    downloadImages();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
-        
-
-    }
-    private void downloadImages() {
-        MemberImagesDownloaderThread downloadImageThread = new MemberImagesDownloaderThread();
-
-        downloadImageThread.start();
+    private void downloadMembers(){
+        pull = Executors.newFixedThreadPool(2);
+        CountDownLatch monitor = new CountDownLatch(familyMembersId.size());
+        for (int i = 0; i < familyMembersId.size(); i++) {
+            pull.submit(new MemberDownloaderThread(familyMembersId.get(i), monitor));
+        }
+        pull.shutdown();
         try {
-            downloadImageThread.join();
+            monitor.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        initUsersCollection();
+
     }
 
-    private void initUsersCollection(){
-        for (User member : familyMembersList) {
-            FirebaseVarsAndConsts.familyMembersMap.put(member.getId(), member);
+
+    private void downloadMembersPhoto(){
+        pull = Executors.newFixedThreadPool(2);
+        CountDownLatch monitor = new CountDownLatch(familyMembersList.size());
+        for (int i = 0; i < familyMembersList.size(); i++) {
+            pull.submit(new PhotoDownloaderThread(familyMembersList.get(i).getPhotoURL(), i, monitor));
+        }
+        pull.shutdown();
+        try {
+            monitor.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
+    private Bitmap downloadBitmapByURL(String url){
+        try{
+            URL photoUrl = new URL(url);
+            InputStream downloadStream = photoUrl.openStream();
+            Bitmap bitmap = BitmapFactory.decodeStream(downloadStream);
+            return bitmap;
+        }catch (Exception e) {
+            if (url != null)
+            if (!url.equals(DEFAULT_URL))
+                e.printStackTrace();
+        }
+        return null;
+    }
 
-    class MemberImagesDownloaderThread extends Thread{
+
+    private class FamilyDownloaderThread extends Thread {
+
         @Override
         public void run() {
-            super.run();
-            for (int i = 0; i < familyMembersList.size(); i++) {
-                if (familyMembersList.get(i).getPhotoURL().equals(DEFAULT_URL)) {
-//                    familyMembersImagesMap.put(familyMembersList.get(i).getId(), null);
-                } else {
-                    try {
-                        URL photoUrl = new URL(familyMembersList.get(i).getPhotoURL());
-                        InputStream downloadStream = photoUrl.openStream();
-                        Bitmap bitmap = BitmapFactory.decodeStream(downloadStream);
-//                        familyMembersImagesMap.put(familyMembersList.get(i).getId(), bitmap);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+            DATABASE_ROOT.child(NODE_FAMILIES).child(USER.getFamily())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot dataSnapshot : snapshot.child(CHILD_MEMBERS).getChildren()) {
+                                familyMembersId.add(dataSnapshot.getKey());
+                                String string = dataSnapshot.getValue(String.class);
+                                usersRoleMap.put(dataSnapshot.getKey(), string);
+                            }
+                            familyEmblemURL = snapshot.child(CHILD_EMBLEM).getValue(String.class);
+                            familyName = snapshot.child(CHILD_NAME).getValue(String.class);
+
+                            lock.countDown();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+            try {
+                lock.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+        }
+
+    }
+
+    private class MemberDownloaderThread extends Thread{
+        String memberId;
+        CountDownLatch monitor;
+
+
+        public MemberDownloaderThread(String id, CountDownLatch monitor){
+            this.memberId = id;
+            this.monitor = monitor;
+        }
+
+        @Override
+        public void run() {
+            DATABASE_ROOT.child(NODE_USERS).child(memberId)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    familyMembersList.add(snapshot.getValue(User.class));
+                    familyMembersList.add(getUserFromSnapshot(snapshot));
+                    Log.v("tag", "Thread = " + Thread.currentThread());
+
+                    MemberDownloaderThread.this.monitor.countDown();
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {}
+            });
+        }
+    }
+
+    private class PhotoDownloaderThread extends Thread{
+        String photoUrl;
+        int pos;
+        CountDownLatch monitor;
+
+        public PhotoDownloaderThread(String photoUrl, int pos, CountDownLatch monitor) {
+            this.photoUrl = photoUrl;
+            this.pos = pos;
+            this.monitor = monitor;
+        }
+
+        @Override
+        public void run() {
+            familyMembersList.get(pos).setBitmap(downloadBitmapByURL(this.photoUrl));
+            PhotoDownloaderThread.this.monitor.countDown();
+        }
+    }
+
+    private class FamilyEmblemDownloaderThread extends Thread{
+        @Override
+        public void run() {
+            familyEmblem = downloadBitmapByURL(familyEmblemURL);
+        }
+    }
+
+    private void initConnections(){
+        FirebaseVarsAndConsts.familyEmblemImage = this.familyEmblem;
+        for (User user : familyMembersList){
+            user.setRole(usersRoleMap.get(user.getId()));
+            familyMembersMap.put(user.getId(), user);
         }
     }
 }

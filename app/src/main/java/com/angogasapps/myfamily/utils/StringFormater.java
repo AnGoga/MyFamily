@@ -27,6 +27,8 @@ public class StringFormater {
     }
 
     public static String formatToRole(String role){
+        if (role == null)
+            return "";
         if (role.equals(ROLE_MEMBER))
             return "Участник";
         if (role.equals(ROLE_CREATOR))

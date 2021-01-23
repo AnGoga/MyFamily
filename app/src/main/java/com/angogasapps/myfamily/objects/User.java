@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import com.angogasapps.myfamily.firebase.UserSetterFields;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
+import com.google.firebase.database.DataSnapshot;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_BIRTHDAY;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_FAMILY;
@@ -31,6 +32,17 @@ public class User {
         this.photoURL = "";
         this.role = "";
         this.userPhoto = null;
+    }
+
+    public User(User user){
+        this.id = user.getId();
+        this.phone = user.getPhone();
+        this.family = user.getFamily();
+        this.name = user.getName();
+        this.birthday = user.getBirthday();
+        this.photoURL = user.getPhotoURL();
+        this.role = user.getRole();
+        this.userPhoto = user.getUserPhoto();
     }
 
     public String getId() {
@@ -60,6 +72,9 @@ public class User {
     }
     public void setRole(String role){
         this.role = role;
+    }
+    public void setId(String id){
+        this.id = id;
     }
 
     @Override

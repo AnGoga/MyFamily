@@ -7,8 +7,11 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
+
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -20,13 +23,15 @@ public class RegisterActivity extends AppCompatActivity {
         iNewUser = () -> {
             getSupportFragmentManager().beginTransaction().replace(R.id.registerDataContainer, new EnterPersonalDataFragment()).commit();
         };
-        // запускаем фрагмент, отвечающий за ввод пользователем его номера телефона
+
         getSupportFragmentManager().beginTransaction().add(R.id.registerDataContainer, new EnterPhoneFragment()).commit();
 
     }
 
 
     public static void welcomeFunc(Activity activity) {
+        //TODO
+//        new LoadFamilyThread(activity).execute(USER);
         Toaster.success(activity, activity.getString(R.string.welcome)).show();
         activity.startActivity(new Intent(activity, SplashActivity.class));
         activity.finish();

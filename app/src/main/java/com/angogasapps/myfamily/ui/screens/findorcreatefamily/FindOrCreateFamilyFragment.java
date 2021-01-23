@@ -26,11 +26,11 @@ public class FindOrCreateFamilyFragment extends Fragment {
 
         createFamilyBtn.setOnClickListener(v -> {
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.findOrCreateFamilyDataContainer, new CreateFamilyFragment()).commit();
+                    .replace(R.id.findOrCreateFamilyDataContainer, new CreateFamilyFragment()).addToBackStack(null).commit();
         });
         findFamilyBtn.setOnClickListener(v -> {
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.findOrCreateFamilyDataContainer, new FindFamilyFragment()).commit();
+                    .replace(R.id.findOrCreateFamilyDataContainer, new FindFamilyFragment()).addToBackStack(null).commit();
         });
         return rootView;
 

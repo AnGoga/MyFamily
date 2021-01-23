@@ -40,18 +40,18 @@ public class EnterPhoneFragment extends Fragment {
             @Override
             // если верификация успешная
             public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-                trySignInWithCredential(getActivity(), credential);
+                trySignInWithCredential(EnterPhoneFragment.this.getActivity(), credential);
             }
             @Override
             //в верификации произошла ошибка
             public void onVerificationFailed(@NonNull FirebaseException e) {
-                Toaster.error(getActivity(), "Auth Error: " + e.getMessage()).show();
+                Toaster.error(EnterPhoneFragment.this.getActivity(), "Auth Error: " + e.getMessage()).show();
             }
 
             @Override
             //выполниться когда смс с кодом только что отправили
             public void onCodeSent(@NonNull String id, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                getActivity().getSupportFragmentManager().beginTransaction()
+                EnterPhoneFragment.this.getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.registerDataContainer, new EnterCodeFragment(mPhoneNumber, id)).commit();
             }
         };

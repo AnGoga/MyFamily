@@ -48,6 +48,7 @@
                 android:padding="@dimen/message_center_text_padding"
                 android:textColor="@color/black"
                 android:textStyle="bold"
+                android:autoLink="web"
                 tools:text="Сообщение"/>
 
             <TextView
