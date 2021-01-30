@@ -27,7 +27,6 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        //инициализируем Firebase
         initFirebase();
         //setTheme(AppCompatDelegate.MODE_NIGHT_YES);
     }

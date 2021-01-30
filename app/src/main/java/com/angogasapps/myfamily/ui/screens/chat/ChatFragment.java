@@ -126,7 +126,7 @@ public class ChatFragment extends Fragment {
         messagesList = new ArrayList<>();
         chatPath = DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily());
 
-        mAdapter = new ChatAdapter(getActivity(), messagesList);
+        mAdapter = new ChatAdapter((Activity)getActivity(), messagesList);
         mRecycleView.setAdapter(mAdapter);
 
         mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());

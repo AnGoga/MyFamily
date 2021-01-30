@@ -16,10 +16,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.angogasapps.myfamily.utils.WithUsers.*;
 
-public class AppBaseViewHolder extends RecyclerView.ViewHolder implements Initializable {
-    public LinearLayout leftLayout, rightLayout;
-    public CircleImageView userAvatar;
-    public View view;
+public class AppBaseViewHolder extends RecyclerView.ViewHolder {
+    protected LinearLayout leftLayout, rightLayout;
+    protected CircleImageView userAvatar;
+    protected View view;
 
     protected String from, messageKey, value, time, name;
     protected Activity activity;
@@ -33,7 +33,7 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder implements Initia
         view = itemView;
     }
 
-    public final void init(String from, Long time, String messageKey, String value, Activity activity){
+    public void init(String from, Long time, String messageKey, String value, Activity activity){
         this.from = from;
         this.name = getMemberNameById(from);
         this.time = StringFormater.formatLongToTime(time);
@@ -42,7 +42,6 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder implements Initia
         this.activity = activity;
     }
 
-    @Override
     public final void initLeftLayout() {
         leftLayout.setVisibility(View.VISIBLE);
         rightLayout.setVisibility(View.INVISIBLE);
@@ -59,7 +58,6 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder implements Initia
 
 
 
-    @Override
     public final void initRightLayout() {
         rightLayout.setVisibility(View.VISIBLE);
         leftLayout.setVisibility(View.INVISIBLE);
@@ -72,7 +70,4 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder implements Initia
     }
 
 }
-interface Initializable{
-    void initLeftLayout();
-    void initRightLayout();
-}
+
