@@ -31,7 +31,7 @@ public class ImageMessageHolder extends AppBaseViewHolder {
         imageShower = new ChatImageShower((AppCompatActivity) activity);
 
         OnClickListener onImageClickListener = v -> {
-            imageShower.showImage(((BitmapDrawable)actualImage.getDrawable()).getBitmap());
+            imageShower.showImage(actualImage);
         };
 
         leftImage.setOnClickListener(onImageClickListener);
@@ -43,6 +43,8 @@ public class ImageMessageHolder extends AppBaseViewHolder {
         super.initLeftFields();
 
         actualImage = leftImage;
+        actualImage.setTransitionName(messageKey);
+        rightImage.setTransitionName("");
 
         ChatFunks.downloadImageMessageAndSetBitmap(
                 value,
@@ -57,6 +59,8 @@ public class ImageMessageHolder extends AppBaseViewHolder {
         super.initRightFields();
 
         actualImage = rightImage;
+        actualImage.setTransitionName(messageKey);
+        leftImage.setTransitionName("");
 
         ChatFunks.downloadImageMessageAndSetBitmap(
                 value,

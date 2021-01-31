@@ -6,6 +6,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -20,10 +22,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.ui.screens.chat.ChatFragment;
 import com.github.chrisbanes.photoview.PhotoView;
 
 public class ChatImageShower {
@@ -35,9 +39,24 @@ public class ChatImageShower {
         this.dialog = new ImageShowerDialog();
     }
 
-    public void showImage(Bitmap bitmap){
-        dialog.setImage(bitmap);
+
+    public void showImage(ImageView imageView){
+        dialog.setImage(imageView);
+
+        Fragment chatFragment = context.getSupportFragmentManager().getFragments().get(0);
+
+        Transition transition = TransitionInflater.from(context).inflateTransition(R.transition.chat_transition);
+
+        chatFragment.setSharedElementEnterTransition(transition);
+        chatFragment.setSharedElementReturnTransition(transition);
+
+        dialog.setSharedElementEnterTransition(transition);
+        dialog.setSharedElementReturnTransition(transition);
+
+        chatFragment.startPostponedEnterTransition();
+
         dialog.show(this.context.getSupportFragmentManager().beginTransaction(), ImageShowerDialog.TAG);
+
     }
 
     public void dismiss(){
@@ -49,12 +68,12 @@ public class ChatImageShower {
 
         private PhotoView imageView;
 
-        private Bitmap bitmap;
+        private ImageView sharedImageView;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+//            setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         }
 
         @Override
@@ -63,28 +82,22 @@ public class ChatImageShower {
             View rootView = inflater.inflate(R.layout.dialog_image_shower, container, false);
 
             imageView = rootView.findViewById(R.id.imageView);
+            imageView.setTransitionName(sharedImageView.getTransitionName());
 
-            imageView.setImageBitmap(bitmap);
-
-
+            imageView.setImageBitmap(((BitmapDrawable)sharedImageView.getDrawable()).getBitmap());
 
             return rootView;
         }
 
-        public void setImage(Bitmap bitmap){
-            if (bitmap != null)
-                this.bitmap = bitmap;
+
+        public void setImage(ImageView imageView){
+            this.sharedImageView = imageView;
         }
 
-//        @Override
-//        public void show(@NonNull FragmentManager manager, @Nullable String tag) {
-//            manager.beginTransaction().addSharedElement(imageView, "").commit();
-//            super.show(manager, tag);
-//        }
 
         @Override
         public int show(@NonNull FragmentTransaction transaction, @Nullable String tag) {
-            transaction.addSharedElement(imageView, imageView.getTransitionName());
+            transaction.addSharedElement(sharedImageView, sharedImageView.getTransitionName());
             return super.show(transaction, tag);
         }
     }
