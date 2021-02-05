@@ -4,6 +4,7 @@ package com.angogasapps.myfamily.objects;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import com.angogasapps.myfamily.database.UserCash;
 import com.angogasapps.myfamily.firebase.UserSetterFields;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
 import com.google.firebase.database.DataSnapshot;
@@ -45,6 +46,19 @@ public class User {
         this.userPhoto = user.getUserPhoto();
     }
 
+    public User(UserCash user){
+        this.id = user.getId();
+        this.phone = user.getPhone();
+        this.family = user.getFamily();
+        this.name = user.getName();
+        this.birthday = user.getBirthday();
+        this.photoURL = user.getPhotoURL();
+        this.role = user.getRole();
+        this.userPhoto = user.getUserPhoto();
+    }
+
+
+
     public String getId() {
         return id;
     }
@@ -66,6 +80,10 @@ public class User {
     public Bitmap getUserPhoto() {
         return userPhoto;
     }
+    public String getFamily() {
+        return family;
+    }
+
 
     public void setBitmap(Bitmap bitmap){
         this.userPhoto = bitmap;
@@ -81,10 +99,6 @@ public class User {
     public String toString() {
         return "id = " + UID + "\nphone = " + this.phone + "\nfamily = " + this.family +
                 "\nname = " + this.name + "\nbirthday = " + this.birthday;
-    }
-
-    public String getFamily() {
-        return family;
     }
 
     public synchronized void setFamily(String family, IOnEndSetUserField iOnEndSetUserField) {

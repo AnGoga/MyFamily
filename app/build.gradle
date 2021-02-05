@@ -61,6 +61,10 @@ dependencies {
 
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
-//    implementation 'com.google.android.gms:play-services-places:17.0.0'
-//    implementation 'com.google.android.gms:play-services-location:17.1.0'
+
+    //room
+    def room_version = "2.2.6"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 }

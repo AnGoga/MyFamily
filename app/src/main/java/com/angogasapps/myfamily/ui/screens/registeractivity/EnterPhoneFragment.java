@@ -1,5 +1,7 @@
 package com.angogasapps.myfamily.ui.screens.registeractivity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,13 +36,15 @@ public class EnterPhoneFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        Activity context = getActivity();
+
         AUTH = FirebaseAuth.getInstance();
         //callback, который сработает после верификации пользователя
         mCallback = new PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
             @Override
             // если верификация успешная
             public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-                trySignInWithCredential(EnterPhoneFragment.this.getActivity(), credential);
+                trySignInWithCredential(context, credential);
             }
             @Override
             //в верификации произошла ошибка

@@ -47,4 +47,7 @@
     <string name="link_is_not_correct">Ссылка не корректна</string>
 
 
+    <string name="menu_item_text_signout">Выход</string>
+
+
 </resources>

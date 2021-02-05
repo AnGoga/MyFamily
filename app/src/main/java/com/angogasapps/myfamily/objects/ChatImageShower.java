@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -43,18 +44,6 @@ public class ChatImageShower {
     public void showImage(ImageView imageView){
         dialog.setImage(imageView);
 
-        Fragment chatFragment = context.getSupportFragmentManager().getFragments().get(0);
-
-        Transition transition = TransitionInflater.from(context).inflateTransition(R.transition.chat_transition);
-
-        chatFragment.setSharedElementEnterTransition(transition);
-        chatFragment.setSharedElementReturnTransition(transition);
-
-        dialog.setSharedElementEnterTransition(transition);
-        dialog.setSharedElementReturnTransition(transition);
-
-        chatFragment.startPostponedEnterTransition();
-
         dialog.show(this.context.getSupportFragmentManager().beginTransaction(), ImageShowerDialog.TAG);
 
     }
@@ -73,7 +62,7 @@ public class ChatImageShower {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-//            setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+            setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         }
 
         @Override
@@ -82,7 +71,7 @@ public class ChatImageShower {
             View rootView = inflater.inflate(R.layout.dialog_image_shower, container, false);
 
             imageView = rootView.findViewById(R.id.imageView);
-            imageView.setTransitionName(sharedImageView.getTransitionName());
+//            imageView.setTransitionName(sharedImageView.getTransitionName());
 
             imageView.setImageBitmap(((BitmapDrawable)sharedImageView.getDrawable()).getBitmap());
 
@@ -97,7 +86,7 @@ public class ChatImageShower {
 
         @Override
         public int show(@NonNull FragmentTransaction transaction, @Nullable String tag) {
-            transaction.addSharedElement(sharedImageView, sharedImageView.getTransitionName());
+//            transaction.addSharedElement(sharedImageView, sharedImageView.getTransitionName());
             return super.show(transaction, tag);
         }
     }
