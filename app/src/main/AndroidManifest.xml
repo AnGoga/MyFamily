@@ -15,40 +15,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFamily">
+        <activity android:name=".ui.screens.personal_data.PersonalDataActivity" />
         <activity android:name=".ui.screens.family_settings.InviteUserActivity" />
         <activity android:name=".ui.screens.family_settings.FamilySettingsActivity" />
-        <activity android:name=".ui.screens.chat.ChatActivity"/>
+        <activity android:name=".ui.screens.chat.ChatActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".ui.screens.registeractivity.RegisterActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-
-
-
         <activity
             android:name=".ui.screens.splash.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="angogasapps.page.link"
                     android:scheme="https" />
             </intent-filter>
         </activity>
-
-
-
-        <activity android:name=".ui.screens.main.MainActivity">
+        <activity android:name=".ui.screens.main.MainActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

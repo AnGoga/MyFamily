@@ -36,9 +36,7 @@ public class ChatVoicePlayer {
                     }
 
                     @Override
-                    public void onFailure() {
-
-                    }
+                    public void onFailure() {}
                 });
             } catch (Exception e) {
                 e.printStackTrace();

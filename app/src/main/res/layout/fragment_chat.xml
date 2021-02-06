@@ -13,6 +13,7 @@
 
         <!--                android:orientation="vertical"-->
             <androidx.recyclerview.widget.RecyclerView
+                android:paddingRight="@dimen/text_message_right_margin"
                 android:id="@+id/chatRecycleView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

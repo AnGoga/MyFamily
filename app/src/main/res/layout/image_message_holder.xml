@@ -47,6 +47,7 @@
                 android:layout_height="@dimen/chat_image_height"/>
 
             <TextView
+                android:textSize="@dimen/message_time_text_size"
                 android:layout_marginRight="@dimen/message_bottom_text_margin"
                 android:id="@+id/leftMessageTime"
                 android:layout_width="wrap_content"
@@ -85,6 +86,7 @@
             android:layout_height="@dimen/chat_image_height"/>
 
         <TextView
+            android:textSize="@dimen/message_time_text_size"
             android:layout_marginRight="@dimen/message_bottom_text_margin"
             android:layout_gravity="right"
             android:id="@+id/rightMessageTime"

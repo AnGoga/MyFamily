@@ -25,7 +25,7 @@
             android:src="@drawable/default_user_photo" />
 
         <LinearLayout
-            android:minWidth="50dp"
+            android:minWidth="@dimen/text_message_min_width"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -43,6 +43,8 @@
 
             <TextView
                 android:id="@+id/leftMessageText"
+                android:layout_marginLeft="@dimen/message_text_side_margin"
+                android:layout_marginRight="@dimen/message_text_side_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/message_center_text_padding"
@@ -52,6 +54,7 @@
                 tools:text="Сообщение"/>
 
             <TextView
+                android:textSize="@dimen/message_time_text_size"
                 android:id="@+id/leftMessageTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,7 +69,7 @@
         android:id="@+id/rightChatLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="50dp"
+        android:minWidth="@dimen/text_message_min_width"
         android:maxWidth="@dimen/max_message_width"
         android:orientation="vertical"
         android:background="@drawable/text_message_right_bg"
@@ -80,18 +83,21 @@
             android:textColor="#0000FF"
             android:textSize="10sp"
             android:layout_marginLeft="@dimen/message_top_text_margin"
-            tools:text="ВЫ"/>
+            tools:text="@string/you"/>
 
         <TextView
             android:id="@+id/rightMessageText"
             android:layout_width="wrap_content"
-            android:padding="10dp"
+            android:padding="@dimen/message_center_text_padding"
+            android:layout_marginLeft="@dimen/message_text_side_margin"
+            android:layout_marginRight="@dimen/message_text_side_margin"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textStyle="bold"
             tools:text="Сообщение"/>
 
         <TextView
+            android:textSize="@dimen/message_time_text_size"
             android:layout_gravity="right"
             android:id="@+id/rightMessageTime"
             android:layout_width="wrap_content"

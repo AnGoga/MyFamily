@@ -4,38 +4,25 @@ package com.angogasapps.myfamily.objects;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
-import com.angogasapps.myfamily.database.UserCash;
+import com.angogasapps.myfamily.database.TransactionUser;
 import com.angogasapps.myfamily.firebase.UserSetterFields;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
-import com.google.firebase.database.DataSnapshot;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_BIRTHDAY;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_FAMILY;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_NAME;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.UID;
 
-public class User {
-    private String id = "";
-    private String phone = "";
-    private String family = "";
-    private String name = "";
-    private Long birthday = 0L;
-    private String photoURL = "";
-    private String role = "";
-    private Bitmap userPhoto;
-
+public class User extends TransactionUser {
     public User(){
-        this.id = "";
-        this.phone = "";
-        this.family = "";
-        this.name = "";
-        this.birthday = 0L;
-        this.photoURL = "";
-        this.role = "";
-        this.userPhoto = null;
+        super();
     }
 
     public User(User user){
+        super(user);
+    }
+
+    public User(TransactionUser user){
         this.id = user.getId();
         this.phone = user.getPhone();
         this.family = user.getFamily();
@@ -43,45 +30,11 @@ public class User {
         this.birthday = user.getBirthday();
         this.photoURL = user.getPhotoURL();
         this.role = user.getRole();
+
+
         this.userPhoto = user.getUserPhoto();
-    }
-
-    public User(UserCash user){
-        this.id = user.getId();
-        this.phone = user.getPhone();
-        this.family = user.getFamily();
-        this.name = user.getName();
-        this.birthday = user.getBirthday();
-        this.photoURL = user.getPhotoURL();
-        this.role = user.getRole();
-        this.userPhoto = user.getUserPhoto();
-    }
 
 
-
-    public String getId() {
-        return id;
-    }
-    public String getName() {
-        return name;
-    }
-    public String getPhone() {
-        return phone;
-    }
-    public String getPhotoURL() {
-        return photoURL;
-    }
-    public Long getBirthday() {
-        return birthday;
-    }
-    public String getRole() {
-        return role;
-    }
-    public Bitmap getUserPhoto() {
-        return userPhoto;
-    }
-    public String getFamily() {
-        return family;
     }
 
 
@@ -150,4 +103,6 @@ public class User {
     public synchronized void setPhotoURL(Uri photoUri, IOnEndSetUserField iOnEndSetUserField){
         UserSetterFields.setUserPhoto(photoUri, iOnEndSetUserField);
     }
+
+
 }

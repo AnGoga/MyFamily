@@ -30,10 +30,14 @@
     <dimen name="voice_message_width">100dp</dimen>
     <dimen name="message_top_text_margin">5dp</dimen>
     <dimen name="message_bottom_text_margin">10dp</dimen>
-    <dimen name="message_center_text_padding">10dp</dimen>
+    <dimen name="message_center_text_padding">5dp</dimen>
     <dimen name="family_settings_emblem_height">200dp</dimen>
     <dimen name="user_photo_size">50dp</dimen>
     <dimen name="member_holder_margin">5dp</dimen>
     <dimen name="image_message_padding">5dp</dimen>
     <dimen name="family_settings_add_user_layout_height">40dp</dimen>
+    <dimen name="text_message_right_margin">10dp</dimen>
+    <dimen name="message_time_text_size">10sp</dimen>
+    <dimen name="message_text_side_margin">10dp</dimen>
+    <dimen name="text_message_min_width">50dp</dimen>
 </resources>
