@@ -7,12 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.angogasapps.myfamily.database.AppDatabase;
-import com.angogasapps.myfamily.database.AppDatabaseManager;
+import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.firebase.AuthFunctions;
-import com.angogasapps.myfamily.firebase.FindFamilyFunks;
-import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily;
-import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily;
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity;
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity;
@@ -30,7 +26,7 @@ public class SplashActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         initFirebase();
-        AppDatabaseManager.init(this);
+        DatabaseManager.init(this);
         //setTheme(AppCompatDelegate.MODE_NIGHT_YES);
     }
 

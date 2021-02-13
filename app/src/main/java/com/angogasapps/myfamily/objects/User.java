@@ -30,11 +30,7 @@ public class User extends TransactionUser {
         this.birthday = user.getBirthday();
         this.photoURL = user.getPhotoURL();
         this.role = user.getRole();
-
-
         this.userPhoto = user.getUserPhoto();
-
-
     }
 
 

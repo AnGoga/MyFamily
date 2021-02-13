@@ -98,5 +98,9 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
             }
         }
     }
+
+    public ArrayList<Message> getMessagesList(){
+        return this.messagesList;
+    }
 }
 

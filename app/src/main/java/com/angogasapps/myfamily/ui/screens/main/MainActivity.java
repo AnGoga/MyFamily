@@ -1,40 +1,24 @@
 package com.angogasapps.myfamily.ui.screens.main;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Environment;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.database.AppDatabase;
-import com.angogasapps.myfamily.database.AppDatabaseManager;
-import com.angogasapps.myfamily.database.TransactionUser;
+import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.database.UserDao;
-import com.angogasapps.myfamily.objects.User;
 import com.angogasapps.myfamily.ui.customview.CardView;
 import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
 import com.angogasapps.myfamily.ui.screens.family_settings.FamilySettingsActivity;
-import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
 import com.angogasapps.myfamily.utils.Others;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -78,13 +62,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        AppDatabase appDatabase = AppDatabaseManager.getDatabase();
+        AppDatabase appDatabase = DatabaseManager.getDatabase();
 
         UserDao userDao = appDatabase.getTransactionUserDao();
 
-        Others.runInNewThread(() -> {
-            userDao.update(USER);
-        });
+//        Others.runInNewThread(() -> {
+//            userDao.update(USER);
+//        });
 
     }
 
