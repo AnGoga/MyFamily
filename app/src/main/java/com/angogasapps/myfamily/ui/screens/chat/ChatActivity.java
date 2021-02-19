@@ -9,6 +9,7 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.database.MessageDao;
 import com.angogasapps.myfamily.objects.Message;
+import com.angogasapps.myfamily.objects.User;
 import com.angogasapps.myfamily.utils.Others;
 
 import java.util.ArrayList;
@@ -21,11 +22,11 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 public class ChatActivity extends AppCompatActivity {
-    public static final String TAG = "ChatActivity";
+    public static final String TAG = "TAG";
     private ChatFragment chatFragment;
     private volatile Subject<Message> subject;
     private MessageDao messageDao;
-    private volatile ArrayList<Message> messageList;
+    private volatile ArrayList<Message> messageList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,23 +47,21 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void loadMessages(){
-        Others.runInNewThread(() -> {
+        /*Others.runInNewThread(() -> {
             messageList = new ArrayList<>(messageDao.getAll());
-            Log.d("TAG", "loadMessages -> " + messageList.toString());
+            Log.d(TAG, "loadMessages: ");
         });
-
-
-
+        */
     }
 
     private void saveNewMessage(Message message){
 //        Log.i("tag", message.getValue());
 //        Log.d("TAG", "Thread name -> " + Thread.currentThread().getName());
-
+/*
         if (!messageList.contains(message)){
-//            messageDao.insert(message);
+            messageDao.insert(message);
         }
-
+*/
 
     }
 

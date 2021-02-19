@@ -2,6 +2,7 @@ package com.angogasapps.myfamily.ui.customview.message_recycle_view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -54,6 +55,7 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull AppBaseViewHolder holder, int position) {
         Message message = messagesList.get(position);
+
 
         holder.init(message.getFrom(), message.getTime(), message.getId(), message.getValue(), activity);
         if (message.getFrom().equals(UID)){

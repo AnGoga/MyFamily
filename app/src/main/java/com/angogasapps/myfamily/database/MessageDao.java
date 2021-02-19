@@ -3,6 +3,7 @@ package com.angogasapps.myfamily.database;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -18,7 +19,8 @@ public interface MessageDao {
     @Query("SELECT * FROM Message WHERE id = :id")
     Message getById(String id);
 
-    @Insert
+//    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Message message);
 
     @Update

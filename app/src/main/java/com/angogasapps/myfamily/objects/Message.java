@@ -9,8 +9,8 @@ import com.google.firebase.database.DataSnapshot;
 
 @Entity
 public class Message implements Comparable<Message>{
-    @PrimaryKey
     @NonNull
+    @PrimaryKey
     private String id = "";
 
     private String from;
@@ -40,9 +40,16 @@ public class Message implements Comparable<Message>{
     }
 
 
-    public boolean equals(Message obj) {
-        return (this.id.equals(obj.getId()));
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof Message))
+            return false;
+        return this.id.equals(((Message)obj).getId());
     }
+
+//    public boolean equals(Message obj) {
+//        return (this.id.equals(obj.getId()));
+//    }
 
     public Message() {}
 

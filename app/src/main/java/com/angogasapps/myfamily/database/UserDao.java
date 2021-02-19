@@ -3,6 +3,7 @@ package com.angogasapps.myfamily.database;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -17,7 +18,7 @@ public interface UserDao {
     @Query("SELECT * FROM TransactionUser WHERE id = :id")
     TransactionUser getById(String id);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(TransactionUser user);
 
     @Update

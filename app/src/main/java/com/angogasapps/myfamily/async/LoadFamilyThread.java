@@ -40,6 +40,7 @@ import static com.angogasapps.myfamily.utils.WithUsers.getUserFromSnapshot;
 
 
 public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> {
+    public static volatile boolean isEnd = false;
     Context context;
     volatile ArrayList<String> familyMembersId = new ArrayList<>();
     volatile ArrayList<User> familyMembersList = new ArrayList<>();
@@ -88,6 +89,8 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
             e.printStackTrace();
         }
         HashMap<String, User> aStringUserHashMap = familyMembersMap;
+        isEnd = true;
+        context = null;
         return null;
     }
 

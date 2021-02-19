@@ -49,6 +49,7 @@
 
     <string name="menu_item_text_signout">Выход</string>
     <string name="you">ВЫ</string>
+    <string name="connection_is_not">Нет подключения к интернету</string>
 
 
 </resources>

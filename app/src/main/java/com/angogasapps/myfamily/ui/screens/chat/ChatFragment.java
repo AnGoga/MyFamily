@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.app.AppApplication;
+import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.objects.ChatTextWatcher;
 import com.angogasapps.myfamily.objects.Message;
@@ -27,6 +30,7 @@ import com.angogasapps.myfamily.ui.customview.message_recycle_view.ChatAdapter;
 import com.angogasapps.myfamily.objects.ChatChildEventListener;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.angogasapps.myfamily.objects.ChatAudioRecorder;
+import com.angogasapps.myfamily.utils.Others;
 import com.angogasapps.myfamily.utils.Permissions;
 import com.google.firebase.database.DatabaseReference;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -65,7 +69,7 @@ public class ChatFragment extends Fragment {
     private LinearLayoutManager mLayoutManager;
     private ChatChildEventListener mChatListener;
     private DatabaseReference chatPath;
-    private ArrayList<Message> messagesList;
+    private ArrayList<Message> messagesList = new ArrayList<>();
 
     private volatile Subject<Message> subject;
 
@@ -75,6 +79,7 @@ public class ChatFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("TAG", "onCreateView: ");
         View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
 
         mRecycleView = rootView.findViewById(R.id.chatRecycleView);
@@ -127,10 +132,9 @@ public class ChatFragment extends Fragment {
     }
 
     private void initRecycleView(){
-        messagesList = new ArrayList<>();
         chatPath = DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily());
-
-        mAdapter = new ChatAdapter(getActivity(), messagesList);
+        if (mAdapter == null)
+            mAdapter = new ChatAdapter(getActivity(), messagesList);
         mRecycleView.setAdapter(mAdapter);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -194,6 +198,7 @@ public class ChatFragment extends Fragment {
 
     @Override
     public void onStart() {
+        loadMessages();
         super.onStart();
         chatPath.limitToLast(messagesCount).addChildEventListener(mChatListener);
     }
@@ -208,6 +213,23 @@ public class ChatFragment extends Fragment {
 
     public void setSubject(Subject<Message> subject) {
         this.subject = subject;
+    }
+
+    public void setMessagesList(ArrayList<Message> messagesList) {
+        this.messagesList = messagesList;
+    }
+
+
+    private void loadMessages() {
+        if (!AppApplication.isOnline() && messagesList.isEmpty()){
+            Others.runInNewThread(() -> {
+                while(!DatabaseManager.messagesLoadIsEnd){}
+
+                if (DatabaseManager.messagesLoadIsEnd)
+                    for (Message message : DatabaseManager.getMessageList())
+                        onAddMessage(message);
+            });
+        }
     }
 
 }

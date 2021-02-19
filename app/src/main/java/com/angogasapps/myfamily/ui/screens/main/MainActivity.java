@@ -7,9 +7,11 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.database.AppDatabase;
 import com.angogasapps.myfamily.database.DatabaseManager;
@@ -59,16 +61,6 @@ public class MainActivity extends AppCompatActivity {
         cardStorage.setOnClickListener(v -> {
 
         });
-
-
-
-        AppDatabase appDatabase = DatabaseManager.getDatabase();
-
-        UserDao userDao = appDatabase.getTransactionUserDao();
-
-//        Others.runInNewThread(() -> {
-//            userDao.update(USER);
-//        });
 
     }
 
