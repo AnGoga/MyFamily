@@ -1,6 +1,7 @@
 package com.angogasapps.myfamily.ui.customview.message_recycle_view.holders;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -22,7 +23,7 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder {
     protected View view;
 
     protected String from, messageKey, value, time, name;
-    protected Activity activity;
+    protected Context context;
 
     public AppBaseViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -33,19 +34,19 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder {
         view = itemView;
     }
 
-    public void init(String from, Long time, String messageKey, String value, Activity activity){
+    public void init(String from, Long time, String messageKey, String value, Context context){
         this.from = from;
         this.name = getMemberNameById(from);
         this.time = StringFormater.formatLongToTime(time);
         this.messageKey = messageKey;
         this.value = value;
-        this.activity = activity;
+        this.context = context;
     }
 
     public final void initLeftLayout() {
         leftLayout.setVisibility(View.VISIBLE);
         rightLayout.setVisibility(View.INVISIBLE);
-        Bitmap bitmap = getMemberImageById(from, activity);
+        Bitmap bitmap = getMemberImageById(from, context);
         userAvatar.setImageBitmap(bitmap);
         initLeftFields();
     }

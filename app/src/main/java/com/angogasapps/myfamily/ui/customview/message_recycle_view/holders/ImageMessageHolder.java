@@ -1,8 +1,6 @@
 package com.angogasapps.myfamily.ui.customview.message_recycle_view.holders;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -25,7 +23,7 @@ public class ImageMessageHolder extends AppBaseViewHolder {
 
     }
 
-    @Override
+
     public void init(String from, Long time, String messageKey, String value, Activity activity) {
         super.init(from, time, messageKey, value, activity);
         imageShower = new ChatImageShower((AppCompatActivity) activity);
@@ -46,11 +44,16 @@ public class ImageMessageHolder extends AppBaseViewHolder {
         actualImage.setTransitionName(messageKey);
         rightImage.setTransitionName("");
 
+//        ChatFunks.downloadImageMessageAndSetBitmap(
+//                value,
+//                messageKey,
+//                leftImage,
+//                context
+//        );
         ChatFunks.downloadImageMessageAndSetBitmap(
                 value,
                 messageKey,
-                leftImage,
-                activity
+                leftImage
         );
     }
 
@@ -62,11 +65,16 @@ public class ImageMessageHolder extends AppBaseViewHolder {
         actualImage.setTransitionName(messageKey);
         leftImage.setTransitionName("");
 
+//        ChatFunks.downloadImageMessageAndSetBitmap(
+//                value,
+//                messageKey,
+//                rightImage,
+//                context
+//        );
         ChatFunks.downloadImageMessageAndSetBitmap(
                 value,
                 messageKey,
-                rightImage,
-                activity
+                rightImage
         );
     }
 }

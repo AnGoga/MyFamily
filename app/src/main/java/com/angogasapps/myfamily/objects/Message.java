@@ -1,15 +1,23 @@
 package com.angogasapps.myfamily.objects;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.google.firebase.database.DataSnapshot;
 
+@Entity
 public class Message implements Comparable<Message>{
+    @PrimaryKey
+    @NonNull
+    private String id = "";
+
     private String from;
     private String type;
     private long time;
     private String  value;
-    private String id = "";
+
 
     public String getFrom() {
         return from;
@@ -58,5 +66,25 @@ public class Message implements Comparable<Message>{
         else {
             return 0;
         }
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

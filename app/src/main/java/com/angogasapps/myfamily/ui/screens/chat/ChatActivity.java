@@ -3,29 +3,106 @@ package com.angogasapps.myfamily.ui.screens.chat;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.ui.screens.chat.ChatFragment;
+import com.angogasapps.myfamily.database.DatabaseManager;
+import com.angogasapps.myfamily.database.MessageDao;
+import com.angogasapps.myfamily.objects.Message;
+import com.angogasapps.myfamily.utils.Others;
+
+import java.util.ArrayList;
+
+import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 
 public class ChatActivity extends AppCompatActivity {
-    ChatFragment chatFragment;
+    public static final String TAG = "ChatActivity";
+    private ChatFragment chatFragment;
+    private volatile Subject<Message> subject;
+    private MessageDao messageDao;
+    private volatile ArrayList<Message> messageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        chatFragment = new ChatFragment();
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.chatActivityDataContainer, chatFragment).commit();
+        initDatabase();
+        loadMessages();
+        prepareSubject();
+        initFragment();
+
     }
+
 
     private void saveMessages(){
         
     }
 
     private void loadMessages(){
+        Others.runInNewThread(() -> {
+            messageList = new ArrayList<>(messageDao.getAll());
+            Log.d("TAG", "loadMessages -> " + messageList.toString());
+        });
 
+
+
+    }
+
+    private void saveNewMessage(Message message){
+//        Log.i("tag", message.getValue());
+//        Log.d("TAG", "Thread name -> " + Thread.currentThread().getName());
+
+        if (!messageList.contains(message)){
+//            messageDao.insert(message);
+        }
+
+
+    }
+
+    public void prepareSubject() {
+
+        Observer<Message> observer = new Observer<Message>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {}
+
+            @Override
+            public void onNext(@NonNull Message message) {
+                saveNewMessage(message);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {}
+
+            @Override
+            public void onComplete() {}
+        };
+
+
+        this.subject = PublishSubject.create();
+        subject.subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.newThread())
+                .subscribe(observer);
+
+    }
+
+    private void initFragment(){
+        chatFragment = new ChatFragment();
+
+        chatFragment.setSubject(this.subject);
+
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.chatActivityDataContainer, chatFragment).commit();
+    }
+
+    private void initDatabase(){
+        messageDao = DatabaseManager.getDatabase().getMessageDao();
     }
 }

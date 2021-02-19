@@ -36,6 +36,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.Observable;
+import io.reactivex.subjects.Subject;
 
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.getMessageKey;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
@@ -64,6 +66,9 @@ public class ChatFragment extends Fragment {
     private ChatChildEventListener mChatListener;
     private DatabaseReference chatPath;
     private ArrayList<Message> messagesList;
+
+    private volatile Subject<Message> subject;
+
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -101,7 +106,6 @@ public class ChatFragment extends Fragment {
                         Toaster.success(getActivity(), "Звук").show();
                         System.out.println(voiceFile.toString());
                     });
-
                 }
             }
             return true;
@@ -119,17 +123,17 @@ public class ChatFragment extends Fragment {
     }
 
     private void initChatListener(){
-        mChatListener = new ChatChildEventListener(ChatFragment.this);
+        mChatListener = new ChatChildEventListener(this::onAddMessage);
     }
 
     private void initRecycleView(){
         messagesList = new ArrayList<>();
         chatPath = DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily());
 
-        mAdapter = new ChatAdapter((Activity)getActivity(), messagesList);
+        mAdapter = new ChatAdapter(getActivity(), messagesList);
         mRecycleView.setAdapter(mAdapter);
 
-        mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        mLayoutManager = new LinearLayoutManager(getActivity());
         mRecycleView.setLayoutManager(mLayoutManager);
         mRecycleView.setHasFixedSize(true);
 
@@ -150,6 +154,7 @@ public class ChatFragment extends Fragment {
                 }
             }
         });
+
     }
     private void updateData() {
         isScrolling = false;
@@ -176,7 +181,7 @@ public class ChatFragment extends Fragment {
             if (photoUri != null)
                 ChatFunks.sendImage(photoUri);
             else
-                Toaster.error(getActivity().getApplicationContext(), "Что-то пошло не так").show();
+                Toaster.error(getActivity(), "Что-то пошло не так").show();
 
         }
     }
@@ -191,6 +196,18 @@ public class ChatFragment extends Fragment {
     public void onStart() {
         super.onStart();
         chatPath.limitToLast(messagesCount).addChildEventListener(mChatListener);
+    }
+
+    public void onAddMessage(Message message){
+        mAdapter.addMessage(message, isScrollToBottom);
+        if (isScrollToBottom)
+            mRecycleView.smoothScrollToPosition(mAdapter.getItemCount());
+
+        subject.onNext(message);
+    }
+
+    public void setSubject(Subject<Message> subject) {
+        this.subject = subject;
     }
 
 }

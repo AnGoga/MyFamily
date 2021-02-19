@@ -12,18 +12,23 @@ import com.google.firebase.database.DatabaseError;
 
 
 public class ChatChildEventListener implements ChildEventListener {
-    ChatFragment chatFragment;
+//    ChatFragment chatFragment;
+    IOnAddMessage iOnAddMessage;
 
-    public ChatChildEventListener(ChatFragment chatFragment) {
-        this.chatFragment = chatFragment;
+//    public ChatChildEventListener(ChatFragment chatFragment) {
+//        this.chatFragment = chatFragment;
+//    }
+    public ChatChildEventListener(IOnAddMessage iOnAddMessage){
+        this.iOnAddMessage = iOnAddMessage;
     }
 
     @Override
     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
         Message message = new Message(snapshot);
-        chatFragment.mAdapter.addMessage(message, chatFragment.isScrollToBottom);
-        if (chatFragment.isScrollToBottom)
-            chatFragment.mRecycleView.smoothScrollToPosition(chatFragment.mAdapter.getItemCount());
+        iOnAddMessage.onAddMessage(message);
+//        chatFragment.mAdapter.addMessage(message, chatFragment.isScrollToBottom);
+//        if (chatFragment.isScrollToBottom)
+//            chatFragment.mRecycleView.smoothScrollToPosition(chatFragment.mAdapter.getItemCount());
     }
 
     @Override
@@ -44,5 +49,9 @@ public class ChatChildEventListener implements ChildEventListener {
     @Override
     public void onCancelled(@NonNull DatabaseError error) {
 
+    }
+
+    public interface IOnAddMessage{
+        void onAddMessage(Message message);
     }
 }

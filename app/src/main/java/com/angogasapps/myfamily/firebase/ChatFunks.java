@@ -15,7 +15,18 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.getMessageKey;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_FROM;
@@ -88,11 +99,12 @@ public class ChatFunks {
         });
     }
 
+/*
     public static void downloadImageMessageAndSetBitmap(String path, String key, ImageView imageView, Activity activity) {
         if (chatImageMessangesMap.containsKey(key)){
-            activity.runOnUiThread(() -> {
+//            activity.runOnUiThread(() -> {
                 imageView.setImageBitmap(chatImageMessangesMap.get(key));
-            });
+//            });
         }else {
             new Thread() {
                 @Override
@@ -114,6 +126,38 @@ public class ChatFunks {
                     }
                 }
             }.start();
+        }
+    }
+*/
+
+    public static void downloadImageMessageAndSetBitmap(String path, String key, ImageView imageView){
+        if (chatImageMessangesMap.containsKey(key)){
+            imageView.setImageBitmap(chatImageMessangesMap.get(key));
+        }else{
+            Observable.create(emitter -> {
+                URL photoUrl = new URL(path);
+                InputStream downloadStream = photoUrl.openStream();
+                Bitmap bitmap = BitmapFactory.decodeStream(downloadStream);
+                chatImageMessangesMap.put(key, bitmap);
+                emitter.onNext(bitmap);
+            })
+                    .subscribeOn(Schedulers.single())
+                    .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<Object>() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {}
+                @Override
+                public void onNext(@NonNull Object o) {
+                    imageView.setImageBitmap(chatImageMessangesMap.get(key));
+                }
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onComplete() { }
+            });
         }
     }
 
