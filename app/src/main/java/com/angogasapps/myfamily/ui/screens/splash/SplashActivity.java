@@ -11,7 +11,9 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.firebase.AuthFunctions;
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
 import com.angogasapps.myfamily.firebase.interfaces.IAuthUser;
+import com.angogasapps.myfamily.objects.User;
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity;
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity;
@@ -21,6 +23,7 @@ import com.angogasapps.myfamily.utils.FamilyManager;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.initFirebase;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.familyMembersMap;
 
 public class SplashActivity extends AppCompatActivity {
     private String familyIdParam = "";
@@ -31,13 +34,43 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initFirebase();
         DatabaseManager.init(this);
-        DatabaseManager.loadUsersAndMessages();
+
 
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        start();
+//        if (AUTH.getCurrentUser() != null) {
+//            // если пользователь уже авторизован, скачиваем данные про него, а потом пропускаем его в MainActivity
+//
+//            analysisIntent();
+//
+//            AuthFunctions.downloadUser(() -> {
+//                Log.d("tag", "\n" + USER.toString());
+//
+//
+//                if (USER.getFamily().equals("")){
+//                    Intent intent = new Intent(this, FindOrCreateFamilyActivity.class);
+//                    intent.putExtra(FamilyManager.PARAM_FAMILY_ID, familyIdParam);
+//                    startActivity(intent);
+//                }else {
+//                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+//                }
+//                finish();
+//            });
+//        } else {
+//            // если пользователь не авторизован, начинаем процес авторизации/регистрации
+//            startActivity(new Intent(this, RegisterActivity.class));
+//            finish();
+//        }
+    }
+    /*
+
+
+
+                super.onStart();
 
         IAuthUser iAuthUser = this::onEndDownloadUser;
 
@@ -60,34 +93,6 @@ public class SplashActivity extends AppCompatActivity {
                 Toaster.error(this, R.string.connection_is_not).show();
             }
         }
-    }
-    /*
-
-
-
-        if (AUTH.getCurrentUser() != null) {
-            // если пользователь уже авторизован, скачиваем данные про него, а потом пропускаем его в MainActivity
-
-            analysisIntent();
-
-            AuthFunctions.downloadUser(() -> {
-                Log.d("tag", "\n" + USER.toString());
-
-
-                if (USER.getFamily().equals("")){
-                    Intent intent = new Intent(this, FindOrCreateFamilyActivity.class);
-                    intent.putExtra(FamilyManager.PARAM_FAMILY_ID, familyIdParam);
-                    startActivity(intent);
-                }else {
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                }
-                finish();
-            });
-        } else {
-            // если пользователь не авторизован, начинаем процес авторизации/регистрации
-            startActivity(new Intent(this, RegisterActivity.class));
-            finish();
-        }
      */
 
     private void analysisIntent() {
@@ -96,7 +101,6 @@ public class SplashActivity extends AppCompatActivity {
         Uri data = intent.getData();
         if (data != null) {
             familyIdParam = data.getQueryParameter(FamilyManager.PARAM_FAMILY_ID);
-
             System.out.println("\ndata = " + data.toString() + "\nfamily id = " + familyIdParam);
 
         }
@@ -113,5 +117,50 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
         }
         finish();
+    }
+    public void start(){
+        if (AppApplication.isOnline()){
+            if (AUTH.getCurrentUser() != null){
+                //интернет есть, пользователь аторизован
+                analysisIntent();
+                AuthFunctions.downloadUser(this::onEndDownloadUser);
+                //TODO: страховка с БД на случай слабого интернета
+                // . . .
+            }else{
+                //интернет есть, пользователь не авторизован
+                startActivity(new Intent(this, RegisterActivity.class));
+                finish();
+            }
+        }else {
+            if (AUTH.getCurrentUser() != null) {
+
+                // Вход с данными из БД
+                signInWithRoom();
+
+
+            }else{
+                //интернета нет, пользователь не авторизован
+                Toaster.error(this, R.string.connection_is_not).show();
+            }
+        }
+    }
+    public void signInWithRoom(){
+        DatabaseManager.loadUsersAndMessages(() -> {
+            for (User user: DatabaseManager.getUserList()){
+                familyMembersMap.put(user.getId(), user);
+            }
+            if (familyMembersMap.containsKey(AUTH.getCurrentUser().getUid())){
+                USER = familyMembersMap.get(AUTH.getCurrentUser().getUid());
+            }
+
+            if (USER.getFamily().equals("")) {
+                Toaster.error(this, R.string.connection_is_not).show();
+            }else{
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            }
+
+
+        });
     }
 }

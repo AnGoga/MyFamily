@@ -6,11 +6,9 @@ import android.content.Context;
 
 import androidx.room.Room;
 
-import com.angogasapps.myfamily.app.AppApplication;
-import com.angogasapps.myfamily.async.LoadFamilyThread;
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
 import com.angogasapps.myfamily.objects.Message;
 import com.angogasapps.myfamily.objects.User;
+import com.angogasapps.myfamily.utils.Others;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +19,11 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
-
 public class DatabaseManager {
     public static volatile boolean usersLoadIsEnd = false;
     public static volatile boolean messagesLoadIsEnd = false;
 
-    private static volatile ArrayList<Message> messageList = new ArrayList<>();
+    private static volatile ArrayList<Message> messagesList = new ArrayList<>();
     private static volatile ArrayList<User> userList = new ArrayList<>();
 
 
@@ -44,7 +40,7 @@ public class DatabaseManager {
         return database;
     }
 
-    public static void loadUsersAndMessages() {
+    public static void loadUsersAndMessages(IOnEnd iOnEnd) {
         Observer<Object> observer = new Observer<Object>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -60,6 +56,10 @@ public class DatabaseManager {
 
             @Override
             public void onComplete() {
+
+                if (usersLoadIsEnd && messagesLoadIsEnd){
+                    iOnEnd.onEnd();
+                }
             }
         };
 
@@ -70,17 +70,16 @@ public class DatabaseManager {
                 userList.add(new User(user));
             }
             usersLoadIsEnd = true;
-
-            searchNewUsers();
-
+            emitter.onComplete();
         }).subscribeOn(Schedulers.newThread())
                 .observeOn(Schedulers.newThread())
                 .subscribe(observer);
 
         Observable.create(emitter -> {
             MessageDao messageDao = DatabaseManager.getDatabase().getMessageDao();
-            messageList = new ArrayList(messageDao.getAll());
+            messagesList = new ArrayList(messageDao.getAll());
             messagesLoadIsEnd = true;
+            emitter.onComplete();
 
         }).subscribeOn(Schedulers.newThread())
                 .observeOn(Schedulers.newThread())
@@ -88,34 +87,23 @@ public class DatabaseManager {
     }
 
 
-    public static ArrayList<Message> getMessageList() {
-        return messageList;
+    public static ArrayList<Message> getMessagesList() {
+        return messagesList;
     }
 
     public static ArrayList<User> getUserList() {
         return userList;
     }
 
-    private static void searchNewUsers() {
-
-        if (!AppApplication.isOnline() && !LoadFamilyThread.isEnd) {
-//            if (AUTH.getCurrentUser() == null) {
-//                return;
-//            }else{
-//                for (User user : userList)
-//                    if (user.getId().equals(AUTH.getCurrentUser().getUid()))
-//                        FirebaseVarsAndConsts.USER = new User(user);
-//            }
-            return;
-        }else if (AppApplication.isOnline()) {
-            while (!LoadFamilyThread.isEnd) {
-            }
-        }
-
-        for (User user : FirebaseVarsAndConsts.familyMembersMap.values()) {
-            if (!userList.contains(user))
-                DatabaseManager.getDatabase().getTransactionUserDao().insert(user);
-        }
-
+    public interface IOnEnd{
+        void onEnd();
     }
+
+    public static void searchNewUsers(ArrayList<User> users){
+        Others.runInNewThread(() -> {
+            //ArrayList<User> cashUserList = database.getTransactionUserDao().getAll();
+        });
+    }
+
+
 }

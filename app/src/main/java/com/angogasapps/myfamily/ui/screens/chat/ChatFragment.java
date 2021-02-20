@@ -40,7 +40,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.Observable;
 import io.reactivex.subjects.Subject;
 
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.getMessageKey;
@@ -226,7 +225,7 @@ public class ChatFragment extends Fragment {
                 while(!DatabaseManager.messagesLoadIsEnd){}
 
                 if (DatabaseManager.messagesLoadIsEnd)
-                    for (Message message : DatabaseManager.getMessageList())
+                    for (Message message : DatabaseManager.getMessagesList())
                         onAddMessage(message);
             });
         }

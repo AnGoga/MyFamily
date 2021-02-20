@@ -10,6 +10,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 
+import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
 import com.angogasapps.myfamily.objects.User;
 import com.google.firebase.database.DataSnapshot;
@@ -60,6 +61,7 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
 
     }
 
+
     @Override
     protected ArrayList<User> doInBackground(User... users) {
         try {
@@ -74,11 +76,11 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
 
             downloadMembersPhoto();
 
-            ArrayList<User> a = familyMembersList;
+//            ArrayList<User> a = familyMembersList;
 
             emblemDownloaderThread.start();
 
-            initConnections();
+            initCollections();
 
             if (emblemDownloaderThread.isAlive())
                 emblemDownloaderThread.join();
@@ -226,11 +228,12 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
         }
     }
 
-    private void initConnections(){
+    private void initCollections(){
         FirebaseVarsAndConsts.familyEmblemImage = this.familyEmblem;
         for (User user : familyMembersList){
             user.setRole(usersRoleMap.get(user.getId()));
             familyMembersMap.put(user.getId(), user);
         }
+        DatabaseManager.searchNewUsers(familyMembersList);
     }
 }
