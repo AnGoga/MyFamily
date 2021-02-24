@@ -10,6 +10,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_MEMBERS;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_FAMILIES;
@@ -42,7 +43,7 @@ public class FindFamilyFunks {
                 .addOnCompleteListener(task1 -> {
             if (task1.isSuccessful()){
                 //устанавлеваем в юзера значение поля family
-                USER.setFamily(id, new IOnEndSetUserField() {
+                UserSetterFields.setFamily(USER, id, new IOnEndSetUserField() {
                     @Override
                     public void onSuccessEnd() {
                         iOnJoinToFamily.onSuccess();

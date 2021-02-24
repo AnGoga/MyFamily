@@ -26,7 +26,7 @@ public class RegisterUserFunks {
 
     public static synchronized void registerNewUser(Activity activity, String userName, Long userBirthdayTimeMillis, Uri photoUri){
         // создаём словарь по шаблону класса User
-        USER.setPhotoURL(photoUri, new IOnEndSetUserField() {
+        UserSetterFields.setPhotoURL(USER, photoUri, new IOnEndSetUserField() {
             @Override
             public void onSuccessEnd() {
                 String uid = AUTH.getCurrentUser().getUid();
@@ -62,7 +62,7 @@ public class RegisterUserFunks {
                 path.getDownloadUrl().addOnCompleteListener(task2 -> {
                     if (task2.isSuccessful()){
                         String photoLink = task2.getResult().toString();
-                        UserSetterFields.setField(CHILD_PHOTO_URL, photoLink, iOnEndSetUserField);
+                        UserSetterFields.setField(AUTH.getCurrentUser().getUid(), CHILD_PHOTO_URL, photoLink, iOnEndSetUserField);
                     }else {
                         iOnEndSetUserField.onFailureEnd();
                     }

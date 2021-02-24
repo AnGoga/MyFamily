@@ -4,25 +4,36 @@ package com.angogasapps.myfamily.objects;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
-import com.angogasapps.myfamily.database.TransactionUser;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.angogasapps.myfamily.firebase.UserSetterFields;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
 
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_BIRTHDAY;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_FAMILY;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_NAME;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.UID;
 
-public class User extends TransactionUser {
-    public User(){
-        super();
-    }
+
+@Entity
+public class User {
+    @PrimaryKey
+    @NonNull
+    protected String id = " ";
+    protected String phone = "";
+    protected String family = "";
+    protected String name = "";
+    protected Long birthday = 0L;
+    protected String photoURL = "";
+    protected String role = "";
+    @Ignore
+    protected Bitmap userPhoto;
+
+    public User(){}
 
     public User(User user){
-        super(user);
-    }
-
-    public User(TransactionUser user){
         this.id = user.getId();
         this.phone = user.getPhone();
         this.family = user.getFamily();
@@ -50,55 +61,74 @@ public class User extends TransactionUser {
                 "\nname = " + this.name + "\nbirthday = " + this.birthday;
     }
 
-    public synchronized void setFamily(String family, IOnEndSetUserField iOnEndSetUserField) {
-        UserSetterFields.setField(CHILD_FAMILY, family, new IOnEndSetUserField() {
-            @Override
-            public void onSuccessEnd() {
-                User.this.family = family;
-                iOnEndSetUserField.onSuccessEnd();
-            }
-            @Override
-            public void onFailureEnd() {
-                iOnEndSetUserField.onFailureEnd();
-            }
-        });
-
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof User))
+            return false;
+        return this.id.equals(((User)obj).getId());
     }
 
-    public synchronized void setName(String name, IOnEndSetUserField iOnEndSetUserField) {
-        UserSetterFields.setField(CHILD_NAME, name, new IOnEndSetUserField() {
-            @Override
-            public void onSuccessEnd() {
-                User.this.name = name;
-                iOnEndSetUserField.onSuccessEnd();
-            }
+    public boolean haveFamily(){
+        return !this.getFamily().equals("");
+    }
 
-            @Override
-            public void onFailureEnd() {
-                iOnEndSetUserField.onFailureEnd();
-            }
-        });
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getFamily() {
+        return family;
+    }
+
+    public void setFamily(String family) {
+        this.family = family;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
     }
 
-    public synchronized void setBirthday(Long birthday, IOnEndSetUserField iOnEndSetUserField) {
-        UserSetterFields.setField(CHILD_BIRTHDAY, birthday, new IOnEndSetUserField() {
-            @Override
-            public void onSuccessEnd() {
-                User.this.birthday = birthday;
-                iOnEndSetUserField.onSuccessEnd();
-            }
-
-            @Override
-            public void onFailureEnd() {
-                iOnEndSetUserField.onSuccessEnd();
-            }
-        });
+    public Long getBirthday() {
+        return birthday;
     }
 
-    public synchronized void setPhotoURL(Uri photoUri, IOnEndSetUserField iOnEndSetUserField){
-        UserSetterFields.setUserPhoto(photoUri, iOnEndSetUserField);
+    public void setBirthday(Long birthday) {
+        this.birthday = birthday;
     }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public Bitmap getUserPhoto() {
+        return userPhoto;
+    }
+
+    public void setUserPhoto(Bitmap userPhoto) {
+        this.userPhoto = userPhoto;
+    }
+
 
 
 }

@@ -7,23 +7,25 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.angogasapps.myfamily.objects.User;
+
 import java.util.List;
 
 @Dao
 public interface UserDao {
 
-    @Query("SELECT * FROM TransactionUser")
-    List<TransactionUser> getAll();
+    @Query("SELECT * FROM User")
+    List<User> getAll();
 
-    @Query("SELECT * FROM TransactionUser WHERE id = :id")
-    TransactionUser getById(String id);
+    @Query("SELECT * FROM User WHERE id = :id")
+    User getById(String id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(TransactionUser user);
+    void insert(User user);
 
     @Update
-    void update(TransactionUser user);
+    void update(User user);
 
     @Delete
-    void delete(TransactionUser user);
+    void delete(User user);
 }

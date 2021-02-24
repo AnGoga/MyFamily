@@ -11,7 +11,6 @@ import com.angogasapps.myfamily.objects.User;
 import com.angogasapps.myfamily.utils.Others;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -64,11 +63,8 @@ public class DatabaseManager {
         };
 
         Observable.create(emitter -> {
-            UserDao userDao = DatabaseManager.getDatabase().getTransactionUserDao();
-            List<TransactionUser> cashList = userDao.getAll();
-            for (TransactionUser user : cashList) {
-                userList.add(new User(user));
-            }
+            UserDao userDao = DatabaseManager.getDatabase().getUserDao();
+            userList = new ArrayList<>(userDao.getAll());
             usersLoadIsEnd = true;
             emitter.onComplete();
         }).subscribeOn(Schedulers.newThread())
@@ -101,7 +97,10 @@ public class DatabaseManager {
 
     public static void searchNewUsers(ArrayList<User> users){
         Others.runInNewThread(() -> {
-            //ArrayList<User> cashUserList = database.getTransactionUserDao().getAll();
+            ArrayList<User> cashUserList = new ArrayList<>(database.getUserDao().getAll());
+            for (User user : users)
+                if (!cashUserList.contains(user))
+                    database.getUserDao().insert(user);
         });
     }
 

@@ -30,6 +30,7 @@ import com.angogasapps.myfamily.ui.customview.message_recycle_view.ChatAdapter;
 import com.angogasapps.myfamily.objects.ChatChildEventListener;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.angogasapps.myfamily.objects.ChatAudioRecorder;
+import com.angogasapps.myfamily.utils.ChatAdapterUtils;
 import com.angogasapps.myfamily.utils.Others;
 import com.angogasapps.myfamily.utils.Permissions;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +39,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.subjects.Subject;
@@ -224,9 +227,11 @@ public class ChatFragment extends Fragment {
             Others.runInNewThread(() -> {
                 while(!DatabaseManager.messagesLoadIsEnd){}
 
-                if (DatabaseManager.messagesLoadIsEnd)
+                if (DatabaseManager.messagesLoadIsEnd) {
+                    Collections.sort(DatabaseManager.getMessagesList());
                     for (Message message : DatabaseManager.getMessagesList())
                         onAddMessage(message);
+                }
             });
         }
     }

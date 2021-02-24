@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".app.AppApplication"
@@ -16,6 +18,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFamily">
+
+        <service
+            android:name=".async.ChatService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":ServiceProcess" /> <!-- android:process=":ServiceProcess" -->
+
+        <receiver android:name=".async.TestService" />
+
         <activity android:name=".ui.screens.personal_data.PersonalDataActivity" />
         <activity android:name=".ui.screens.family_settings.InviteUserActivity" />
         <activity android:name=".ui.screens.family_settings.FamilySettingsActivity" />
@@ -45,8 +56,7 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.screens.main.MainActivity"
-            >
+        <activity android:name=".ui.screens.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

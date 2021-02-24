@@ -3,14 +3,12 @@ package com.angogasapps.myfamily.ui.screens.chat;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.database.MessageDao;
 import com.angogasapps.myfamily.objects.Message;
-import com.angogasapps.myfamily.objects.User;
-import com.angogasapps.myfamily.utils.Others;
 
 import java.util.ArrayList;
 
@@ -55,13 +53,12 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void saveNewMessage(Message message){
-//        Log.i("tag", message.getValue());
-//        Log.d("TAG", "Thread name -> " + Thread.currentThread().getName());
-/*
-        if (!messageList.contains(message)){
+
+        if (!DatabaseManager.getMessagesList().contains(message)){
+            DatabaseManager.getMessagesList().add(message);
             messageDao.insert(message);
         }
-*/
+
 
     }
 
@@ -103,5 +100,17 @@ public class ChatActivity extends AppCompatActivity {
 
     private void initDatabase(){
         messageDao = DatabaseManager.getDatabase().getMessageDao();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AppApplication.setExitChatStatus();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AppApplication.setReturnToChatStatus();
     }
 }

@@ -15,9 +15,9 @@ import com.angogasapps.myfamily.objects.User;
 
 import java.io.File;
 
-@Entity
+
 public class TransactionUser {
-    @PrimaryKey
+    /*@PrimaryKey
     @NonNull
     protected String id = " ";
     protected String phone = "";
@@ -119,5 +119,5 @@ public class TransactionUser {
         if (!(obj instanceof TransactionUser))
             return false;
         return this.id.equals(((TransactionUser)obj).getId());
-    }
+    }*/
 }

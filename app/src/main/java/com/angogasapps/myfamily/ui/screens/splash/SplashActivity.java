@@ -33,67 +33,13 @@ public class SplashActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         initFirebase();
-        DatabaseManager.init(this);
-
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
         start();
-//        if (AUTH.getCurrentUser() != null) {
-//            // если пользователь уже авторизован, скачиваем данные про него, а потом пропускаем его в MainActivity
-//
-//            analysisIntent();
-//
-//            AuthFunctions.downloadUser(() -> {
-//                Log.d("tag", "\n" + USER.toString());
-//
-//
-//                if (USER.getFamily().equals("")){
-//                    Intent intent = new Intent(this, FindOrCreateFamilyActivity.class);
-//                    intent.putExtra(FamilyManager.PARAM_FAMILY_ID, familyIdParam);
-//                    startActivity(intent);
-//                }else {
-//                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-//                }
-//                finish();
-//            });
-//        } else {
-//            // если пользователь не авторизован, начинаем процес авторизации/регистрации
-//            startActivity(new Intent(this, RegisterActivity.class));
-//            finish();
-//        }
     }
-    /*
-
-
-
-                super.onStart();
-
-        IAuthUser iAuthUser = this::onEndDownloadUser;
-
-        if (AUTH.getCurrentUser() != null) {
-            // если пользователь уже авторизован, скачиваем данные про него, а потом пропускаем его в MainActivity
-            if (AppApplication.isOnline()){
-                analysisIntent();
-            }else{
-                iAuthUser = () -> {};
-                onEndDownloadUser();
-            }
-
-            AuthFunctions.downloadUser(iAuthUser);
-        } else {
-            // если пользователь не авторизован, начинаем процес авторизации/регистрации
-            if (AppApplication.isOnline()) {
-                startActivity(new Intent(this, RegisterActivity.class));
-                finish();
-            }else{
-                Toaster.error(this, R.string.connection_is_not).show();
-            }
-        }
-     */
 
     private void analysisIntent() {
 
@@ -105,6 +51,7 @@ public class SplashActivity extends AppCompatActivity {
 
         }
     }
+
     private void onEndDownloadUser(){
         Log.d("tag", "\n" + USER.toString());
 
@@ -118,6 +65,7 @@ public class SplashActivity extends AppCompatActivity {
         }
         finish();
     }
+
     public void start(){
         if (AppApplication.isOnline()){
             if (AUTH.getCurrentUser() != null){
@@ -144,6 +92,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
     }
+
     public void signInWithRoom(){
         DatabaseManager.loadUsersAndMessages(() -> {
             for (User user: DatabaseManager.getUserList()){
@@ -159,8 +108,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
             }
-
-
         });
     }
 }

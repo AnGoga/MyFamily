@@ -48,7 +48,7 @@ public class RegisterFamilyFunks {
                 .addOnCompleteListener(task1 -> {
                     if (task1.isSuccessful()){
                         //ставлю в юзера значение поля family
-                        USER.setFamily(familyId, new IOnEndSetUserField() {
+                        UserSetterFields.setFamily(USER, familyId, new IOnEndSetUserField() {
                             @Override
                             public void onSuccessEnd() {
                                 iOnEndRegisterNewFamily.onEndRegister();

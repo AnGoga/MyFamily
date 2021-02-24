@@ -7,20 +7,15 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
-import com.angogasapps.myfamily.database.AppDatabase;
-import com.angogasapps.myfamily.database.DatabaseManager;
-import com.angogasapps.myfamily.database.UserDao;
+import com.angogasapps.myfamily.async.ServiceManager;
 import com.angogasapps.myfamily.ui.customview.CardView;
 import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
 import com.angogasapps.myfamily.ui.screens.family_settings.FamilySettingsActivity;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
-import com.angogasapps.myfamily.utils.Others;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -28,6 +23,8 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "TAG";
+
     CardView myFamilyCard, chatCard, cardStorage;
     Toolbar toolbar;
     CircleImageView userCircleImageView;
@@ -37,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         new LoadFamilyThread(this).execute(USER);
+
+        ServiceManager.checkServices(this);
 
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -61,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         cardStorage.setOnClickListener(v -> {
 
         });
+
+
 
     }
 
