@@ -16,11 +16,13 @@ import androidx.core.app.NotificationCompat;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
+import com.angogasapps.myfamily.app.AppNotificationManager;
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.database.MessageDao;
 import com.angogasapps.myfamily.database.UserDao;
 import com.angogasapps.myfamily.objects.ChatChildEventListener;
 import com.angogasapps.myfamily.objects.Message;
+import com.angogasapps.myfamily.objects.MessageNotification;
 import com.angogasapps.myfamily.objects.User;
 import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
 import com.google.firebase.FirebaseApp;
@@ -65,12 +67,14 @@ public class ChatService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate: ");
+//        registerWatchAlarm();
+        AppNotificationManager.createNotificationChanel(this);
+        FirebaseApp.initializeApp(this);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: ");
-        FirebaseApp.initializeApp(this);
         
         userId = intent.getStringExtra(PARAM_USER_ID);
         familyId = intent.getStringExtra(PARAM_FAMILY_ID);
@@ -95,21 +99,18 @@ public class ChatService extends Service {
         Log.e(TAG, "onDestroy: ChatService" );
     }
 
-    /*@Override
+    @Override
     public void onTaskRemoved(Intent rootIntent) {
-        Intent intent = new Intent("com.android.ServiceStopped");
-        sendBroadcast(intent);
+        Log.d(TAG, "onTaskRemoved: ");
 
-        super.onTaskRemoved(rootIntent);
-
-    }*/
+    }
 
     public void onAddMessage(Message message){
-        if (!AppApplication.isInChat())
+//        if (!AppApplication.isInChat())
         Observable.create(subscriber -> {
             if (!roomHaveItMessage(message)){
                 messageDao.insert(message);
-                subscriber.onNext(createNewMessageNotification(message));
+                subscriber.onNext(MessageNotification.build(this, message, userDao));
                 subscriber.onComplete();
             }
         }).subscribeOn(Schedulers.newThread())
@@ -139,26 +140,6 @@ public class ChatService extends Service {
         return messageDao.getById(message.getId()) != null;
     }
 
-    private Notification createNewMessageNotification(Message message) {
-
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle(getString(R.string.my_family))
-                .setContentText(getTextToMessageNotification(message))
-                .setSmallIcon(R.drawable.default_user_photo);
-
-
-        Intent intent = new Intent(this, ChatActivity.class);
-        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        builder.setContentIntent(pIntent)
-                .setAutoCancel(true)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setOngoing(false);
-
-
-        return builder.build();
-    }
 
     public static boolean isRunning(Context context) {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -170,25 +151,6 @@ public class ChatService extends Service {
         return false;
     }
 
-    private String getTextToMessageNotification(Message message){
-        StringBuilder string = new StringBuilder();
 
-        User user = userDao.getById(message.getFrom());
-        if (user == null){
-
-        }else{
-            string.append(user.getName());
-            string.append(": ");
-        }
-
-        if (message.getType().equals(TYPE_TEXT_MESSAGE))
-            string.append(message.getValue());
-        else if (message.getType().equals(TYPE_IMAGE_MESSAGE))
-            string.append("\uD83D\uDCF7" + " ").append(getString(R.string.photo));
-        else if (message.getType().equals(TYPE_VOICE_MESSAGE))
-            string.append("\uD83C\uDFA4" + " ").append(getString(R.string.voice));
-
-        return string.toString();
-    }
 
 }

@@ -22,6 +22,8 @@ public class ChatChildEventListener implements ChildEventListener {
         this.iOnAddMessage = iOnAddMessage;
     }
 
+
+
     @Override
     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
         Message message = new Message(snapshot);

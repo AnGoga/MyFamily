@@ -6,7 +6,10 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.widget.ImageView;
 
+import com.angogasapps.myfamily.async.MessageNotificationManager;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
+import com.angogasapps.myfamily.objects.Message;
+import com.angogasapps.myfamily.objects.MessageNotification;
 import com.angogasapps.myfamily.utils.StringFormater;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
@@ -52,7 +55,7 @@ public class ChatFunks {
     public static void sendMessageWithKey(String type, String value, String key){
         DatabaseReference path = DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily());
 
-        if (type == TYPE_TEXT_MESSAGE) {
+        if (type.equals(TYPE_TEXT_MESSAGE)) {
             value = StringFormater.formatStringToSend(value);
         }
 
@@ -62,8 +65,16 @@ public class ChatFunks {
         messageMap.put(CHILD_VALUE, value);
         messageMap.put(CHILD_TIME, ServerValue.TIMESTAMP);
 
+        String finalValue = value;
         path.child(key).updateChildren(messageMap).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {}
+            if (task.isSuccessful()) {
+                Message message = new Message();
+                message.setFrom(UID);
+                message.setType(type);
+                message.setValue(finalValue);
+                MessageNotificationManager.getInstance().sendNotificationMessage(message, USER);
+
+            }
         });
     }
 

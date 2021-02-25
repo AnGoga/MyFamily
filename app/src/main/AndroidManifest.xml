@@ -21,11 +21,41 @@
 
         <service
             android:name=".async.ChatService"
-            android:enabled="true"
             android:exported="false"
-            android:process=":ServiceProcess" /> <!-- android:process=":ServiceProcess" -->
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="com.angogasapps.myfamily.async.ChatService"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </service>
 
-        <receiver android:name=".async.TestService" />
+        <service
+            android:name=".async.TestChatService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/default_user_photo" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/white" />
+
+
+
+
+
+
+
+
+
+
+
 
         <activity android:name=".ui.screens.personal_data.PersonalDataActivity" />
         <activity android:name=".ui.screens.family_settings.InviteUserActivity" />

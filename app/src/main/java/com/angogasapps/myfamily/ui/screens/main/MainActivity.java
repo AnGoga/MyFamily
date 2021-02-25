@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.app.AppFirebaseNotificationManager;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.async.ServiceManager;
 import com.angogasapps.myfamily.ui.customview.CardView;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-
+        AppFirebaseNotificationManager.subscribeToFamily(USER);
 
     }
 
