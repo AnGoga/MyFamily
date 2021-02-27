@@ -82,7 +82,8 @@ public class AuthFunctions {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //TODO:
-                USER = snapshot.getValue(User.class);// <-- допиши нормально функцию и обнови себя в firebase (поля: family и ?photoURL?)
+                USER = snapshot.getValue(User.class);
+                USER.setId(snapshot.getKey());
                 if (USER != null)
                     iAuthUser.onEndDownloadUser();
                 else

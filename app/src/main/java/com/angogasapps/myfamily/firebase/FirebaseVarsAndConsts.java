@@ -44,6 +44,7 @@ public class FirebaseVarsAndConsts {
     public static final String CHILD_PHONE = "phone";
     public static final String CHILD_FAMILY = "family";
     public static final String CHILD_NAME = "name";
+    public static final String CHILD_TOKEN = "token";
     public static final String CHILD_BIRTHDAY = "birthday";
     public static final String CHILD_PHOTO_URL = "photoURL";
     public static final String CHILD_TYPE = "type";

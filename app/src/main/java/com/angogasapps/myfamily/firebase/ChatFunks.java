@@ -1,12 +1,11 @@
 package com.angogasapps.myfamily.firebase;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.widget.ImageView;
 
-import com.angogasapps.myfamily.async.MessageNotificationManager;
+import com.angogasapps.myfamily.async.notification.MessageNotificationManager;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
 import com.angogasapps.myfamily.objects.Message;
 import com.angogasapps.myfamily.objects.MessageNotification;
@@ -18,14 +17,10 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -73,7 +68,6 @@ public class ChatFunks {
                 message.setType(type);
                 message.setValue(finalValue);
                 MessageNotificationManager.getInstance().sendNotificationMessage(message, USER);
-
             }
         });
     }

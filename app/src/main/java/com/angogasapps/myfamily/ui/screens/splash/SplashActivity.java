@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
+import com.angogasapps.myfamily.async.notification.TokensManager;
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.firebase.AuthFunctions;
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
@@ -54,6 +55,8 @@ public class SplashActivity extends AppCompatActivity {
 
     private void onEndDownloadUser(){
         Log.d("tag", "\n" + USER.toString());
+
+        TokensManager.getInstance().updateToken(USER);
 
 
         if (USER.getFamily().equals("")){

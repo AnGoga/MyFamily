@@ -10,6 +10,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 
+import com.angogasapps.myfamily.async.notification.TokensManager;
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
 import com.angogasapps.myfamily.objects.User;
@@ -86,6 +87,7 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
                 emblemDownloaderThread.join();
 
             Log.i("tag", "Загрузка завершена");
+
 
         } catch (Exception e) {
             e.printStackTrace();

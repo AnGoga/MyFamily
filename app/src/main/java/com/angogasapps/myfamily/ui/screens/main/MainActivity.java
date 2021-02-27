@@ -17,6 +17,7 @@ import com.angogasapps.myfamily.ui.customview.CardView;
 import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
 import com.angogasapps.myfamily.ui.screens.family_settings.FamilySettingsActivity;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
+import com.angogasapps.myfamily.utils.Others;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        AppFirebaseNotificationManager.subscribeToFamily(USER);
+
 
     }
 

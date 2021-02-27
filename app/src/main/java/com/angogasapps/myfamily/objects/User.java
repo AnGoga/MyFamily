@@ -28,6 +28,7 @@ public class User {
     protected Long birthday = 0L;
     protected String photoURL = "";
     protected String role = "";
+    protected String token = "";
     @Ignore
     protected Bitmap userPhoto;
 
@@ -58,7 +59,7 @@ public class User {
     @Override
     public String toString() {
         return "id = " + UID + "\nphone = " + this.phone + "\nfamily = " + this.family +
-                "\nname = " + this.name + "\nbirthday = " + this.birthday;
+                "\nname = " + this.name + "\nbirthday = " + this.birthday + "\ntoken = " + this.token;
     }
 
     @Override
@@ -129,6 +130,11 @@ public class User {
         this.userPhoto = userPhoto;
     }
 
+    public String getToken() {
+        return token;
+    }
 
-
+    public void setToken(String token) {
+        this.token = token;
+    }
 }
