@@ -3,14 +3,23 @@ package com.angogasapps.myfamily.objects;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.angogasapps.myfamily.ui.screens.chat.ChatFragment;
 
-public class ChatTextWatcher implements TextWatcher {
-    private ChatFragment chatFragment;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-    public ChatTextWatcher(ChatFragment chatFragment) {
-        this.chatFragment = chatFragment;
+public class ChatTextWatcher implements TextWatcher {
+    private CircleImageView sendButton;
+    private CircleImageView audioButton;
+    private EditText editText;
+
+
+    public ChatTextWatcher(CircleImageView sendButton, CircleImageView audioButton, EditText editText) {
+        this.sendButton = sendButton;
+        this.audioButton = audioButton;
+        this.editText = editText;
     }
     //до
     @Override
@@ -20,13 +29,13 @@ public class ChatTextWatcher implements TextWatcher {
     //после
     @Override
     public void afterTextChanged(Editable s) {
-        String text = chatFragment.chatEditText.getText().toString();
+        String text = editText.getText().toString();
         if (text.replaceAll("\\s+","").isEmpty()){
-            chatFragment.sendMessageBtn.setVisibility(View.INVISIBLE);
-            chatFragment.sendAudioBtn.setVisibility(View.VISIBLE);
+            sendButton.setVisibility(View.INVISIBLE);
+            audioButton.setVisibility(View.VISIBLE);
         }else{
-            chatFragment.sendMessageBtn.setVisibility(View.VISIBLE);
-            chatFragment.sendAudioBtn.setVisibility(View.INVISIBLE);
+            sendButton.setVisibility(View.VISIBLE);
+            audioButton.setVisibility(View.INVISIBLE);
         }
     }
 

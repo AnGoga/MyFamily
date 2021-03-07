@@ -11,26 +11,24 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.firebase.ChatFunks;
+import com.angogasapps.myfamily.databinding.ActivityFamilySettingsBinding;
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
 import com.angogasapps.myfamily.ui.customview.family_members_rv.FamilyMembersAdapter;
 
 public class FamilySettingsActivity extends AppCompatActivity {
-    ImageView mFamilyEmblemImage, mInviteUserBtn;
-    RecyclerView mRecyclerView;
+
     FamilyMembersAdapter mAdapter;
     LinearLayoutManager mLayoutManager;
+    private ActivityFamilySettingsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_family_settings);
+        binding = ActivityFamilySettingsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        mRecyclerView = findViewById(R.id.family_settings_recycleview);
-        mFamilyEmblemImage = findViewById(R.id.family_settings_emblem);
-        mInviteUserBtn = findViewById(R.id.inviteUserToFamilyButton);
 
-        mInviteUserBtn.setOnClickListener(v -> {
+        binding.inviteButton.setOnClickListener(v -> {
             startActivity(new Intent(this, InviteUserActivity.class));
         });
 
@@ -43,8 +41,8 @@ public class FamilySettingsActivity extends AppCompatActivity {
         mAdapter.reset();
         mLayoutManager = new LinearLayoutManager(this);
 
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        binding.recycleView.setAdapter(mAdapter);
+        binding.recycleView.setLayoutManager(mLayoutManager);
     }
 
     private void setFamilyEmblemBitmap() {
@@ -52,7 +50,7 @@ public class FamilySettingsActivity extends AppCompatActivity {
         if (bitmap == null){
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.default_family_emblem);
         }
-        mFamilyEmblemImage.setImageBitmap(bitmap);
+        binding.familyEmblem.setImageBitmap(bitmap);
     }
 }
 

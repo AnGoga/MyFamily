@@ -20,13 +20,13 @@
              android:text="@string/link_to_invite"/>
 
             <TextView
-                android:id="@+id/invite_link_text"
+                android:id="@+id/invite_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/boldTextView"/>
 
             <ImageView
-                android:id="@+id/copy_invite_link_btn"
+                android:id="@+id/copy_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_copy_text"/>

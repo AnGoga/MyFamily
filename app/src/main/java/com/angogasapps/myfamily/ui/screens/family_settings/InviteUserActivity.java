@@ -10,24 +10,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.databinding.ActivityInviteUserBinding;
 import com.angogasapps.myfamily.utils.FamilyManager;
 
 public class InviteUserActivity extends AppCompatActivity {
-    TextView inviteLinkTextView;
-    ImageView copyLinkBtn;
+    private ActivityInviteUserBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_invite_user);
+        binding = ActivityInviteUserBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        inviteLinkTextView = findViewById(R.id.invite_link_text);
-        copyLinkBtn = findViewById(R.id.copy_invite_link_btn);
+        binding.inviteText.setText(FamilyManager.getInviteLinkToFamily().toString());
+        binding.copyBtn.setOnClickListener(v -> {
 
-        inviteLinkTextView.setText(FamilyManager.getInviteLinkToFamily().toString());
-        copyLinkBtn.setOnClickListener(v -> {
-
-            ClipData clipData = ClipData.newPlainText("text",inviteLinkTextView.getText());
+            ClipData clipData = ClipData.newPlainText("text", binding.inviteText.getText());
             ClipboardManager clipboardManager = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
             clipboardManager.setPrimaryClip(clipData);
 

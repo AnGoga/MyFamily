@@ -22,12 +22,12 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/fragmentCreateFamilyAddEmblemPhoto"
+                android:id="@+id/add_emblem_btn"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/mainActivityHeaderHeight">
 
                 <ImageView
-                    android:id="@+id/fragmentCreateFamilyEmblemImage"
+                    android:id="@+id/family_emblem_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/mainActivityHeaderWelcome"/>
@@ -43,7 +43,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
             <EditText
-                android:id="@+id/fragmentCreateFamilyEditTextFamilyName"
+                android:id="@+id/family_name_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/normal_margin"

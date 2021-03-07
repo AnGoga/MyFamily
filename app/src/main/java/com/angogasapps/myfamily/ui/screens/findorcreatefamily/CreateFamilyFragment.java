@@ -4,17 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.databinding.FragmentCreateFamilyBinding;
 import com.angogasapps.myfamily.firebase.RegisterFamilyFunks;
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
@@ -23,28 +20,23 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 
 public class CreateFamilyFragment extends Fragment {
-    private Button createFamilyButton;
-    private EditText familyNameEditText;
-    private ConstraintLayout addFamilyEmblemButton;
+    private FragmentCreateFamilyBinding binding;
+
     private Uri mFamilyEmblemUri;
-    private ImageView mEmblemImageView;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_create_family, container, false);
-        createFamilyButton = rootView.findViewById(R.id.createFamilyButton);
-        familyNameEditText = rootView.findViewById(R.id.fragmentCreateFamilyEditTextFamilyName);
-        addFamilyEmblemButton = rootView.findViewById(R.id.fragmentCreateFamilyAddEmblemPhoto);
-        mEmblemImageView = rootView.findViewById(R.id.fragmentCreateFamilyEmblemImage);
+        binding = FragmentCreateFamilyBinding.inflate(getLayoutInflater(), container, false);
 
-        addFamilyEmblemButton.setOnClickListener(v -> {
+
+        binding.addEmblemBtn.setOnClickListener(v -> {
             addFamilyEmblem();
         });
 
-        createFamilyButton.setOnClickListener(v -> {
-            String familyName = familyNameEditText.getText().toString();
+        binding.createFamilyButton.setOnClickListener(v -> {
+            String familyName = binding.familyNameEditText.getText().toString();
             if (familyName.isEmpty()){
                 Toaster.info(getActivity().getApplicationContext(), R.string.enter_family_last_name).show();
                 return;
@@ -62,7 +54,7 @@ public class CreateFamilyFragment extends Fragment {
             });
         });
 
-        return rootView;
+        return binding.getRoot();
     }
 
     private void addFamilyEmblem() {
@@ -76,8 +68,8 @@ public class CreateFamilyFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         try {
             mFamilyEmblemUri = CropImage.getActivityResult(data).getUri();
-            mEmblemImageView.setBackground(null);
-            mEmblemImageView.setImageURI(mFamilyEmblemUri);
+            binding.familyEmblemImage.setBackground(null);
+            binding.familyEmblemImage.setImageURI(mFamilyEmblemUri);
         }catch (Exception e){
             e.printStackTrace();
             Toaster.error(getActivity().getApplicationContext(), "неизвестная ошибка").show();

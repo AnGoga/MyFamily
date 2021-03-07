@@ -3,15 +3,14 @@ package com.angogasapps.myfamily.ui.screens.findorcreatefamily;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.databinding.FragmentFindFamilyBinding;
 import com.angogasapps.myfamily.firebase.FindFamilyFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily;
 import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily;
@@ -20,18 +19,15 @@ import com.angogasapps.myfamily.ui.toaster.Toaster;
 
 
 public class FindFamilyFragment extends Fragment {
-    Button joinButton;
-    AppCompatEditText identificationEditText;
+    private FragmentFindFamilyBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_find_family, container, false);
-        joinButton = rootView.findViewById(R.id.fragmentFindFamilyJoinButton);
-        identificationEditText = rootView.findViewById(R.id.fragmentFindFamilyEditText);
+        binding = FragmentFindFamilyBinding.inflate(getLayoutInflater(), container, false);
 
-        joinButton.setOnClickListener(v -> {
-            String text = identificationEditText.getText().toString();
+        binding.joinBtn.setOnClickListener(v -> {
+            String text = binding.editText.getText().toString();
             if (text.isEmpty()){
                 Toaster.warning(getActivity().getApplicationContext(), R.string.enter_identification).show();
             }else{
@@ -69,6 +65,6 @@ public class FindFamilyFragment extends Fragment {
             }
         });
 
-        return rootView;
+        return binding.getRoot();
     }
 }

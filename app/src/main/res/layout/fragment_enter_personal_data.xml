@@ -19,15 +19,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/pale_text_color"
-        android:id="@+id/fragmentPersonalDataNumberPhone"/>
+        android:id="@+id/numberPhoneText"/>
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fragmentEnterPersonalDataSelectUserPhotoLayout"
+        android:id="@+id/select_user_photo_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
         <ImageView
-            android:id="@+id/fragmentEnterPersonalDataUserImage"
+            android:id="@+id/user_photo_image_view"
             android:layout_width="@dimen/fragment_enter_personal_data_user_photo"
             android:layout_height="200dp"
             android:background="@drawable/default_user_photo"
@@ -55,7 +55,7 @@
             style="@style/boldTextView"
             android:layout_marginRight="@dimen/normal_margin"/>
         <EditText
-            android:id="@+id/fragmentEnterPersonalDataUserNameEditText"
+            android:id="@+id/user_name_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/you_name"/>
@@ -72,14 +72,14 @@
             style="@style/boldTextView"
             android:layout_marginRight="@dimen/normal_margin"/>
         <TextView
-            android:id="@+id/fragmentEnterPersonalDataDayOfBirthTextView"
+            android:id="@+id/birthday_text_view"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:text=""
             style="@style/boldTextView"
             android:textSize="@dimen/small_text_size" />
         <ImageButton
-            android:id="@+id/fragmentEnterPersonalDataSelectDataBirthday"
+            android:id="@+id/select_birthday_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_calendar_today_24" />
@@ -90,7 +90,7 @@
         android:orientation="vertical">
         <Button
             android:gravity="center"
-            android:id="@+id/fragmentEnterPersonalDataRegisterButton"
+            android:id="@+id/register_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/register"

@@ -1,7 +1,6 @@
 package com.angogasapps.myfamily.ui.screens.registeractivity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,11 +9,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.databinding.FragmentEnterPhoneBinding;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -27,8 +25,7 @@ import static com.angogasapps.myfamily.firebase.AuthFunctions.trySignInWithCrede
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 
 public class EnterPhoneFragment extends Fragment {
-    private EditText editTextPhone;
-    FloatingActionButton btnNext;
+    private FragmentEnterPhoneBinding binding;
     private String mPhoneNumber;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallback;
 
@@ -61,14 +58,15 @@ public class EnterPhoneFragment extends Fragment {
         };
 
         // кнопка на EnterPhoneFragment для отправки сообщения с кодом
-        btnNext.setOnClickListener((view) -> {
+        binding.btnNext.setOnClickListener((view) -> {
             // !!!!!
+            // TODO:
             // if  editTextPhone.getText().toString().isCorrectNumberPhone <-- напиши эту функцию!
             //!!!!!
-            if (editTextPhone.getText().toString().isEmpty()) {
+            if (binding.phoneEditText.getText().toString().isEmpty()) {
                 Toaster.error(getActivity(), R.string.enter_your_number_phone).show();
             } else {
-                authorizationUser(editTextPhone.getText().toString(), 60, TimeUnit.SECONDS, getActivity(), mCallback);
+                authorizationUser(binding.phoneEditText.getText().toString(), 60, TimeUnit.SECONDS, getActivity(), mCallback);
             }
         });
     }
@@ -76,9 +74,8 @@ public class EnterPhoneFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View mView = inflater.inflate(R.layout.fragment_enter_phone, container, false);
-        editTextPhone = mView.findViewById(R.id.enterPhoneFragmentInputPhone);
-        btnNext = mView.findViewById(R.id.enterPhoneFragmentBtnNext);
-        return mView;
+        binding = FragmentEnterPhoneBinding.inflate(getLayoutInflater(), container, false);
+
+        return binding.getRoot();
     }
 }

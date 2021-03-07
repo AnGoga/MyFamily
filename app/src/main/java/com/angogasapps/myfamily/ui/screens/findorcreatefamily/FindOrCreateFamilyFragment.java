@@ -7,32 +7,30 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.databinding.FragmentFindOrCreateFamilyBinding;
 
 
 public class FindOrCreateFamilyFragment extends Fragment {
-    private Button createFamilyBtn;
-    private Button findFamilyBtn;
+
+    private FragmentFindOrCreateFamilyBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_find_or_create_family, container, false);
-        createFamilyBtn = rootView.findViewById(R.id.focaCreateFamilyButton);
-        findFamilyBtn = rootView.findViewById(R.id.focaFindFamilyButton);
+        binding = FragmentFindOrCreateFamilyBinding.inflate(getLayoutInflater(), container, false);
 
-        createFamilyBtn.setOnClickListener(v -> {
+        binding.createFamilyButton.setOnClickListener(v -> {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.findOrCreateFamilyDataContainer, new CreateFamilyFragment()).addToBackStack(null).commit();
         });
-        findFamilyBtn.setOnClickListener(v -> {
+        binding.findFamilyButton.setOnClickListener(v -> {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.findOrCreateFamilyDataContainer, new FindFamilyFragment()).addToBackStack(null).commit();
         });
-        return rootView;
+        return binding.getRoot();
 
     }
 }

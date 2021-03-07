@@ -9,9 +9,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
-import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.databinding.FragmentEnterCodeBinding;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
@@ -19,7 +18,8 @@ import static com.angogasapps.myfamily.firebase.AuthFunctions.trySignInWithCrede
 
 
 public class EnterCodeFragment extends Fragment {
-    private EditText inputCode;
+    private FragmentEnterCodeBinding binding;
+
     private String mPhoneNumber;
     private String id;
 
@@ -31,22 +31,20 @@ public class EnterCodeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = FragmentEnterCodeBinding.inflate(getLayoutInflater(), container, false);
 
-        View mView = inflater.inflate(R.layout.fragment_enter_code, container, false);
-        inputCode = mView.findViewById(R.id.enterCodeFragmentInputCode);
-
-        return mView;
+        return binding.getRoot();
     }
 
     @Override
     public void onStart() {
         super.onStart();
         //Прослушиваем набор текста пользователем
-        inputCode.addTextChangedListener(new TextWatcher() {
+        binding.codeEditText.addTextChangedListener(new TextWatcher() {
             @Override
             // после набота текста
             public void afterTextChanged(Editable s) {
-                String code = inputCode.getText().toString();
+                String code = binding.codeEditText.getText().toString();
                 if (code.length() == 6){
                     enterCode();
                 }
@@ -59,7 +57,7 @@ public class EnterCodeFragment extends Fragment {
     }
     // функция для отправки и проверки введённого пользователем кода
     private void enterCode(){
-        String code = inputCode.getText().toString();
+        String code = binding.codeEditText.getText().toString();
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(id, code);
         trySignInWithCredential(getActivity(), credential);
     }

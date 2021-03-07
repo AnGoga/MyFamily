@@ -2,6 +2,7 @@ package com.angogasapps.myfamily.async.notification;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -16,6 +17,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.angogasapps.myfamily.ui.screens.chat.ChatActivity.TAG;
 
 public class FcmNotificationSender {
 
@@ -34,11 +37,9 @@ public class FcmNotificationSender {
         this.title = title;
         this.body = body;
         this.mContext = mContext;
-
-
     }
 
-    public void SendNotifications() {
+    public void sendNotifications() {
 
         requestQueue = Volley.newRequestQueue(mContext);
         JSONObject mainObj = new JSONObject();
@@ -47,29 +48,22 @@ public class FcmNotificationSender {
             JSONObject notiObject = new JSONObject();
             notiObject.put("title", title);
             notiObject.put("body", body);
-            notiObject.put("icon", "icon"); // enter icon that exists in drawable only
+//            notiObject.put("icon", "icon"); // enter icon that exists in drawable only
 
 
 
             mainObj.put("notification", notiObject);
 
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, postUrl, mainObj, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-
-                    // code run is got response
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    // code run is got error
-
-                }
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, postUrl, mainObj, response -> {
+                // code run is got response
+                Log.e(TAG, "SendNotifications: ВРОДЕ КАК ОТПРАВЛЕНО");
+            }, error -> {
+                error.printStackTrace();
+                Log.e(TAG, "SendNotifications: ОШИБКА");
             }) {
                 @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
+                public Map<String, String> getHeaders() {
 
                     Map<String, String> header = new HashMap<>();
                     header.put("content-type", "application/json");

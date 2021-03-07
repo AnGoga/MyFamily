@@ -59,7 +59,7 @@
             android:layout_height="wrap_content">
             <com.angogasapps.myfamily.ui.customview.CardView
                 style="@style/LeftCardView"
-                android:id="@+id/mainActivityChatCard"
+                android:id="@+id/chat_card"
                 app:itemCardDrawable="@drawable/mainActivityIcoChat"
                 app:itemCardName="@string/chat"
                 app:itemCardSubscript="@string/chat" />
@@ -78,7 +78,7 @@
                 app:itemCardName="@string/clock"
                 app:itemCardSubscript="@string/clock" />
             <com.angogasapps.myfamily.ui.customview.CardView
-                android:id="@+id/mainActivityMyFamilyCard"
+                android:id="@+id/family_card"
                 style="@style/RightCardView"
                 app:itemCardDrawable="@drawable/ic_my_family"
                 app:itemCardName="@string/my_family"

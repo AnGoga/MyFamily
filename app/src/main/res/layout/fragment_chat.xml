@@ -14,7 +14,7 @@
         <!--                android:orientation="vertical"-->
             <androidx.recyclerview.widget.RecyclerView
                 android:paddingRight="@dimen/text_message_right_margin"
-                android:id="@+id/chatRecycleView"
+                android:id="@+id/recycle_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/chat_fragment_enter_text_height"
@@ -37,7 +37,7 @@
                     android:layout_height="match_parent"/>
 
                 <ImageView
-                    android:id="@+id/chat_btn_clip"
+                    android:id="@+id/clip_btn"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:rotation="30"
@@ -48,13 +48,13 @@
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:visibility="invisible"
-                        android:id="@+id/chatSendMessageButton"
+                        android:id="@+id/send_message_btn"
                         android:layout_height="match_parent"
                         android:layout_width="match_parent"
                         app:civ_circle_background_color="@color/green"
                         android:src="@drawable/ic_chat_send_message"/>
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/chatAudioButton"
+                        android:id="@+id/audio_btn"
                         android:layout_height="match_parent"
                         android:layout_width="match_parent"
                         app:civ_circle_background_color="@color/green"

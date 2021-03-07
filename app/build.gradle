@@ -29,6 +29,10 @@ android {
     }
 
     googleServices { disableVersionCheck = true }
+
+    viewBinding{
+        enabled = true
+    }
 }
 
 dependencies {
@@ -58,7 +62,7 @@ dependencies {
 
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 
-    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-messaging:21.0.1'
 
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 

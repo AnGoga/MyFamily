@@ -1,29 +1,12 @@
 package com.angogasapps.myfamily.async.notification;
 
-import android.app.Notification;
-import android.util.Log;
-
-import com.angogasapps.myfamily.database.DatabaseManager;
+import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.objects.Message;
 import com.angogasapps.myfamily.objects.User;
-import com.angogasapps.myfamily.utils.Others;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_TEXT_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class MessageNotificationManager {
     private static MessageNotificationManager manager;
 
-    private APIService apiService = Client.getInstance("https://fcm.googleapis.com/").create(APIService.class);
 
     public static String PARAM_VALUE = "value";
     public static String PARAM_FROM_NAME = "from_name";
@@ -42,54 +25,13 @@ public class MessageNotificationManager {
 
 
     public void sendNotificationMessage(Message message, User fromUser){
-//        HashMap<String, String> map = new HashMap<>();
-//        map.put(PARAM_FROM_ID, message.getFrom());
-//        map.put(PARAM_FROM_NAME, fromUser.getName());
-//        map.put(PARAM_TYPE, TYPE_MESSAGE);
-//        map.put(PARAM_MESSAGE_TYPE, message.getType());
-//        if (message.getType().equals(TYPE_TEXT_MESSAGE))
-//            map.put(PARAM_VALUE, message.getValue());
-//        else
-//            map.put(PARAM_VALUE, "");
-//
-//
-//        RemoteMessage notifMessage = new RemoteMessage.Builder(fromUser.getFamily())
-//                .setMessageId(message.getId())
-//                .setMessageType(message.getType())
-//                .setData(map)
-//                .build();
-//
-//        FirebaseMessaging.getInstance().send(notifMessage);
-//        Log.i("TAG", "Сообщение отправлено");
-
-        Others.runInNewThread(() -> {
-            ArrayList<User> users = new ArrayList<>(DatabaseManager.getDatabase().getUserDao().getAll());
-            for (User user : users){
-                if (!user.getId().equals(USER.getId()))
-                    testSendNotification(user.getToken(), "Message", message.getValue());
-            }
-        });
-
+//        FcmNotificationSender sender = new FcmNotificationSender(
+//                "/eyJhbGciOiJSUzI1NiIsImtpZCI6IjBlYmMyZmI5N2QyNWE1MmQ5MjJhOGRkNTRiZmQ4MzhhOTk4MjE2MmIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbXlmYW1pbHktMTYwMWIiLCJhdWQiOiJteWZhbWlseS0xNjAxYiIsImF1dGhfdGltZSI6MTYxNDI3MzUxMSwidXNlcl9pZCI6IkJVUGZUeVc2bXZXUFUxQ0c3SVdJaHJzaWd4ejIiLCJzdWIiOiJCVVBmVHlXNm12V1BVMUNHN0lXSWhyc2lneHoyIiwiaWF0IjoxNjE0NDQyODg5LCJleHAiOjE2MTQ0NDY0ODksInBob25lX251bWJlciI6IisxMjM0NTY3ODkxMCIsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsicGhvbmUiOlsiKzEyMzQ1Njc4OTEwIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGhvbmUifX0.qFrQCU08NxnlIUpv3k0GSxh0gRvj3hdCiTineW8v8PNWsXgcZe3FeaA8aFnwaKTKeIloLm2Kz25ugriH1tUDkeZiEu_M4ev3WeuQtkZN8Kqp78m7O5fGHj3-7Z4qLXzcqbGyKO4-LghAYkwFN4W09_hn9UgTPnOcxXI_rBnF3D6H6h5ceA4TT16vimg7thYoVACkiFBCTh6lIsd5ffKHFlb_isW_59RRfInEYA6Cx42tjpouYsfCDOC1sPkP7tBiKD7cAp1eezSDQ5mocY6qPgz2rMJWd7dwALfWYT1x7zvShXKN-yDkWgfQ7gwD8C5jxKItUeF61T0fPyScxy8-ug",
+//                "Сообщение",
+//                message.getValue(),
+//                AppApplication.getInstance().getApplicationContext()
+//        );
+//        sender.sendNotifications();
     }
 
-    public void testSendNotification(String userToken, String title, String message){
-        NotificationSender.Data data = new NotificationSender.Data(title, message);
-        NotificationSender sender = new NotificationSender(data, userToken);
-        apiService.sendNotification(sender).enqueue(new Callback<APIService.MyResponse>() {
-            @Override
-            public void onResponse(Call<APIService.MyResponse> call, Response<APIService.MyResponse> response) {
-                if (response.code() == 200)
-                    if (response.body().success != 1) {
-                        Log.e("TAG", "в отправке Notification произошла ошибка");
-                    }else{
-                        Log.i("TAG", "Notification успешно отправлено");
-                    }
-            }
-
-            @Override
-            public void onFailure(Call<APIService.MyResponse> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
 }

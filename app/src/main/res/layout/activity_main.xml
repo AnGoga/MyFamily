@@ -20,8 +20,38 @@
 <!--            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
 <!--            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
 
-        <include
-            layout="@layout/main_toolbar_layout"/>
+<!--        <include-->
+<!--            layout="@layout/main_toolbar_layout"/>-->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/toolbar_user_image"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:padding="2.5dp"
+                android:src="@drawable/default_user_photo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:theme="@style/Theme.MyFamily"
+                app:menu="@menu/main_menu"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_margin="10dp"
@@ -55,7 +85,7 @@
             android:layout_height="wrap_content">
             <com.angogasapps.myfamily.ui.customview.CardView
                 style="@style/LeftCardView"
-                android:id="@+id/mainActivityChatCard"
+                android:id="@+id/chat_card"
                 app:itemCardDrawable="@drawable/mainActivityIcoChat"
                 app:itemCardName="@string/chat"
                 app:itemCardSubscript="@string/chat" />
@@ -74,7 +104,7 @@
                 app:itemCardName="@string/clock"
                 app:itemCardSubscript="@string/clock" />
             <com.angogasapps.myfamily.ui.customview.CardView
-                android:id="@+id/mainActivityMyFamilyCard"
+                android:id="@+id/family_card"
                 style="@style/RightCardView"
                 app:itemCardDrawable="@drawable/ic_my_family"
                 app:itemCardName="@string/my_family"

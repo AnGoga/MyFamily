@@ -105,12 +105,12 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        AppApplication.setExitChatStatus();
+//        AppApplication.setExitChatStatus();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        AppApplication.setReturnToChatStatus();
+//        AppApplication.setReturnToChatStatus();
     }
 }

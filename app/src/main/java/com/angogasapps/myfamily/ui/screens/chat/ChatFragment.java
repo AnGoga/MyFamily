@@ -17,12 +17,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.EditText;
-import android.widget.ImageView;
 
-import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.database.DatabaseManager;
+import com.angogasapps.myfamily.databinding.FragmentChatBinding;
 import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.objects.ChatTextWatcher;
 import com.angogasapps.myfamily.objects.Message;
@@ -30,7 +28,6 @@ import com.angogasapps.myfamily.ui.customview.message_recycle_view.ChatAdapter;
 import com.angogasapps.myfamily.objects.ChatChildEventListener;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.angogasapps.myfamily.objects.ChatAudioRecorder;
-import com.angogasapps.myfamily.utils.ChatAdapterUtils;
 import com.angogasapps.myfamily.utils.Others;
 import com.angogasapps.myfamily.utils.Permissions;
 import com.google.firebase.database.DatabaseReference;
@@ -39,10 +36,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.subjects.Subject;
 
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.getMessageKey;
@@ -53,6 +48,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 
 public class ChatFragment extends Fragment {
+    private FragmentChatBinding binding;
 
     public static final int downloadMessagesCountStep = 10;
     public static final int dangerFirstVisibleItemPosition = 3;
@@ -62,11 +58,7 @@ public class ChatFragment extends Fragment {
 
     private ChatAudioRecorder mRecorder;
 
-    public RecyclerView mRecycleView;
-    public CircleImageView sendMessageBtn, sendAudioBtn;
-    public EditText chatEditText;
     public ChatAdapter mAdapter;
-    private ImageView mImageViewClip;
 
     private LinearLayoutManager mLayoutManager;
     private ChatChildEventListener mChatListener;
@@ -82,25 +74,20 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d("TAG", "onCreateView: ");
-        View rootView = inflater.inflate(R.layout.fragment_chat, container, false);
-
-        mRecycleView = rootView.findViewById(R.id.chatRecycleView);
-        sendMessageBtn = rootView.findViewById(R.id.chatSendMessageButton);
-        chatEditText = rootView.findViewById(R.id.chatEditText);
-        sendAudioBtn = rootView.findViewById(R.id.chatAudioButton);
-        mImageViewClip = rootView.findViewById(R.id.chat_btn_clip);
+        binding = FragmentChatBinding.inflate(getLayoutInflater(), container, false);
 
 
-        chatEditText.addTextChangedListener(new ChatTextWatcher(ChatFragment.this));
+        binding.chatEditText.addTextChangedListener(
+                new ChatTextWatcher(binding.sendMessageBtn, binding.audioBtn, binding.chatEditText));
 
-        sendMessageBtn.setOnClickListener(v -> {
+        binding.sendMessageBtn.setOnClickListener(v -> {
             isScrollToBottom = true;
-            ChatFunks.sendMessage(TYPE_TEXT_MESSAGE, chatEditText.getText().toString());
-            chatEditText.setText("");
-            mRecycleView.smoothScrollToPosition(mAdapter.getItemCount());
+            ChatFunks.sendMessage(TYPE_TEXT_MESSAGE, binding.chatEditText.getText().toString());
+            binding.chatEditText.setText("");
+            binding.recycleView.smoothScrollToPosition(mAdapter.getItemCount());
         });
 
-        sendAudioBtn.setOnTouchListener((v, event) -> {
+        binding.audioBtn.setOnTouchListener((v, event) -> {
 
             if (Permissions.havePermission(Permissions.AUDIO_RECORD_PERM, getActivity())) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -118,7 +105,7 @@ public class ChatFragment extends Fragment {
             return true;
         });
 
-        mImageViewClip.setOnClickListener(v -> {
+        binding.clipBtn.setOnClickListener(v -> {
             getPhotoUri();
         });
 
@@ -126,7 +113,7 @@ public class ChatFragment extends Fragment {
         initChatListener();
 
 
-        return rootView;
+        return binding.getRoot();
     }
 
     private void initChatListener(){
@@ -137,14 +124,14 @@ public class ChatFragment extends Fragment {
         chatPath = DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily());
         if (mAdapter == null)
             mAdapter = new ChatAdapter(getActivity(), messagesList);
-        mRecycleView.setAdapter(mAdapter);
+        binding.recycleView.setAdapter(mAdapter);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecycleView.setLayoutManager(mLayoutManager);
-        mRecycleView.setHasFixedSize(true);
+        binding.recycleView.setLayoutManager(mLayoutManager);
+        binding.recycleView.setHasFixedSize(true);
 
 
-        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        binding.recycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -208,7 +195,7 @@ public class ChatFragment extends Fragment {
     public void onAddMessage(Message message){
         mAdapter.addMessage(message, isScrollToBottom);
         if (isScrollToBottom)
-            mRecycleView.smoothScrollToPosition(mAdapter.getItemCount());
+            binding.recycleView.smoothScrollToPosition(mAdapter.getItemCount());
 
         subject.onNext(message);
     }

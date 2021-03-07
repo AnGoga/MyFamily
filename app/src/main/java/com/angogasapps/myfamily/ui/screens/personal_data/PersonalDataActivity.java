@@ -7,27 +7,25 @@ import androidx.cardview.widget.CardView;
 import android.os.Bundle;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.databinding.ActivityPersonalDataBinding;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class PersonalDataActivity extends AppCompatActivity {
-    CircleImageView userImage;
-    CardView cardDairy, cardData;
+    private ActivityPersonalDataBinding binding;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_personal_data);
-
-        userImage = findViewById(R.id.user_image);
-        cardDairy = findViewById(R.id.card_personal_dairy);
-        cardData = findViewById(R.id.card_share_personal_data);
+        binding = ActivityPersonalDataBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         if (USER.getUserPhoto() != null){
-            userImage.setImageBitmap(USER.getUserPhoto());
+            binding.userImage.setImageBitmap(USER.getUserPhoto());
         }
 
 

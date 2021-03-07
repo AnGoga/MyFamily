@@ -17,14 +17,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/focaCreateFamilyButton"
+            android:id="@+id/create_family_button"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/create_family"/>
 
         <Button
-            android:id="@+id/focaFindFamilyButton"
+            android:id="@+id/find_family_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/join"/>

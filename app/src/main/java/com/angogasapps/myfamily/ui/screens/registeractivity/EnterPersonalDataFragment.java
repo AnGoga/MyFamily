@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.text.format.DateUtils;
@@ -13,13 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.databinding.FragmentEnterPersonalDataBinding;
 import com.angogasapps.myfamily.firebase.RegisterUserFunks;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -30,29 +26,20 @@ import java.util.Calendar;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 
 public class EnterPersonalDataFragment extends Fragment {
-    EditText userNameEditText;
-    TextView birthdayTextView;
-    ImageButton selectBirthdayImageButton;
-    Button registerButton;
-    Calendar timeContainer;
-    ImageView userPhotoImageView;
-    ConstraintLayout selectUserPhotoLayout;
-    Long mTimeMillisBirthday = 0L;
-    Uri userPhotoUri = Uri.EMPTY;
+    private FragmentEnterPersonalDataBinding binding;
+
+    private Calendar timeContainer;
+    private Long mTimeMillisBirthday = 0L;
+    private Uri userPhotoUri = Uri.EMPTY;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_enter_personal_data, container, false);
-        ((TextView) view.findViewById(R.id.fragmentPersonalDataNumberPhone))
+        binding = FragmentEnterPersonalDataBinding.inflate(getLayoutInflater(), container, false);
+
+        binding.numberPhoneText
                 .setText(getString(R.string.you_phone_number) + ": " + AUTH.getCurrentUser().getPhoneNumber());
-        userNameEditText = view.findViewById(R.id.fragmentEnterPersonalDataUserNameEditText);
-        birthdayTextView = view.findViewById(R.id.fragmentEnterPersonalDataDayOfBirthTextView);
-        selectBirthdayImageButton = view.findViewById(R.id.fragmentEnterPersonalDataSelectDataBirthday);
-        registerButton = view.findViewById(R.id.fragmentEnterPersonalDataRegisterButton);
-        userPhotoImageView = view.findViewById(R.id.fragmentEnterPersonalDataUserImage);
-        selectUserPhotoLayout = view.findViewById(R.id.fragmentEnterPersonalDataSelectUserPhotoLayout);
 
         timeContainer = Calendar.getInstance();
 
@@ -63,14 +50,14 @@ public class EnterPersonalDataFragment extends Fragment {
             setInitialDateTime();
         };
 
-        selectBirthdayImageButton.setOnClickListener(v -> {
+        binding.selectBirthdayBtn.setOnClickListener(v -> {
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), onDateSetListener,
                     timeContainer.get(Calendar.YEAR), timeContainer.get(Calendar.MONTH), timeContainer.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.show();
         });
 
-        registerButton.setOnClickListener(v -> {
-            String mUserName = userNameEditText.getText().toString();
+        binding.registerButton.setOnClickListener(v -> {
+            String mUserName = binding.userNameEditText.getText().toString();
             Log.d("tag", "Name -> " + mUserName + "; Time -> " + mTimeMillisBirthday);
             if (!mUserName.isEmpty() && mTimeMillisBirthday != 0L){
                 Log.d("tag", "True");
@@ -79,16 +66,16 @@ public class EnterPersonalDataFragment extends Fragment {
             }
         });
 
-        selectUserPhotoLayout.setOnClickListener(v -> {
+        binding.selectUserPhotoLayout.setOnClickListener(v -> {
             getUserPhoto();
         });
 
-        return view;
+        return binding.getRoot();
     }
 
     private void setInitialDateTime() {
         mTimeMillisBirthday = timeContainer.getTimeInMillis();
-        birthdayTextView.setText(DateUtils.formatDateTime(getActivity(),
+        binding.birthdayTextView.setText(DateUtils.formatDateTime(getActivity(),
                 mTimeMillisBirthday,
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
                         //| DateUtils.FORMAT_SHOW_TIME));
@@ -105,8 +92,8 @@ public class EnterPersonalDataFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         try {
             userPhotoUri = CropImage.getActivityResult(data).getUri();
-            userPhotoImageView.setBackground(null);
-            userPhotoImageView.setImageURI(userPhotoUri);
+            binding.userPhotoImageView.setBackground(null);
+            binding.userPhotoImageView.setImageURI(userPhotoUri);
         }catch (Exception e){
             e.printStackTrace();
             Toaster.error(getActivity().getApplicationContext(), "неизвестная ошибка").show();

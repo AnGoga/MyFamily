@@ -7,17 +7,17 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppFirebaseNotificationManager;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.async.ServiceManager;
-import com.angogasapps.myfamily.ui.customview.CardView;
+import com.angogasapps.myfamily.databinding.ActivityMainBinding;
 import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
 import com.angogasapps.myfamily.ui.screens.family_settings.FamilySettingsActivity;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
-import com.angogasapps.myfamily.utils.Others;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -26,10 +26,8 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "TAG";
+    private ActivityMainBinding binding;
 
-    CardView myFamilyCard, chatCard, cardStorage;
-    Toolbar toolbar;
-    CircleImageView userCircleImageView;
 
 
     @Override
@@ -41,38 +39,35 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_main);
-
-        myFamilyCard = findViewById(R.id.mainActivityMyFamilyCard);
-        chatCard = findViewById(R.id.mainActivityChatCard);
-        cardStorage = findViewById(R.id.card_storage);
-        toolbar = findViewById(R.id.main_toolbar);
-        userCircleImageView = findViewById(R.id.main_toolbar_user_image);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         initToolbar();
 
-        chatCard.setOnClickListener(v -> {
+        binding.chatCard.setOnClickListener(v -> {
             startActivity(new Intent(this, ChatActivity.class));
         });
 
-        myFamilyCard.setOnClickListener(v -> {
+        binding.familyCard.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, FamilySettingsActivity.class));
         });
 
-        cardStorage.setOnClickListener(v -> {
+        binding.cardStorage.setOnClickListener(v -> {
 
         });
 
-
+        FirebaseMessaging.getInstance().subscribeToTopic("/topics/" + USER.getFamily()).addOnCompleteListener(task -> {
+            Log.i(TAG, "Подписка прошла успешно, её статус успешности -> " + task.isSuccessful());
+        });
 
     }
 
     private void initToolbar() {
         getSupportActionBar().hide();
-        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+        binding.toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
         if (USER.getUserPhoto() != null)
-            userCircleImageView.setImageBitmap(USER.getUserPhoto());
-        userCircleImageView.setOnClickListener(v -> {
+            binding.toolbarUserImage.setImageBitmap(USER.getUserPhoto());
+        binding.toolbarUserImage.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, PersonalDataActivity.class));
         });
     }
