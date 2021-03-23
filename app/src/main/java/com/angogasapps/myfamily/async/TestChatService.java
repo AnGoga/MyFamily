@@ -54,7 +54,10 @@ public class TestChatService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-        Log.i("TAG", "Сообщение-уведомление получено");
+
+        Log.i("TAG", "Сообщение-уведомление получено -> " + remoteMessage.toString());
+
+
 
 //        HashMap<String, String> map = new HashMap<>(remoteMessage.getData());
 //
@@ -77,7 +80,7 @@ public class TestChatService extends FirebaseMessagingService {
 //                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 //
 //            notificationManager.notify(1, notification);
-        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        /*Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
         r.play();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -136,7 +139,7 @@ public class TestChatService extends FirebaseMessagingService {
 
 
 // notificationId is a unique int for each notification that you must define
-        mNotificationManager.notify(100, builder.build());
+        mNotificationManager.notify(100, builder.build());*/
     }
 
 

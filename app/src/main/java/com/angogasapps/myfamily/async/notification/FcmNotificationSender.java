@@ -11,10 +11,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,15 +27,17 @@ import static com.angogasapps.myfamily.ui.screens.chat.ChatActivity.TAG;
 
 public class FcmNotificationSender {
 
-    String userFcmToken;
-    String title;
-    String body;
-    Context mContext;
+    private String userFcmToken;
+    private String title;
+    private String body;
+    private Context mContext;
 
+    private final String postUrl = "https://fcm.googleapis.com/v1/projects/myfamily-1601b/messages:send";
+    private static final String MESSAGING_SCOPE = "https://www.googleapis.com/auth/firebase.messaging";
+    private static final String[] SCOPES = { MESSAGING_SCOPE };
 
-    private RequestQueue requestQueue;
-    private final String postUrl = "https://fcm.googleapis.com/fcm/send";
-    private final String fcmServerKey ="AAAA9csGIhU:APA91bF0U8mRa0KiVjbs3WEURjHb2A8SAUTO3XqegTfTA3egEh1boKbWiuGriAfTnPMQ_qu5EfoulSuQdrrEidUAgBAMh8Sj4ZNjF76-oPUHxm2GQCK16lqcpjSlpCvCgfcy-YzPaHR7";
+//    private RequestQueue requestQueue;
+
 
     public FcmNotificationSender(String userFcmToken, String title, String body, Context mContext) {
         this.userFcmToken = userFcmToken;
@@ -39,7 +46,22 @@ public class FcmNotificationSender {
         this.mContext = mContext;
     }
 
-    public void sendNotifications() {
+    public void sendMessage(){
+
+    }
+
+
+    private static String getAccessToken() throws IOException{
+        GoogleCredential googleCredential = GoogleCredential
+                .fromStream(new FileInputStream("service-account.json"))
+                .createScoped(Arrays.asList(SCOPES));
+        googleCredential.refreshToken();
+        return googleCredential.getAccessToken();
+    }
+}
+
+/*
+public void sendNotifications() {
 
         requestQueue = Volley.newRequestQueue(mContext);
         JSONObject mainObj = new JSONObject();
@@ -80,7 +102,5 @@ public class FcmNotificationSender {
         }
 
 
-
-
     }
-}
+ */

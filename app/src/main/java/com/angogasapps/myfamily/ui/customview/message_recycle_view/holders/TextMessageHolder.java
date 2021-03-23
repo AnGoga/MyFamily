@@ -6,6 +6,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.databinding.TextMessageHolderBinding;
 
 public class TextMessageHolder extends AppBaseViewHolder{
 

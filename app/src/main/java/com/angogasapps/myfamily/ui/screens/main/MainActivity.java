@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.async.ServiceManager;
+import com.angogasapps.myfamily.async.TestChatService;
+import com.angogasapps.myfamily.async.notification.FcmMessageManager;
 import com.angogasapps.myfamily.databinding.ActivityMainBinding;
 import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
 import com.angogasapps.myfamily.ui.screens.family_settings.FamilySettingsActivity;
@@ -56,9 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        FirebaseMessaging.getInstance().subscribeToTopic("/topics/" + USER.getFamily()).addOnCompleteListener(task -> {
-            Log.i(TAG, "Подписка прошла успешно, её статус успешности -> " + task.isSuccessful());
-        });
+        FcmMessageManager.subscribeToFamily();
+//        startService(new Intent(this, TestChatService.class));
+
+//        FirebaseMessaging.getInstance().subscribeToTopic("/topics/" + USER.getFamily()).addOnCompleteListener(task -> {
+//            Log.i(TAG, "Подписка прошла успешно, её статус успешности -> " + task.isSuccessful());
+//        });
 
     }
 

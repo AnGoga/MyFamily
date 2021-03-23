@@ -1,6 +1,6 @@
 package com.angogasapps.myfamily.ui.customview.message_recycle_view.holders;
 
-import android.app.Activity;
+import androidx.viewbinding.ViewBinding;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
@@ -18,6 +18,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.angogasapps.myfamily.utils.WithUsers.*;
 
 public class AppBaseViewHolder extends RecyclerView.ViewHolder {
+//    protected ViewBinding binding;
+
     protected LinearLayout leftLayout, rightLayout;
     protected CircleImageView userAvatar;
     protected View view;
@@ -33,6 +35,11 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder {
 
         view = itemView;
     }
+
+//    public AppBaseViewHolder(@NonNull ViewBinding binding){
+//        super(binding.getRoot());
+//        this.binding = binding;
+//    }
 
     public void init(String from, Long time, String messageKey, String value, Context context){
         this.from = from;
