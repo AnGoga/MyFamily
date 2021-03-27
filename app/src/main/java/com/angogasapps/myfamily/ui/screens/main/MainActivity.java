@@ -2,26 +2,20 @@ package com.angogasapps.myfamily.ui.screens.main;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.async.ServiceManager;
-import com.angogasapps.myfamily.async.TestChatService;
 import com.angogasapps.myfamily.async.notification.FcmMessageManager;
 import com.angogasapps.myfamily.databinding.ActivityMainBinding;
 import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
 import com.angogasapps.myfamily.ui.screens.family_settings.FamilySettingsActivity;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
-import com.google.firebase.messaging.FirebaseMessaging;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
@@ -59,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         FcmMessageManager.subscribeToFamily();
-//        startService(new Intent(this, TestChatService.class));
+//        startService(new Intent(this, FcmNotificationService.class));
 
 //        FirebaseMessaging.getInstance().subscribeToTopic("/topics/" + USER.getFamily()).addOnCompleteListener(task -> {
 //            Log.i(TAG, "Подписка прошла успешно, её статус успешности -> " + task.isSuccessful());

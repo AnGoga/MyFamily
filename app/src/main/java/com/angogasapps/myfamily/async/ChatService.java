@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.async;
+/*package com.angogasapps.myfamily.async;
 
 import android.app.ActivityManager;
 import android.app.AlarmManager;
@@ -153,4 +153,4 @@ public class ChatService extends Service {
 
 
 
-}
+}*/

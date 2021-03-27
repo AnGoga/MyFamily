@@ -15,7 +15,7 @@ public class ServiceManager {
 //            context.startService(intent);
 //        }
 
-//        if (!TestChatService.isRunning(context) && USER.haveFamily())
-//            context.startService(new Intent(context, TestChatService.class));
+//        if (!FcmNotificationService.isRunning(context) && USER.haveFamily())
+//            context.startService(new Intent(context, FcmNotificationService.class));
     }
 }

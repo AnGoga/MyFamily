@@ -33,7 +33,7 @@
 <!--        </service>-->
 
         <service
-            android:name=".async.TestChatService"
+            android:name=".async.FcmNotificationService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
