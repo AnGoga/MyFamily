@@ -56,8 +56,11 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
     public void onBindViewHolder(@NonNull AppBaseViewHolder holder, int position) {
         Message message = messagesList.get(position);
 
+//        if (message.getType().equals(TYPE_IMAGE_MESSAGE))
+//            ((ImageMessageHolder)holder).init(message.getFrom(), message.getTime(), message.getId(), message.getValue(), activity);
+//        else
+            holder.init(message.getFrom(), message.getTime(), message.getId(), message.getValue(), activity);
 
-        holder.init(message.getFrom(), message.getTime(), message.getId(), message.getValue(), activity);
         if (message.getFrom().equals(UID)){
             holder.initRightLayout();
         }else{

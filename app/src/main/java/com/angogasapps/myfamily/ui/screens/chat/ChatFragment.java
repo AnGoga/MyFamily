@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 
+import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.databinding.FragmentChatBinding;
@@ -160,7 +161,10 @@ public class ChatFragment extends Fragment {
 
     private void getPhotoUri() {
         CropImage.activity().setAspectRatio(1, 1)
-                .setRequestedSize(300, 300)
+                .setRequestedSize(
+                        getResources().getInteger(R.integer.image_message_wight),
+                        getResources().getInteger(R.integer.image_message_height)
+                )
                 .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .start(getActivity(), this);
     }

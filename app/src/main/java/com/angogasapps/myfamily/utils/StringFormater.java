@@ -2,6 +2,7 @@ package com.angogasapps.myfamily.utils;
 
 
 
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -36,6 +37,16 @@ public class StringFormater {
 
 
         return role;
+    }
+
+    public static String convertUTF8ToString(String s) {
+        String out = new String(s.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+        return out;
+    }
+
+    public static String convertStringToUTF8(String s) {
+        String out = new String(s.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+        return out;
     }
 
 

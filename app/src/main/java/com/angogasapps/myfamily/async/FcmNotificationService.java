@@ -23,13 +23,13 @@ import com.angogasapps.myfamily.async.notification.TokensManager;
 import com.angogasapps.myfamily.objects.Message;
 import com.angogasapps.myfamily.objects.MessageNotification;
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity;
+import com.angogasapps.myfamily.utils.StringFormater;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.HashMap;
 
-import static com.angogasapps.myfamily.async.notification.MessageNotificationManager.*;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
@@ -55,6 +55,9 @@ public class FcmNotificationService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
 
         Log.i("TAG", "Сообщение-уведомление получено -> " + remoteMessage.toString());
+
+        Log.i("TAG", "onMessageReceived: " + remoteMessage.getData().toString() + "\n"
+                + remoteMessage.getNotification().getTitle());
 
     }
 }

@@ -28,11 +28,12 @@ public class FcmMessageManager {
     private static final String[] SCOPES = { MESSAGING_SCOPE };
 
 
-    public static void sendNotificationMessage(Message message, String to){
+    public static void sendChatNotificationMessage(Message message){
 
         Others.runInNewThread(() -> {
             try {
-                JSONObject messageObject = FcmMessage.buildMessageObj(message, to);
+//                JSONObject messageObject = FcmMessage.buildMessageObj(message, to);
+                JSONObject messageObject = FcmChatNotificationCreator.fromChatMessage(message);
                 Log.d("TAG", "sendMessage: \n" + messageObject);
                 sendNotificationMessage(messageObject);
             }catch (Exception e){

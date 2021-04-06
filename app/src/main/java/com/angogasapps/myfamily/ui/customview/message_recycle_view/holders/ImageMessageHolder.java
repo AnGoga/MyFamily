@@ -1,6 +1,7 @@
 package com.angogasapps.myfamily.ui.customview.message_recycle_view.holders;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.objects.ChatImageShower;
 
@@ -23,9 +25,10 @@ public class ImageMessageHolder extends AppBaseViewHolder {
 
     }
 
-
+    @Override
     public void init(String from, Long time, String messageKey, String value, Activity activity) {
         super.init(from, time, messageKey, value, activity);
+
         imageShower = new ChatImageShower((AppCompatActivity) activity);
 
         OnClickListener onImageClickListener = v -> {

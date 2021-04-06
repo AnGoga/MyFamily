@@ -1,6 +1,8 @@
 package com.angogasapps.myfamily.ui.customview.message_recycle_view.holders;
 
 import androidx.viewbinding.ViewBinding;
+
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
@@ -41,7 +43,7 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder {
 //        this.binding = binding;
 //    }
 
-    public void init(String from, Long time, String messageKey, String value, Context context){
+    public void init(String from, Long time, String messageKey, String value, Activity context){
         this.from = from;
         this.name = getMemberNameById(from);
         this.time = StringFormater.formatLongToTime(time);

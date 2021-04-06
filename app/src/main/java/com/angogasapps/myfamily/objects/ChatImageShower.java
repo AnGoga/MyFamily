@@ -28,6 +28,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.databinding.DialogImageShowerBinding;
 import com.angogasapps.myfamily.ui.screens.chat.ChatFragment;
 import com.github.chrisbanes.photoview.PhotoView;
 
@@ -59,6 +60,8 @@ public class ChatImageShower {
 
         private ImageView sharedImageView;
 
+        private DialogImageShowerBinding binding;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -68,6 +71,8 @@ public class ChatImageShower {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             super.onCreateView(inflater, container, savedInstanceState);
+            binding = DialogImageShowerBinding.inflate(inflater, container, false);
+
             View rootView = inflater.inflate(R.layout.dialog_image_shower, container, false);
 
             imageView = rootView.findViewById(R.id.imageView);
