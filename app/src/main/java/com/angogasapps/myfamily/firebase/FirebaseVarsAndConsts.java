@@ -34,12 +34,12 @@ public class FirebaseVarsAndConsts {
     public static final String TYPE_IMAGE_MESSAGE = "image";
     public static final String TYPE_VOICE_MESSAGE = "voice";
 
-    //firebase realtime database nodes
     public static final String NODE_USERS = "users";
     public static final String NODE_FAMILIES = "families";
     public static final String NODE_CHAT = "chat";
+    public static final String NODE_BUY_LIST = "buy_list";
 
-    //firebase realtime database childes
+
     public static final String CHILD_ID = "id";
     public static final String CHILD_PHONE = "phone";
     public static final String CHILD_FAMILY = "family";

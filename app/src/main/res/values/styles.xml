@@ -35,4 +35,10 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/pale_text_color</item>
     </style>
+
+    <style name="buy_list_holder_text_name_style">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/normal_text_size</item>
+    </style>
 </resources>

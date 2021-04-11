@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.app.AppNotificationManager;
 import com.angogasapps.myfamily.async.notification.TokensManager;
 import com.angogasapps.myfamily.objects.Message;
@@ -55,9 +56,6 @@ public class FcmNotificationService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
 
         Log.i("TAG", "Сообщение-уведомление получено -> " + remoteMessage.toString());
-
-        Log.i("TAG", "onMessageReceived: " + remoteMessage.getData().toString() + "\n"
-                + remoteMessage.getNotification().getTitle());
 
     }
 }

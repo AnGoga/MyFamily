@@ -17,16 +17,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_VOICE
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class FcmChatNotificationCreator {
-//    private static final String NODE_DATA = "data";
-//    private static final String NODE_NOTIFICATION = "notification";
-//    private static final String CHILD_TOPIC = "topic";
-//    private static final String CHILD_TITLE = "title";
-//    private static final String CHILD_BODY = "body";
-//
-//    private static final String CHILD_IMAGE = "image";
-//
-//    private static final String CHILD_TYPE = "type";
-
+    
     public static JSONObject fromChatMessage(Message message) {
         return fromChatMessage(message, USER.getFamily());
     }

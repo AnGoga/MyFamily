@@ -13,6 +13,7 @@ import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.async.ServiceManager;
 import com.angogasapps.myfamily.async.notification.FcmMessageManager;
 import com.angogasapps.myfamily.databinding.ActivityMainBinding;
+import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity;
 import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
 import com.angogasapps.myfamily.ui.screens.family_settings.FamilySettingsActivity;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
@@ -50,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
 
         binding.cardStorage.setOnClickListener(v -> {
 
+        });
+
+        binding.buyListCard.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, BuyListActivity.class));
         });
 
         FcmMessageManager.subscribeToFamily();

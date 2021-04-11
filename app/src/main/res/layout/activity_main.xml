@@ -90,6 +90,7 @@
                 app:itemCardName="@string/chat"
                 app:itemCardSubscript="@string/chat" />
             <com.angogasapps.myfamily.ui.customview.CardView
+                android:id="@+id/buy_list_card"
                 style="@style/RightCardView"
                 app:itemCardDrawable="@drawable/mainActivityIcoBuyList"
                 app:itemCardName="@string/buy_list"
