@@ -1,5 +1,6 @@
 package com.angogasapps.myfamily.ui.screens.buy_list;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -10,7 +11,11 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.ActivityByuListBinding;
 import com.angogasapps.myfamily.objects.BuyList;
 import com.angogasapps.myfamily.objects.Message;
+import com.angogasapps.myfamily.objects.User;
 import com.angogasapps.myfamily.ui.customview.buy_list_rv.BuyListAdapter;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 
 import java.security.PublicKey;
 
@@ -22,11 +27,14 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_BUY_LIST;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
+
 public class BuyListActivity extends AppCompatActivity {
     private ActivityByuListBinding binding;
     private LinearLayoutManager layoutManager;
     private BuyListAdapter adapter;
-    private PublishSubject<BuyList> subject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,43 +43,42 @@ public class BuyListActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         initRecyclerView();
-        initSubject();
+        initBuyListListener();
 
         binding.floatingBtn.setOnClickListener(v -> {
-            new AddBuyListDialog(BuyListActivity.this, subject).show();
+            new AddBuyListDialog(BuyListActivity.this).show();
         });
 
 
     }
 
-    private void initSubject() {
-        Observer<BuyList> observer = new Observer<BuyList>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {}
-
-            @Override
-            public void onNext(@NonNull BuyList buyList) {
-                BuyListActivity.this.runOnUiThread(() -> {
-                    adapter.addBuyList(buyList);
-                });
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {}
-            @Override
-            public void onComplete() {}
-        };
-
-        subject = PublishSubject.create();
-        subject.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
-    }
 
     private void initRecyclerView() {
         adapter = new BuyListAdapter(this);
         layoutManager = new LinearLayoutManager(this);
         binding.recycleView.setLayoutManager(layoutManager);
         binding.recycleView.setAdapter(adapter);
+    }
+
+
+    private void initBuyListListener() {
+        DATABASE_ROOT.child(NODE_BUY_LIST).child(USER.getFamily()).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                adapter.addBuyList(BuyList.from(snapshot));
+            }
+
+            @Override
+            public void onChildChanged(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+            @Override
+            public void onChildRemoved(@androidx.annotation.NonNull DataSnapshot snapshot) {}
+            @Override
+            public void onChildMoved(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+
+            @Override
+            public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {}
+        });
     }
 }

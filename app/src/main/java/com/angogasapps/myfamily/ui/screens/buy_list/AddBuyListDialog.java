@@ -17,12 +17,10 @@ import io.reactivex.subjects.PublishSubject;
 
 public class AddBuyListDialog {
     private Context context;
-    private PublishSubject<BuyList> subject;
 
 
-    protected AddBuyListDialog(@NonNull Context context, PublishSubject<BuyList> subject) {
+    protected AddBuyListDialog(@NonNull Context context) {
         this.context = context;
-        this.subject = subject;
     }
 
     public void show(){
@@ -50,7 +48,7 @@ public class AddBuyListDialog {
                     BuyListFunks.addNewBuyList(buyList, new IOnEndCommunicationWithFirebase() {
                         @Override
                         public void onSuccess() {
-                            subject.onNext(buyList);
+
                         }
                         @Override
                         public void onFailure() {}

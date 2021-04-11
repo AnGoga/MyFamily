@@ -1,10 +1,12 @@
 package com.angogasapps.myfamily.objects;
 
 import androidx.annotation.StringRes;
+import androidx.lifecycle.LiveData;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.utils.WithUsers;
+import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ public class BuyList {
     private String name;
     private ArrayList<Product> products = new ArrayList<>();
 
+    public BuyList(){}
 
     public BuyList(String name){
         this.name = name;
@@ -31,6 +34,17 @@ public class BuyList {
         this.products.add(product);
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ArrayList<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(ArrayList<Product> products) {
+        this.products = products;
+    }
 
     public static class Product{
         private String id = "";
@@ -95,5 +109,9 @@ public class BuyList {
                 return AppApplication.getInstance().getApplicationContext().getString(id);
             }
         }
+    }
+    public static BuyList from(DataSnapshot snapshot){
+        BuyList buyList = snapshot.getValue(BuyList.class);
+        return buyList;
     }
 }
