@@ -3,8 +3,7 @@ package com.angogasapps.myfamily.objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.angogasapps.myfamily.objects.Message;
-import com.angogasapps.myfamily.ui.screens.chat.ChatFragment;
+import com.angogasapps.myfamily.models.Message;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

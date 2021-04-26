@@ -1,7 +1,6 @@
-package com.angogasapps.myfamily.objects;
+package com.angogasapps.myfamily.models;
 
 import androidx.annotation.StringRes;
-import androidx.lifecycle.LiveData;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;

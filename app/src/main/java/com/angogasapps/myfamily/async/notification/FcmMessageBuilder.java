@@ -1,21 +1,13 @@
 package com.angogasapps.myfamily.async.notification;
 
-import android.content.Context;
 import android.util.Log;
 
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
-import com.angogasapps.myfamily.objects.Message;
 import com.angogasapps.myfamily.utils.StringFormater;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_IMAGE_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_TEXT_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_VOICE_MESSAGE;
 
 public class FcmMessageBuilder {
 

@@ -5,10 +5,8 @@ import android.util.Log;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
-import com.angogasapps.myfamily.objects.Message;
-import com.angogasapps.myfamily.utils.StringFormater;
+import com.angogasapps.myfamily.models.Message;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_IMAGE_MESSAGE;

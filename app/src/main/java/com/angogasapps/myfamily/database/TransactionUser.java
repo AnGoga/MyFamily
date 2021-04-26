@@ -1,20 +1,5 @@
 package com.angogasapps.myfamily.database;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.provider.MediaStore;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
-import com.angogasapps.myfamily.objects.User;
-
-import java.io.File;
-
 
 public class TransactionUser {
     /*@PrimaryKey

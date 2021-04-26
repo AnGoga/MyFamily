@@ -1,14 +1,7 @@
 package com.angogasapps.myfamily.async.notification;
 
-import androidx.annotation.NonNull;
-
-import com.angogasapps.myfamily.objects.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.angogasapps.myfamily.models.User;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GetTokenResult;
-
-import java.util.concurrent.Executor;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_TOKEN;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;

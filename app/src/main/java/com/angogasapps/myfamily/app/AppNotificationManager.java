@@ -6,11 +6,6 @@ import android.content.Context;
 import android.os.Build;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.objects.Message;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_IMAGE_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_TEXT_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_VOICE_MESSAGE;
 
 public class AppNotificationManager {
     public static final String CHANNEL_ID = "app_channel_id";

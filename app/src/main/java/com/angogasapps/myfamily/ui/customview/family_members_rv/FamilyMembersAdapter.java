@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.objects.User;
+import com.angogasapps.myfamily.models.User;
 import com.angogasapps.myfamily.ui.customview.family_members_rv.holders.FamilyMembersHolder;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*;
 

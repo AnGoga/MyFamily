@@ -10,10 +10,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 
-import com.angogasapps.myfamily.async.notification.TokensManager;
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
-import com.angogasapps.myfamily.objects.User;
+import com.angogasapps.myfamily.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -43,7 +42,7 @@ import static com.angogasapps.myfamily.utils.WithUsers.getUserFromSnapshot;
 
 public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> {
     public static volatile boolean isEnd = false;
-    Context context;
+    private Context context;
     volatile ArrayList<String> familyMembersId = new ArrayList<>();
     volatile ArrayList<User> familyMembersList = new ArrayList<>();
     volatile HashMap<String, String> usersRoleMap = new HashMap<>();

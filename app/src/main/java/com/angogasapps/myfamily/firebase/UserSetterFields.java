@@ -5,11 +5,10 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
-import com.angogasapps.myfamily.objects.User;
+import com.angogasapps.myfamily.models.User;
 
 import java.util.Objects;
 
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_FAMILY;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_PHOTO_URL;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;

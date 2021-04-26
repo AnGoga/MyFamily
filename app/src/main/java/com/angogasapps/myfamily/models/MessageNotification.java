@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.objects;
+package com.angogasapps.myfamily.models;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -9,9 +9,9 @@ import androidx.core.app.NotificationCompat;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.database.UserDao;
+import com.angogasapps.myfamily.models.Message;
+import com.angogasapps.myfamily.models.User;
 import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
-
-import io.reactivex.annotations.NonNull;
 
 import static com.angogasapps.myfamily.app.AppNotificationManager.CHANNEL_ID;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_IMAGE_MESSAGE;

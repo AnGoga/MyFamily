@@ -5,10 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.database.MessageDao;
-import com.angogasapps.myfamily.objects.Message;
+import com.angogasapps.myfamily.models.Message;
 
 import java.util.ArrayList;
 
@@ -45,7 +44,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void loadMessages(){
-        /*Others.runInNewThread(() -> {
+        /*Async.runInNewThread(() -> {
             messageList = new ArrayList<>(messageDao.getAll());
             Log.d(TAG, "loadMessages: ");
         });

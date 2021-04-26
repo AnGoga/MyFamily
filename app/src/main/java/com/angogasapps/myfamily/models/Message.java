@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.objects;
+package com.angogasapps.myfamily.models;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

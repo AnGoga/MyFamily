@@ -1,8 +1,7 @@
-package com.angogasapps.myfamily.objects;
+package com.angogasapps.myfamily.models;
 
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,10 +9,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.angogasapps.myfamily.firebase.UserSetterFields;
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_FAMILY;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.UID;
 
 

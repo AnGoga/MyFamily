@@ -2,7 +2,6 @@ package com.angogasapps.myfamily.ui.customview.message_recycle_view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -10,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.objects.Message;
+import com.angogasapps.myfamily.models.Message;
 import com.angogasapps.myfamily.ui.customview.message_recycle_view.holders.AppBaseViewHolder;
 import com.angogasapps.myfamily.ui.customview.message_recycle_view.holders.ImageMessageHolder;
 import com.angogasapps.myfamily.ui.customview.message_recycle_view.holders.TextMessageHolder;
@@ -96,7 +95,9 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
         if (!arrayContainsMessage(messagesList, message)) {
             if (scrollToBottom) {
                 messagesList.add(message);
-                notifyItemInserted(messagesList.size() - 1);
+                activity.runOnUiThread(() -> {
+                    notifyItemInserted(messagesList.size() - 1);
+                });
             } else {
                 messagesList.add(0, message);
                 notifyItemInserted(0);

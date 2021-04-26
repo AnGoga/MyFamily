@@ -1,15 +1,17 @@
 package com.angogasapps.myfamily.utils;
 
-public class Others {
+public class Async {
 
-    public static void runInNewThread(doInThread inThread){
-        new Thread(){
+    public static Thread runInNewThread(doInThread inThread){
+        Thread thread = new Thread(){
             @Override
             public void run() {
                 super.run();
                 inThread.run();
             }
-        }.start();
+        };
+        thread.start();
+        return thread;
     }
     public interface doInThread {
         void run();

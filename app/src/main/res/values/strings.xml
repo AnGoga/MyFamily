@@ -66,6 +66,7 @@
     <string name="add">Добавить</string>
     <string name="cancel">Отмена</string>
     <string name="enter_buy_list_name">Введите название списка покупок</string>
+    <string name="have_not_internet_connection">Нет подключения к интернету</string>
 
 
 </resources>

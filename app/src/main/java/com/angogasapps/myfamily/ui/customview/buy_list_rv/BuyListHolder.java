@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.databinding.BuyListHolderBinding;
-import com.angogasapps.myfamily.objects.BuyList;
 
 public class BuyListHolder extends RecyclerView.ViewHolder {
     private BuyListHolderBinding binding;

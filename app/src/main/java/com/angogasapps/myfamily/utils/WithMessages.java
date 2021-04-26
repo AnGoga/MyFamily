@@ -1,6 +1,6 @@
 package com.angogasapps.myfamily.utils;
 
-import com.angogasapps.myfamily.objects.Message;
+import com.angogasapps.myfamily.models.Message;
 
 import java.util.ArrayList;
 

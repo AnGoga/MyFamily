@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.angogasapps.myfamily.firebase.interfaces.IAuthUser;
-import com.angogasapps.myfamily.objects.User;
+import com.angogasapps.myfamily.models.User;
 import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.google.firebase.auth.FirebaseAuth;

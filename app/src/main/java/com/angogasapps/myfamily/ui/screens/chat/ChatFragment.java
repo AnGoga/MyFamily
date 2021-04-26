@@ -24,12 +24,12 @@ import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.databinding.FragmentChatBinding;
 import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.objects.ChatTextWatcher;
-import com.angogasapps.myfamily.objects.Message;
+import com.angogasapps.myfamily.models.Message;
 import com.angogasapps.myfamily.ui.customview.message_recycle_view.ChatAdapter;
 import com.angogasapps.myfamily.objects.ChatChildEventListener;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.angogasapps.myfamily.objects.ChatAudioRecorder;
-import com.angogasapps.myfamily.utils.Others;
+import com.angogasapps.myfamily.utils.Async;
 import com.angogasapps.myfamily.utils.Permissions;
 import com.google.firebase.database.DatabaseReference;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -215,7 +215,7 @@ public class ChatFragment extends Fragment {
 
     private void loadMessages() {
         if (!AppApplication.isOnline() && messagesList.isEmpty()){
-            Others.runInNewThread(() -> {
+            Async.runInNewThread(() -> {
                 while(!DatabaseManager.messagesLoadIsEnd){}
 
                 if (DatabaseManager.messagesLoadIsEnd) {

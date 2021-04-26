@@ -29,7 +29,6 @@ public class ChatAudioRecorder {
             public void run() {
                 super.run();
                 try {
-
                     ChatAudioRecorder.this.file = createNewFile();
                     prepareRecorder();
                     recorder.start();

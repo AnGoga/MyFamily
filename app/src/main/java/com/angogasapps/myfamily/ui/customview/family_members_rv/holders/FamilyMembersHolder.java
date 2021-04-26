@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.objects.User;
+import com.angogasapps.myfamily.models.User;
 import com.angogasapps.myfamily.utils.StringFormater;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*;

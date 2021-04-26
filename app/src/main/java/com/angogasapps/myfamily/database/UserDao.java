@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.angogasapps.myfamily.objects.User;
+import com.angogasapps.myfamily.models.User;
 
 import java.util.List;
 

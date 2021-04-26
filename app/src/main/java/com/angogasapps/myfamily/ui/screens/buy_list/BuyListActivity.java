@@ -4,28 +4,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.content.Context;
 import android.os.Bundle;
 
-import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.ActivityByuListBinding;
-import com.angogasapps.myfamily.objects.BuyList;
-import com.angogasapps.myfamily.objects.Message;
-import com.angogasapps.myfamily.objects.User;
+import com.angogasapps.myfamily.models.BuyList;
 import com.angogasapps.myfamily.ui.customview.buy_list_rv.BuyListAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-
-import java.security.PublicKey;
-
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.Subject;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_BUY_LIST;

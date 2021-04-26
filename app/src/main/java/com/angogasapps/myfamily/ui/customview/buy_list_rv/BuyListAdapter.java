@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.objects.BuyList;
+import com.angogasapps.myfamily.models.BuyList;
 
 import java.util.ArrayList;
 

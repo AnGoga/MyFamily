@@ -1,7 +1,6 @@
 package com.angogasapps.myfamily.ui.screens.buy_list;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -11,9 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.BuyListFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
-import com.angogasapps.myfamily.objects.BuyList;
-
-import io.reactivex.subjects.PublishSubject;
+import com.angogasapps.myfamily.models.BuyList;
 
 public class AddBuyListDialog {
     private Context context;

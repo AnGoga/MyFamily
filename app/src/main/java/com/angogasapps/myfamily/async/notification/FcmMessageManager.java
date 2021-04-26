@@ -4,8 +4,8 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.angogasapps.myfamily.app.AppApplication;
-import com.angogasapps.myfamily.objects.Message;
-import com.angogasapps.myfamily.utils.Others;
+import com.angogasapps.myfamily.models.Message;
+import com.angogasapps.myfamily.utils.Async;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -30,7 +30,7 @@ public class FcmMessageManager {
 
     public static void sendChatNotificationMessage(Message message){
 
-        Others.runInNewThread(() -> {
+        Async.runInNewThread(() -> {
             try {
 //                JSONObject messageObject = FcmMessage.buildMessageObj(message, to);
                 JSONObject messageObject = FcmChatNotificationCreator.fromChatMessage(message);

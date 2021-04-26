@@ -6,9 +6,9 @@ import android.content.Context;
 
 import androidx.room.Room;
 
-import com.angogasapps.myfamily.objects.Message;
-import com.angogasapps.myfamily.objects.User;
-import com.angogasapps.myfamily.utils.Others;
+import com.angogasapps.myfamily.models.Message;
+import com.angogasapps.myfamily.models.User;
+import com.angogasapps.myfamily.utils.Async;
 
 import java.util.ArrayList;
 
@@ -96,7 +96,7 @@ public class DatabaseManager {
     }
 
     public static void searchNewUsers(ArrayList<User> users){
-        Others.runInNewThread(() -> {
+        Async.runInNewThread(() -> {
             ArrayList<User> cashUserList = new ArrayList<>(database.getUserDao().getAll());
             for (User user : users)
                 if (!cashUserList.contains(user))

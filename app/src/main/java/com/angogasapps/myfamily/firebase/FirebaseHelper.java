@@ -1,6 +1,6 @@
 package com.angogasapps.myfamily.firebase;
 
-import com.angogasapps.myfamily.objects.User;
+import com.angogasapps.myfamily.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
