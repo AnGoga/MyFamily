@@ -1,18 +1,20 @@
-package com.angogasapps.myfamily.ui.customview.buy_list_rv;
+package com.angogasapps.myfamily.ui.screens.buy_list;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.databinding.BuyListHolderBinding;
 import com.angogasapps.myfamily.models.BuyList;
 
 import java.util.ArrayList;
 
-public class BuyListAdapter extends RecyclerView.Adapter<BuyListHolder> {
+public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.BuyListHolder> {
     private Context context;
     private LayoutInflater inflater;
     private ArrayList<BuyList> buyListsArray = new ArrayList<>();
@@ -41,5 +43,17 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListHolder> {
     public void addBuyList(BuyList buyList){
         buyListsArray.add(buyList);
         notifyItemInserted(buyListsArray.size() - 1);
+    }
+
+    public static class BuyListHolder extends RecyclerView.ViewHolder {
+        private BuyListHolderBinding binding;
+        public BuyListHolder(@NonNull View itemView) {
+            super(itemView);
+            binding = BuyListHolderBinding.bind(itemView);
+        }
+
+        public void setTextName(String textName){
+            binding.textName.setText(textName);
+        }
     }
 }

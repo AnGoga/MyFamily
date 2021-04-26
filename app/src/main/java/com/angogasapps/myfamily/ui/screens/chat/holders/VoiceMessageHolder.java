@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.customview.message_recycle_view.holders;
+package com.angogasapps.myfamily.ui.screens.chat.holders;
 
 import android.view.View;
 

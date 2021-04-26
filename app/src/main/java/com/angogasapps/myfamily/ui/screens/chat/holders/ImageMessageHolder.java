@@ -1,7 +1,6 @@
-package com.angogasapps.myfamily.ui.customview.message_recycle_view.holders;
+package com.angogasapps.myfamily.ui.screens.chat.holders;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -9,7 +8,6 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.objects.ChatImageShower;
 

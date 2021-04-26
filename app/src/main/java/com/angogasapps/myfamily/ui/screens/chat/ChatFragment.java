@@ -25,7 +25,6 @@ import com.angogasapps.myfamily.databinding.FragmentChatBinding;
 import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.objects.ChatTextWatcher;
 import com.angogasapps.myfamily.models.Message;
-import com.angogasapps.myfamily.ui.customview.message_recycle_view.ChatAdapter;
 import com.angogasapps.myfamily.objects.ChatChildEventListener;
 import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.angogasapps.myfamily.objects.ChatAudioRecorder;

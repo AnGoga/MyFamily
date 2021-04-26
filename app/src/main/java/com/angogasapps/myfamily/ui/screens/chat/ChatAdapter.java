@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.customview.message_recycle_view;
+package com.angogasapps.myfamily.ui.screens.chat;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.models.Message;
-import com.angogasapps.myfamily.ui.customview.message_recycle_view.holders.AppBaseViewHolder;
-import com.angogasapps.myfamily.ui.customview.message_recycle_view.holders.ImageMessageHolder;
-import com.angogasapps.myfamily.ui.customview.message_recycle_view.holders.TextMessageHolder;
-import com.angogasapps.myfamily.ui.customview.message_recycle_view.holders.VoiceMessageHolder;
+import com.angogasapps.myfamily.ui.screens.chat.holders.AppBaseViewHolder;
+import com.angogasapps.myfamily.ui.screens.chat.holders.ImageMessageHolder;
+import com.angogasapps.myfamily.ui.screens.chat.holders.TextMessageHolder;
+import com.angogasapps.myfamily.ui.screens.chat.holders.VoiceMessageHolder;
 import com.angogasapps.myfamily.utils.ChatAdapterUtils;
 
 import java.util.ArrayList;

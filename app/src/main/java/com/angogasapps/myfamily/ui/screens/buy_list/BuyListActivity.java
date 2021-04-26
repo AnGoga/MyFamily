@@ -8,7 +8,6 @@ import android.os.Bundle;
 
 import com.angogasapps.myfamily.databinding.ActivityByuListBinding;
 import com.angogasapps.myfamily.models.BuyList;
-import com.angogasapps.myfamily.ui.customview.buy_list_rv.BuyListAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

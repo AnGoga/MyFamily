@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.customview.message_recycle_view.holders;
+package com.angogasapps.myfamily.ui.screens.chat.holders;
 
 import android.view.View;
 import android.widget.TextView;
@@ -6,7 +6,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.databinding.TextMessageHolderBinding;
 
 public class TextMessageHolder extends AppBaseViewHolder{
 

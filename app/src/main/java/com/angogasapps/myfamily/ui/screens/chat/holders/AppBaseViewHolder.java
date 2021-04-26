@@ -1,6 +1,4 @@
-package com.angogasapps.myfamily.ui.customview.message_recycle_view.holders;
-
-import androidx.viewbinding.ViewBinding;
+package com.angogasapps.myfamily.ui.screens.chat.holders;
 
 import android.app.Activity;
 import android.content.Context;

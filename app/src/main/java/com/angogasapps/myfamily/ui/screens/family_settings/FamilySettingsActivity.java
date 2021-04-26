@@ -2,18 +2,15 @@ package com.angogasapps.myfamily.ui.screens.family_settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.ActivityFamilySettingsBinding;
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
-import com.angogasapps.myfamily.ui.customview.family_members_rv.FamilyMembersAdapter;
 
 public class FamilySettingsActivity extends AppCompatActivity {
 
