@@ -14,9 +14,10 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.FragmentCreateFamilyBinding;
 import com.angogasapps.myfamily.firebase.RegisterFamilyFunks;
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
-import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import es.dmoral.toasty.Toasty;
 
 
 public class CreateFamilyFragment extends Fragment {
@@ -38,7 +39,7 @@ public class CreateFamilyFragment extends Fragment {
         binding.createFamilyButton.setOnClickListener(v -> {
             String familyName = binding.familyNameEditText.getText().toString();
             if (familyName.isEmpty()){
-                Toaster.info(getActivity().getApplicationContext(), R.string.enter_family_last_name).show();
+                Toasty.info(getActivity().getApplicationContext(), R.string.enter_family_last_name).show();
                 return;
             }
             if(mFamilyEmblemUri == null){
@@ -47,7 +48,7 @@ public class CreateFamilyFragment extends Fragment {
             RegisterFamilyFunks.createNewFamily(getActivity().getApplicationContext(),
                     familyName, mFamilyEmblemUri, () -> {
                 //когда регистрация новой семьи в базе данных прошла успешно
-                Toaster.success(getActivity().getApplicationContext(),
+                Toasty.success(getActivity().getApplicationContext(),
                         R.string.everything_went_well).show();
                 startActivity(new Intent(getActivity().getApplicationContext(), MainActivity.class));
                 getActivity().finish();
@@ -72,7 +73,7 @@ public class CreateFamilyFragment extends Fragment {
             binding.familyEmblemImage.setImageURI(mFamilyEmblemUri);
         }catch (Exception e){
             e.printStackTrace();
-            Toaster.error(getActivity().getApplicationContext(), "неизвестная ошибка").show();
+            Toasty.error(getActivity().getApplicationContext(), "неизвестная ошибка").show();
         }
     }
 }

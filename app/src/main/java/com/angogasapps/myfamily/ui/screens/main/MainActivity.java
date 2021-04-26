@@ -18,6 +18,8 @@ import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
 import com.angogasapps.myfamily.ui.screens.family_settings.FamilySettingsActivity;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
 
+import es.dmoral.toasty.Toasty;
+
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
@@ -58,11 +60,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         FcmMessageManager.subscribeToFamily();
-//        startService(new Intent(this, FcmNotificationService.class));
-
-//        FirebaseMessaging.getInstance().subscribeToTopic("/topics/" + USER.getFamily()).addOnCompleteListener(task -> {
-//            Log.i(TAG, "Подписка прошла успешно, её статус успешности -> " + task.isSuccessful());
-//        });
 
     }
 

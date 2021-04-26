@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import com.angogasapps.myfamily.firebase.interfaces.IAuthUser;
 import com.angogasapps.myfamily.models.User;
 import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity;
-import com.angogasapps.myfamily.ui.toaster.Toaster;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
@@ -19,6 +19,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.TimeUnit;
+
+import es.dmoral.toasty.Toasty;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_PHONE;
@@ -56,7 +58,7 @@ public class AuthFunctions {
                     });
             } else {
                 //Если в верификации произошла ошибка
-                Toaster.error(activity, authResultTask.getException().toString()).show();
+                Toasty.error(activity, authResultTask.getException().toString()).show();
             }
         });
     }

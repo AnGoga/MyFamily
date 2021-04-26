@@ -16,8 +16,9 @@ import com.angogasapps.myfamily.models.User;
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity;
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity;
-import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.angogasapps.myfamily.utils.FamilyManager;
+
+import es.dmoral.toasty.Toasty;
 
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.initFirebase;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
@@ -89,7 +90,7 @@ public class SplashActivity extends AppCompatActivity {
 
             }else{
                 //интернета нет, пользователь не авторизован
-                Toaster.error(this, R.string.connection_is_not).show();
+                Toasty.error(this, R.string.connection_is_not).show();
             }
         }
     }
@@ -104,7 +105,7 @@ public class SplashActivity extends AppCompatActivity {
             }
 
             if (USER.getFamily().equals("")) {
-                Toaster.error(this, R.string.connection_is_not).show();
+                Toasty.error(this, R.string.connection_is_not).show();
             }else{
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();

@@ -12,13 +12,15 @@ import android.view.ViewGroup;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.FragmentEnterPhoneBinding;
-import com.angogasapps.myfamily.ui.toaster.Toaster;
+
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
+
+import es.dmoral.toasty.Toasty;
 
 import static com.angogasapps.myfamily.firebase.AuthFunctions.authorizationUser;
 import static com.angogasapps.myfamily.firebase.AuthFunctions.trySignInWithCredential;
@@ -46,7 +48,7 @@ public class EnterPhoneFragment extends Fragment {
             @Override
             //в верификации произошла ошибка
             public void onVerificationFailed(@NonNull FirebaseException e) {
-                Toaster.error(EnterPhoneFragment.this.getActivity(), "Auth Error: " + e.getMessage()).show();
+                Toasty.error(EnterPhoneFragment.this.getActivity(), "Auth Error: " + e.getMessage()).show();
             }
 
             @Override
@@ -64,7 +66,7 @@ public class EnterPhoneFragment extends Fragment {
             // if  editTextPhone.getText().toString().isCorrectNumberPhone <-- напиши эту функцию!
             //!!!!!
             if (binding.phoneEditText.getText().toString().isEmpty()) {
-                Toaster.error(getActivity(), R.string.enter_your_number_phone).show();
+                Toasty.error(getActivity(), R.string.enter_your_number_phone).show();
             } else {
                 authorizationUser(binding.phoneEditText.getText().toString(), 60, TimeUnit.SECONDS, getActivity(), mCallback);
             }

@@ -21,11 +21,13 @@ import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily;
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyFragment;
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity;
-import com.angogasapps.myfamily.ui.toaster.Toaster;
+
 import com.angogasapps.myfamily.utils.FamilyManager;
 
 import java.util.Objects;
 import java.util.Set;
+
+import es.dmoral.toasty.Toasty;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
@@ -105,7 +107,7 @@ public class FindOrCreateFamilyActivity extends AppCompatActivity {
     }
 
     private void familyNotFound(){
-        Toaster.error(this, R.string.link_is_not_correct).show();
+        Toasty.error(this, R.string.link_is_not_correct).show();
     }
 
 }

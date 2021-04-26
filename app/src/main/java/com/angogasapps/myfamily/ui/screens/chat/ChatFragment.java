@@ -26,7 +26,6 @@ import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.objects.ChatTextWatcher;
 import com.angogasapps.myfamily.models.Message;
 import com.angogasapps.myfamily.objects.ChatChildEventListener;
-import com.angogasapps.myfamily.ui.toaster.Toaster;
 import com.angogasapps.myfamily.objects.ChatAudioRecorder;
 import com.angogasapps.myfamily.utils.Async;
 import com.angogasapps.myfamily.utils.Permissions;
@@ -38,6 +37,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import es.dmoral.toasty.Toasty;
 import io.reactivex.subjects.Subject;
 
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.getMessageKey;
@@ -97,7 +97,7 @@ public class ChatFragment extends Fragment {
                     mRecorder.stopRecording(() -> {
                         File voiceFile = mRecorder.getFile();
                         ChatFunks.sendVoice(voiceFile, mRecorder.getKey());
-                        Toaster.success(getActivity(), "Звук").show();
+                        Toasty.success(getActivity(), "Звук").show();
                         System.out.println(voiceFile.toString());
                     });
                 }
@@ -177,7 +177,7 @@ public class ChatFragment extends Fragment {
             if (photoUri != null)
                 ChatFunks.sendImage(photoUri);
             else
-                Toaster.error(getActivity(), "Что-то пошло не так").show();
+                Toasty.error(getActivity(), "Что-то пошло не так").show();
 
         }
     }

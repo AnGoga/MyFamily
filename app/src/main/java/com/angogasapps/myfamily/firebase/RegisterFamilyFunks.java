@@ -7,10 +7,12 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndRegisterNewFamily;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSentToStorageEmblem;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
-import com.angogasapps.myfamily.ui.toaster.Toaster;
+
 import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
+
+import es.dmoral.toasty.Toasty;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_EMBLEM;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_MEMBERS;
@@ -28,7 +30,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 public class RegisterFamilyFunks {
     public static synchronized void createNewFamily(Context context, String familyName, Uri familyEmblemUri,
                                        IOnEndRegisterNewFamily iOnEndRegisterNewFamily){
-        Toaster.info(context.getApplicationContext(), R.string.wait_a_bit).show();
+        Toasty.info(context.getApplicationContext(), R.string.wait_a_bit).show();
         String familyId = DATABASE_ROOT.child(NODE_FAMILIES).push().getKey();
         //если человек выбрал эмблему семьи
         if (familyEmblemUri != Uri.EMPTY){

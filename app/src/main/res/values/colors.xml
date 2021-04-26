@@ -16,16 +16,15 @@
 
     <color name="green">#00FF00</color>
 
-<!--   белая тема-->
     <color name="bold_text_color">@color/black</color>
     <color name="pale_text_color">#808080</color>
 
 
 <!--    toaster-->
-    <color name="defaultTextColor">#FFFFFF</color>
-    <color name="errorColor">#D50000</color>
-    <color name="infoColor">#3F51B5</color>
-    <color name="successColor">#388E3C</color>
-    <color name="warningColor">#FFA900</color>
-    <color name="normalColor">#353A3E</color>
+<!--    <color name="defaultTextColor">#FFFFFF</color>-->
+<!--    <color name="errorColor">#D50000</color>-->
+<!--    <color name="infoColor">#3F51B5</color>-->
+<!--    <color name="successColor">#388E3C</color>-->
+<!--    <color name="warningColor">#FFA900</color>-->
+<!--    <color name="normalColor">#353A3E</color>-->
 </resources>

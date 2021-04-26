@@ -17,11 +17,13 @@ import android.widget.TextView;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.FragmentEnterPersonalDataBinding;
 import com.angogasapps.myfamily.firebase.RegisterUserFunks;
-import com.angogasapps.myfamily.ui.toaster.Toaster;
+
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.Calendar;
+
+import es.dmoral.toasty.Toasty;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 
@@ -96,7 +98,7 @@ public class EnterPersonalDataFragment extends Fragment {
             binding.userPhotoImageView.setImageURI(userPhotoUri);
         }catch (Exception e){
             e.printStackTrace();
-            Toaster.error(getActivity().getApplicationContext(), "неизвестная ошибка").show();
+            Toasty.error(getActivity().getApplicationContext(), "неизвестная ошибка").show();
         }
     }
 }

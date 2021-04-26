@@ -6,9 +6,11 @@ import android.media.MediaPlayer;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.ChatFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
-import com.angogasapps.myfamily.ui.toaster.Toaster;
+
 
 import java.io.File;
+
+import es.dmoral.toasty.Toasty;
 
 
 public class ChatVoicePlayer {
@@ -56,7 +58,7 @@ public class ChatVoicePlayer {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toaster.error(context, R.string.something_went_wrong).show();
+            Toasty.error(context, R.string.something_went_wrong).show();
         }
 
     }
@@ -67,7 +69,7 @@ public class ChatVoicePlayer {
             mMediaPlayer.reset();
         }catch (Exception e){
             e.printStackTrace();
-            Toaster.error(context, R.string.something_went_wrong).show();
+            Toasty.error(context, R.string.something_went_wrong).show();
         }
         iOnEndPlay.onEndPlay();
     }

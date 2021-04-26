@@ -15,7 +15,8 @@ import com.angogasapps.myfamily.firebase.FindFamilyFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily;
 import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily;
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
-import com.angogasapps.myfamily.ui.toaster.Toaster;
+
+import es.dmoral.toasty.Toasty;
 
 
 public class FindFamilyFragment extends Fragment {
@@ -29,7 +30,7 @@ public class FindFamilyFragment extends Fragment {
         binding.joinBtn.setOnClickListener(v -> {
             String text = binding.editText.getText().toString();
             if (text.isEmpty()){
-                Toaster.warning(getActivity().getApplicationContext(), R.string.enter_identification).show();
+                Toasty.warning(getActivity().getApplicationContext(), R.string.enter_identification).show();
             }else{
                 FindFamilyFunks.tryFindFamilyById(text, new IOnFindFamily() {
                     @Override
@@ -37,7 +38,7 @@ public class FindFamilyFragment extends Fragment {
                         FindFamilyFunks.joinUserToFamily(text, new IOnJoinToFamily() {
                             @Override
                             public void onSuccess() {
-                                Toaster.success(getActivity().getApplicationContext(),
+                                Toasty.success(getActivity().getApplicationContext(),
                                         R.string.you_success_join_to_you_family).show();
 
                                 getActivity().startActivity(new Intent(getActivity().getApplicationContext(),
@@ -46,19 +47,19 @@ public class FindFamilyFragment extends Fragment {
                             }
                             @Override
                             public void onFailure() {
-                                Toaster.error(getActivity().getApplicationContext(),
+                                Toasty.error(getActivity().getApplicationContext(),
                                         R.string.error).show();
                             }
                         });
                     }
                     @Override
                     public void onFailure() {
-                        Toaster.error(getActivity().getApplicationContext(),
+                        Toasty.error(getActivity().getApplicationContext(),
                                 R.string.family_not_found).show();
                     }
                     @Override
                     public void onCancelled() {
-                        Toaster.error(getActivity().getApplicationContext(),
+                        Toasty.error(getActivity().getApplicationContext(),
                                 R.string.you_canceled_searches).show();
                     }
                 });

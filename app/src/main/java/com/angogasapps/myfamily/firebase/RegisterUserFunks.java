@@ -5,10 +5,12 @@ import android.net.Uri;
 
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField;
 import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity;
-import com.angogasapps.myfamily.ui.toaster.Toaster;
+
 import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
+
+import es.dmoral.toasty.Toasty;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_BIRTHDAY;
@@ -44,7 +46,7 @@ public class RegisterUserFunks {
                             if (task.isSuccessful()){
                                 RegisterActivity.welcomeFunc(activity);
                             }else {
-                                Toaster.error(activity, task.getException().getMessage()).show();
+                                Toasty.error(activity, task.getException().getMessage()).show();
                             }
                         });
             }
