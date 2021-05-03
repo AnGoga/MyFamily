@@ -1,6 +1,7 @@
 package com.angogasapps.myfamily.utils;
 
 import com.angogasapps.myfamily.models.BuyList;
+import com.angogasapps.myfamily.models.Family;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_COMM
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_FROM;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_NAME;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_PRODUCTS;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class BuyListUtils {
     /*
@@ -62,5 +64,22 @@ public class BuyListUtils {
         map.put(CHILD_COMMENT, product.getComment());
 
         return map;
+    }
+
+    public static String getCorrectComment(BuyList.Product product){
+        String comment = product.getComment();
+        if (product.getFrom().equals(USER.getPhone())){
+            if (comment != null){
+                return comment;
+            }else{
+                return "";
+            }
+        }else {
+            if (!comment.equals("")){
+                return comment + " : " + Family.getInstance().getNameByPhone(product.getFrom());
+            }else{
+               return Family.getInstance().getNameByPhone(product.getFrom());
+            }
+        }
     }
 }

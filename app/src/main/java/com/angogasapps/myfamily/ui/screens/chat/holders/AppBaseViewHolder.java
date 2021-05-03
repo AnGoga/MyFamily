@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.models.Family;
 import com.angogasapps.myfamily.utils.StringFormater;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -43,7 +44,8 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder {
 
     public void init(String from, Long time, String messageKey, String value, Activity context){
         this.from = from;
-        this.name = getMemberNameById(from);
+//        this.name = getMemberNameById(from);
+        this.name = Family.getInstance().getMemberNameById(from);
         this.time = StringFormater.formatLongToTime(time);
         this.messageKey = messageKey;
         this.value = value;

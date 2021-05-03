@@ -9,6 +9,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.firebase.database.DataSnapshot;
+
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.UID;
 
 
@@ -38,6 +40,12 @@ public class User {
         this.photoURL = user.getPhotoURL();
         this.role = user.getRole();
         this.userPhoto = user.getUserPhoto();
+    }
+
+    public static User from(DataSnapshot snapshot){
+        User user = snapshot.getValue(User.class);
+        user.setId(snapshot.getKey());
+        return user;
     }
 
 

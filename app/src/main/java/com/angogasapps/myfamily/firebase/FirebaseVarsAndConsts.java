@@ -25,7 +25,7 @@ public class FirebaseVarsAndConsts {
     public static User USER;
     public static String UID;
 
-    public static volatile HashMap<String, User> familyMembersMap = new HashMap<>();
+//    public static volatile HashMap<String, User> familyMembersMap = new HashMap<>();
     public static volatile HashMap<String, Bitmap> chatImageMessangesMap = new HashMap<>();
     public static volatile Bitmap familyEmblemImage = null;
 

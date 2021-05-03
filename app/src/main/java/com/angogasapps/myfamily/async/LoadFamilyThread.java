@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
+import com.angogasapps.myfamily.models.Family;
 import com.angogasapps.myfamily.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,8 +37,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_FAMIL
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_USERS;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.familyMembersMap;
-import static com.angogasapps.myfamily.utils.WithUsers.getUserFromSnapshot;
+
 
 
 public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<User>> {
@@ -91,9 +91,9 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
         } catch (Exception e) {
             e.printStackTrace();
         }
-        HashMap<String, User> aStringUserHashMap = familyMembersMap;
         isEnd = true;
         context = null;
+        usersRoleMap = null;
         return null;
     }
 
@@ -191,7 +191,7 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 //                    familyMembersList.add(snapshot.getValue(User.class));
-                    familyMembersList.add(getUserFromSnapshot(snapshot));
+                    familyMembersList.add(User.from(snapshot));
                     Log.v("tag", "Thread = " + Thread.currentThread());
 
                     MemberDownloaderThread.this.monitor.countDown();
@@ -233,8 +233,8 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
         FirebaseVarsAndConsts.familyEmblemImage = this.familyEmblem;
         for (User user : familyMembersList){
             user.setRole(usersRoleMap.get(user.getId()));
-            familyMembersMap.put(user.getId(), user);
         }
+        Family.getInstance().setUsersList(familyMembersList);
         DatabaseManager.searchNewUsers(familyMembersList);
     }
 }

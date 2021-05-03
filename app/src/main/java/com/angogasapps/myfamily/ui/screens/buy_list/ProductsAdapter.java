@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.databinding.ProductInBuyListHolderBinding;
 import com.angogasapps.myfamily.models.BuyList;
+import com.angogasapps.myfamily.models.Family;
+import com.angogasapps.myfamily.utils.BuyListUtils;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductHolder>{
     private Context context;
@@ -31,8 +33,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
         BuyList.Product product = buyList.getProducts().get(position);
         holder.binding.textName.setText(product.getName());
-        String comment = product.getComment() + ": " + product.getFrom();
-        holder.binding.commentText.setText(comment);
+
+        holder.binding.commentText.setText(BuyListUtils.getCorrectComment(product));
     }
 
     @Override
@@ -70,15 +72,28 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 //    }
 
     public void update(BuyList newBuyList){
-        for (int i = 0; i < this.buyList.getProducts().size(); i++) {
-            //ToDo: . . .
-            BuyList.Product oldProduct = this.buyList.getProducts().get(i);
-            BuyList.Product newProduct = newBuyList.getProducts().get(i);
+//        for (int i = 0; i < this.buyList.getProducts().size(); i++) {
+//            //ToDo: . . .
+//            BuyList.Product oldProduct = this.buyList.getProducts().get(i);
+//            BuyList.Product newProduct = newBuyList.getProducts().get(i);
+//
+//            if (!oldProduct.equals(newProduct)){
+//
+//                this.notifyItemChanged(i);
+//                return;
+//            }
+//        }
 
-            if (!oldProduct.equals(newProduct)){
-                this.notifyItemChanged(i);
-                return;
-            }
+        if (newBuyList.getProducts().size() > buyList.getProducts().size()){
+            // Добавлен новый продукт
+            buyList = newBuyList;
+            this.notifyItemChanged(buyList.getProducts().size() - 1);
+        }else if(newBuyList.getProducts().size() < buyList.getProducts().size()){
+            // Один продукт удалён
+
+        }else if(newBuyList.getProducts().size() == buyList.getProducts().size()){
+            //Один продукт изменился
+
         }
     }
 

@@ -12,6 +12,7 @@ import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.async.notification.TokensManager;
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.firebase.AuthFunctions;
+import com.angogasapps.myfamily.models.Family;
 import com.angogasapps.myfamily.models.User;
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity;
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
@@ -23,7 +24,6 @@ import es.dmoral.toasty.Toasty;
 import static com.angogasapps.myfamily.firebase.FirebaseHelper.initFirebase;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.familyMembersMap;
 
 public class SplashActivity extends AppCompatActivity {
     private String familyIdParam = "";
@@ -97,11 +97,15 @@ public class SplashActivity extends AppCompatActivity {
 
     public void signInWithRoom(){
         DatabaseManager.loadUsersAndMessages(() -> {
-            for (User user: DatabaseManager.getUserList()){
-                familyMembersMap.put(user.getId(), user);
-            }
-            if (familyMembersMap.containsKey(AUTH.getCurrentUser().getUid())){
-                USER = familyMembersMap.get(AUTH.getCurrentUser().getUid());
+//            for (User user: DatabaseManager.getUserList()){
+//                familyMembersMap.put(user.getId(), user);
+//            }
+//            if (familyMembersMap.containsKey(AUTH.getCurrentUser().getUid())){
+//                USER = familyMembersMap.get(AUTH.getCurrentUser().getUid());
+//            }
+            Family.getInstance().setUsersList(DatabaseManager.getUserList());
+            if (Family.getInstance().containsUserWithId(AUTH.getCurrentUser().getUid())){
+                USER = Family.getInstance().getUserById(AUTH.getCurrentUser().getUid());
             }
 
             if (USER.getFamily().equals("")) {

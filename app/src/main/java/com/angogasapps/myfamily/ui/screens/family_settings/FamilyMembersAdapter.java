@@ -12,10 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.models.Family;
 import com.angogasapps.myfamily.models.User;
 import com.angogasapps.myfamily.utils.StringFormater;
 
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*;
 
 import java.util.ArrayList;
 
@@ -52,7 +52,7 @@ public class FamilyMembersAdapter extends RecyclerView.Adapter<FamilyMembersAdap
     public void reset(){
         this.mFamilyMembersList = new ArrayList<>();
 
-        mFamilyMembersList.addAll(familyMembersMap.values());
+        mFamilyMembersList.addAll(Family.getInstance().getUsersList());
 
         notifyDataSetChanged();
     }
@@ -70,10 +70,10 @@ public class FamilyMembersAdapter extends RecyclerView.Adapter<FamilyMembersAdap
         }
 
         public void initHolder(User user, Context context){
-            userNameTextView.setText(familyMembersMap.get(user.getId()).getName());
-            userRoleTextView.setText(StringFormater.formatToRole(familyMembersMap.get(user.getId()).getRole()));
+            userNameTextView.setText(Family.getInstance().getMemberNameById(user.getId()));
+            userRoleTextView.setText(StringFormater.formatToRole(Family.getInstance().getMemberNameById(user.getId())));
 
-            Bitmap bitmap = familyMembersMap.get(user.getId()).getUserPhoto();
+            Bitmap bitmap = Family.getInstance().getUserById(user.getId()).getUserPhoto();
             if (bitmap != null)
                 userImage.setImageBitmap(bitmap);
 
