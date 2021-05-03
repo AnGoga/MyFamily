@@ -2,10 +2,13 @@ package com.angogasapps.myfamily.ui.screens.buy_list;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 
+import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.ActivityByuListBinding;
 import com.angogasapps.myfamily.models.BuyList;
 import com.google.firebase.database.ChildEventListener;
@@ -18,8 +21,13 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class BuyListActivity extends AppCompatActivity {
     private ActivityByuListBinding binding;
-    private LinearLayoutManager layoutManager;
-    private BuyListAdapter adapter;
+    private ListOfBuyListsFragment fragment1;
+    private BuyListFragment fragment2;
+    private BuyListManager buyListManager;
+
+    private static IGoToBuyListFragment iGoToBuyListFragment;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,43 +35,28 @@ public class BuyListActivity extends AppCompatActivity {
         binding = ActivityByuListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        initRecyclerView();
-        initBuyListListener();
+        buyListManager = BuyListManager.getInstance();
 
-        binding.floatingBtn.setOnClickListener(v -> {
-            new AddBuyListDialog(BuyListActivity.this).show();
-        });
+        fragment1 = new ListOfBuyListsFragment();
+        fragment2 = new BuyListFragment();
 
+        iGoToBuyListFragment = (buyList) -> {
+            fragment2.setBuyList(buyList);
+            getSupportFragmentManager()
+                    .beginTransaction().replace(R.id.container, fragment2).addToBackStack("").commit();
+        };
+
+
+        getSupportFragmentManager()
+                .beginTransaction().add(R.id.container, fragment1).commit();
 
     }
 
-
-    private void initRecyclerView() {
-        adapter = new BuyListAdapter(this);
-        layoutManager = new LinearLayoutManager(this);
-        binding.recycleView.setLayoutManager(layoutManager);
-        binding.recycleView.setAdapter(adapter);
+    public static IGoToBuyListFragment getIGoToBuyListFragment(){
+        return iGoToBuyListFragment;
     }
 
-
-    private void initBuyListListener() {
-        DATABASE_ROOT.child(NODE_BUY_LIST).child(USER.getFamily()).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                adapter.addBuyList(BuyList.from(snapshot));
-            }
-
-            @Override
-            public void onChildChanged(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-            @Override
-            public void onChildRemoved(@androidx.annotation.NonNull DataSnapshot snapshot) {}
-            @Override
-            public void onChildMoved(@androidx.annotation.NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-
-            @Override
-            public void onCancelled(@androidx.annotation.NonNull DatabaseError error) {}
-        });
+    public interface IGoToBuyListFragment{
+        void go(BuyList data);
     }
 }

@@ -1,18 +1,18 @@
 package com.angogasapps.myfamily.models;
 
-import androidx.annotation.StringRes;
+import android.util.Log;
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.utils.WithUsers;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class BuyList {
+    private String id = "";
     private String name;
     private ArrayList<Product> products = new ArrayList<>();
 
@@ -24,6 +24,13 @@ public class BuyList {
     public <T extends List<Product>> BuyList(String name, T products){
         this(name);
         this.products.addAll(products);
+    }
+
+    public static BuyList from(DataSnapshot snapshot){
+        Log.i("tag", snapshot.toString());
+        BuyList buyList = snapshot.getValue(BuyList.class);
+        buyList.id = snapshot.getKey();
+        return buyList;
     }
 
     public String getName(){
@@ -45,23 +52,48 @@ public class BuyList {
         this.products = products;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BuyList buyList = (BuyList) o;
+        return Objects.equals(name, buyList.name) &&
+                Objects.equals(products, buyList.products);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, products);
+    }
+
     public static class Product{
         private String id = "";
-        private String name;
-        private String from;
-        private int count;
-        private EProductAnnotations annotation;
+        private String name = "";
+        private String from = "";
+        private String comment = "";
 
+        public Product(){}
 
-        public Product(String name, int count, EProductAnnotations annotation){
+//
+        public Product(String name, String comment, String from){
             this.name = name;
-            this.count = count;
-            this.annotation = annotation;
-            this.from = USER.getId();
+            this.comment = comment;
+            this.from = from;
         }
 
         public String getId(){
             return id;
+        }
+        public void setId(String id){
+            this.id = id;
         }
 
         public String getName() {
@@ -72,45 +104,24 @@ public class BuyList {
             this.name = name;
         }
 
-        public int getCount(){
-            return count;
+        public String getComment(){
+            return comment;
         }
 
-        public EProductAnnotations getAnnotation(){
-            return annotation;
+        public void setFrom(String from) {
+            this.from = from;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
         }
 
         public String getFrom(){
-            return WithUsers.getMemberNameById(id);
+//            return WithUsers.getMemberNameById(id);
+            return this.from;
         }
 
-        public enum EProductAnnotations{
-            empty, liter, thing, kilogram, pack;
-            @Override
-            public String toString(){
-                @StringRes int id = R.string.empty;
-                switch (this){
-                    case empty:
-                        return "";
-                    case liter:
-                        id = R.string.liter;
-                        break;
-                    case thing:
-                        id = R.string.thing;
-                        break;
-                    case kilogram:
-                        id = R.string.kilogram;
-                        break;
-                    case pack:
-                        id = R.string.pack;
-                        break;
-                }
-                return AppApplication.getInstance().getApplicationContext().getString(id);
-            }
-        }
-    }
-    public static BuyList from(DataSnapshot snapshot){
-        BuyList buyList = snapshot.getValue(BuyList.class);
-        return buyList;
+
+
     }
 }

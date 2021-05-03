@@ -52,6 +52,10 @@ public class FirebaseVarsAndConsts {
     public static final String CHILD_VALUE = "value";
     public static final String CHILD_TIME = "time";
 
+    public static final String CHILD_PRODUCTS = "products";
+    public static final String CHILD_COMMENT = "comment";
+
+
     public static final String CHILD_MESSANGES = "messanges";
     public static final String CHILD_MEMBERS = "members";
     public static final String CHILD_EMBLEM = "emblem";

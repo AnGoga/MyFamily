@@ -61,6 +61,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.2.1'
     implementation 'com.google.firebase:firebase-dynamic-links:19.1.1'
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -90,12 +91,15 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     //RxJava
-    implementation "io.reactivex.rxjava2:rxjava:2.2.20"
+    implementation "io.reactivex.rxjava2:rxjava:2.2.21"
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
 
     //volley
-    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.android.volley:volley:1.2.0'
+
+    //Material Edit text
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
 
     //google api
     implementation 'com.google.api-client:google-api-client:1.31.2'

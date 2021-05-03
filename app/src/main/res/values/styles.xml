@@ -30,6 +30,7 @@
 
     <style name="boldTextView">
         <item name="android:textColor">@color/bold_text_color</item>
+        <item name="android:textStyle">bold</item>
     </style>
     <style name="paleTextView">
         <item name="android:textStyle">bold</item>

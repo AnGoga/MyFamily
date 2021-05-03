@@ -17,7 +17,11 @@ import java.util.ArrayList;
 public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.BuyListHolder> {
     private Context context;
     private LayoutInflater inflater;
-    private ArrayList<BuyList> buyListsArray = new ArrayList<>();
+    private ArrayList<BuyList> buyListsArray;
+
+    {
+        buyListsArray = BuyListManager.getInstance().getBuyLists();
+    }
 
     public BuyListAdapter(Context context){
         this.context = context;
@@ -40,16 +44,23 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.BuyListH
         return buyListsArray.size();
     }
 
-    public void addBuyList(BuyList buyList){
-        buyListsArray.add(buyList);
+//    public void addBuyList(BuyList buyList){
+//        notifyItemInserted(buyListsArray.size() - 1);
+//    }
+
+    public void updateEnd(){
         notifyItemInserted(buyListsArray.size() - 1);
     }
 
-    public static class BuyListHolder extends RecyclerView.ViewHolder {
+    public class BuyListHolder extends RecyclerView.ViewHolder {
         private BuyListHolderBinding binding;
         public BuyListHolder(@NonNull View itemView) {
             super(itemView);
             binding = BuyListHolderBinding.bind(itemView);
+
+            binding.getRoot().setOnClickListener(v -> {
+                BuyListActivity.getIGoToBuyListFragment().go(BuyListAdapter.this.buyListsArray.get(getLayoutPosition()));
+            });
         }
 
         public void setTextName(String textName){

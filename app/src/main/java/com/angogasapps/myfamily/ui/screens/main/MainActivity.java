@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         FcmMessageManager.subscribeToFamily();
 
+
     }
 
     private void initToolbar() {

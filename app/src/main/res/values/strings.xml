@@ -57,7 +57,6 @@
     <string name="new_message">Новое сообщение</string>
 
 
-
     <string name="liter">литров</string>
     <string name="thing">штук</string>
     <string name="kilogram">килограммов</string>
@@ -67,6 +66,12 @@
     <string name="cancel">Отмена</string>
     <string name="enter_buy_list_name">Введите название списка покупок</string>
     <string name="have_not_internet_connection">Нет подключения к интернету</string>
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="product_name">Название продукта</string>
+    <string name="count">кол-во</string>
+    <string name="enter_product_name">Введите название продукта</string>
+    <string name="extra_options">Дополнительные параметры</string>
+    <string name="enter_count">Введите кол-во</string>
 
 </resources>
