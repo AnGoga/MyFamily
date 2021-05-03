@@ -75,15 +75,6 @@ public class BuyListManager {
 //                    BuyList newBuyList = BuyList.from(snapshot);
                     BuyList newBuyList = BuyListUtils.parseBuyList(snapshot);
                     changedSubject.onNext(newBuyList);
-
-//                    for (int i = 0; i < buyLists.size(); i++){
-//                        BuyList oldBuyList = buyLists.get(i);
-//                        if (!oldBuyList.getId().equals(newBuyList.getId())){
-//                            buyLists.set(i, newBuyList);
-//                            changedSubject.onNext(newBuyList);
-//                            return;
-//                        }
-//                    }
                 }
             }
 

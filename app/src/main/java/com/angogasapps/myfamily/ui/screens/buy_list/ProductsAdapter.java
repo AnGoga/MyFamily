@@ -51,38 +51,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         }
     }
 
-//    public EChangeStatus contains(BuyList.Product product){
-//        for (BuyList.Product p: buyList.getProducts()){
-//            if (product.getId().equals(p.getId())){
-//                return EChangeStatus.changed;
-//            }
-//        }
-//        return EChangeStatus.added;
-//    }
-//
-//    public enum EChangeStatus{
-//        changed, added, removed
-//    }
-//
-//    public void showNewData(BuyList.Product product){
-//        EChangeStatus status = contains(product);
-//        if (status.equals(EChangeStatus.added)){
-//
-//        }
-//    }
 
     public void update(BuyList newBuyList){
-//        for (int i = 0; i < this.buyList.getProducts().size(); i++) {
-//            //ToDo: . . .
-//            BuyList.Product oldProduct = this.buyList.getProducts().get(i);
-//            BuyList.Product newProduct = newBuyList.getProducts().get(i);
-//
-//            if (!oldProduct.equals(newProduct)){
-//
-//                this.notifyItemChanged(i);
-//                return;
-//            }
-//        }
 
         if (newBuyList.getProducts().size() > buyList.getProducts().size()){
             // Добавлен новый продукт

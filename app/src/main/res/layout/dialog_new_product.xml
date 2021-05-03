@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
+<!--    <com.rengwuxian.materialedittext.MaterialEditText-->
+<!--        android:id="@+id/product_name"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        app:met_floatingLabel="highlight"-->
+<!--        app:met_floatingLabelTextSize="10sp"-->
+<!--        app:met_floatingLabelTextColor="@color/black"-->
+<!--        android:hint="@string/product_name"-->
+<!--        app:met_floatingLabelAnimating="true"-->
+<!--        app:met_floatingLabelText="@string/product_name" />-->
 
     <EditText
         android:id="@+id/product_name"
