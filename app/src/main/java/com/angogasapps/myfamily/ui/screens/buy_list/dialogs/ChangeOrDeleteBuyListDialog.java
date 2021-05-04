@@ -13,15 +13,15 @@ import com.angogasapps.myfamily.firebase.BuyListFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
 import com.angogasapps.myfamily.models.BuyList;
 
-public class ChangeOrDeleteProductDialog extends AlertDialog {
-    private ChangeOrDeleteDialogBinding binding;
-    private BuyList.Product product;
-    private String buyListId;
+import es.dmoral.toasty.Toasty;
 
-    public ChangeOrDeleteProductDialog(@NonNull Context context, String buyListId, BuyList.Product product) {
+public class ChangeOrDeleteBuyListDialog extends AlertDialog {
+    private ChangeOrDeleteDialogBinding binding;
+    private BuyList buyList;
+
+    public ChangeOrDeleteBuyListDialog(@NonNull Context context, BuyList buyList) {
         super(context);
-        this.buyListId = buyListId;
-        this.product = product;
+        this.buyList = buyList;
     }
 
     @Override
@@ -30,44 +30,37 @@ public class ChangeOrDeleteProductDialog extends AlertDialog {
         binding = ChangeOrDeleteDialogBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.editBtn.setOnClickListener(this::onClickEditBtn);
-        binding.removeBtn.setOnClickListener(this::onClickRemoveBtn);
+        binding.editBtn.setOnClickListener(this::onClickEditButton);
+        binding.removeBtn.setOnClickListener(this::onClickRemoveButton);
     }
 
-    public void onClickRemoveBtn(View view){
+    public void onClickEditButton(View view){
+
+    }
+
+    public void onClickRemoveButton(View view){
         AlertDialog dialog = new Builder(getContext())
-                .setTitle(R.string.remove_product)
-                .setMessage(getContext().getString(R.string.change_or_delete_product_dialog_text1) + "\"" + product.getName() + "\"" + "?" +
-                        getContext().getString(R.string.change_or_delete_product_dialog_text2))
+                .setTitle(R.string.remove_buy_list)
+                .setMessage(getContext().getString(R.string.change_or_delet_buy_list_dialog_text1)+ "\"" + buyList.getName() + "\" ?"
+                    + "\n" + getContext().getString(R.string.change_or_delete_product_dialog_text2))
                 .setPositiveButton(R.string.remove, (dialog1, which) -> {
                     if (which != BUTTON_POSITIVE) return;
-
-                    getButton(BUTTON_POSITIVE).setClickable(false);
-                    BuyListFunks.deleteProduct(buyListId, product, new IOnEndCommunicationWithFirebase() {
+                    BuyListFunks.deleteBuyList(buyList, new IOnEndCommunicationWithFirebase() {
                         @Override
-                        public void onSuccess() {
-                            getButton(BUTTON_POSITIVE).setClickable(true);
-                        }
+                        public void onSuccess() { /*TODO: . . .*/}
 
                         @Override
                         public void onFailure() {
-                            getButton(BUTTON_POSITIVE).setClickable(true);
+                            Toasty.error(getContext(), R.string.something_went_wrong).show();
                         }
                     });
-
                 })
                 .setNegativeButton(R.string.cancel, (dialog1, which) -> {
                     if (which != BUTTON_NEGATIVE) return;
                     dialog1.dismiss();
                 })
                 .create();
-
         dialog.show();
-        this.dismiss();
-    }
-
-    public void onClickEditBtn(View view){
-        (new BuyListProductCreatorDialog(getContext(), buyListId, product)).show();
         this.dismiss();
     }
 }

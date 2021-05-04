@@ -52,6 +52,7 @@ public class BuyListUtils {
     }
 
     private static BuyList.Product getProduct(DataSnapshot snapshot){
+        System.out.println(snapshot);
         BuyList.Product product = snapshot.getValue(BuyList.Product.class);
         product.setId(snapshot.getKey());
         return product;
@@ -90,5 +91,14 @@ public class BuyListUtils {
             }
         }
         return newBuyList.size();
+    }
+
+    public static int getIndexOfChangeProduct(ArrayList<BuyList.Product> oldBuyList, ArrayList<BuyList.Product> newBuyList){
+        for (int i = 0; i < newBuyList.size(); i++) {
+            if (!oldBuyList.get(i).equals(newBuyList.get(i))){
+                return i;
+            }
+        }
+        return 0;
     }
 }

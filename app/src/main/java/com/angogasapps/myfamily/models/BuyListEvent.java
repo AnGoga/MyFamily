@@ -28,8 +28,8 @@ public class BuyListEvent {
         this.buyListId = buyListId;
     }
 
-    public enum IEvents {
-        added, removed, changed
+    public enum IEvents{
+        productAdded, productRemoved, productChanged, buyListRemoved, buyListAdded, buyListChanged
     }
 }
 

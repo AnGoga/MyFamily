@@ -79,5 +79,8 @@
     <string name="remove_product">Удалить продукт</string>
     <string name="change_or_delete_product_dialog_text1">\"Вы действительно хотите удалить продукт \"</string>
     <string name="change_or_delete_product_dialog_text2">\nВосстановить его будет невозможно!</string>
+    <string name="remove_buy_list">Удалить список покупок</string>
+    <string name="change_or_delet_buy_list_dialog_text1">\"Вы действительно хотите удалить список покупок \"</string>
+    <string name="this_buy_list_was_remove">Этот список покупок был удалён</string>
 
 </resources>

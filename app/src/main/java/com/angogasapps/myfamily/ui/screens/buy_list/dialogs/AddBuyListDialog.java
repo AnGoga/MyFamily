@@ -16,7 +16,7 @@ public class AddBuyListDialog {
     private Context context;
 
 
-    protected AddBuyListDialog(@NonNull Context context) {
+    public AddBuyListDialog(@NonNull Context context) {
         this.context = context;
     }
 

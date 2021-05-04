@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.BuyListHolderBinding;
 import com.angogasapps.myfamily.models.BuyList;
+import com.angogasapps.myfamily.models.BuyListEvent;
 import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity;
 import com.angogasapps.myfamily.ui.screens.buy_list.BuyListManager;
+import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.ChangeOrDeleteBuyListDialog;
 
 import java.util.ArrayList;
 
@@ -39,6 +41,10 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.BuyListH
     @Override
     public void onBindViewHolder(@NonNull BuyListHolder holder, int position) {
         holder.setTextName(buyListsArray.get(position).getName());
+        holder.binding.getRoot().setOnLongClickListener(v -> {
+            (new ChangeOrDeleteBuyListDialog(context, buyListsArray.get(position))).show();
+            return true;
+        });
     }
 
     @Override
@@ -52,6 +58,18 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.BuyListH
 
     public void updateEnd(){
         notifyItemInserted(buyListsArray.size() - 1);
+    }
+
+    public void update(BuyListEvent event) {
+        if (event.getEvent().equals(BuyListEvent.IEvents.buyListRemoved)){
+            this.notifyItemRemoved(event.getIndex());
+        }
+        if (event.getEvent().equals(BuyListEvent.IEvents.buyListAdded)){
+            this.notifyItemChanged(event.getIndex());
+        }
+        if (event.getEvent().equals(BuyListEvent.IEvents.buyListChanged)){
+            this.notifyItemChanged(event.getIndex());
+        }
     }
 
     public class BuyListHolder extends RecyclerView.ViewHolder {

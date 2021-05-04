@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.angogasapps.myfamily.databinding.FragmentBuyListBinding;
 import com.angogasapps.myfamily.models.BuyList;
+import com.angogasapps.myfamily.models.BuyListEvent;
 import com.angogasapps.myfamily.ui.screens.buy_list.adapters.ProductsAdapter;
 import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.BuyListProductCreatorDialog;
 
@@ -54,6 +55,12 @@ public class BuyListFragment extends Fragment {
 
     private void initObserver() {
         observer = BuyListManager.getInstance().changedSubject.subscribe(event -> {
+            if (event.getEvent().equals(BuyListEvent.IEvents.buyListRemoved)){
+                if (event.getBuyListId().equals(this.buyList.getId())){
+                    onRemoveThisBuyList();
+                    return;
+                }
+            }
             if (!event.getBuyListId().equals(this.buyList.getId())) {
                 return;
             }
@@ -66,6 +73,10 @@ public class BuyListFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         binding.recycleView.setLayoutManager(layoutManager);
         binding.recycleView.setAdapter(adapter);
+    }
+
+    private void onRemoveThisBuyList() {
+        BuyListActivity.getIgoToListOfBuyListsFragment().go();
     }
 
     public BuyList getBuyList() {

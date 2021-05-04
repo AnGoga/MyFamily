@@ -20,7 +20,7 @@ public class ListOfBuyListsFragment extends Fragment {
     private LinearLayoutManager layoutManager;
     private BuyListAdapter adapter;
     private BuyListManager buyListManager;
-    private Disposable disposable;
+    private Disposable /*disposable,*/ disposable2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,9 +38,12 @@ public class ListOfBuyListsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (disposable != null)
-            if (!disposable.isDisposed())
-                disposable.dispose();
+//        if (disposable != null)
+//            if (!disposable.isDisposed())
+//                disposable.dispose();
+        if (disposable2 != null)
+            if (!disposable2.isDisposed())
+                disposable2.dispose();
     }
 
     private void initOnClickListeners() {
@@ -59,8 +62,12 @@ public class ListOfBuyListsFragment extends Fragment {
     private void initObserver() {
         buyListManager = BuyListManager.getInstance();
 
-        disposable = buyListManager.addedSubject.subscribe(buyList -> {
-            adapter.updateEnd();
+//        disposable = buyListManager.addedSubject.subscribe(buyList -> {
+//            adapter.updateEnd();
+//        });
+
+        disposable2 = buyListManager.changedSubject.subscribe(event->{
+            adapter.update(event);
         });
     }
 }

@@ -49,30 +49,12 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     }
 
 
-//    public void update(BuyList newBuyList){
-//
-//        if (newBuyList.getProducts().size() > buyList.getProducts().size()){
-//            // Добавлен новый продукт
-//            buyList = newBuyList;
-////            BuyListManager.getInstance().addProductToBuyList(buyList, buyList.getProducts().get(buyList.getProducts().size() - 1));
-//            this.notifyItemChanged(buyList.getProducts().size() - 1);
-//        }else if(newBuyList.getProducts().size() < buyList.getProducts().size()){
-//            // Один продукт удалён
-//            int index = BuyListUtils.getIndexOfRemoveProduct(buyList.getProducts(), newBuyList.getProducts());
-//            buyList = newBuyList;
-////            BuyListManager.getInstance().removeProductInBuyList(buyList, index);
-//            this.notifyItemRemoved(index);
-//
-//        }else if(newBuyList.getProducts().size() == buyList.getProducts().size()){
-//            //Один продукт изменился
-//
-//        }
     public void update(BuyListEvent event){
-        if (event.getEvent().equals(BuyListEvent.IEvents.added)){
+        if (event.getEvent().equals(BuyListEvent.IEvents.productAdded)){
             this.notifyItemChanged(event.getIndex());
-        }else if(event.getEvent().equals(BuyListEvent.IEvents.removed)){
+        }else if(event.getEvent().equals(BuyListEvent.IEvents.productRemoved)){
             this.notifyItemRemoved(event.getIndex());
-        }else if(event.getEvent().equals(BuyListEvent.IEvents.changed)){
+        }else if(event.getEvent().equals(BuyListEvent.IEvents.productChanged)){
             this.notifyItemChanged(event.getIndex());
         }
 

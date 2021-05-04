@@ -17,10 +17,16 @@ import es.dmoral.toasty.Toasty;
 public class BuyListProductCreatorDialog extends AlertDialog {
     private DialogNewProductBinding binding;
     private String buyListId;
+    private BuyList.Product product;
 
     public BuyListProductCreatorDialog(Context context, String buyListId) {
         super(context);
         this.buyListId = buyListId;
+    }
+
+    public BuyListProductCreatorDialog(Context context, String buyListId, BuyList.Product product){
+        this(context, buyListId);
+        this.product = product;
     }
 
     @Override
@@ -31,6 +37,15 @@ public class BuyListProductCreatorDialog extends AlertDialog {
         setCancelable(true);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         initOnClickListeners();
+
+        initFields();
+    }
+
+    private void initFields() {
+        if (this.product != null){
+            binding.productName.setText(product.getName());
+            binding.commentEditText.setText(product.getComment());
+        }
     }
 
     private void initOnClickListeners() {
@@ -54,7 +69,7 @@ public class BuyListProductCreatorDialog extends AlertDialog {
         product.setComment(binding.commentEditText.getText().toString());
 
 
-        BuyListFunks.addNewProductToBuyList(buyListId, product, new IOnEndCommunicationWithFirebase() {
+        IOnEndCommunicationWithFirebase i = new IOnEndCommunicationWithFirebase() {
             @Override
             public void onSuccess() {
                 BuyListProductCreatorDialog.this.dismiss();
@@ -64,6 +79,13 @@ public class BuyListProductCreatorDialog extends AlertDialog {
             public void onFailure() {
                 Toasty.error(getContext(), R.string.something_went_wrong).show();
             }
-        });
+        };
+        if (this.product == null) {
+            BuyListFunks.addNewProductToBuyList(buyListId, product, i);
+        }else{
+            product.setId(this.product.getId());
+            BuyListFunks.updateProduct(buyListId, product, i);
+        }
+
     }
 }

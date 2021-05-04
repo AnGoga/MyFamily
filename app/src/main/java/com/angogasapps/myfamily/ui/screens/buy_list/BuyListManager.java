@@ -25,7 +25,7 @@ public class BuyListManager {
 
     private volatile ArrayList<BuyList> buyLists = new ArrayList<>();
 
-    PublishSubject<BuyList> addedSubject = PublishSubject.create();
+//    PublishSubject<BuyList> addedSubject = PublishSubject.create();
     PublishSubject<BuyListEvent> changedSubject = PublishSubject.create();
 
     private ChildEventListener listener;
@@ -45,9 +45,9 @@ public class BuyListManager {
     }
 
     private void initSubjects() {
-        addedSubject
-                .observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread());
+//        addedSubject
+//                .observeOn(Schedulers.io())
+//                .subscribeOn(AndroidSchedulers.mainThread());
         changedSubject
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread());
@@ -62,7 +62,13 @@ public class BuyListManager {
 //                    BuyList buyList = BuyList.from(snapshot);
                     BuyList buyList = BuyListUtils.parseBuyList(snapshot);
                     buyLists.add(buyList);
-                    addedSubject.onNext(buyList);
+//                    addedSubject.onNext(buyList);
+
+                    BuyListEvent event = new BuyListEvent();
+                    event.setIndex(buyLists.size() - 1);
+                    event.setEvents(BuyListEvent.IEvents.buyListAdded);
+                    event.setBuyListId(buyList.getId());
+                    changedSubject.onNext(event);
                 }
             }
 
@@ -72,7 +78,21 @@ public class BuyListManager {
             }
 
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                BuyList buyList = BuyListUtils.parseBuyList(snapshot);
+
+                BuyListEvent event = new BuyListEvent();
+                event.setBuyListId(buyList.getId());
+                event.setEvents(BuyListEvent.IEvents.buyListRemoved);
+                for (int i = 0; i < buyLists.size(); i++) {
+                    if (buyLists.get(i).getId().equals(buyList.getId())){
+                        event.setIndex(i);
+                        buyLists.remove(i);
+                        break;
+                    }
+                }
+                changedSubject.onNext(event);
+            }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
@@ -114,15 +134,19 @@ public class BuyListManager {
             BuyList newBuyList = BuyListUtils.parseBuyList(snapshot);
             BuyListEvent event = new BuyListEvent();
 
-            for(BuyList list : buyLists){
-                if (list.getId().equals(newBuyList.getId())){
-                    BuyList oldBuyList = list;
+//            for(BuyList oldBuyList : buyLists){
+            for(int i = 0; i < buyLists.size(); i++){
+                BuyList oldBuyList = buyLists.get(i);
+
+
+
+                if (oldBuyList.getId().equals(newBuyList.getId())){
 
                     if (newBuyList.getProducts().size() > oldBuyList.getProducts().size()){
                         // Добавлен новый продукт
                         oldBuyList.getProducts().add(newBuyList.getProducts().get(newBuyList.getProducts().size() - 1));
 
-                        event.setEvents(BuyListEvent.IEvents.added);
+                        event.setEvents(BuyListEvent.IEvents.productAdded);
                         event.setIndex(oldBuyList.getProducts().size() - 1);
                         event.setBuyListId(newBuyList.getId());
                     }else if(newBuyList.getProducts().size() < oldBuyList.getProducts().size()){
@@ -130,16 +154,33 @@ public class BuyListManager {
                         int index = BuyListUtils.getIndexOfRemoveProduct(oldBuyList.getProducts(), newBuyList.getProducts());
                         oldBuyList.getProducts().remove(index);
 
-                        event.setEvents(BuyListEvent.IEvents.removed);
+                        event.setEvents(BuyListEvent.IEvents.productRemoved);
                         event.setIndex(index);
                         event.setBuyListId(newBuyList.getId());
                     }else if(newBuyList.getProducts().size() == oldBuyList.getProducts().size()){
                         //Один продукт изменился
+                        int index = BuyListUtils.getIndexOfChangeProduct(oldBuyList.getProducts(), newBuyList.getProducts());
+                        oldBuyList.getProducts().set(index, newBuyList.getProducts().get(index));
 
+                        event.setEvents(BuyListEvent.IEvents.productChanged);
+                        event.setIndex(index);
+                        event.setBuyListId(newBuyList.getId());
                     }
                     changedSubject.onNext(event);
                     return;
                 }
+
+                //TODO: . . .
+                if (oldBuyList.getId().equals(newBuyList.getId())) {
+                    if (!oldBuyList.getName().equals(newBuyList.getName())) {
+                        event.setBuyListId(newBuyList.getId());
+                        event.setIndex(i);
+                        event.setEvents(BuyListEvent.IEvents.buyListChanged);
+                        changedSubject.onNext(event);
+                        return;
+                    }
+                }
+
             }
         }
     }

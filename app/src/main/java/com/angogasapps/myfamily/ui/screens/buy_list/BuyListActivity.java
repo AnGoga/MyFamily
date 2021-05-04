@@ -15,6 +15,8 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
+import es.dmoral.toasty.Toasty;
+
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_BUY_LIST;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
@@ -26,7 +28,7 @@ public class BuyListActivity extends AppCompatActivity {
     private BuyListManager buyListManager;
 
     private static IGoToBuyListFragment iGoToBuyListFragment;
-
+    private static IGOToListOfBuyListsFragment igoToListOfBuyListsFragment;
 
 
     @Override
@@ -46,6 +48,12 @@ public class BuyListActivity extends AppCompatActivity {
                     .beginTransaction().replace(R.id.container, fragment2).addToBackStack("").commit();
         };
 
+        igoToListOfBuyListsFragment = () -> {
+            getSupportFragmentManager().beginTransaction().remove(fragment2).commit();
+            Toasty.error(this, R.string.this_buy_list_was_remove).show();
+            getSupportFragmentManager().beginTransaction().add(R.id.container, fragment1).commit();
+        };
+
 
         getSupportFragmentManager()
                 .beginTransaction().add(R.id.container, fragment1).commit();
@@ -55,8 +63,14 @@ public class BuyListActivity extends AppCompatActivity {
     public static IGoToBuyListFragment getIGoToBuyListFragment(){
         return iGoToBuyListFragment;
     }
+    public static IGOToListOfBuyListsFragment getIgoToListOfBuyListsFragment(){
+        return igoToListOfBuyListsFragment;
+    }
 
     public interface IGoToBuyListFragment{
         void go(BuyList data);
+    }
+    public interface IGOToListOfBuyListsFragment{
+        void go();
     }
 }

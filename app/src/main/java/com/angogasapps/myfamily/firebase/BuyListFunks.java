@@ -54,6 +54,20 @@ public class BuyListFunks {
         });
     }
 
+    public static synchronized void updateProduct(String buyListId, BuyList.Product product, IOnEndCommunicationWithFirebase i){
+        product.setFrom(USER.getPhone());
+        DATABASE_ROOT.child(NODE_BUY_LIST).child(USER.getFamily()).child(buyListId)
+                .child(CHILD_PRODUCTS).child(product.getId())
+                .updateChildren(BuyListUtils.getHashMap(product)).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        i.onSuccess();
+                    }else{
+                        task.getException().printStackTrace();
+                        i.onFailure();
+                    }
+        });
+    }
+
     public static synchronized void deleteProduct(String buyListId, BuyList.Product product, IOnEndCommunicationWithFirebase i){
         DATABASE_ROOT.child(NODE_BUY_LIST).child(USER.getFamily()).child(buyListId)
           .child(CHILD_PRODUCTS).child(product.getId()).removeValue().addOnCompleteListener(task -> {
@@ -63,6 +77,18 @@ public class BuyListFunks {
                i.onFailure();
                task.getException().printStackTrace();
            }
+        });
+    }
+
+    public static synchronized void deleteBuyList(BuyList buyList, IOnEndCommunicationWithFirebase i){
+        DATABASE_ROOT.child(NODE_BUY_LIST).child(USER.getFamily()).child(buyList.getId())
+          .removeValue().addOnCompleteListener(task -> {
+              if (task.isSuccessful()){
+                  i.onSuccess();
+              }else{
+                  task.getException().printStackTrace();
+                  i.onFailure();
+              }
         });
     }
 }
