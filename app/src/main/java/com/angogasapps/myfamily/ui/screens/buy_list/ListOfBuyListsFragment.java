@@ -9,8 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.FragmentListOfBuyListsBinding;
+import com.angogasapps.myfamily.ui.screens.buy_list.adapters.BuyListAdapter;
+import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.AddBuyListDialog;
 
 import io.reactivex.disposables.Disposable;
 

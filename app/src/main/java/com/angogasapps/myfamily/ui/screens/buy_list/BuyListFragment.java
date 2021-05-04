@@ -1,6 +1,5 @@
 package com.angogasapps.myfamily.ui.screens.buy_list;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,9 +11,10 @@ import android.view.ViewGroup;
 
 import com.angogasapps.myfamily.databinding.FragmentBuyListBinding;
 import com.angogasapps.myfamily.models.BuyList;
+import com.angogasapps.myfamily.ui.screens.buy_list.adapters.ProductsAdapter;
+import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.BuyListProductCreatorDialog;
 
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 
 public class BuyListFragment extends Fragment {
@@ -53,11 +53,11 @@ public class BuyListFragment extends Fragment {
     }
 
     private void initObserver() {
-        observer = BuyListManager.getInstance().changedSubject.subscribe(buyList -> {
-            if (!buyList.getId().equals(this.buyList.getId())) {
+        observer = BuyListManager.getInstance().changedSubject.subscribe(event -> {
+            if (!event.getBuyListId().equals(this.buyList.getId())) {
                 return;
             }
-            adapter.update(buyList);
+            adapter.update(event);
         });
     }
 

@@ -1,20 +1,11 @@
-package com.angogasapps.myfamily.ui.screens.buy_list;
+package com.angogasapps.myfamily.ui.screens.buy_list.dialogs;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
 
 import com.angogasapps.myfamily.databinding.DialogNewProductBinding;
 import com.angogasapps.myfamily.firebase.BuyListFunks;
@@ -27,7 +18,7 @@ public class BuyListProductCreatorDialog extends AlertDialog {
     private DialogNewProductBinding binding;
     private String buyListId;
 
-    protected BuyListProductCreatorDialog(Context context, String buyListId) {
+    public BuyListProductCreatorDialog(Context context, String buyListId) {
         super(context);
         this.buyListId = buyListId;
     }

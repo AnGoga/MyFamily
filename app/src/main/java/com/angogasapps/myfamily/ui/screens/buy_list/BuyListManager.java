@@ -1,11 +1,10 @@
 package com.angogasapps.myfamily.ui.screens.buy_list;
 
-import android.annotation.SuppressLint;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.angogasapps.myfamily.models.BuyList;
+import com.angogasapps.myfamily.models.BuyListEvent;
 import com.angogasapps.myfamily.utils.BuyListUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -13,11 +12,9 @@ import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.Subject;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_BUY_LIST;
@@ -29,7 +26,7 @@ public class BuyListManager {
     private volatile ArrayList<BuyList> buyLists = new ArrayList<>();
 
     PublishSubject<BuyList> addedSubject = PublishSubject.create();
-    PublishSubject<BuyList> changedSubject = PublishSubject.create();
+    PublishSubject<BuyListEvent> changedSubject = PublishSubject.create();
 
     private ChildEventListener listener;
 
@@ -114,9 +111,8 @@ public class BuyListManager {
 
     public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName){
         synchronized (this) {
-//                    BuyList newBuyList = BuyList.from(snapshot);
             BuyList newBuyList = BuyListUtils.parseBuyList(snapshot);
-
+            BuyListEvent event = new BuyListEvent();
 
             for(BuyList list : buyLists){
                 if (list.getId().equals(newBuyList.getId())){
@@ -125,15 +121,23 @@ public class BuyListManager {
                     if (newBuyList.getProducts().size() > oldBuyList.getProducts().size()){
                         // Добавлен новый продукт
                         oldBuyList.getProducts().add(newBuyList.getProducts().get(newBuyList.getProducts().size() - 1));
+
+                        event.setEvents(BuyListEvent.IEvents.added);
+                        event.setIndex(oldBuyList.getProducts().size() - 1);
+                        event.setBuyListId(newBuyList.getId());
                     }else if(newBuyList.getProducts().size() < oldBuyList.getProducts().size()){
                         // Один продукт удалён
                         int index = BuyListUtils.getIndexOfRemoveProduct(oldBuyList.getProducts(), newBuyList.getProducts());
                         oldBuyList.getProducts().remove(index);
+
+                        event.setEvents(BuyListEvent.IEvents.removed);
+                        event.setIndex(index);
+                        event.setBuyListId(newBuyList.getId());
                     }else if(newBuyList.getProducts().size() == oldBuyList.getProducts().size()){
                         //Один продукт изменился
 
                     }
-                    changedSubject.onNext(oldBuyList);
+                    changedSubject.onNext(event);
                     return;
                 }
             }

@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.screens.buy_list;
+package com.angogasapps.myfamily.ui.screens.buy_list.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.BuyListHolderBinding;
 import com.angogasapps.myfamily.models.BuyList;
+import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity;
+import com.angogasapps.myfamily.ui.screens.buy_list.BuyListManager;
 
 import java.util.ArrayList;
 

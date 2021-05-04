@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.screens.buy_list;
+package com.angogasapps.myfamily.ui.screens.buy_list.dialogs;
 
 import android.content.Context;
 import android.os.Bundle;

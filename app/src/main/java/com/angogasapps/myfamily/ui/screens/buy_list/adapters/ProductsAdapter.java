@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.screens.buy_list;
+package com.angogasapps.myfamily.ui.screens.buy_list.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.databinding.ProductInBuyListHolderBinding;
 import com.angogasapps.myfamily.models.BuyList;
-import com.angogasapps.myfamily.models.Family;
+import com.angogasapps.myfamily.models.BuyListEvent;
+import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.ChangeOrDeleteProductDialog;
 import com.angogasapps.myfamily.utils.BuyListUtils;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductHolder>{
@@ -48,24 +49,33 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     }
 
 
-    public void update(BuyList newBuyList){
-
-        if (newBuyList.getProducts().size() > buyList.getProducts().size()){
-            // Добавлен новый продукт
-            buyList = newBuyList;
-//            BuyListManager.getInstance().addProductToBuyList(buyList, buyList.getProducts().get(buyList.getProducts().size() - 1));
-            this.notifyItemChanged(buyList.getProducts().size() - 1);
-        }else if(newBuyList.getProducts().size() < buyList.getProducts().size()){
-            // Один продукт удалён
-            int index = BuyListUtils.getIndexOfRemoveProduct(buyList.getProducts(), newBuyList.getProducts());
-            buyList = newBuyList;
-//            BuyListManager.getInstance().removeProductInBuyList(buyList, index);
-            this.notifyItemRemoved(index);
-
-        }else if(newBuyList.getProducts().size() == buyList.getProducts().size()){
-            //Один продукт изменился
-
+//    public void update(BuyList newBuyList){
+//
+//        if (newBuyList.getProducts().size() > buyList.getProducts().size()){
+//            // Добавлен новый продукт
+//            buyList = newBuyList;
+////            BuyListManager.getInstance().addProductToBuyList(buyList, buyList.getProducts().get(buyList.getProducts().size() - 1));
+//            this.notifyItemChanged(buyList.getProducts().size() - 1);
+//        }else if(newBuyList.getProducts().size() < buyList.getProducts().size()){
+//            // Один продукт удалён
+//            int index = BuyListUtils.getIndexOfRemoveProduct(buyList.getProducts(), newBuyList.getProducts());
+//            buyList = newBuyList;
+////            BuyListManager.getInstance().removeProductInBuyList(buyList, index);
+//            this.notifyItemRemoved(index);
+//
+//        }else if(newBuyList.getProducts().size() == buyList.getProducts().size()){
+//            //Один продукт изменился
+//
+//        }
+    public void update(BuyListEvent event){
+        if (event.getEvent().equals(BuyListEvent.IEvents.added)){
+            this.notifyItemChanged(event.getIndex());
+        }else if(event.getEvent().equals(BuyListEvent.IEvents.removed)){
+            this.notifyItemRemoved(event.getIndex());
+        }else if(event.getEvent().equals(BuyListEvent.IEvents.changed)){
+            this.notifyItemChanged(event.getIndex());
         }
+
     }
 
     public static class ProductHolder extends RecyclerView.ViewHolder{
