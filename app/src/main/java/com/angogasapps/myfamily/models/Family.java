@@ -26,7 +26,6 @@ public class Family {
             if (user.getId().equals(id)){
                 return user.getName();
             }
-            // return getPreferName(id)
 
         }
         return id;

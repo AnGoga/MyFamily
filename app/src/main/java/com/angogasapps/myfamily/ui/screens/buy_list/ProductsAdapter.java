@@ -32,23 +32,19 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     @Override
     public void onBindViewHolder(@NonNull ProductHolder holder, int position) {
         BuyList.Product product = buyList.getProducts().get(position);
-        holder.binding.textName.setText(product.getName());
 
+        holder.binding.textName.setText(product.getName());
         holder.binding.commentText.setText(BuyListUtils.getCorrectComment(product));
+
+        holder.binding.getRoot().setOnLongClickListener(v -> {
+            new ChangeOrDeleteProductDialog(context, buyList.getId(), product).show();
+            return true;
+        });
     }
 
     @Override
     public int getItemCount() {
         return buyList.getProducts().size();
-    }
-
-    public static class ProductHolder extends RecyclerView.ViewHolder{
-        ProductInBuyListHolderBinding binding;
-
-        public ProductHolder(@NonNull ProductInBuyListHolderBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
     }
 
 
@@ -57,13 +53,27 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         if (newBuyList.getProducts().size() > buyList.getProducts().size()){
             // Добавлен новый продукт
             buyList = newBuyList;
+//            BuyListManager.getInstance().addProductToBuyList(buyList, buyList.getProducts().get(buyList.getProducts().size() - 1));
             this.notifyItemChanged(buyList.getProducts().size() - 1);
         }else if(newBuyList.getProducts().size() < buyList.getProducts().size()){
             // Один продукт удалён
+            int index = BuyListUtils.getIndexOfRemoveProduct(buyList.getProducts(), newBuyList.getProducts());
+            buyList = newBuyList;
+//            BuyListManager.getInstance().removeProductInBuyList(buyList, index);
+            this.notifyItemRemoved(index);
 
         }else if(newBuyList.getProducts().size() == buyList.getProducts().size()){
             //Один продукт изменился
 
+        }
+    }
+
+    public static class ProductHolder extends RecyclerView.ViewHolder{
+        ProductInBuyListHolderBinding binding;
+
+        public ProductHolder(@NonNull ProductInBuyListHolderBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 

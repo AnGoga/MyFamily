@@ -3,12 +3,19 @@ package com.angogasapps.myfamily.ui.screens.buy_list;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
+
 import com.angogasapps.myfamily.databinding.DialogNewProductBinding;
 import com.angogasapps.myfamily.firebase.BuyListFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
@@ -33,19 +40,9 @@ public class BuyListProductCreatorDialog extends AlertDialog {
         setCancelable(true);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         initOnClickListeners();
-
     }
 
     private void initOnClickListeners() {
-        binding.switcher.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            binding.layoutExtraOptions.setVisibility(isChecked ? View.VISIBLE : View.INVISIBLE);
-        });
-
-        ArrayAdapter<String> aa = new ArrayAdapter<>(
-                getContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                AppApplication.getInstance().getResources().getStringArray(R.array.EProductAnnotations));
-        binding.spinner.setAdapter(aa);
 
         binding.buttonAddProduct.setOnClickListener(v -> {
             addNewProduct();
@@ -62,14 +59,9 @@ public class BuyListProductCreatorDialog extends AlertDialog {
 
         product.setName(binding.productName.getText().toString());
 
-        if (binding.switcher.isChecked()){
-            String num = binding.productCount.getText().toString();
-            if (num.equals("")){
-                Toasty.error(getContext(), R.string.enter_count).show();
-                return;
-            }
-            product.setComment(Integer.parseInt(num) + " " + binding.spinner.getSelectedItem().toString());
-        }
+
+        product.setComment(binding.commentEditText.getText().toString());
+
 
         BuyListFunks.addNewProductToBuyList(buyListId, product, new IOnEndCommunicationWithFirebase() {
             @Override

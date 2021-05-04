@@ -71,11 +71,7 @@ public class BuyListManager {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                synchronized (this) {
-//                    BuyList newBuyList = BuyList.from(snapshot);
-                    BuyList newBuyList = BuyListUtils.parseBuyList(snapshot);
-                    changedSubject.onNext(newBuyList);
-                }
+                BuyListManager.this.onChildChanged(snapshot, previousChildName);
             }
 
             @Override
@@ -98,5 +94,49 @@ public class BuyListManager {
         return buyLists;
     }
 
+    public void removeProductInBuyList(BuyList buyList, int index){
+        for (BuyList list : buyLists){
+            if (list.getId().equals(buyList.getId())){
+                list.getProducts().remove(index);
+                return;
+            }
+        }
+    }
 
+    public void addProductToBuyList(BuyList buyList, BuyList.Product product) {
+        for (BuyList list : buyLists) {
+            if (list.getId().equals(buyList.getId())) {
+                list.addProduct(product);
+                return;
+            }
+        }
+    }
+
+    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName){
+        synchronized (this) {
+//                    BuyList newBuyList = BuyList.from(snapshot);
+            BuyList newBuyList = BuyListUtils.parseBuyList(snapshot);
+
+
+            for(BuyList list : buyLists){
+                if (list.getId().equals(newBuyList.getId())){
+                    BuyList oldBuyList = list;
+
+                    if (newBuyList.getProducts().size() > oldBuyList.getProducts().size()){
+                        // Добавлен новый продукт
+                        oldBuyList.getProducts().add(newBuyList.getProducts().get(newBuyList.getProducts().size() - 1));
+                    }else if(newBuyList.getProducts().size() < oldBuyList.getProducts().size()){
+                        // Один продукт удалён
+                        int index = BuyListUtils.getIndexOfRemoveProduct(oldBuyList.getProducts(), newBuyList.getProducts());
+                        oldBuyList.getProducts().remove(index);
+                    }else if(newBuyList.getProducts().size() == oldBuyList.getProducts().size()){
+                        //Один продукт изменился
+
+                    }
+                    changedSubject.onNext(oldBuyList);
+                    return;
+                }
+            }
+        }
+    }
 }

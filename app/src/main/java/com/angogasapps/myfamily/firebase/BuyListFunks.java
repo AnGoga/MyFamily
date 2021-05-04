@@ -1,5 +1,7 @@
 package com.angogasapps.myfamily.firebase;
 
+import android.util.Log;
+
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
@@ -48,6 +50,18 @@ public class BuyListFunks {
            }else{
                task.getException().printStackTrace();
                i.onFailure();
+           }
+        });
+    }
+
+    public static synchronized void deleteProduct(String buyListId, BuyList.Product product, IOnEndCommunicationWithFirebase i){
+        DATABASE_ROOT.child(NODE_BUY_LIST).child(USER.getFamily()).child(buyListId)
+          .child(CHILD_PRODUCTS).child(product.getId()).removeValue().addOnCompleteListener(task -> {
+           if (task.isSuccessful()){
+               i.onSuccess();
+           }else{
+               i.onFailure();
+               task.getException().printStackTrace();
            }
         });
     }

@@ -82,4 +82,13 @@ public class BuyListUtils {
             }
         }
     }
+
+    public static int getIndexOfRemoveProduct(ArrayList<BuyList.Product> oldBuyList, ArrayList<BuyList.Product> newBuyList){
+        for (int i = 0; i < newBuyList.size(); i++) {
+            if (!oldBuyList.get(i).getId().equals(newBuyList.get(i).getId())){
+                return i;
+            }
+        }
+        return newBuyList.size();
+    }
 }
