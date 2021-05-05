@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.cardStorage.setOnClickListener(v -> {
-
+            startActivity(new Intent(MainActivity.this, TestMainActivity.class));
         });
 
         binding.buyListCard.setOnClickListener(v -> {

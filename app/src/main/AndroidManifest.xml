@@ -20,8 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFamily">
-        <activity android:name=".ui.screens.buy_list.BuyListActivity"></activity>
-        <!-- <service -->
+        <activity android:name=".ui.screens.main.TestMainActivity"></activity>
+        <activity android:name=".ui.screens.buy_list.BuyListActivity" /> <!-- <service -->
         <!-- android:name=".async.ChatService" -->
         <!-- android:exported="false" -->
         <!-- android:process=":remote"> -->

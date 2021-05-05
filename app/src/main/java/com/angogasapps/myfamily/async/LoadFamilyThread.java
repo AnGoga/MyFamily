@@ -162,8 +162,7 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
                         }
 
                         @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                        }
+                        public void onCancelled(@NonNull DatabaseError error) {}
                     });
             try {
                 lock.await();
