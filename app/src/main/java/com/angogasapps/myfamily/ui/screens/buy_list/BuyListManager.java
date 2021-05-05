@@ -142,6 +142,18 @@ public class BuyListManager {
 
                 if (oldBuyList.getId().equals(newBuyList.getId())){
 
+
+                    if (!oldBuyList.getName().equals(newBuyList.getName())) {
+                        oldBuyList.setName(newBuyList.getName());
+                        event.setBuyListId(newBuyList.getId());
+                        event.setIndex(i);
+                        event.setEvents(BuyListEvent.IEvents.buyListChanged);
+                        changedSubject.onNext(event);
+                        return;
+                    }
+
+
+
                     if (newBuyList.getProducts().size() > oldBuyList.getProducts().size()){
                         // Добавлен новый продукт
                         oldBuyList.getProducts().add(newBuyList.getProducts().get(newBuyList.getProducts().size() - 1));
@@ -168,17 +180,6 @@ public class BuyListManager {
                     }
                     changedSubject.onNext(event);
                     return;
-                }
-
-                //TODO: . . .
-                if (oldBuyList.getId().equals(newBuyList.getId())) {
-                    if (!oldBuyList.getName().equals(newBuyList.getName())) {
-                        event.setBuyListId(newBuyList.getId());
-                        event.setIndex(i);
-                        event.setEvents(BuyListEvent.IEvents.buyListChanged);
-                        changedSubject.onNext(event);
-                        return;
-                    }
                 }
 
             }

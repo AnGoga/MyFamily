@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import es.dmoral.toasty.Toasty;
 
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_NAME;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_PRODUCTS;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_BUY_LIST;
@@ -29,6 +30,18 @@ public class BuyListFunks {
                task.getException().printStackTrace();
                 i.onFailure();
            }
+        });
+    }
+
+    public static synchronized void updateBuyListName(BuyList buyList, IOnEndCommunicationWithFirebase i){
+        DATABASE_ROOT.child(NODE_BUY_LIST).child(USER.getFamily()).child(buyList.getId())
+                .child(CHILD_NAME).setValue(buyList.getName()).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        i.onSuccess();
+                    }else{
+                        task.getException().printStackTrace();
+                        i.onFailure();
+                    }
         });
     }
 

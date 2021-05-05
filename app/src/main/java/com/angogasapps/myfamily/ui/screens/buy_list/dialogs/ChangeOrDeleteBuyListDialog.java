@@ -35,7 +35,8 @@ public class ChangeOrDeleteBuyListDialog extends AlertDialog {
     }
 
     public void onClickEditButton(View view){
-
+        (new AddBuyListDialog(getContext(), buyList)).show();
+        this.dismiss();
     }
 
     public void onClickRemoveButton(View view){

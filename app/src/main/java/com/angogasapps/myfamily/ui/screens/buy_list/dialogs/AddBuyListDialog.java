@@ -12,12 +12,20 @@ import com.angogasapps.myfamily.firebase.BuyListFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
 import com.angogasapps.myfamily.models.BuyList;
 
+import es.dmoral.toasty.Toasty;
+
 public class AddBuyListDialog {
     private Context context;
+    private BuyList buyList;
 
 
     public AddBuyListDialog(@NonNull Context context) {
         this.context = context;
+    }
+
+    public AddBuyListDialog(Context context, BuyList buyList){
+        this(context);
+        this.buyList = buyList;
     }
 
     public void show(){
@@ -32,6 +40,10 @@ public class AddBuyListDialog {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
         input.setLayoutParams(lp);
+
+        if (buyList != null){
+            input.setText(buyList.getName());
+        }
         alertDialog.setView(input);
 
         alertDialog.setPositiveButton(context.getString(R.string.cancel),
@@ -41,18 +53,31 @@ public class AddBuyListDialog {
 
         alertDialog.setNegativeButton(context.getString(R.string.add),
                 (dialog, which) -> {
-                    BuyList buyList = new BuyList(input.getText().toString());
-                    BuyListFunks.addNewBuyList(buyList, new IOnEndCommunicationWithFirebase() {
-                        @Override
-                        public void onSuccess() {
-
+                    String str = input.getText().toString().trim();
+                    if (str != null && !str.equals("")) {
+                        BuyList inputBuyList;
+                        if (buyList ==null) {
+                            inputBuyList = new BuyList(str);
+                            BuyListFunks.addNewBuyList(inputBuyList, new IOnEndCommunicationWithFirebase() {
+                                @Override
+                                public void onSuccess() {}
+                                @Override
+                                public void onFailure() {}
+                            });
+                        }else{
+                            inputBuyList = new BuyList(buyList);
+                            inputBuyList.setName(str);
+                            BuyListFunks.updateBuyListName(inputBuyList, new IOnEndCommunicationWithFirebase() {
+                                @Override
+                                public void onSuccess() {}
+                                @Override
+                                public void onFailure() {}
+                            });
                         }
-                        @Override
-                        public void onFailure() {}
-                    });
+                    }else{
+                        Toasty.error(context, R.string.enter_buy_list_name).show();
+                    }
                 });
-
-
         alertDialog.show();
     }
 }

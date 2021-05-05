@@ -26,6 +26,12 @@ public class BuyList {
         this.products.addAll(products);
     }
 
+    public BuyList(BuyList buyList){
+        this.id = buyList.getId();
+        this.name = buyList.getName();
+        this.products = buyList.getProducts();
+    }
+
     public static BuyList from(DataSnapshot snapshot){
         Log.i("tag", snapshot.toString());
         BuyList buyList = snapshot.getValue(BuyList.class);

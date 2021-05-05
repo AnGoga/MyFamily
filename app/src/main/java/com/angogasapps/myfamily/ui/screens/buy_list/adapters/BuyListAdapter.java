@@ -52,9 +52,6 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.BuyListH
         return buyListsArray.size();
     }
 
-//    public void addBuyList(BuyList buyList){
-//        notifyItemInserted(buyListsArray.size() - 1);
-//    }
 
     public void updateEnd(){
         notifyItemInserted(buyListsArray.size() - 1);
