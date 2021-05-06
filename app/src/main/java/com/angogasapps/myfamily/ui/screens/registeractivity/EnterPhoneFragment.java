@@ -54,8 +54,11 @@ public class EnterPhoneFragment extends Fragment {
             @Override
             //выполниться когда смс с кодом только что отправили
             public void onCodeSent(@NonNull String id, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                EnterPhoneFragment.this.getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.registerDataContainer, new EnterCodeFragment(mPhoneNumber, id)).commit();
+                EnterPhoneFragment.this.getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.registerDataContainer, new EnterCodeFragment(mPhoneNumber, id))
+                        .addToBackStack("").commit();
             }
         };
 

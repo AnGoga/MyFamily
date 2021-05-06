@@ -13,8 +13,8 @@ import com.angogasapps.myfamily.async.notification.TokensManager;
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.firebase.AuthFunctions;
 import com.angogasapps.myfamily.models.Family;
-import com.angogasapps.myfamily.models.User;
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity;
+import com.angogasapps.myfamily.ui.screens.main.DeprecatedMainActivity;
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity;
 import com.angogasapps.myfamily.utils.FamilyManager;
@@ -63,6 +63,7 @@ public class SplashActivity extends AppCompatActivity {
             intent.putExtra(FamilyManager.PARAM_FAMILY_ID, familyIdParam);
             startActivity(intent);
         }else {
+//            startActivity(new Intent(SplashActivity.this, DeprecatedMainActivity.class));
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
         }
         finish();
@@ -111,6 +112,7 @@ public class SplashActivity extends AppCompatActivity {
             if (USER.getFamily().equals("")) {
                 Toasty.error(this, R.string.connection_is_not).show();
             }else{
+//                startActivity(new Intent(SplashActivity.this, DeprecatedMainActivity.class));
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
             }

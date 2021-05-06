@@ -23,10 +23,16 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         iNewUser = () -> {
-            getSupportFragmentManager().beginTransaction().replace(R.id.registerDataContainer, new EnterPersonalDataFragment()).commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.registerDataContainer, new EnterPersonalDataFragment())
+                    .commit();
         };
 
-        getSupportFragmentManager().beginTransaction().add(R.id.registerDataContainer, new EnterPhoneFragment()).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.registerDataContainer, new EnterPhoneFragment())
+                .commit();
 
     }
 

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.interfaces.IAuthUser;
 import com.angogasapps.myfamily.models.User;
 import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity;
@@ -34,7 +35,6 @@ public class AuthFunctions {
 
     public static synchronized void trySignInWithCredential(Activity activity, PhoneAuthCredential credential){
         AUTH.signInWithCredential(credential).addOnCompleteListener(authResultTask -> {
-            //Если верификация пользователя прошла успешно
             if (authResultTask.isSuccessful()) {
                     FirebaseDatabase.getInstance().getReference(NODE_USERS).orderByChild(CHILD_PHONE)
                             .equalTo(AUTH.getCurrentUser().getPhoneNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -57,8 +57,8 @@ public class AuthFunctions {
                         public void onCancelled(@NonNull DatabaseError error) {}
                     });
             } else {
-                //Если в верификации произошла ошибка
-                Toasty.error(activity, authResultTask.getException().toString()).show();
+                Toasty.error(activity, R.string.something_went_wrong).show();
+                Log.e("TAG", authResultTask.getException().toString());
             }
         });
     }
@@ -77,7 +77,6 @@ public class AuthFunctions {
         );
     }
 
-    // загружаем из базы даный актуальное состояние данного пользователя
     public static synchronized void downloadUser(IAuthUser iAuthUser){
         DATABASE_ROOT.child(NODE_USERS).child(UID)
                 .addListenerForSingleValueEvent(new ValueEventListener() {

@@ -8,6 +8,8 @@ import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
 
 import java.util.ArrayList;
 
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.ROLE_MEMBER;
+
 public class Family {
     private static Family family;
 
@@ -29,6 +31,15 @@ public class Family {
 
         }
         return id;
+    }
+
+    public String getMemberRoleById(String id){
+        for (User user : Family.getInstance().getUsersList()){
+            if (user.getId().equals(id)){
+                return user.getRole();
+            }
+        }
+        return ROLE_MEMBER;
     }
 
     public boolean containsUserWithId(String id){

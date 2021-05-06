@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.databinding.CardviewBinding;
 import com.angogasapps.myfamily.models.MainCardState;
 
@@ -27,6 +30,10 @@ public class CardView extends androidx.cardview.widget.CardView {
     private TextView textName;
     private TextView textSubscript;
     private ImageView imageView;
+
+    private OnClickListener plugClickListener = v -> {
+        AppApplication.showInDevelopingToast();
+    };
 
 
 //    private CardviewBinding binding;
@@ -100,7 +107,7 @@ public class CardView extends androidx.cardview.widget.CardView {
                 getContext().startActivity(new Intent(getContext(), state.getActivityClass()));
             });
         }else{
-            getRootView().setOnClickListener(null);
+            getRootView().setOnClickListener(plugClickListener);
         }
     }
 }

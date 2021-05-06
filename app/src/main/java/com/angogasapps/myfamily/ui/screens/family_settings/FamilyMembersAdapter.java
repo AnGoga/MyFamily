@@ -71,7 +71,7 @@ public class FamilyMembersAdapter extends RecyclerView.Adapter<FamilyMembersAdap
 
         public void initHolder(User user, Context context){
             userNameTextView.setText(Family.getInstance().getMemberNameById(user.getId()));
-            userRoleTextView.setText(StringFormater.formatToRole(Family.getInstance().getMemberNameById(user.getId())));
+            userRoleTextView.setText(StringFormater.formatToRole(Family.getInstance().getMemberRoleById(user.getId())));
 
             Bitmap bitmap = Family.getInstance().getUserById(user.getId()).getUserPhoto();
             if (bitmap != null)

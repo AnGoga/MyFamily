@@ -8,9 +8,12 @@ import android.net.NetworkInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
+import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.database.DatabaseManager;
 
 import java.io.IOException;
+
+import es.dmoral.toasty.Toasty;
 
 
 public class AppApplication extends Application {
@@ -44,6 +47,10 @@ public class AppApplication extends Application {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static void showInDevelopingToast(){
+        Toasty.info(app, R.string.in_developing).show();
     }
 
     public static AppApplication getInstance() {

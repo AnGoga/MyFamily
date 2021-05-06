@@ -2,34 +2,22 @@ package com.angogasapps.myfamily.ui.screens.findorcreatefamily;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.firebase.FindFamilyFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily;
 import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily;
-import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyFragment;
-import com.angogasapps.myfamily.ui.screens.main.MainActivity;
-import com.angogasapps.myfamily.ui.screens.splash.SplashActivity;
+import com.angogasapps.myfamily.ui.screens.main.DeprecatedMainActivity;
 
+import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 import com.angogasapps.myfamily.utils.FamilyManager;
 
-import java.util.Objects;
-import java.util.Set;
-
 import es.dmoral.toasty.Toasty;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class FindOrCreateFamilyActivity extends AppCompatActivity {
     String familyIdParam;

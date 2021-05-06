@@ -6,28 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.screens.main.MainActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--            android:id="@+id/main_toolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="?attr/actionBarSize"-->
-<!--            android:background="?attr/colorPrimary"-->
-<!--            android:elevation="4dp"-->
-<!--            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
-<!--            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
-
-<!--        <include-->
-<!--            layout="@layout/main_toolbar_layout"/>-->
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            android:elevation="4dp">
+            android:elevation="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -36,96 +31,38 @@
                 android:layout_height="?attr/actionBarSize"
                 android:padding="2.5dp"
                 android:src="@drawable/default_user_photo"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:theme="@style/Theme.MyFamily"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:theme="@style/Theme.MyFamily"
-                app:menu="@menu/main_menu"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/main_menu" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_margin="10dp"
+        <ImageView
+            android:id="@+id/mainActivityHeaderLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mainActivityHeaderHeight"
-            android:id="@+id/mainActivityHeaderLayout"
+            android:layout_margin="10dp"
             android:background="@drawable/mainActivityHeaderWelcome"
             tools:ignore="MissingConstraints">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.percentlayout.widget.PercentRelativeLayout
+        </ImageView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_view"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints">
-
-            <com.angogasapps.myfamily.ui.customview.CardView
-                style="@style/LeftCardView"
-                app:itemCardDrawable="@drawable/mainActivityIcoCalendar"
-                app:itemCardName="@string/event_calendar"
-                app:itemCardSubscript="@string/event_calendar" />
-            <com.angogasapps.myfamily.ui.customview.CardView
-                style="@style/RightCardView"
-                app:itemCardDrawable="@drawable/mainActivityIcoTimeTable"
-                app:itemCardName="@string/time_table"
-                app:itemCardSubscript="@string/time_table" />
-        </androidx.percentlayout.widget.PercentRelativeLayout>
-
-        <androidx.percentlayout.widget.PercentRelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.angogasapps.myfamily.ui.customview.CardView
-                style="@style/LeftCardView"
-                android:id="@+id/chat_card"
-                app:itemCardDrawable="@drawable/mainActivityIcoChat"
-                app:itemCardName="@string/chat"
-                app:itemCardSubscript="@string/chat" />
-            <com.angogasapps.myfamily.ui.customview.CardView
-                android:id="@+id/buy_list_card"
-                style="@style/RightCardView"
-                app:itemCardDrawable="@drawable/mainActivityIcoBuyList"
-                app:itemCardName="@string/buy_list"
-                app:itemCardSubscript="@string/buy_list" />
-        </androidx.percentlayout.widget.PercentRelativeLayout>
-
-        <androidx.percentlayout.widget.PercentRelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.angogasapps.myfamily.ui.customview.CardView
-                style="@style/LeftCardView"
-                app:itemCardName="@string/clock"
-                app:itemCardSubscript="@string/clock" />
-            <com.angogasapps.myfamily.ui.customview.CardView
-                android:id="@+id/family_card"
-                style="@style/RightCardView"
-                app:itemCardDrawable="@drawable/ic_my_family"
-                app:itemCardName="@string/my_family"
-                app:itemCardSubscript="@string/my_family" />
-        </androidx.percentlayout.widget.PercentRelativeLayout>
-
-        <androidx.percentlayout.widget.PercentRelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.angogasapps.myfamily.ui.customview.CardView
-                android:id="@+id/card_storage"
-                style="@style/LeftCardView"
-                app:itemCardName="@string/storage"
-                app:itemCardSubscript="@string/storage" />
-<!--            <com.angogasapps.myfamily.ui.customview.CardView-->
-<!--                style="@style/RightCardView"-->
-<!--                app:itemCardName="@string/clock"-->
-<!--                app:itemCardSubscript="@string/clock" />-->
-        </androidx.percentlayout.widget.PercentRelativeLayout>
-
+            android:layout_height="match_parent"/>
     </LinearLayout>
 </ScrollView>
-

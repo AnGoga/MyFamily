@@ -82,5 +82,6 @@
     <string name="remove_buy_list">Удалить список покупок</string>
     <string name="change_or_delet_buy_list_dialog_text1">Вы действительно хотите удалить список покупок </string>
     <string name="this_buy_list_was_remove">Этот список покупок был удалён</string>
+    <string name="in_developing">В разработке</string>
 
 </resources>

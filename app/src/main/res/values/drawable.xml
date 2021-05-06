@@ -3,7 +3,7 @@
 <!--    <drawable name="splashActivityDrawable">@drawable/ic_launcher_background</drawable>-->
     <drawable name="splashActivityDrawable">@drawable/jetbrains_neiro_splash</drawable>
 
-<!--    MainActivity -->
+<!--    DeprecatedMainActivity -->
     <drawable name="mainActivityHeaderWelcome">@drawable/welcome</drawable>
     <drawable name="mainActivityIcoCalendar">@drawable/ic_dashboard_calendar</drawable>
     <drawable name="mainActivityIcoTimeTable">@drawable/ic_dashboard_timetable</drawable>

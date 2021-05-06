@@ -2,66 +2,52 @@ package com.angogasapps.myfamily.ui.screens.main;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.async.ServiceManager;
-import com.angogasapps.myfamily.async.notification.FcmMessageManager;
 import com.angogasapps.myfamily.databinding.ActivityMainBinding;
-import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity;
-import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
-import com.angogasapps.myfamily.ui.screens.family_settings.FamilySettingsActivity;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
-
-import es.dmoral.toasty.Toasty;
+import com.angogasapps.myfamily.utils.MainActivityUtils;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "TAG";
     private ActivityMainBinding binding;
-
-
+    private MainActivityAdapter adapter;
+    private GridLayoutManager layoutManager;
+    private ItemTouchHelper itemTouchHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        new LoadFamilyThread(this).execute(USER);
-
-        ServiceManager.checkServices(this);
-
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        new LoadFamilyThread(this).execute(USER);
+
+
         initToolbar();
+        initRecyclerView();
+    }
 
-        binding.chatCard.setOnClickListener(v -> {
-            startActivity(new Intent(this, ChatActivity.class));
-        });
+    private void initRecyclerView() {
+        adapter = new MainActivityAdapter(this, MainActivityUtils.getArrayToView(this));
+        layoutManager = new GridLayoutManager(this, 2);
 
-        binding.familyCard.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, FamilySettingsActivity.class));
-        });
+        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(adapter);
+        itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(binding.recycleView);
 
-        binding.cardStorage.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, TestMainActivity.class));
-        });
-
-        binding.buyListCard.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, BuyListActivity.class));
-        });
-
-        FcmMessageManager.subscribeToFamily();
-
-
+        binding.recycleView.setAdapter(adapter);
+        binding.recycleView.setLayoutManager(layoutManager);
     }
 
     private void initToolbar() {

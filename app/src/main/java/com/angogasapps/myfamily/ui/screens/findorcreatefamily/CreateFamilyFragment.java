@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.FragmentCreateFamilyBinding;
 import com.angogasapps.myfamily.firebase.RegisterFamilyFunks;
+import com.angogasapps.myfamily.ui.screens.main.DeprecatedMainActivity;
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;

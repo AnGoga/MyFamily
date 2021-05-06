@@ -28,7 +28,7 @@
 
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_personal_dairy"
+            android:id="@+id/personal_dairy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/normal_margin"
@@ -58,7 +58,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_share_personal_data"
+            android:id="@+id/change_personal_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/normal_margin"

@@ -14,6 +14,7 @@ import com.angogasapps.myfamily.databinding.FragmentFindFamilyBinding;
 import com.angogasapps.myfamily.firebase.FindFamilyFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily;
 import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily;
+import com.angogasapps.myfamily.ui.screens.main.DeprecatedMainActivity;
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 
 import es.dmoral.toasty.Toasty;

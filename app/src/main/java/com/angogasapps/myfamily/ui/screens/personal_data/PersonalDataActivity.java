@@ -5,8 +5,10 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
 
 import android.os.Bundle;
+import android.view.View.OnClickListener;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.databinding.ActivityPersonalDataBinding;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -27,6 +29,13 @@ public class PersonalDataActivity extends AppCompatActivity {
         if (USER.getUserPhoto() != null){
             binding.userImage.setImageBitmap(USER.getUserPhoto());
         }
+
+        OnClickListener plugClickListener = v -> {
+            AppApplication.showInDevelopingToast();
+        };
+
+        binding.changePersonalData.setOnClickListener(plugClickListener);
+        binding.personalDairy.setOnClickListener(plugClickListener);
 
 
     }
