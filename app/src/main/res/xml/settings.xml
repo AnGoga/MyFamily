@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/chat">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="chat_notification"
+            android:icon="@drawable/mainActivityIcoChat"
+            android:title="@string/notification_from_chat"
+            android:summary="@string/settings_chat_summary"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

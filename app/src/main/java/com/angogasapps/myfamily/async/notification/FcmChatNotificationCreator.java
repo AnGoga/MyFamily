@@ -17,7 +17,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 public class FcmChatNotificationCreator {
     
     public static JSONObject fromChatMessage(Message message) {
-        return fromChatMessage(message, USER.getFamily());
+        return fromChatMessage(message, USER.getFamily() + "-chat");
     }
 
     public static JSONObject fromChatMessage(Message message, String to) {

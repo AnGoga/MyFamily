@@ -1,5 +1,8 @@
 package com.angogasapps.myfamily.async.notification;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.AssetManager;
 import android.util.Log;
 
@@ -81,13 +84,6 @@ public class FcmMessageManager {
         googleCredential.refreshToken();
         return googleCredential.getAccessToken();
 
-
-//        GoogleCredential googleCredential = GoogleCredential
-//                .fromStream(new FileInputStream("service-account.json"))
-//                .createScoped(Arrays.asList(SCOPES));
-//        googleCredential.refreshToken();
-//        return googleCredential.getAccessToken();
-
     }
 
     private static String inputstreamToString(InputStream inputStream) throws IOException {
@@ -99,10 +95,35 @@ public class FcmMessageManager {
         return stringBuilder.toString();
     }
 
-    public static void subscribeToFamily(){
-        FirebaseMessaging.getInstance().subscribeToTopic(USER.getFamily()).addOnCompleteListener(task -> {
-            Log.d("TAG", "subscribeToFamily: " + task.toString());
+    public static void subscribeToFamilyChat(){
+        if (canSubscribeToFamily()) {
+            FirebaseMessaging.getInstance().subscribeToTopic(USER.getFamily() + "-chat").addOnCompleteListener(task -> {
+                Log.d("TAG", "subscribeToFamily: " + task.toString());
+            });
+        }
+    }
+
+    public static void unsubscribeFromFamilyChat(){
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(USER.getFamily() + "-chat").addOnCompleteListener(task -> {
+            Log.d("TAG", "unsubscribeFromFamily: " + task.toString());
         });
+    }
+
+    private static boolean canSubscribeToFamily(){
+        SharedPreferences sf = AppApplication.getInstance().getSharedPreferences("family-chat", Context.MODE_PRIVATE);
+        return sf.getBoolean("can_send_notification", true);
+    }
+
+    public static void setPermissionToGetChatNotifications(boolean isHavePermission){
+        SharedPreferences sf = AppApplication.getInstance().getSharedPreferences("family-chat", Context.MODE_PRIVATE);
+        Editor editor = sf.edit();
+        editor.putBoolean("can_send_notification", isHavePermission);
+        editor.apply();
+        if (isHavePermission){
+            subscribeToFamilyChat();
+        }else{
+            unsubscribeFromFamilyChat();
+        }
     }
 
 }

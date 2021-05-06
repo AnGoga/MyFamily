@@ -11,9 +11,10 @@ import android.view.MenuItem;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
-import com.angogasapps.myfamily.async.ServiceManager;
+import com.angogasapps.myfamily.async.notification.FcmMessageManager;
 import com.angogasapps.myfamily.databinding.ActivityMainBinding;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
+import com.angogasapps.myfamily.ui.screens.settings.SettingsActivity;
 import com.angogasapps.myfamily.utils.MainActivityUtils;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
@@ -36,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
         initToolbar();
         initRecyclerView();
+        FcmMessageManager.subscribeToFamilyChat();
+
+
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     private void initRecyclerView() {

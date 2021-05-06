@@ -58,7 +58,7 @@ public class DeprecatedMainActivity extends AppCompatActivity {
             startActivity(new Intent(DeprecatedMainActivity.this, BuyListActivity.class));
         });
 
-        FcmMessageManager.subscribeToFamily();
+        FcmMessageManager.subscribeToFamilyChat();
 
 
     }

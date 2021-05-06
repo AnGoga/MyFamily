@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
-                    android:text="Личный дневник"
+                    android:text="@string/personal_dairy"
                     android:textSize="18dp" />
 
             </LinearLayout>
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
-                    android:text="Редактировать личную информацию"
+                    android:text="@string/edit_personal_data"
                     android:textSize="18dp" />
 
             </LinearLayout>
