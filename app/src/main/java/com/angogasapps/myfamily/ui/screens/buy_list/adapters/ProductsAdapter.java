@@ -50,11 +50,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
 
     public void update(BuyListEvent event){
-        if (event.getEvent().equals(BuyListEvent.IEvents.productAdded)){
+        if (event.getEvent().equals(BuyListEvent.EBuyListEvents.productAdded)){
             this.notifyItemChanged(event.getIndex());
-        }else if(event.getEvent().equals(BuyListEvent.IEvents.productRemoved)){
+        }else if(event.getEvent().equals(BuyListEvent.EBuyListEvents.productRemoved)){
             this.notifyItemRemoved(event.getIndex());
-        }else if(event.getEvent().equals(BuyListEvent.IEvents.productChanged)){
+        }else if(event.getEvent().equals(BuyListEvent.EBuyListEvents.productChanged)){
             this.notifyItemChanged(event.getIndex());
         }
 

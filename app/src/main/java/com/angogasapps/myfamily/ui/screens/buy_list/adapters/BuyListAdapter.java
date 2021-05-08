@@ -58,13 +58,13 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.BuyListH
     }
 
     public void update(BuyListEvent event) {
-        if (event.getEvent().equals(BuyListEvent.IEvents.buyListRemoved)){
+        if (event.getEvent().equals(BuyListEvent.EBuyListEvents.buyListRemoved)){
             this.notifyItemRemoved(event.getIndex());
         }
-        if (event.getEvent().equals(BuyListEvent.IEvents.buyListAdded)){
+        if (event.getEvent().equals(BuyListEvent.EBuyListEvents.buyListAdded)){
             this.notifyItemChanged(event.getIndex());
         }
-        if (event.getEvent().equals(BuyListEvent.IEvents.buyListChanged)){
+        if (event.getEvent().equals(BuyListEvent.EBuyListEvents.buyListChanged)){
             this.notifyItemChanged(event.getIndex());
         }
     }

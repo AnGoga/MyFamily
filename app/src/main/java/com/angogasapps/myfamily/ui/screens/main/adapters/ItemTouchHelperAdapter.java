@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.screens.main;
+package com.angogasapps.myfamily.ui.screens.main.adapters;
 
 public interface ItemTouchHelperAdapter {
 

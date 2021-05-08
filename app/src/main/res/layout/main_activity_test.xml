@@ -15,7 +15,7 @@
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mainActivityHeaderHeight"
-            android:id="@+id/mainActivityHeaderLayout"
+            android:id="@+id/view_pager"
             android:background="@drawable/mainActivityHeaderWelcome"
             tools:ignore="MissingConstraints">
 

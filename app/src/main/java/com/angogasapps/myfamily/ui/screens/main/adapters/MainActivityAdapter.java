@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.screens.main;
+package com.angogasapps.myfamily.ui.screens.main.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.databinding.CardviewBinding;
 import com.angogasapps.myfamily.databinding.MainCardViewHolderBinding;
 import com.angogasapps.myfamily.models.MainCardState;
 
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.MainCardHolder>
-        implements ItemTouchHelperAdapter{
+        implements ItemTouchHelperAdapter {
     private Context context;
     private LayoutInflater inflater;
 

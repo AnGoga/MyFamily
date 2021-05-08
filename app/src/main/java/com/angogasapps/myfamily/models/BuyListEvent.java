@@ -1,10 +1,8 @@
 package com.angogasapps.myfamily.models;
 
-import com.angogasapps.myfamily.models.BuyList;
-
 public class BuyListEvent {
     private int index;
-    private IEvents events;
+    private EBuyListEvents events;
     private String buyListId;
 
     public int getIndex() {
@@ -14,10 +12,10 @@ public class BuyListEvent {
         this.index = index;
     }
 
-    public IEvents getEvent() {
+    public EBuyListEvents getEvent() {
         return events;
     }
-    public void setEvents(IEvents events) {
+    public void setEvents(EBuyListEvents events) {
         this.events = events;
     }
 
@@ -28,7 +26,7 @@ public class BuyListEvent {
         this.buyListId = buyListId;
     }
 
-    public enum IEvents{
+    public enum EBuyListEvents {
         productAdded, productRemoved, productChanged, buyListRemoved, buyListAdded, buyListChanged
     }
 }

@@ -3,6 +3,7 @@ package com.angogasapps.myfamily.utils;
 import com.angogasapps.myfamily.models.NewsObject;
 import com.google.firebase.database.ServerValue;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_FROM_PHONE;
@@ -20,5 +21,14 @@ public class NewsUtils {
         map.put(CHILD_TIME_CREATE, ServerValue.TIMESTAMP);
 
         return map;
+    }
+
+    public static int getIndexOfDeleteNews(ArrayList<NewsObject> newsList, NewsObject newNews){
+        for (int i = 0; i < newsList.size(); i++) {
+            if (!newsList.get(i).getId().equals(newNews.getId())){
+                return i;
+            }
+        }
+        return newsList.size() - 1;
     }
 }

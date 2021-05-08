@@ -1,6 +1,10 @@
 package com.angogasapps.myfamily.models;
 
+import com.google.firebase.database.DataSnapshot;
+
 import java.util.Objects;
+
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_VALUE;
 
 public class NewsObject {
     public static final String TYPE_TEXT = "text";
@@ -14,6 +18,13 @@ public class NewsObject {
     private String type = "";
     private String value = "";
     private long timeCreate;
+
+
+    public static NewsObject from(DataSnapshot snapshot){
+        NewsObject object = snapshot.getValue(NewsObject.class);
+        object.setId(snapshot.getKey());
+        return object;
+    }
 
 
     public String getFromPhone() {
