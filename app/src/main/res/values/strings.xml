@@ -87,5 +87,16 @@
     <string name="personal_dairy">Личный дневник</string>
     <string name="settings_chat_summary">Если галочка стоит, то вы будите получать push-уведомления сообщений из семейного чата</string>
     <string name="notification_from_chat">Уведомления из чата</string>
+    <string name="news_center">Новостной центр</string>
+    <string name="text">Текст</string>
+    <string name="image">Картинка</string>
+    <string name="video">Видео</string>
+    <string name="settings">Настройки</string>
+    <string name="create_news">Создать новсть</string>
+    <string name="news_text">Текст новости</string>
+    <string name="enter_news_text">Введите текст новости</string>
+    <string name="chose_image">Выберите картику</string>
+    <string name="news_success_add">Новость успешно отправлена</string>
+    <string name="create_new_news">Создать новую новость</string>
 
 </resources>

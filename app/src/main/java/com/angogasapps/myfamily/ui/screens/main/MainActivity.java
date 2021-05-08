@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
         FcmMessageManager.subscribeToFamilyChat();
 
-
-        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     private void initRecyclerView() {

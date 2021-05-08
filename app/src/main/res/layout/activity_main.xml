@@ -48,16 +48,13 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/mainActivityHeaderLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mainActivityHeaderHeight"
             android:layout_margin="10dp"
             android:background="@drawable/mainActivityHeaderWelcome"
-            tools:ignore="MissingConstraints">
-
-
-        </ImageView>
+            tools:ignore="MissingConstraints" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycle_view"

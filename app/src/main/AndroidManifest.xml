@@ -23,8 +23,10 @@
         android:theme="@style/Theme.MyFamily"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity android:name=".ui.screens.news_center.NewsCenterActivity"></activity>
+        <activity android:name=".ui.screens.news_center.CreateNewNewsActivity" />
         <activity android:name=".ui.screens.main.MainActivity" />
-        <activity android:name=".ui.screens.settings.SettingsActivity"/>
+        <activity android:name=".ui.screens.settings.SettingsActivity" />
         <activity android:name=".ui.screens.buy_list.BuyListActivity" /> <!-- <service -->
         <!-- android:name=".async.ChatService" -->
         <!-- android:exported="false" -->

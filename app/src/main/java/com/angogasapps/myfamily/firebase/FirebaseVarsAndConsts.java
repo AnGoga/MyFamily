@@ -38,6 +38,7 @@ public class FirebaseVarsAndConsts {
     public static final String NODE_FAMILIES = "families";
     public static final String NODE_CHAT = "chat";
     public static final String NODE_BUY_LIST = "buy_list";
+    public static final String NODE_NEWS = "news";
 
 
     public static final String CHILD_ID = "id";
@@ -54,6 +55,9 @@ public class FirebaseVarsAndConsts {
 
     public static final String CHILD_PRODUCTS = "products";
     public static final String CHILD_COMMENT = "comment";
+
+    public static final String CHILD_FROM_PHONE = "fromPhone";
+    public static final String CHILD_TIME_CREATE = "timeCreate";
 
 
     public static final String CHILD_MESSANGES = "messanges";
