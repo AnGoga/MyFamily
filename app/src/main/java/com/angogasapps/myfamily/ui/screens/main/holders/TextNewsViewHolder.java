@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.angogasapps.myfamily.databinding.TextNewsViewHolderBinding;
+import com.angogasapps.myfamily.models.Family;
 import com.angogasapps.myfamily.models.NewsObject;
 
 public class TextNewsViewHolder extends BaseNewsViewHolder{
@@ -19,5 +20,7 @@ public class TextNewsViewHolder extends BaseNewsViewHolder{
     @Override
     public void update(NewsObject newsObject) {
         binding.text.setText(newsObject.getValue());
+        binding.textName.setText(Family.getInstance().getNameByPhone(newsObject.getFromPhone()));
+//        binding.userPhoto.setImageResource(Family.getInstance().get);
     }
 }

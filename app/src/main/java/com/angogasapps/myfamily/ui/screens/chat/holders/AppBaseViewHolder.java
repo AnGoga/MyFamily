@@ -55,7 +55,7 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder {
     public final void initLeftLayout() {
         leftLayout.setVisibility(View.VISIBLE);
         rightLayout.setVisibility(View.INVISIBLE);
-        Bitmap bitmap = getMemberImageById(from, context);
+        Bitmap bitmap = Family.getInstance().getMemberImageById(from, context);
         userAvatar.setImageBitmap(bitmap);
         initLeftFields();
     }

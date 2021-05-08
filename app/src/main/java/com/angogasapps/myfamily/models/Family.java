@@ -2,7 +2,10 @@ package com.angogasapps.myfamily.models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
+import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
 
@@ -76,6 +79,18 @@ public class Family {
         String name = sf.getString(phone, phone);
         return name;
     }
+
+    public static Bitmap getMemberImageById(String id, Context context){
+        Bitmap image = null;
+        try {
+            image = Family.getInstance().getUserById(id).getUserPhoto();
+            if (image == null) {
+                image = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_default_user_photo);
+            }
+        }catch (Exception e){}
+        return image;
+    }
+
 
     public ArrayList<User> getUsersList() {
         return usersList;

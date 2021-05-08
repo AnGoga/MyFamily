@@ -25,7 +25,7 @@ public class NewsUtils {
 
     public static int getIndexOfDeleteNews(ArrayList<NewsObject> newsList, NewsObject newNews){
         for (int i = 0; i < newsList.size(); i++) {
-            if (!newsList.get(i).getId().equals(newNews.getId())){
+            if (newsList.get(i).getId().equals(newNews.getId())){
                 return i;
             }
         }

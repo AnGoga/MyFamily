@@ -14,6 +14,7 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.async.notification.FcmMessageManager;
 import com.angogasapps.myfamily.databinding.ActivityMainBinding;
+import com.angogasapps.myfamily.models.NewsEvent;
 import com.angogasapps.myfamily.ui.screens.main.adapters.ItemTouchHelperCallback;
 import com.angogasapps.myfamily.ui.screens.main.adapters.MainActivityAdapter;
 import com.angogasapps.myfamily.ui.screens.main.adapters.NewsAdapter;
@@ -75,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
     private void initNewsLayout() {
         newsAdapter = new NewsAdapter(this, NewsManager.getInstance().getAllNews());
         disposable = NewsManager.getInstance().subject().subscribe(event -> {
+            if (NewsManager.getInstance().getAllNews().size() == 0){
+                binding.viewPager.setBackgroundResource(R.drawable.default_family_emblem);
+            }else if (NewsManager.getInstance().getAllNews().size() == 1 &&
+                    event.getEvent().equals(NewsEvent.ENewsEvents.added)){
+                binding.viewPager.setBackgroundResource(0);
+            }
             newsAdapter.update(event);
         });
         binding.viewPager.setAdapter(newsAdapter);
