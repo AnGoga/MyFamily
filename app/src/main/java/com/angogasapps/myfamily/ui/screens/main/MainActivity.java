@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         disposable = NewsManager.getInstance().subject().subscribe(event -> {
             if (NewsManager.getInstance().getAllNews().size() == 0){
                 binding.viewPager.setBackgroundResource(R.drawable.default_family_emblem);
-            }else if (NewsManager.getInstance().getAllNews().size() == 1 &&
+            }else if (NewsManager.getInstance().getAllNews().size() >= 1 &&
                     event.getEvent().equals(NewsEvent.ENewsEvents.added)){
                 binding.viewPager.setBackgroundResource(0);
             }

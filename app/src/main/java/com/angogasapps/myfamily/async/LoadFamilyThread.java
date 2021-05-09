@@ -153,6 +153,7 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
                             for (DataSnapshot dataSnapshot : snapshot.child(CHILD_MEMBERS).getChildren()) {
                                 familyMembersId.add(dataSnapshot.getKey());
                                 String string = dataSnapshot.getValue(String.class);
+                                if (usersRoleMap == null) usersRoleMap = new HashMap<>();
                                 usersRoleMap.put(dataSnapshot.getKey(), string);
                             }
                             familyEmblemURL = snapshot.child(CHILD_EMBLEM).getValue(String.class);
