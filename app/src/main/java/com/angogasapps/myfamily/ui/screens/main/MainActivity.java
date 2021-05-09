@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
         initNewsLayout();
         FcmMessageManager.subscribeToFamilyChat();
-
+        MainActivityUtils.waitEndDownloadThread(this, newsAdapter);
     }
 
     private void initRecyclerView() {
@@ -86,9 +86,11 @@ public class MainActivity extends AppCompatActivity {
         });
         binding.viewPager.setAdapter(newsAdapter);
 //        binding.viewPager.setClipToPadding(false);
-//        binding.viewPager.setClipChildren(false);
+//        binding.viewPager.setPadding(10,0,10,0);
+
         binding.viewPager.setOffscreenPageLimit(3);
-//        binding.viewPager.getChildAt(0).setOverScrollMode(View.OVER_SCROLL_NEVER);
+
+
     }
 
     @Override

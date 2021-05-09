@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="250dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.screens.main.GetImageFragment">
+    tools:context=".ui.screens.news_center.GetImageFragment">
 
     <ImageView
         android:id="@+id/image"

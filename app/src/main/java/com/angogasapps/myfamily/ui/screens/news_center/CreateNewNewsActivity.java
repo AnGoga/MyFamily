@@ -8,8 +8,6 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.ActivityCreateNewNewsBinding;
 import com.angogasapps.myfamily.firebase.NewsCenterFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
-import com.angogasapps.myfamily.ui.screens.main.EditTextFragment;
-import com.angogasapps.myfamily.ui.screens.main.GetImageFragment;
 
 import es.dmoral.toasty.Toasty;
 
@@ -48,6 +46,10 @@ public class CreateNewNewsActivity extends AppCompatActivity {
                 setGetImageFragment();
             }
         });
+//        binding.radioVideo.setActivated(false);
+//        binding.radioVideo.setOnClickListener(v -> {
+//            AppApplication.showInDevelopingToast();
+//        });
     }
 
     private void setEditTextFragment(){

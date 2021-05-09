@@ -11,7 +11,9 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.models.NewsEvent;
 import com.angogasapps.myfamily.models.NewsObject;
 import com.angogasapps.myfamily.ui.screens.main.holders.BaseNewsViewHolder;
+import com.angogasapps.myfamily.ui.screens.main.holders.ImageNewsViewHolder;
 import com.angogasapps.myfamily.ui.screens.main.holders.TextNewsViewHolder;
+import com.angogasapps.myfamily.ui.screens.main.holders.VideoNewsViewHolder;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,13 @@ public class NewsAdapter extends RecyclerView.Adapter<BaseNewsViewHolder> {
     public BaseNewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == 0){
             return new TextNewsViewHolder(context, inflater.inflate(R.layout.text_news_view_holder, parent, false));
+        }
+        if (viewType == 1){
+            return new ImageNewsViewHolder(context, inflater.inflate(R.layout.image_news_view_holder, parent, false));
+        }
+        if (viewType == 2){
+            return new VideoNewsViewHolder(context, inflater.inflate(R.layout.video_news_view_holder, parent, false));
+
         }
         return null;
     }

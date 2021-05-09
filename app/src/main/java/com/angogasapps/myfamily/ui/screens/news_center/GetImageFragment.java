@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.screens.main;
+package com.angogasapps.myfamily.ui.screens.news_center;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -39,9 +39,11 @@ public class GetImageFragment extends Fragment {
         });
     }
     private void getPhotoUri() {
-        CropImage.activity().setAspectRatio(1, 1)
-                .setRequestedSize(600, 600)
-                .setCropShape(CropImageView.CropShape.RECTANGLE)
+        CropImage
+                .activity()
+//                .setAspectRatio(1, 1)
+                .setRequestedSize(1200, 600)
+//                .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .start(getActivity(), this);
     }
     @Override

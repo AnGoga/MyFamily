@@ -1,8 +1,12 @@
 package com.angogasapps.myfamily.utils;
 
+import android.app.Activity;
 import android.content.Context;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.models.MainCardState;
 import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity;
 import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
@@ -26,5 +30,14 @@ public class MainActivityUtils {
         list.add(new MainCardState(context.getString(R.string.news_center), context.getString(R.string.news_center), 0 , NewsCenterActivity.class));
 
         return list;
+    }
+
+    public static void waitEndDownloadThread(Activity activity, RecyclerView.Adapter adapter){
+        Async.runInNewThread(() -> {
+            while (!LoadFamilyThread.isEnd){}
+            activity.runOnUiThread(() -> {
+                adapter.notifyDataSetChanged();
+            });
+        });
     }
 }

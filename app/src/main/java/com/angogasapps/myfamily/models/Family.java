@@ -81,16 +81,35 @@ public class Family {
     }
 
     public static Bitmap getMemberImageById(String id, Context context){
-        Bitmap image = null;
+        Bitmap image = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_default_user_photo);;
         try {
             image = Family.getInstance().getUserById(id).getUserPhoto();
-            if (image == null) {
-                image = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_default_user_photo);
-            }
+//            if (image == null) {
+//                image = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_default_user_photo);
+//            }
         }catch (Exception e){}
         return image;
     }
 
+    public User getUserByPhone(String phone){
+        for (User user : usersList){
+            if (user.getId().equals(phone)){
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public Bitmap getMemberImageByPhone(String phone){
+        Bitmap image = BitmapFactory.decodeResource(AppApplication.getInstance().getResources(), R.drawable.ic_default_user_photo);;
+        try {
+            image = Family.getInstance().getUserByPhone(phone).getUserPhoto();
+//            if (image == null) {
+//                image = BitmapFactory.decodeResource(AppApplication.getInstance().getResources(), R.drawable.ic_default_user_photo);
+//            }
+        }catch (Exception e){}
+        return image;
+    }
 
     public ArrayList<User> getUsersList() {
         return usersList;
