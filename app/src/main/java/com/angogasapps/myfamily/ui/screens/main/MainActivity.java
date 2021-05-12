@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -21,6 +22,8 @@ import com.angogasapps.myfamily.ui.screens.main.adapters.NewsAdapter;
 import com.angogasapps.myfamily.ui.screens.news_center.NewsManager;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
 import com.angogasapps.myfamily.utils.MainActivityUtils;
+
+import java.util.Calendar;
 
 import io.reactivex.disposables.Disposable;
 
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         new LoadFamilyThread(this).execute(USER);
+
 
 
         initToolbar();

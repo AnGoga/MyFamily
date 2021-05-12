@@ -77,4 +77,8 @@ public class NewsObject {
                 Objects.equals(type, that.type) &&
                 Objects.equals(value, that.value);
     }
+
+    public static boolean isCanLife(NewsObject object){
+        return  (object.getTimeCreate() + timeLive > System.currentTimeMillis());
+    }
 }

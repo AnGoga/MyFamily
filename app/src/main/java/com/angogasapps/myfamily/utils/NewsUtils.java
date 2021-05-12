@@ -29,6 +29,6 @@ public class NewsUtils {
                 return i;
             }
         }
-        return newsList.size() - 1;
+        return -1;
     }
 }

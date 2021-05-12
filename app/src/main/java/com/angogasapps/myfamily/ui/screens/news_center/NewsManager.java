@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
+import com.angogasapps.myfamily.firebase.NewsCenterFunks;
 import com.angogasapps.myfamily.models.NewsEvent;
 import com.angogasapps.myfamily.models.NewsObject;
 import com.angogasapps.myfamily.utils.NewsUtils;
@@ -66,18 +67,23 @@ public class NewsManager {
 
     private synchronized void onChildAdded(DataSnapshot snapshot){
         NewsObject object = NewsObject.from(snapshot);
-        newsList.add(object);
+        if (NewsObject.isCanLife(object)) {
+            newsList.add(object);
 
-        NewsEvent event = new NewsEvent();
-        event.setEvent(NewsEvent.ENewsEvents.added);
-        event.setNewsId(object.getId());
-        event.setIndex(newsList.size() - 1);
-        subject.onNext(event);
+            NewsEvent event = new NewsEvent();
+            event.setEvent(NewsEvent.ENewsEvents.added);
+            event.setNewsId(object.getId());
+            event.setIndex(newsList.size() - 1);
+            subject.onNext(event);
+        }else{
+            NewsCenterFunks.deleteNewsObject(object);
+        }
     }
 
     private synchronized void onChildRemoved(DataSnapshot snapshot){
         NewsObject object = NewsObject.from(snapshot);
         int index = NewsUtils.getIndexOfDeleteNews(newsList, object);
+        if (index == -1) return;
         newsList.remove(index);
 
         NewsEvent event = new NewsEvent();

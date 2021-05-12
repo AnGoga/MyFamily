@@ -19,6 +19,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_NAME
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_PHONE;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_PHOTO_URL;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DEFAULT_URL;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.FOLDER_USERS_PHOTOS;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_USERS;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.STORAGE_ROOT;
@@ -28,21 +29,21 @@ public class RegisterUserFunks {
 
     public static synchronized void registerNewUser(Activity activity, String userName, Long userBirthdayTimeMillis, Uri photoUri){
         // создаём словарь по шаблону класса User
-        UserSetterFields.setPhotoURL(USER, photoUri, new IOnEndSetUserField() {
+
+        IOnEndSetUserField i = new IOnEndSetUserField() {
             @Override
             public void onSuccessEnd() {
                 String uid = AUTH.getCurrentUser().getUid();
                 HashMap<String, Object> userAttrMap = new HashMap<>();
-                //userAttrMap.put(CHILD_ID, uid);
+                if (photoUri == null) userAttrMap.put(CHILD_PHOTO_URL, DEFAULT_URL);
                 userAttrMap.put(CHILD_PHONE, AUTH.getCurrentUser().getPhoneNumber());
                 userAttrMap.put(CHILD_FAMILY, "");
                 userAttrMap.put(CHILD_NAME, userName);
                 userAttrMap.put(CHILD_BIRTHDAY, userBirthdayTimeMillis);
                 //userAttrMap.put(CHILD_PHOTO, photoUri);
-                //загружаем даные в баду даных
                 DATABASE_ROOT.child(NODE_USERS).child(uid).updateChildren(userAttrMap)
                         .addOnCompleteListener(task -> {
-                            // если даные в базу данных успешно добавились
+
                             if (task.isSuccessful()){
                                 RegisterActivity.welcomeFunc(activity);
                             }else {
@@ -53,7 +54,13 @@ public class RegisterUserFunks {
 
             @Override
             public void onFailureEnd() {}
-        });
+        };
+
+        if (photoUri != null){
+            UserSetterFields.setPhotoURL(USER, photoUri, i);
+        }else{
+            i.onSuccessEnd();
+        }
 
     }
     public static synchronized void loadUserPhotoToStorage(Uri photoUri, IOnEndSetUserField iOnEndSetUserField){

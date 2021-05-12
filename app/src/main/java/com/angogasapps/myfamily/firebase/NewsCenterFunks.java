@@ -66,4 +66,8 @@ public class NewsCenterFunks {
             }
         });
     }
+
+    public static synchronized void deleteNewsObject(NewsObject object){
+        DATABASE_ROOT.child(NODE_NEWS).child(USER.getFamily()).child(object.getId()).removeValue();
+    }
 }
