@@ -99,9 +99,10 @@ public class CardView extends androidx.cardview.widget.CardView {
     }
 
     public void update(MainCardState state){
-        this.textName.setText(state.getCardName());
-        this.textSubscript.setText(state.getCardSubscript());
-        this.imageView.setBackgroundResource(state.getCardDrawable());
+//        this.textName.setText(state.getCardName());
+//        this.textSubscript.setText(state.getCardSubscript());
+//        this.imageView.setBackgroundResource(state.getCardDrawable());
+        update(state.getCardName(), state.getCardSubscript(), state.getCardDrawable());
         if (state.getActivityClass() != null){
             getRootView().setOnClickListener(v -> {
                 getContext().startActivity(new Intent(getContext(), state.getActivityClass()));

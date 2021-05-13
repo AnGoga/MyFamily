@@ -24,20 +24,18 @@ public class MainActivityUtils {
         list.add(new MainCardState(context.getString(R.string.time_table), context.getString(R.string.time_table), R.drawable.mainActivityIcoTimeTable, null));
         list.add(new MainCardState(context.getString(R.string.chat), context.getString(R.string.chat), R.drawable.mainActivityIcoChat, ChatActivity.class));
         list.add(new MainCardState(context.getString(R.string.buy_list), context.getString(R.string.buy_list), R.drawable.mainActivityIcoBuyList, BuyListActivity.class));
-        list.add(new MainCardState(context.getString(R.string.clock), context.getString(R.string.clock), 0, null));
+        list.add(new MainCardState(context.getString(R.string.clock), context.getString(R.string.clock), R.drawable.ic_family_clock, null));
         list.add(new MainCardState(context.getString(R.string.my_family), context.getString(R.string.my_family), R.drawable.ic_my_family, FamilySettingsActivity.class));
-        list.add(new MainCardState(context.getString(R.string.storage), context.getString(R.string.storage), 0, null));
-        list.add(new MainCardState(context.getString(R.string.news_center), context.getString(R.string.news_center), 0 , NewsCenterActivity.class));
+        list.add(new MainCardState(context.getString(R.string.storage), context.getString(R.string.storage), R.drawable.ic_family_storage, null));
+        list.add(new MainCardState(context.getString(R.string.news_center), context.getString(R.string.news_center), R.drawable.ic_news_cenetr , NewsCenterActivity.class));
 
         return list;
     }
 
-    public static void waitEndDownloadThread(Activity activity, RecyclerView.Adapter adapter){
+    public static void waitEndDownloadThread(Activity activity, RecyclerView.Adapter<?> adapter){
         Async.runInNewThread(() -> {
             while (!LoadFamilyThread.isEnd){}
-            activity.runOnUiThread(() -> {
-                adapter.notifyDataSetChanged();
-            });
+            activity.runOnUiThread(adapter::notifyDataSetChanged);
         });
     }
 }
