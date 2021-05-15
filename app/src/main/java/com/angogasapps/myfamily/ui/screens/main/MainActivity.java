@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
@@ -23,8 +21,6 @@ import com.angogasapps.myfamily.ui.screens.news_center.NewsManager;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
 import com.angogasapps.myfamily.utils.MainActivityUtils;
 
-import java.util.Calendar;
-
 import io.reactivex.disposables.Disposable;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
@@ -32,7 +28,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
-    private MainActivityAdapter adapter;
+    private MainActivityAdapter cardsAdapter;
     private GridLayoutManager layoutManager;
     private ItemTouchHelper itemTouchHelper;
     private Disposable disposable;
@@ -56,14 +52,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView() {
-        adapter = new MainActivityAdapter(this, MainActivityUtils.getArrayToView(this));
+        cardsAdapter = new MainActivityAdapter(this, MainActivityUtils.getPreferCardsArray(this));
         layoutManager = new GridLayoutManager(this, 2);
 
-        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(adapter);
+        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(cardsAdapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(binding.recycleView);
 
-        binding.recycleView.setAdapter(adapter);
+        binding.recycleView.setAdapter(cardsAdapter);
         binding.recycleView.setLayoutManager(layoutManager);
     }
 
@@ -106,6 +102,12 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MainActivityUtils.savePreferCardPlaces(this, cardsAdapter.getList());
     }
 
     @Override

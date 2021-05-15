@@ -1,11 +1,14 @@
 package com.angogasapps.myfamily.models;
 
+
 public class MainCardState {
+
     private int mCardDrawable;
     private String mCardName;
     private String mCardSubscript;
     private Class<?> activityClass;
 
+    public MainCardState(){}
 
     public MainCardState(String name, String subscript, int drawable, Class<?> mClass){
         this.mCardDrawable = drawable;
@@ -45,5 +48,15 @@ public class MainCardState {
 
     public void setActivityClass(Class<?> activityClass) {
         this.activityClass = activityClass;
+    }
+
+    @Override
+    public String toString() {
+        return "MainCardState{" +
+                "mCardDrawable=" + mCardDrawable +
+                ", mCardName='" + mCardName + '\'' +
+                ", mCardSubscript='" + mCardSubscript + '\'' +
+                ", activityClass=" + activityClass +
+                '}';
     }
 }

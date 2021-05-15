@@ -14,6 +14,7 @@ import com.angogasapps.myfamily.models.MainCardState;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.MainCardHolder>
@@ -55,7 +56,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        Collections.swap(list, fromPosition, toPosition);
+        swapList(fromPosition, toPosition);
         list.size();
         notifyItemMoved(fromPosition, toPosition);
         return true;
@@ -71,4 +72,22 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
             binding.card.update(state);
         }
     }
+
+    public ArrayList<MainCardState> getList() {
+        return list;
+    }
+
+    private void swapList(int from, int to){
+        if (from > to){ // справа налево
+            for (int i = from; i > to; i--) {
+               Collections.swap(list, i, i - 1);
+            }
+        }else{ //слева направо
+            for (int i = from; i < to; i++){
+                Collections.swap(list, i, i + 1);
+            }
+        }
+
+    }
+
 }
