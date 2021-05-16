@@ -84,11 +84,13 @@ public class AuthFunctions {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //TODO:
                 USER = snapshot.getValue(User.class);
-                USER.setId(snapshot.getKey());
-                if (USER != null)
+                if (USER != null) {
+                    USER.setId(snapshot.getKey());
                     iAuthUser.onEndDownloadUser();
-                else
-                    downloadUser(iAuthUser);
+                }else {
+                    AUTH.signOut();
+
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error){}

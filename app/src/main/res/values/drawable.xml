@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 <!--    <drawable name="splashActivityDrawable">@drawable/ic_launcher_background</drawable>-->
-    <drawable name="splashActivityDrawable">@drawable/jetbrains_neiro_splash</drawable>
+    <drawable name="splashActivityDrawable">@drawable/my_family_splash</drawable>
 
 <!--    DeprecatedMainActivity -->
     <drawable name="mainActivityHeaderWelcome">@drawable/welcome</drawable>

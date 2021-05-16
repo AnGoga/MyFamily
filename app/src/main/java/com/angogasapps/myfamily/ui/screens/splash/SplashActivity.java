@@ -12,6 +12,7 @@ import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.async.notification.TokensManager;
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.firebase.AuthFunctions;
+import com.angogasapps.myfamily.firebase.interfaces.IAuthUser;
 import com.angogasapps.myfamily.models.Family;
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity;
 import com.angogasapps.myfamily.ui.screens.main.DeprecatedMainActivity;
@@ -69,14 +70,26 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
+    private void onError(){
+        start();
+    }
+
     public void start(){
         if (AppApplication.isOnline()){
             if (AUTH.getCurrentUser() != null){
                 //интернет есть, пользователь аторизован
                 analysisIntent();
-                AuthFunctions.downloadUser(this::onEndDownloadUser);
-                //TODO: страховка с БД на случай слабого интернета
-                // . . .
+                AuthFunctions.downloadUser(new IAuthUser() {
+                    @Override
+                    public void onEndDownloadUser() {
+                        SplashActivity.this.onEndDownloadUser();
+                    }
+
+                    @Override
+                    public void onError() {
+                        SplashActivity.this.onError();
+                    }
+                });
             }else{
                 //интернет есть, пользователь не авторизован
                 startActivity(new Intent(this, RegisterActivity.class));

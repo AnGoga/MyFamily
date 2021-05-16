@@ -20,7 +20,7 @@
     <string name="you_name">Ваше имя</string>
     <string name="you_phone_number">Ваш номер телефона</string>
     <string name="birthday">День рождения</string>
-    <string name="register">Зарегестрироваться</string>
+    <string name="register">Зарегистрироваться</string>
 
     <string name="create_family">Создать семью</string>
     <string name="join">присоедениться</string>
