@@ -89,11 +89,11 @@ public class AuthFunctions {
                     iAuthUser.onEndDownloadUser();
                 }else {
                     AUTH.signOut();
-
+                    iAuthUser.onError();
                 }
             }
             @Override
-            public void onCancelled(@NonNull DatabaseError error){}
+            public void onCancelled(@NonNull DatabaseError error){iAuthUser.onError();}
         });
     }
 }

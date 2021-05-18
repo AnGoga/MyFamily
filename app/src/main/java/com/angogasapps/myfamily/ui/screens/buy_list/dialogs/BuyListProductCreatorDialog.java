@@ -45,6 +45,7 @@ public class BuyListProductCreatorDialog extends AlertDialog {
         if (this.product != null){
             binding.productName.setText(product.getName());
             binding.commentEditText.setText(product.getComment());
+            binding.buttonAddProduct.setText(getContext().getString(R.string.change));
         }
     }
 

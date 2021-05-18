@@ -5,13 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.ActivityInviteUserBinding;
 import com.angogasapps.myfamily.utils.FamilyManager;
+
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class InviteUserActivity extends AppCompatActivity {
     private ActivityInviteUserBinding binding;
@@ -23,13 +24,21 @@ public class InviteUserActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.inviteText.setText(FamilyManager.getInviteLinkToFamily().toString());
-        binding.copyBtn.setOnClickListener(v -> {
-
-            ClipData clipData = ClipData.newPlainText("text", binding.inviteText.getText());
-            ClipboardManager clipboardManager = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-            clipboardManager.setPrimaryClip(clipData);
-
-            Toast.makeText(this, R.string.copy_to_clipboard_manager, Toast.LENGTH_LONG).show();
+        binding.identivicatorText.setText(USER.getFamily());
+        binding.copyLinkBtn.setOnClickListener(v -> {
+            copyToClipboardFromTextView(binding.inviteText);
         });
+
+        binding.copyIdentivicatorBtn.setOnClickListener(v -> {
+            copyToClipboardFromTextView(binding.identivicatorText);
+        });
+    }
+
+    private void copyToClipboardFromTextView(TextView tv){
+        ClipData clipData = ClipData.newPlainText("text", tv.getText());
+        ClipboardManager clipboardManager = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+        clipboardManager.setPrimaryClip(clipData);
+
+        Toast.makeText(this, R.string.copy_to_clipboard_manager, Toast.LENGTH_LONG).show();
     }
 }

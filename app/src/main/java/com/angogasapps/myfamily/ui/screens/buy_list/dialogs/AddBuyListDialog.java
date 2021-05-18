@@ -51,7 +51,7 @@ public class AddBuyListDialog {
                     dialog.cancel();
                 });
 
-        alertDialog.setNegativeButton(context.getString(R.string.add),
+        alertDialog.setNegativeButton(context.getString(buyList == null? R.string.add: R.string.change),
                 (dialog, which) -> {
                     String str = input.getText().toString().trim();
                     if (str != null && !str.equals("")) {

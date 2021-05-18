@@ -40,11 +40,13 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.BuyListH
 
     @Override
     public void onBindViewHolder(@NonNull BuyListHolder holder, int position) {
-        holder.setTextName(buyListsArray.get(position).getName());
-        holder.binding.getRoot().setOnLongClickListener(v -> {
-            (new ChangeOrDeleteBuyListDialog(context, buyListsArray.get(position))).show();
-            return true;
-        });
+        synchronized (this) {
+            holder.setTextName(buyListsArray.get(position).getName());
+            holder.binding.getRoot().setOnLongClickListener(v -> {
+                (new ChangeOrDeleteBuyListDialog(context, buyListsArray.get(position))).show();
+                return true;
+            });
+        }
     }
 
     @Override

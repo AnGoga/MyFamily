@@ -38,7 +38,7 @@
     <string name="error">Что-то пошло не так</string>
     <string name="my_family">Моя семья</string>
     <string name="something_went_wrong">Что-то пошло не так</string>
-    <string name="link_to_invite">Ссылка для пришлашения</string>
+    <string name="link_to_invite">Ссылка для пришлашения в семью</string>
     <string name="copy_to_clipboard_manager">Скопировано в буфер обмена</string>
     <string name="you_was_invite_to_family">Вас пригласили в семью</string>
     <string name="do_you_want_join_to_invite_family">Вас Пригласили в семью, не хотите ли присоедениться к ней?</string>
@@ -96,7 +96,9 @@
     <string name="news_text">Текст новости</string>
     <string name="enter_news_text">Введите текст новости</string>
     <string name="chose_image">Выберите картику</string>
-    <string name="news_success_add">Новость успешно отправлена</string>
+    <string name="news_success_add">Новость успешно создана</string>
     <string name="create_new_news">Создать новую новость</string>
+    <string name="family_identeficator">Идентификатор семьи</string>
+    <string name="change">Изменить</string>
 
 </resources>

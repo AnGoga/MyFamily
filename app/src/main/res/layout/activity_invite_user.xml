@@ -8,29 +8,58 @@
     tools:context=".ui.screens.family_settings.InviteUserActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/normal_margin"
         android:orientation="vertical"
-        android:layout_margin="@dimen/normal_margin">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp">
 
-         <TextView
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             style="@style/boldTextView"
-             android:text="@string/link_to_invite"/>
+        <TextView
+            style="@style/boldTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/link_to_invite" />
 
-            <TextView
-                android:id="@+id/invite_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/boldTextView"/>
+        <TextView
+            android:id="@+id/invite_text"
+            style="@style/boldTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-            <ImageView
-                android:id="@+id/copy_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_copy_text"/>
+        <ImageView
+            android:id="@+id/copy_link_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_copy_text" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/normal_margin"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout2"
+        tools:layout_editor_absoluteX="16dp">
+
+        <TextView
+            style="@style/boldTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/family_identeficator" />
+
+        <TextView
+            android:id="@+id/identivicator_text"
+            style="@style/boldTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/copy_identivicator_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_copy_text" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

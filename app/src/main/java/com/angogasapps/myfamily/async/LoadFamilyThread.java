@@ -85,7 +85,7 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
             if (emblemDownloaderThread.isAlive())
                 emblemDownloaderThread.join();
 
-            Log.i("tag", "Загрузка завершена");
+            Log.i("load", "Загрузка завершена");
 
 
         } catch (Exception e) {

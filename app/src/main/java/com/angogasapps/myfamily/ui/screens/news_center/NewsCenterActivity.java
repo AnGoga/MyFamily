@@ -20,5 +20,8 @@ public class NewsCenterActivity extends AppCompatActivity {
         binding.createNewNewsBtn.setOnClickListener(v -> {
             startActivity(new Intent(NewsCenterActivity.this, CreateNewNewsActivity.class));
         });
+
+        startActivity(new Intent(this, CreateNewNewsActivity.class));
+        finish();
     }
 }
