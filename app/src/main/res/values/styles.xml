@@ -48,4 +48,10 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="chat_text_view">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:autoLink">all</item>
+    </style>
 </resources>

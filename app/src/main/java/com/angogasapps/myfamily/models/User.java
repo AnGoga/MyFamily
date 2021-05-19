@@ -2,6 +2,7 @@ package com.angogasapps.myfamily.models;
 
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,6 +10,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.app.AppApplication;
 import com.google.firebase.database.DataSnapshot;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.UID;
@@ -28,6 +31,16 @@ public class User {
     protected String token = "";
     @Ignore
     protected Bitmap userPhoto;
+
+    public static final Bitmap default_user_photo;
+
+    static {
+        default_user_photo = BitmapFactory.decodeResource(
+                AppApplication.getInstance().getApplicationContext().getResources(),
+                R.drawable.ic_default_user_photo
+        );
+    }
+
 
     public User(){}
 
@@ -126,7 +139,7 @@ public class User {
     }
 
     public Bitmap getUserPhoto() {
-        return userPhoto;
+        return userPhoto != null? userPhoto : default_user_photo;
     }
 
     public void setUserPhoto(Bitmap userPhoto) {

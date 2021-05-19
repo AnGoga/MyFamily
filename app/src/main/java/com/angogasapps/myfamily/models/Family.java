@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import androidx.annotation.NonNull;
+
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
@@ -80,14 +82,8 @@ public class Family {
         return name;
     }
 
-    public static Bitmap getMemberImageById(String id, Context context){
-        Bitmap image = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_default_user_photo);;
-        try {
-            image = Family.getInstance().getUserById(id).getUserPhoto();
-//            if (image == null) {
-//                image = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_default_user_photo);
-//            }
-        }catch (Exception e){}
+    public static Bitmap getMemberImageById(String id){
+        Bitmap image = Family.getInstance().getUserById(id).getUserPhoto();
         return image;
     }
 
@@ -101,13 +97,7 @@ public class Family {
     }
 
     public Bitmap getMemberImageByPhone(String phone){
-        Bitmap image = BitmapFactory.decodeResource(AppApplication.getInstance().getResources(), R.drawable.ic_default_user_photo);;
-        try {
-            image = Family.getInstance().getUserByPhone(phone).getUserPhoto();
-//            if (image == null) {
-//                image = BitmapFactory.decodeResource(AppApplication.getInstance().getResources(), R.drawable.ic_default_user_photo);
-//            }
-        }catch (Exception e){}
+        Bitmap image = Family.getInstance().getUserByPhone(phone).getUserPhoto();
         return image;
     }
 

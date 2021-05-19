@@ -48,9 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/message_center_text_padding"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:autoLink="web"
+                android:theme="@style/chat_text_view"
                 tools:text="Сообщение"/>
 
             <TextView
@@ -92,10 +90,10 @@
             android:layout_marginLeft="@dimen/message_text_side_margin"
             android:layout_marginRight="@dimen/message_text_side_margin"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textStyle="bold"
+            android:theme="@style/chat_text_view"
             tools:text="Сообщение"/>
-
+<!--        android:textColor="@color/black"-->
+<!--        android:textStyle="bold"-->
         <TextView
             android:textSize="@dimen/message_time_text_size"
             android:layout_gravity="right"
