@@ -21,7 +21,8 @@ public class FcmNotificationService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         USER.setToken(token);
-        TokensManager.getInstance().updateToken(token, USER);
+//        TokensManager.getInstance().updateToken(token, USER);
+        TokensManager.getInstance().updateToken(token);
     }
 
 

@@ -2,6 +2,7 @@ package com.angogasapps.myfamily.async.notification;
 
 import com.angogasapps.myfamily.models.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_TOKEN;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
@@ -21,6 +22,16 @@ public class TokensManager {
           .addOnCompleteListener(task -> {
             // . . . . .
         });
+    }
+
+    public void updateToken(String token){
+        FirebaseDatabase.getInstance().getReference()
+                .child(NODE_USERS)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(CHILD_TOKEN).setValue(token)
+                .addOnCompleteListener(task -> {
+                    // . . . . .
+                });
     }
 
     public void updateToken(User user){

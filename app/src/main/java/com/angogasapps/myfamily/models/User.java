@@ -139,7 +139,9 @@ public class User {
     }
 
     public Bitmap getUserPhoto() {
-        return userPhoto != null? userPhoto : default_user_photo;
+        synchronized (this) {
+            return userPhoto != null ? userPhoto : default_user_photo;
+        }
     }
 
     public void setUserPhoto(Bitmap userPhoto) {
