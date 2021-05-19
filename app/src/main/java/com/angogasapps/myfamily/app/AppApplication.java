@@ -57,4 +57,9 @@ public class AppApplication extends Application {
         return app;
     }
 
+
+    public static String stringOf(@StringRes int res){
+        return app.getApplicationContext().getString(res);
+    }
+
 }

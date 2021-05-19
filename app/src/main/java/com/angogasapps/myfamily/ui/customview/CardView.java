@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 
@@ -15,8 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
-import com.angogasapps.myfamily.databinding.CardviewBinding;
-import com.angogasapps.myfamily.models.MainCardState;
+import com.angogasapps.myfamily.models.ActionCardState;
 
 
 import android.view.LayoutInflater;
@@ -98,7 +95,7 @@ public class CardView extends androidx.cardview.widget.CardView {
         imageView.setBackgroundResource(drawable);
     }
 
-    public void update(MainCardState state){
+    public void update(ActionCardState state){
 //        this.textName.setText(state.getCardName());
 //        this.textSubscript.setText(state.getCardSubscript());
 //        this.imageView.setBackgroundResource(state.getCardDrawable());

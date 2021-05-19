@@ -1,20 +1,26 @@
 package com.angogasapps.myfamily.models;
 
 
-public class MainCardState {
+import androidx.annotation.StringRes;
+
+import com.angogasapps.myfamily.utils.ActionCardUtils;
+
+public class ActionCardState {
 
     private int mCardDrawable;
     private String mCardName;
     private String mCardSubscript;
     private Class<?> activityClass;
+    private String  actionCardsName;
 
-    public MainCardState(){}
+    public ActionCardState(){}
 
-    public MainCardState(String name, String subscript, int drawable, Class<?> mClass){
+    public ActionCardState(String name, String subscript, int drawable, Class<?> mClass, ActionCardUtils.EActionCards cards){
         this.mCardDrawable = drawable;
         this.mCardName = name;
         this.mCardSubscript = subscript;
         this.activityClass = mClass;
+        this.actionCardsName = cards.name();
     }
 
 
@@ -50,9 +56,17 @@ public class MainCardState {
         this.activityClass = activityClass;
     }
 
+    public String getActionCardsName() {
+        return actionCardsName;
+    }
+
+    public void setActionCardsName(String actionCardsName) {
+        this.actionCardsName = actionCardsName;
+    }
+
     @Override
     public String toString() {
-        return "MainCardState{" +
+        return "ActionCardState{" +
                 "mCardDrawable=" + mCardDrawable +
                 ", mCardName='" + mCardName + '\'' +
                 ", mCardSubscript='" + mCardSubscript + '\'' +

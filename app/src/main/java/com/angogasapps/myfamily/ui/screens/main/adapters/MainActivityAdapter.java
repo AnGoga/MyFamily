@@ -9,22 +9,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.databinding.MainCardViewHolderBinding;
-import com.angogasapps.myfamily.models.MainCardState;
+import com.angogasapps.myfamily.databinding.ActionCardViewHolderBinding;
+import com.angogasapps.myfamily.models.ActionCardState;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
-public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.MainCardHolder>
+public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.ActionCardHolder>
         implements ItemTouchHelperAdapter {
     private Context context;
     private LayoutInflater inflater;
 
-    private ArrayList<MainCardState> list = new ArrayList<>();
+    private ArrayList<ActionCardState> list = new ArrayList<>();
 
-    public MainActivityAdapter(Context context, ArrayList<MainCardState> list){
+    public MainActivityAdapter(Context context, ArrayList<ActionCardState> list){
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.list = list;
@@ -33,13 +32,13 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
     @NonNull
     @Override
-    public MainCardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MainCardHolder(inflater.inflate(R.layout.main_card_view_holder, parent, false));
+    public ActionCardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ActionCardHolder(inflater.inflate(R.layout.action_card_view_holder, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MainCardHolder holder, int position) {
-        MainCardState stats = list.get(position);
+    public void onBindViewHolder(@NonNull ActionCardHolder holder, int position) {
+        ActionCardState stats = list.get(position);
         holder.update(stats);
     }
 
@@ -62,18 +61,18 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         return true;
     }
 
-    public static class MainCardHolder extends RecyclerView.ViewHolder{
-        private MainCardViewHolderBinding binding;
-        public MainCardHolder(@NonNull View itemView) {
+    public static class ActionCardHolder extends RecyclerView.ViewHolder{
+        private ActionCardViewHolderBinding binding;
+        public ActionCardHolder(@NonNull View itemView) {
             super(itemView);
-            binding = MainCardViewHolderBinding.bind(itemView);
+            binding = ActionCardViewHolderBinding.bind(itemView);
         }
-        public void update(MainCardState state){
+        public void update(ActionCardState state){
             binding.card.update(state);
         }
     }
 
-    public ArrayList<MainCardState> getList() {
+    public ArrayList<ActionCardState> getList() {
         return list;
     }
 
