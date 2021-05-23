@@ -1,5 +1,6 @@
 package com.angogasapps.myfamily.ui.screens.main.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -22,11 +23,11 @@ import static com.angogasapps.myfamily.models.NewsObject.TYPE_TEXT;
 import static com.angogasapps.myfamily.models.NewsObject.TYPE_VIDEO;
 
 public class NewsAdapter extends RecyclerView.Adapter<BaseNewsViewHolder> {
-    private Context context;
+    private Activity context;
     private LayoutInflater inflater;
     private ArrayList<NewsObject> newsList = new ArrayList<>();
 
-    public NewsAdapter(Context context, ArrayList<NewsObject> newsList){
+    public NewsAdapter(Activity context, ArrayList<NewsObject> newsList){
         this.newsList = newsList;
         this.context = context;
         this.inflater = LayoutInflater.from(context);

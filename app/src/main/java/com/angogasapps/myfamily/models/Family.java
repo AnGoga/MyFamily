@@ -97,8 +97,10 @@ public class Family {
     }
 
     public Bitmap getMemberImageByPhone(String phone){
-        Bitmap image = Family.getInstance().getUserByPhone(phone).getUserPhoto();
-        return image;
+        User user = Family.getInstance().getUserByPhone(phone);
+        if (user != null)
+            return user.getUserPhoto();
+        return User.default_user_photo;
     }
 
     public ArrayList<User> getUsersList() {
