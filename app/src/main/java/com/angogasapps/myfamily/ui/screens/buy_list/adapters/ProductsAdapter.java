@@ -2,11 +2,13 @@ package com.angogasapps.myfamily.ui.screens.buy_list.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.ProductInBuyListHolderBinding;
 import com.angogasapps.myfamily.models.BuyList;
 import com.angogasapps.myfamily.models.BuyListEvent;
@@ -27,7 +29,12 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     @NonNull
     @Override
     public ProductHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ProductHolder(ProductInBuyListHolderBinding.inflate(inflater));
+        return new ProductHolder(
+                ProductInBuyListHolderBinding.bind(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.product_in_buy_list_holder, parent, false))
+        );
+
+//        return new ProductHolder(ProductInBuyListHolderBinding.inflate(inflater));
     }
 
     @Override
@@ -41,6 +48,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             new ChangeOrDeleteProductDialog(context, buyList.getId(), product).show();
             return true;
         });
+
+        holder.binding.commentText.setVisibility(product.getComment().equals("")? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -57,7 +66,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         }else if(event.getEvent().equals(BuyListEvent.EBuyListEvents.productChanged)){
             this.notifyItemChanged(event.getIndex());
         }
-
     }
 
     public static class ProductHolder extends RecyclerView.ViewHolder{

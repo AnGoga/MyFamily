@@ -44,7 +44,6 @@ public class NewsAdapter extends RecyclerView.Adapter<BaseNewsViewHolder> {
         }
         if (viewType == 2){
             return new VideoNewsViewHolder(context, inflater.inflate(R.layout.video_news_view_holder, parent, false));
-
         }
         return null;
     }

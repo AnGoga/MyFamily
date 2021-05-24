@@ -21,7 +21,6 @@ public class Permissions {
                 && ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED){
 
             ActivityCompat.requestPermissions(activity, new String[]{permission}, PERMISSION_CALLBACK);
-
             return false;
         }else{
             return true;

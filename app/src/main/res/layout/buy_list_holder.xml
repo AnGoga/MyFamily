@@ -51,7 +51,7 @@
             android:layout_margin="5dp"
             android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_basket"/>
+            android:src="@drawable/ic_products_basket"/>
 
         <TextView
             android:id="@+id/text_name"
