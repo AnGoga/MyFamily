@@ -26,7 +26,7 @@ public class BuyListManager {
     private volatile ArrayList<BuyList> buyLists = new ArrayList<>();
 
 //    PublishSubject<BuyList> addedSubject = PublishSubject.create();
-    PublishSubject<BuyListEvent> changedSubject = PublishSubject.create();
+    PublishSubject<BuyListEvent> subject = PublishSubject.create();
 
     private ChildEventListener listener;
 
@@ -48,7 +48,7 @@ public class BuyListManager {
 //        addedSubject
 //                .observeOn(Schedulers.io())
 //                .subscribeOn(AndroidSchedulers.mainThread());
-        changedSubject
+        subject
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread());
     }
@@ -68,7 +68,7 @@ public class BuyListManager {
                     event.setIndex(buyLists.size() - 1);
                     event.setEvents(BuyListEvent.EBuyListEvents.buyListAdded);
                     event.setBuyListId(buyList.getId());
-                    changedSubject.onNext(event);
+                    subject.onNext(event);
                 }
             }
 
@@ -91,7 +91,7 @@ public class BuyListManager {
                         break;
                     }
                 }
-                changedSubject.onNext(event);
+                subject.onNext(event);
             }
 
             @Override
@@ -148,7 +148,7 @@ public class BuyListManager {
                         event.setBuyListId(newBuyList.getId());
                         event.setIndex(i);
                         event.setEvents(BuyListEvent.EBuyListEvents.buyListChanged);
-                        changedSubject.onNext(event);
+                        subject.onNext(event);
                         return;
                     }
 
@@ -178,7 +178,7 @@ public class BuyListManager {
                         event.setIndex(index);
                         event.setBuyListId(newBuyList.getId());
                     }
-                    changedSubject.onNext(event);
+                    subject.onNext(event);
                     return;
                 }
 

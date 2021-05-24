@@ -56,7 +56,7 @@ public class ListOfBuyListsFragment extends Fragment {
     }
 
     private void initObserver() {
-        disposable = BuyListManager.getInstance().changedSubject.subscribe(event->{
+        disposable = BuyListManager.getInstance().subject.subscribe(event->{
             adapter.update(event);
         });
     }

@@ -54,7 +54,7 @@ public class BuyListFragment extends Fragment {
     }
 
     private void initObserver() {
-        observer = BuyListManager.getInstance().changedSubject.subscribe(event -> {
+        observer = BuyListManager.getInstance().subject.subscribe(event -> {
             if (event.getEvent().equals(BuyListEvent.EBuyListEvents.buyListRemoved)){
                 if (event.getBuyListId().equals(this.buyList.getId())){
                     onRemoveThisBuyList();
