@@ -34,6 +34,11 @@ android {
         enabled = true
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'

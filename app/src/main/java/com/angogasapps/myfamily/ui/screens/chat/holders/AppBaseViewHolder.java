@@ -37,15 +37,12 @@ public class AppBaseViewHolder extends RecyclerView.ViewHolder {
         view = itemView;
     }
 
-//    public AppBaseViewHolder(@NonNull ViewBinding binding){
-//        super(binding.getRoot());
-//        this.binding = binding;
-//    }
-
     public void init(String from, Long time, String messageKey, String value, Activity context){
         this.from = from;
-//        this.name = getMemberNameById(from);
+
+//        this.name = Family.getInstance().getMemberNameById(from);
         this.name = Family.getInstance().getMemberNameById(from);
+
         this.time = StringFormater.formatLongToTime(time);
         this.messageKey = messageKey;
         this.value = value;
