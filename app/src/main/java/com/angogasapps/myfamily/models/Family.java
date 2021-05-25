@@ -83,8 +83,9 @@ public class Family {
     }
 
     public static Bitmap getMemberImageById(String id){
-        Bitmap image = Family.getInstance().getUserById(id).getUserPhoto();
-        return image;
+        User user = Family.getInstance().getUserById(id);
+        if (user != null) return user.getUserPhoto();
+        return User.default_user_photo;
     }
 
     public User getUserByPhone(String phone){
