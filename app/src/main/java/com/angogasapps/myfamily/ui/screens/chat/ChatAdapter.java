@@ -90,18 +90,43 @@ public class ChatAdapter extends RecyclerView.Adapter<AppBaseViewHolder> {
 
     public void addMessage(Message message, boolean scrollToBottom){
 
+//        messagesList = ChatAdapterUtils.sortMessagesList(messagesList);
+////
+////        if (!arrayContainsMessage(messagesList, message)) {
+////            if (scrollToBottom) {
+////                messagesList.add(message);
+////                activity.runOnUiThread(() -> {
+////                    notifyItemInserted(messagesList.size() - 1);
+////                });
+////            } else {
+////                messagesList.add(0, message);
+////                notifyItemInserted(0);
+////            }
+////        }
+
         messagesList = ChatAdapterUtils.sortMessagesList(messagesList);
 
-        if (!arrayContainsMessage(messagesList, message)) {
-            if (scrollToBottom) {
-                messagesList.add(message);
-                activity.runOnUiThread(() -> {
-                    notifyItemInserted(messagesList.size() - 1);
-                });
-            } else {
-                messagesList.add(0, message);
+
+        if (arrayContainsMessage(messagesList, message))
+            return;
+
+        if (messagesList.size() == 0){
+            messagesList.add(message);
+            activity.runOnUiThread(() -> {
                 notifyItemInserted(0);
-            }
+            });
+            return;
+        }
+        if (message.getTime() >= messagesList.get(messagesList.size() - 1).getTime()){
+            messagesList.add(message);
+            activity.runOnUiThread(() -> {
+                notifyItemInserted(messagesList.size() - 1);
+            });
+        }else {
+            messagesList.add(0, message);
+            activity.runOnUiThread(() -> {
+                notifyItemInserted(0);
+            });
         }
     }
 

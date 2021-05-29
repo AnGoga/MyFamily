@@ -213,17 +213,20 @@ public class ChatFragment extends Fragment {
 
 
     private void loadMessages() {
-        if (!AppApplication.isOnline() && messagesList.isEmpty()){
-            Async.runInNewThread(() -> {
+        Async.runInNewThread(() -> {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (!AppApplication.isOnline() && messagesList.isEmpty()) {
                 while(!DatabaseManager.messagesLoadIsEnd){}
-
                 if (DatabaseManager.messagesLoadIsEnd) {
                     Collections.sort(DatabaseManager.getMessagesList());
                     for (Message message : DatabaseManager.getMessagesList())
                         onAddMessage(message);
                 }
-            });
-        }
+            }
+        });
     }
-
 }

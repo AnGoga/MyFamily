@@ -103,6 +103,4 @@ public class DatabaseManager {
                     database.getUserDao().insert(user);
         });
     }
-
-
 }

@@ -25,13 +25,17 @@ public class TokensManager {
     }
 
     public void updateToken(String token){
-        FirebaseDatabase.getInstance().getReference()
-                .child(NODE_USERS)
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child(CHILD_TOKEN).setValue(token)
-                .addOnCompleteListener(task -> {
-                    // . . . . .
-                });
+        try {
+            FirebaseDatabase.getInstance().getReference()
+                    .child(NODE_USERS)
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child(CHILD_TOKEN).setValue(token)
+                    .addOnCompleteListener(task -> {
+                        // . . . . .
+                    });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void updateToken(User user){
