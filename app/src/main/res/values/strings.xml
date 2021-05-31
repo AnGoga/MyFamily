@@ -100,5 +100,7 @@
     <string name="create_new_news">Создать новую новость</string>
     <string name="family_identeficator">Идентификатор семьи</string>
     <string name="change">Изменить</string>
+    <string name="title">Заголовок</string>
+    <string name="write_here">Напишите здесь...</string>
 
 </resources>

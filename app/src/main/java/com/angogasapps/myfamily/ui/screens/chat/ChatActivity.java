@@ -98,7 +98,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void initDatabase(){
-        messageDao = DatabaseManager.getDatabase().getMessageDao();
+        messageDao = DatabaseManager.getInstance().getMessageDao();
     }
 
     @Override

@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:maxWidth="@dimen/max_message_width"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_max="@dimen/max_message_width">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_gravity="center_vertical"
@@ -71,7 +72,8 @@
         android:maxWidth="@dimen/max_message_width"
         android:orientation="vertical"
         android:background="@drawable/text_message_right_bg"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_max="@dimen/max_message_width">
 
         <TextView
             android:id="@+id/rightMessageFromName"

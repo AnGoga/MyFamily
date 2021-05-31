@@ -15,6 +15,7 @@ public class FirebaseHelper {
         DATABASE_ROOT = FirebaseDatabase.getInstance().getReference();
         STORAGE_ROOT = FirebaseStorage.getInstance().getReference();
         DYNAMIC_LINK_ROOT = FirebaseDynamicLinks.getInstance();
+
         try {
             UID = AUTH.getCurrentUser().getUid();
         }catch (Exception e){}

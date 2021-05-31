@@ -6,6 +6,7 @@ import android.content.Context;
 
 import androidx.room.Room;
 
+import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.models.Message;
 import com.angogasapps.myfamily.models.User;
 import com.angogasapps.myfamily.utils.Async;
@@ -31,12 +32,16 @@ public class DatabaseManager {
     private static volatile AppDatabase database;
 
 
-    public static void init(Context context) {
+    private static void init(Context context) {
         database = Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME).build();
     }
 
-    public static AppDatabase getDatabase() {
-        return database;
+    public static AppDatabase getInstance() {
+        synchronized (AppDatabase.class) {
+            if (database == null)
+                init(AppApplication.getInstance().getApplicationContext());
+            return database;
+        }
     }
 
     public static void loadUsersAndMessages(IOnEnd iOnEnd) {
@@ -63,7 +68,7 @@ public class DatabaseManager {
         };
 
         Observable.create(emitter -> {
-            UserDao userDao = DatabaseManager.getDatabase().getUserDao();
+            UserDao userDao = DatabaseManager.getInstance().getUserDao();
             userList = new ArrayList<>(userDao.getAll());
             usersLoadIsEnd = true;
             emitter.onComplete();
@@ -72,7 +77,7 @@ public class DatabaseManager {
                 .subscribe(observer);
 
         Observable.create(emitter -> {
-            MessageDao messageDao = DatabaseManager.getDatabase().getMessageDao();
+            MessageDao messageDao = DatabaseManager.getInstance().getMessageDao();
             messagesList = new ArrayList(messageDao.getAll());
             messagesLoadIsEnd = true;
             emitter.onComplete();

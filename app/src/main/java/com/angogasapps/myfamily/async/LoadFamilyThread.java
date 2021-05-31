@@ -74,13 +74,15 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
 
             downloadMembers();
 
+            initUsersArray();
+
             downloadMembersPhoto();
 
 //            ArrayList<User> a = familyMembersList;
 
             emblemDownloaderThread.start();
 
-            initCollections();
+            initPhotos();
 
             if (emblemDownloaderThread.isAlive())
                 emblemDownloaderThread.join();
@@ -229,12 +231,16 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
         }
     }
 
-    private void initCollections(){
+    private void initPhotos(){
         FirebaseVarsAndConsts.familyEmblemImage = this.familyEmblem;
         for (User user : familyMembersList){
             user.setRole(usersRoleMap.get(user.getId()));
         }
-        Family.getInstance().setUsersList(familyMembersList);
+//        Family.getInstance().setUsersList(familyMembersList);
         DatabaseManager.searchNewUsers(familyMembersList);
+    }
+
+    private void initUsersArray(){
+        Family.getInstance().setUsersList(familyMembersList);
     }
 }

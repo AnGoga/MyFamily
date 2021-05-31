@@ -54,4 +54,5 @@
         <item name="android:textStyle">normal</item>
         <item name="android:autoLink">all</item>
     </style>
+
 </resources>

@@ -23,7 +23,7 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         app = this;
-        DatabaseManager.init(getApplicationContext());
+        DatabaseManager.getInstance();
         AppNotificationManager.createNotificationChanel(getApplicationContext());
     }
 

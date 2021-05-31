@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.databinding.ActivityPersonalDataBinding;
+import com.angogasapps.myfamily.ui.screens.personal_dairy.PersonalDairyActivity;
 import com.angogasapps.myfamily.ui.screens.settings.SettingsActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,7 +43,9 @@ public class PersonalDataActivity extends AppCompatActivity {
         };
 
         binding.changePersonalData.setOnClickListener(plugClickListener);
-        binding.personalDairy.setOnClickListener(plugClickListener);
+        binding.personalDairy.setOnClickListener(v -> {
+            startActivity(new Intent(PersonalDataActivity.this, PersonalDairyActivity.class));
+        });
 
 
     }

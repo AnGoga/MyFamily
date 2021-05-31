@@ -196,7 +196,7 @@ public class ChatFragment extends Fragment {
     }
 
     public void onAddMessage(Message message){
-        mAdapter.addMessage(message, isScrollToBottom);
+        mAdapter.addMessage(message);
         if (isScrollToBottom)
             binding.recycleView.smoothScrollToPosition(mAdapter.getItemCount());
 

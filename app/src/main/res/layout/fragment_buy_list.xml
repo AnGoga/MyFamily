@@ -32,12 +32,12 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_btn"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_margin="16dp"
+        android:layout_width="@dimen/floating_button_size"
+        android:layout_height="@dimen/floating_button_size"
+        android:layout_margin="@dimen/normal_margin"
         android:src="@drawable/buy_list_add"
         android:scaleType="center"
-        app:maxImageSize="64dp"
+        app:maxImageSize="@dimen/floating_button_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
