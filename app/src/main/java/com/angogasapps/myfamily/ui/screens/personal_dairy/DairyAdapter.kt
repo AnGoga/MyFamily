@@ -3,6 +3,8 @@ package com.angogasapps.myfamily.ui.screens.personal_dairy
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.DairyHolderBinding
 import com.angogasapps.myfamily.models.DairyObject
+import com.angogasapps.myfamily.objects.ChatImageShower.ImageShowerDialog.TAG
 import com.angogasapps.myfamily.utils.asDate
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.io.File
 
 
@@ -54,7 +54,7 @@ class DairyAdapter(private val context: Context, private var dairyList: ArrayLis
             binding.titleText.text = dairy.title
             binding.bodyText.text = dairy.bodyText
             binding.smileText.text = dairy.smile
-            binding.titleText.text = dairy.time.asDate()
+            binding.dateText.text = dairy.time.asDate()
 
             binding.root.setOnClickListener {
                 val intent = Intent(binding.root.context, DairyBuilderActivity::class.java)
@@ -62,22 +62,26 @@ class DairyAdapter(private val context: Context, private var dairyList: ArrayLis
                 binding.root.context.startActivity(intent)
             }
 
-            if (dairy.image.isNullOrEmpty()){
+            if (dairy.uri.isNullOrEmpty()){
                 binding.image.visibility = View.GONE
             }else{
-                GlobalScope.launch {
-                    setImage(dairy.image)
-                }
+                binding.image.visibility = View.VISIBLE
+                binding.image.setImageURI(Uri.parse(dairy.uri))
+//                GlobalScope.launch {
+//                    setImage(dairy.uri)
+//                }
             }
         }
 
-        suspend fun setImage(url: String){
+        suspend fun setImage(uri: String){
             coroutineScope {
                 launch(Dispatchers.IO) {
-                    val imgFile = File(url)
+                    Log.d(TAG, "setImage: $uri")
+                    val imgFile = File(uri)
                     if (imgFile.exists()) {
                         val bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
-                        launch(Dispatchers.Main) {
+                        withContext(Dispatchers.Main) {
+                            Log.d(TAG, "setImage: $uri -> $bitmap")
                             binding.image.visibility = View.VISIBLE
                             binding.image.setImageBitmap(bitmap)
                         }

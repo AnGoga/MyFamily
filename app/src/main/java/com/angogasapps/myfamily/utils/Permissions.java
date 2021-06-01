@@ -13,6 +13,9 @@ import androidx.core.content.ContextCompat;
 public class Permissions {
 
     public static final String AUDIO_RECORD_PERM = Manifest.permission.RECORD_AUDIO;
+    public static final String READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
+    public static final String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 
     public static final int PERMISSION_CALLBACK = 12345;
 

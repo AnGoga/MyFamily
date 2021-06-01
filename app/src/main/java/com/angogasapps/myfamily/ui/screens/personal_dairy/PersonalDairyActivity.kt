@@ -7,12 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.angogasapps.myfamily.database.DatabaseManager
 import com.angogasapps.myfamily.databinding.ActivityPersonalDairyBinding
 import com.angogasapps.myfamily.models.DairyObject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 class PersonalDairyActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityPersonalDairyBinding
     private lateinit var adapter: DairyAdapter
     private lateinit var layoutManager: LinearLayoutManager
@@ -36,6 +35,7 @@ class PersonalDairyActivity : AppCompatActivity() {
         binding.recycleView.adapter = adapter
         binding.recycleView.layoutManager = layoutManager
 
+
         GlobalScope.launch {
             setDataFromRoom()
         }
@@ -45,20 +45,20 @@ class PersonalDairyActivity : AppCompatActivity() {
         coroutineScope {
             var dairyList: List<DairyObject?>?
             var arrayList: ArrayList<DairyObject?> = ArrayList()
-            launch(Dispatchers.Default) {
+            withContext(Dispatchers.Default) {
                 dairyList = DatabaseManager.getInstance().dairyDao.getAll()
 
                 if (dairyList.isNullOrEmpty()) {
-                    return@launch
+                    return@withContext
                 }else {
                     arrayList = ArrayList(dairyList!!.toMutableList())
                     arrayList.forEachIndexed { index, it -> if (it == null) arrayList.removeAt(index) }
+                    withContext(Dispatchers.Main) { adapter.addAll(arrayList as List<DairyObject>) }
                 }
+
             }
 
-            launch(Dispatchers.Main) {
-                adapter.addAll(arrayList as List<DairyObject>)
-            }
+
         }
     }
 }

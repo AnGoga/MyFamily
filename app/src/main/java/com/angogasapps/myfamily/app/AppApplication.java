@@ -11,6 +11,7 @@ import androidx.annotation.StringRes;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.database.DatabaseManager;
 
+import java.io.File;
 import java.io.IOException;
 
 import es.dmoral.toasty.Toasty;
@@ -60,6 +61,13 @@ public class AppApplication extends Application {
 
     public static String stringOf(@StringRes int res){
         return app.getApplicationContext().getString(res);
+    }
+
+    public static void deleteCache() {
+        try {
+            File dir = app.getApplicationContext().getCacheDir();
+            dir.delete();
+        } catch (Exception e) { e.printStackTrace();}
     }
 
 }

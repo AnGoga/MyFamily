@@ -102,5 +102,8 @@
     <string name="change">Изменить</string>
     <string name="title">Заголовок</string>
     <string name="write_here">Напишите здесь...</string>
+    <string name="image_added_yet">Картинка уже добавлена</string>
+    <string name="save">Сохранить</string>
+    <string name="note_is_empty">Заметка пустая</string>
 
 </resources>
