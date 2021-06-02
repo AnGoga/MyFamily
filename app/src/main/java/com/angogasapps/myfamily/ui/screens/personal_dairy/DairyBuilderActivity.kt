@@ -1,29 +1,30 @@
 package com.angogasapps.myfamily.ui.screens.personal_dairy
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.ActivityDairyBuilderBinding
 import com.angogasapps.myfamily.models.DairyObject
-import com.angogasapps.myfamily.utils.Permissions
-import com.angogasapps.myfamily.utils.asDate
-import com.angogasapps.myfamily.utils.asMillis
-import com.angogasapps.myfamily.utils.toEditable
+import com.angogasapps.myfamily.utils.*
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import java.util.*
+
 
 class DairyBuilderActivity : AppCompatActivity() {
+    private val job = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.Default + job)
     lateinit var binding: ActivityDairyBuilderBinding
     var dairy: DairyObject? = null
     var hasImage: Boolean = false
     var uri: Uri? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,21 +32,26 @@ class DairyBuilderActivity : AppCompatActivity() {
         setContentView(binding.root)
         dairy = intent.extras?.get("data") as? DairyObject?
 
-
         initOnClicks()
         initFields(dairy)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
+
     private fun initOnClicks() {
         binding.terminalBtn.setOnClickListener {
-            buildDairy()
+            if (Permissions.havePermission(Permissions.WRITE_EXTERNAL_STORAGE, this))
+                buildDairy()
         }
 
         binding.removeImage.setOnClickListener {
             if (hasImage){
                 binding.image.setImageBitmap(null)
                 hasImage = false
-            }else{}
+            }
         }
         binding.addImage.setOnClickListener {
             if (hasImage){
@@ -53,6 +59,9 @@ class DairyBuilderActivity : AppCompatActivity() {
             }else{
                 getAndSetImage()
             }
+        }
+        binding.dateText.setOnClickListener {
+            getDayDate()
         }
     }
 
@@ -63,15 +72,14 @@ class DairyBuilderActivity : AppCompatActivity() {
             binding.titleEditText.text = dairy.title.toEditable()
             binding.bodyEditText.text = dairy.bodyText.toEditable()
 
-
-            if (dairy.uri.isNotEmpty()) {
-                binding.image.setImageURI(Uri.parse(dairy.uri))
+            if (dairy.uri != "null") {
+                uri = Uri.parse(dairy.uri)
+                binding.image.setImageURI(uri)
                 hasImage = true
             }
         }else{
             binding.dateText.text = System.currentTimeMillis().asDate()
         }
-
     }
 
     private fun getAndSetImage() {
@@ -94,8 +102,20 @@ class DairyBuilderActivity : AppCompatActivity() {
         }
     }
 
-    private fun buildDairy(){
+    private fun getDayDate() {
+        val calendar = Calendar.getInstance()
+        DatePickerDialog(this@DairyBuilderActivity, { view: View, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+            run {
+                binding.dateText.text = toDate(year, monthOfYear + 1, dayOfMonth)
+            }
+        },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH))
+                .show()
+    }
 
+    private fun buildDairy(){
         val title: String = binding.titleEditText.text.toString()
         val body: String = binding.bodyEditText.text.toString()
         val date: Long = binding.dateText.text.toString().asMillis()
@@ -105,12 +125,13 @@ class DairyBuilderActivity : AppCompatActivity() {
             Toasty.error(this, getString(R.string.note_is_empty)).show()
             return
         }
+        val key = if (this.dairy == null) UUID.randomUUID().toString() else this.dairy!!.key
+        val dairy = DairyObject(key, title, body, date, "", uri.toString())
 
-        val dairy = DairyObject(0, title, body, date, "", uri.toString())
-
-        CoroutineScope(Dispatchers.Default).launch {
+        scope.launch {
             DairyDatabaseManager.getInstance().saveDairy(dairy)
         }
+
         this.finish()
     }
 }

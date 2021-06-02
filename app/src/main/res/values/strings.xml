@@ -105,5 +105,6 @@
     <string name="image_added_yet">Картинка уже добавлена</string>
     <string name="save">Сохранить</string>
     <string name="note_is_empty">Заметка пустая</string>
+    <string name="permision_not_got">Разрешение не получено</string>
 
 </resources>

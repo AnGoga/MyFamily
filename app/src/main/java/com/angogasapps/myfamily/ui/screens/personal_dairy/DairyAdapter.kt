@@ -67,26 +67,7 @@ class DairyAdapter(private val context: Context, private var dairyList: ArrayLis
             }else{
                 binding.image.visibility = View.VISIBLE
                 binding.image.setImageURI(Uri.parse(dairy.uri))
-//                GlobalScope.launch {
-//                    setImage(dairy.uri)
-//                }
-            }
-        }
 
-        suspend fun setImage(uri: String){
-            coroutineScope {
-                launch(Dispatchers.IO) {
-                    Log.d(TAG, "setImage: $uri")
-                    val imgFile = File(uri)
-                    if (imgFile.exists()) {
-                        val bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
-                        withContext(Dispatchers.Main) {
-                            Log.d(TAG, "setImage: $uri -> $bitmap")
-                            binding.image.visibility = View.VISIBLE
-                            binding.image.setImageBitmap(bitmap)
-                        }
-                    }
-                }
             }
         }
     }

@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity
 @Parcelize
 data class DairyObject(
-        @PrimaryKey(autoGenerate = true) var key: Int, var title: String, var bodyText: String,
+        @PrimaryKey var key: String, var title: String, var bodyText: String,
         var time: Long, var smile: String, var uri: String): Parcelable{
 
 

@@ -12,6 +12,7 @@ import com.angogasapps.myfamily.models.DairyObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.util.UUID.randomUUID
@@ -31,16 +32,13 @@ open class DairyDatabaseManager private constructor(){
         }
     }
 
-    suspend fun saveDairy(dairy: DairyObject){
-        coroutineScope {
-            launch(Dispatchers.IO) {
-                println(dairy.toString())
 
-
-                dairy.uri = saveImageToAppStorage(dairy.uri!!)
-                DatabaseManager.getInstance().dairyDao.insert(dairy)
-            }
+    suspend fun saveDairy(dairy: DairyObject) = withContext(Dispatchers.IO){
+        println(dairy.toString())
+        if (dairy.uri != "null") {
+            dairy.uri = saveImageToAppStorage(dairy.uri)
         }
+        DatabaseManager.getInstance().dairyDao.insert(dairy)
     }
 
     private fun saveImageToAppStorage(uri: String): String {
@@ -63,24 +61,6 @@ open class DairyDatabaseManager private constructor(){
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
-
-//        var fileUri: Uri? = null
-//        val lock = CountDownLatch(1)
-//        val listener = OnScanCompletedListener { path, uri ->
-//            run {
-//                fileUri = uri
-//                lock.countDown()
-//                println(uri)
-//            }
-//        }
-//        MediaScannerConnection.scanFile(
-//                AppApplication.getInstance().applicationContext,
-//                arrayOf(file.absolutePath),
-//                null,
-//                listener);
-//        lock.await()
-//        return Uri.fromFile(file)
 
 
         val uri = file.toURI()
