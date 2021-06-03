@@ -2,9 +2,9 @@ package com.angogasapps.myfamily.ui.screens.personal_dairy
 
 import com.angogasapps.myfamily.database.DatabaseManager
 import com.angogasapps.myfamily.models.DairyObject
+import com.angogasapps.myfamily.utils.indexOfThisKey
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.flow.MutableSharedFlow
 
 class PersonalDairyManager private constructor(){
     private val job = SupervisorJob()
@@ -32,14 +32,23 @@ class PersonalDairyManager private constructor(){
 
 
     fun addDairy(dairy: DairyObject){
+        var index = list.indexOfThisKey(dairy)
+        if (index >= 0){
+            removeDairy(dairy, index)
+        }
         list.add(dairy)
         list.sortBy { it.time }
-        val index = list.indexOf(dairy)
+        index = list.indexOf(dairy)
+
+
         channel.trySend(DairyEvent(index, EDairyEvents.add, dairy.key))
     }
 
     fun removeDairy(dairy: DairyObject){
-        val index = list.indexOf(dairy)
+        removeDairy(dairy, list.indexOf(dairy))
+    }
+
+    private fun removeDairy(dairy: DairyObject, index: Int){
         list.removeAt(index)
         channel.trySend(DairyEvent(index, EDairyEvents.remove, dairy.key))
     }
