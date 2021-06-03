@@ -2,24 +2,19 @@ package com.angogasapps.myfamily.ui.screens.personal_dairy
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.MediaScannerConnection
-import android.media.MediaScannerConnection.OnScanCompletedListener
 import android.net.Uri
 import android.os.Environment
-import com.angogasapps.myfamily.app.AppApplication
 import com.angogasapps.myfamily.database.DatabaseManager
 import com.angogasapps.myfamily.models.DairyObject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.util.UUID.randomUUID
-import java.util.concurrent.CountDownLatch
 
 
 open class DairyDatabaseManager private constructor(){
+
     companion object{
         private var manager: DairyDatabaseManager? = null
 
@@ -39,6 +34,7 @@ open class DairyDatabaseManager private constructor(){
             dairy.uri = saveImageToAppStorage(dairy.uri)
         }
         DatabaseManager.getInstance().dairyDao.insert(dairy)
+        PersonalDairyManager.getInstance().addDairy(dairy)
     }
 
     private fun saveImageToAppStorage(uri: String): String {
@@ -67,6 +63,31 @@ open class DairyDatabaseManager private constructor(){
         print(uri)
         return Uri.parse(uri.toString())
 
+    }
+
+    suspend fun removeDairy(dairy: DairyObject) = withContext(Dispatchers.IO){
+        if (dairy.uri != "null")
+            removeImage(dairy)
+        DatabaseManager.getInstance().dairyDao.delete(dairy)
+        PersonalDairyManager.getInstance().removeDairy(dairy)
+    }
+
+    private fun removeImage(dairy: DairyObject) {
+        val root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()
+        val myDir = File("$root/dairy_images")
+        val file = File(myDir, dairy.uri.split("/").last())
+        file.delete()
+    }
+
+    fun onDeleteApp() {
+        val root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()
+        val myDir = File("$root/dairy_images")
+
+        if (myDir.exists() && myDir.isDirectory){
+            for (file: File in myDir.listFiles()){
+                file.delete()
+            }
+        }
     }
 
 }

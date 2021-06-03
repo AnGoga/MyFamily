@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.util.Log
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +12,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.DairyHolderBinding
 import com.angogasapps.myfamily.models.DairyObject
-import com.angogasapps.myfamily.objects.ChatImageShower.ImageShowerDialog.TAG
 import com.angogasapps.myfamily.utils.asDate
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class DairyAdapter(private val context: Context, private var dairyList: ArrayList<DairyObject>) : RecyclerView.Adapter<DairyAdapter.DairyHolder>() {
+class DairyAdapter(private val context: Context, private var dairyList: ArrayList<DairyObject>,
+                   val scope: CoroutineScope) : RecyclerView.Adapter<DairyAdapter.DairyHolder>() {
+
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DairyHolder {
@@ -39,17 +45,34 @@ class DairyAdapter(private val context: Context, private var dairyList: ArrayLis
         notifyItemRangeInserted(start, list.size)
     }
 
-    fun add(dairy: DairyObject){
-        this.dairyList.add(dairy)
-        notifyItemChanged(dairyList.size - 1)
+    fun update(event: DairyEvent){
+        when (event.events){
+            EDairyEvents.add -> {this.notifyItemInserted(event.index)}
+            EDairyEvents.remove -> {this.notifyItemRemoved(event.index)}
+        }
     }
 
-    class DairyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class DairyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding: DairyHolderBinding = DairyHolderBinding.bind(itemView)
         private lateinit var dairy: DairyObject
 
         fun update(dairy: DairyObject) {
             this.dairy = dairy
+
+            if (dairy.uri == "null"){
+                binding.image.visibility = View.GONE
+            }else{
+                binding.image.visibility = View.VISIBLE
+                scope.launch(Dispatchers.IO) {
+                    val root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()
+                    val myDir = File("$root/dairy_images")
+                    val file = File(myDir, dairy.uri.split("/").last())
+                    val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                    withContext(Dispatchers.Main) {
+                        binding.image.setImageBitmap(bitmap)
+                    }
+                }
+            }
 
             binding.titleText.text = dairy.title
             binding.bodyText.text = dairy.bodyText
@@ -62,13 +85,7 @@ class DairyAdapter(private val context: Context, private var dairyList: ArrayLis
                 binding.root.context.startActivity(intent)
             }
 
-            if (dairy.uri.isNullOrEmpty()){
-                binding.image.visibility = View.GONE
-            }else{
-                binding.image.visibility = View.VISIBLE
-                binding.image.setImageURI(Uri.parse(dairy.uri))
 
-            }
         }
     }
 }

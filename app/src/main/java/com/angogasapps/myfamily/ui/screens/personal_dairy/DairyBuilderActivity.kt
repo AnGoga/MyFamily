@@ -1,6 +1,8 @@
 package com.angogasapps.myfamily.ui.screens.personal_dairy
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -51,6 +53,7 @@ class DairyBuilderActivity : AppCompatActivity() {
             if (hasImage){
                 binding.image.setImageBitmap(null)
                 hasImage = false
+                uri = null
             }
         }
         binding.addImage.setOnClickListener {
@@ -77,8 +80,12 @@ class DairyBuilderActivity : AppCompatActivity() {
                 binding.image.setImageURI(uri)
                 hasImage = true
             }
+            binding.removeBtn.setOnClickListener {
+                showRemoveDairyDialog()
+            }
         }else{
             binding.dateText.text = System.currentTimeMillis().asDate()
+            binding.removeBtn.visibility = View.GONE
         }
     }
 
@@ -133,5 +140,37 @@ class DairyBuilderActivity : AppCompatActivity() {
         }
 
         this.finish()
+    }
+
+    private fun showRemoveDairyDialog(){
+        val builder = AlertDialog.Builder(this)
+        with(builder){
+            setTitle("Удалить заметку?")
+            setMessage("Вы действительно хотите удалить эту заметку? Востановить её будет невозможно!")
+            setPositiveButton("Удалить") { it, int ->
+                run {
+                    if (int == DialogInterface.BUTTON_POSITIVE) {
+                        dairy?.let { it1 ->
+                            scope.launch {
+                                DairyDatabaseManager.getInstance().removeDairy(it1)
+                            }
+                        }
+                        it.dismiss()
+                        this@DairyBuilderActivity.finish()
+                    }
+                }
+            }
+            setNegativeButton("Спасти") { it, int ->
+                run {
+                    if (int == DialogInterface.BUTTON_NEGATIVE) {
+                        it.dismiss()
+                    }
+                }
+            }
+        }
+
+        val dialog = builder.create();
+
+        dialog.show()
     }
 }
