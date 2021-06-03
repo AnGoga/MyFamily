@@ -7,6 +7,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.ActivityDairyBuilderBinding
@@ -17,6 +19,7 @@ import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DairyBuilderActivity : AppCompatActivity() {
@@ -36,6 +39,7 @@ class DairyBuilderActivity : AppCompatActivity() {
 
         initOnClicks()
         initFields(dairy)
+        initSpinner()
     }
 
     override fun onDestroy() {
@@ -71,7 +75,6 @@ class DairyBuilderActivity : AppCompatActivity() {
     private fun initFields(dairy: DairyObject?) {
         if (dairy != null) {
             binding.dateText.text = dairy.time.asDate()
-            binding.smileText.text = dairy.smile
             binding.titleEditText.text = dairy.title.toEditable()
             binding.bodyEditText.text = dairy.bodyText.toEditable()
 
@@ -86,6 +89,23 @@ class DairyBuilderActivity : AppCompatActivity() {
         }else{
             binding.dateText.text = System.currentTimeMillis().asDate()
             binding.removeBtn.visibility = View.GONE
+        }
+    }
+
+    private fun initSpinner() {
+        val adapter = ArrayAdapter.createFromResource(this, R.array.smiles_array, android.R.layout.simple_spinner_item)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.smileSpinner.adapter = adapter
+
+        if (dairy != null) {
+            val smileList = resources.getStringArray(R.array.smiles_array)
+            val index = smileList.indexOf(dairy!!.smile)
+            binding.smileSpinner.setSelection(index)
+
+            binding.smileSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {}
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
         }
     }
 
@@ -127,13 +147,14 @@ class DairyBuilderActivity : AppCompatActivity() {
         val body: String = binding.bodyEditText.text.toString()
         val date: Long = binding.dateText.text.toString().asMillis()
         val uri: Uri? = if (hasImage) uri else null
+        val smile: String = binding.smileSpinner.selectedItem.toString()
 
         if (title.isEmpty() && body.isEmpty() && uri == null){
             Toasty.error(this, getString(R.string.note_is_empty)).show()
             return
         }
         val key = if (this.dairy == null) UUID.randomUUID().toString() else this.dairy!!.key
-        val dairy = DairyObject(key, title, body, date, "", uri.toString())
+        val dairy = DairyObject(key, title, body, date, smile, uri.toString())
 
         scope.launch {
             DairyDatabaseManager.getInstance().saveDairy(dairy)

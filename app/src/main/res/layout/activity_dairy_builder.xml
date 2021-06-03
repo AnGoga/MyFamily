@@ -20,14 +20,13 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="12/11/2021" />
 
-        <TextView
-            android:id="@+id/smile_text"
+        <Spinner
+            android:id="@+id/smile_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="40dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="🤔" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:maxLines="1"
