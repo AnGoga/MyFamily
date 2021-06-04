@@ -1,13 +1,11 @@
 package com.angogasapps.myfamily.firebase;
 
 import android.net.Uri;
-import android.util.Log;
 
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
-import com.angogasapps.myfamily.models.NewsObject;
+import com.angogasapps.myfamily.models.events.NewsObject;
 import com.angogasapps.myfamily.utils.NewsUtils;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.StorageReference;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;

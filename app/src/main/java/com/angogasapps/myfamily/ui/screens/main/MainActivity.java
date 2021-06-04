@@ -1,8 +1,6 @@
 package com.angogasapps.myfamily.ui.screens.main;
 
-import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
-import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -15,13 +13,13 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.async.notification.FcmMessageManager;
 import com.angogasapps.myfamily.databinding.ActivityMainBinding;
-import com.angogasapps.myfamily.models.NewsEvent;
+import com.angogasapps.myfamily.models.events.NewsEvent;
 import com.angogasapps.myfamily.ui.screens.main.adapters.ItemTouchHelperCallback;
 import com.angogasapps.myfamily.ui.screens.main.adapters.MainActivityAdapter;
 import com.angogasapps.myfamily.ui.screens.main.adapters.NewsAdapter;
 import com.angogasapps.myfamily.ui.screens.news_center.NewsManager;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
-import com.angogasapps.myfamily.utils.MainActivityUtils;
+import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils;
 
 import io.reactivex.disposables.Disposable;
 

@@ -1,6 +1,6 @@
 package com.angogasapps.myfamily.utils;
 
-import com.angogasapps.myfamily.models.NewsObject;
+import com.angogasapps.myfamily.models.events.NewsObject;
 import com.google.firebase.database.ServerValue;
 
 import java.util.ArrayList;

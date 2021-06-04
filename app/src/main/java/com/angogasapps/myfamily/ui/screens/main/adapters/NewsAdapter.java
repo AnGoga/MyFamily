@@ -1,7 +1,6 @@
 package com.angogasapps.myfamily.ui.screens.main.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -9,8 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.models.NewsEvent;
-import com.angogasapps.myfamily.models.NewsObject;
+import com.angogasapps.myfamily.models.events.NewsEvent;
+import com.angogasapps.myfamily.models.events.NewsObject;
 import com.angogasapps.myfamily.ui.screens.main.holders.BaseNewsViewHolder;
 import com.angogasapps.myfamily.ui.screens.main.holders.ImageNewsViewHolder;
 import com.angogasapps.myfamily.ui.screens.main.holders.TextNewsViewHolder;
@@ -18,9 +17,10 @@ import com.angogasapps.myfamily.ui.screens.main.holders.VideoNewsViewHolder;
 
 import java.util.ArrayList;
 
-import static com.angogasapps.myfamily.models.NewsObject.TYPE_IMAGE;
-import static com.angogasapps.myfamily.models.NewsObject.TYPE_TEXT;
-import static com.angogasapps.myfamily.models.NewsObject.TYPE_VIDEO;
+import static com.angogasapps.myfamily.models.events.NewsObject.TYPE_IMAGE;
+import static com.angogasapps.myfamily.models.events.NewsObject.TYPE_TEXT;
+import static com.angogasapps.myfamily.models.events.NewsObject.TYPE_VIDEO;
+
 
 public class NewsAdapter extends RecyclerView.Adapter<BaseNewsViewHolder> {
     private Activity context;

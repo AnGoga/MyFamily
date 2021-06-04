@@ -1,6 +1,6 @@
 package com.angogasapps.myfamily.utils;
 
-import com.angogasapps.myfamily.models.BuyList;
+import com.angogasapps.myfamily.models.buy_list.BuyList;
 import com.angogasapps.myfamily.models.Family;
 import com.google.firebase.database.DataSnapshot;
 

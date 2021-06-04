@@ -7,8 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.angogasapps.myfamily.databinding.VideoNewsViewHolderBinding;
 import com.angogasapps.myfamily.models.Family;
-import com.angogasapps.myfamily.models.NewsObject;
-import com.bumptech.glide.Glide;
+import com.angogasapps.myfamily.models.events.NewsObject;
 
 public class VideoNewsViewHolder extends BaseNewsViewHolder{
     private VideoNewsViewHolderBinding binding;

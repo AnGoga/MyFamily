@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
+import com.angogasapps.myfamily.databinding.CardviewBinding;
 import com.angogasapps.myfamily.models.ActionCardState;
 
 
@@ -33,7 +34,7 @@ public class CardView extends androidx.cardview.widget.CardView {
     };
 
 
-//    private CardviewBinding binding;
+    private CardviewBinding binding;
 
     public CardView(@NonNull Context context, int mCardDrawable, String mCardName, String mCardSubscript) {
         super(context);

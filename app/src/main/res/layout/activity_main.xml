@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.screens.main.MainActivity">
+    tools:context=".ui.screens.main.MainActivity"
+    android:background="#f6fafb"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,14 +28,20 @@
 
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_marginLeft="17dp"
+
                 android:id="@+id/toolbar_user_image"
-                android:layout_width="?attr/actionBarSize"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:padding="2.5dp"
                 android:src="@drawable/default_user_photo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+<!--            android:layout_width="?attr/actionBarSize"-->
+<!--            android:layout_height="?attr/actionBarSize"-->
+
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -53,9 +61,12 @@
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="@dimen/mainActivityHeaderHeight"
-            android:layout_margin="10dp"
+            android:layout_margin="17dp"
             android:background="@drawable/mainActivityHeaderWelcome"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+
+            android:backgroundTint="#ccf4e8"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycle_view"

@@ -3,8 +3,8 @@ package com.angogasapps.myfamily.ui.screens.buy_list;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.angogasapps.myfamily.models.BuyList;
-import com.angogasapps.myfamily.models.BuyListEvent;
+import com.angogasapps.myfamily.models.buy_list.BuyList;
+import com.angogasapps.myfamily.models.buy_list.BuyListEvent;
 import com.angogasapps.myfamily.utils.BuyListUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;

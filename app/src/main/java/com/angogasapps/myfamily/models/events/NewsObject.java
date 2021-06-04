@@ -1,10 +1,8 @@
-package com.angogasapps.myfamily.models;
+package com.angogasapps.myfamily.models.events;
 
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.Objects;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_VALUE;
 
 public class NewsObject {
     public static final String TYPE_TEXT = "text";

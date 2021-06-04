@@ -39,7 +39,7 @@
                 android:textAlignment="textStart"
                 android:textColor="#0000FF"
                 android:textSize="10sp"
-                android:layout_marginLeft="@dimen/message_top_text_margin"
+                android:layout_marginLeft="@dimen/message_left_text_margin"
                 tools:text="Никто"/>
 
             <TextView
@@ -82,7 +82,7 @@
             android:textAlignment="textStart"
             android:textColor="#0000FF"
             android:textSize="10sp"
-            android:layout_marginLeft="@dimen/message_top_text_margin"
+            android:layout_marginLeft="@dimen/message_left_text_margin"
             tools:text="@string/you"/>
 
         <TextView

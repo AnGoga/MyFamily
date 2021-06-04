@@ -1,11 +1,9 @@
 package com.angogasapps.myfamily.firebase;
 
-import android.util.Log;
-
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
-import com.angogasapps.myfamily.models.BuyList;
+import com.angogasapps.myfamily.models.buy_list.BuyList;
 import com.angogasapps.myfamily.utils.BuyListUtils;
 import com.google.firebase.database.DatabaseReference;
 

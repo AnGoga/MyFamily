@@ -11,7 +11,7 @@ import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.ChangeOrDeleteDialogBinding;
 import com.angogasapps.myfamily.firebase.BuyListFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
-import com.angogasapps.myfamily.models.BuyList;
+import com.angogasapps.myfamily.models.buy_list.BuyList;
 
 import es.dmoral.toasty.Toasty;
 

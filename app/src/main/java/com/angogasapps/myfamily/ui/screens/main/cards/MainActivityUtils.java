@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.utils;
+package com.angogasapps.myfamily.ui.screens.main.cards;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.models.ActionCardState;
+import com.angogasapps.myfamily.ui.screens.main.cards.ActionCardUtils;
+import com.angogasapps.myfamily.utils.Async;
 
 
 import java.util.ArrayList;

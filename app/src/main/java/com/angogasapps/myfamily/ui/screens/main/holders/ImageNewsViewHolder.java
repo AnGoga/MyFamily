@@ -1,16 +1,14 @@
 package com.angogasapps.myfamily.ui.screens.main.holders;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.databinding.ImageNewsViewHolderBinding;
 import com.angogasapps.myfamily.models.Family;
-import com.angogasapps.myfamily.models.NewsObject;
+import com.angogasapps.myfamily.models.events.NewsObject;
 import com.angogasapps.myfamily.objects.ChatImageShower;
 import com.bumptech.glide.Glide;
 

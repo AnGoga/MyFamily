@@ -1,15 +1,12 @@
-package com.angogasapps.myfamily.models;
+package com.angogasapps.myfamily.models.buy_list;
 
 import android.util.Log;
 
-import com.angogasapps.myfamily.utils.WithUsers;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class BuyList {
     private String id = "";

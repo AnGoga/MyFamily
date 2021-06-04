@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.models;
+package com.angogasapps.myfamily.models.buy_list;
 
 public class BuyListEvent {
     private int index;

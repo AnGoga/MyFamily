@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.models;
+package com.angogasapps.myfamily.models.events;
 
 public class NewsEvent {
     private int index;

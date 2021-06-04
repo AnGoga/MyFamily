@@ -30,7 +30,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_marginLeft="@dimen/message_top_text_margin"
+                android:layout_marginLeft="@dimen/message_left_text_margin"
                 tools:text="никто"
                 android:id="@+id/leftMessageFromName"
                 android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-            android:layout_marginLeft="@dimen/message_top_text_margin"
+            android:layout_marginLeft="@dimen/message_left_text_margin"
             android:id="@+id/rightMessageFromName"
             android:layout_width="wrap_content"
             android:layout_height="15dp"

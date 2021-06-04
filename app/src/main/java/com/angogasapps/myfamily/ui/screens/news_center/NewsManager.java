@@ -5,8 +5,8 @@ import androidx.annotation.Nullable;
 
 
 import com.angogasapps.myfamily.firebase.NewsCenterFunks;
-import com.angogasapps.myfamily.models.NewsEvent;
-import com.angogasapps.myfamily.models.NewsObject;
+import com.angogasapps.myfamily.models.events.NewsEvent;
+import com.angogasapps.myfamily.models.events.NewsObject;
 import com.angogasapps.myfamily.utils.NewsUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;

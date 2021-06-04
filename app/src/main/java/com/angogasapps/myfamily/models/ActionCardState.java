@@ -1,9 +1,7 @@
 package com.angogasapps.myfamily.models;
 
 
-import androidx.annotation.StringRes;
-
-import com.angogasapps.myfamily.utils.ActionCardUtils;
+import com.angogasapps.myfamily.ui.screens.main.cards.ActionCardUtils;
 
 public class ActionCardState {
 

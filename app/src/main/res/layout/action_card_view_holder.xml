@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <com.angogasapps.myfamily.ui.customview.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
+
+    app:cardBackgroundColor="#ffffff"
+
+
     android:id="@+id/card"
     android:layout_width="match_parent"
-    android:layout_height="135dp"
+    android:layout_height="110dp"
 
     android:layout_margin="7dp"
     app:cardCornerRadius="10dp"
-    app:cardElevation="20dp" />
-
-<!--    android:minHeight="120dp"-->
-<!--    android:maxHeight="120dp"-->
+    app:cardElevation="5dp" />

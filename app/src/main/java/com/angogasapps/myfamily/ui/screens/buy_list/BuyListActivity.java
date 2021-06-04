@@ -1,25 +1,14 @@
 package com.angogasapps.myfamily.ui.screens.buy_list;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.ActivityByuListBinding;
-import com.angogasapps.myfamily.models.BuyList;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.angogasapps.myfamily.models.buy_list.BuyList;
 
 import es.dmoral.toasty.Toasty;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_BUY_LIST;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class BuyListActivity extends AppCompatActivity {
     private ActivityByuListBinding binding;

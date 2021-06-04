@@ -2,6 +2,7 @@ package com.angogasapps.myfamily.utils
 
 import android.text.Editable
 import com.angogasapps.myfamily.models.DairyObject
+import com.google.firebase.database.DataSnapshot
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -30,4 +31,6 @@ fun ArrayList<DairyObject>.indexOfThisKey(dairy: DairyObject): Int{
     }}
     return -1
 }
+
+fun DataSnapshot.asString(): String? = this.getValue(String::class.java)
 

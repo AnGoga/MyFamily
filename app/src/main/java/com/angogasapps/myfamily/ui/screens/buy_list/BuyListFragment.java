@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.angogasapps.myfamily.databinding.FragmentBuyListBinding;
-import com.angogasapps.myfamily.models.BuyList;
-import com.angogasapps.myfamily.models.BuyListEvent;
+import com.angogasapps.myfamily.models.buy_list.BuyList;
+import com.angogasapps.myfamily.models.buy_list.BuyListEvent;
 import com.angogasapps.myfamily.ui.screens.buy_list.adapters.ProductsAdapter;
 import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.BuyListProductCreatorDialog;
 

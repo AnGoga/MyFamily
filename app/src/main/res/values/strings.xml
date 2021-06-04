@@ -8,7 +8,7 @@
     <string name="chat">Чат</string>
     <string name="buy_list">Список покупок</string>
     <string name="clock">Будильник</string>
-    <string name="storage">Хранлище</string>
+    <string name="storage">Хранилище</string>
 
     <string name="registerOrLoginString">Чтобы войти или зарегестироваться введите свой номер телефона</string>
     <string name="verificationCode">Проверочный код</string>
@@ -106,5 +106,9 @@
     <string name="save">Сохранить</string>
     <string name="note_is_empty">Заметка пустая</string>
     <string name="permision_not_got">Разрешение не получено</string>
+    <string name="pictures">Картинки</string>
+    <string name="videos">Видео</string>
+    <string name="Documents">Документы</string>
+    <string name="Notes">Заметки</string>
 
 </resources>

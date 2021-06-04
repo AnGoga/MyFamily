@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.ProductInBuyListHolderBinding;
-import com.angogasapps.myfamily.models.BuyList;
-import com.angogasapps.myfamily.models.BuyListEvent;
+import com.angogasapps.myfamily.models.buy_list.BuyList;
+import com.angogasapps.myfamily.models.buy_list.BuyListEvent;
 import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.ChangeOrDeleteProductDialog;
 import com.angogasapps.myfamily.utils.BuyListUtils;
 

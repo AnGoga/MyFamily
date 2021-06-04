@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.utils;
+package com.angogasapps.myfamily.ui.screens.main.cards;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
@@ -6,6 +6,7 @@ import com.angogasapps.myfamily.models.ActionCardState;
 import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity;
 import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
 import com.angogasapps.myfamily.ui.screens.family_settings.FamilySettingsActivity;
+import com.angogasapps.myfamily.ui.screens.family_storage.SelectStorageActivity;
 import com.angogasapps.myfamily.ui.screens.news_center.NewsCenterActivity;
 
 public class ActionCardUtils {
@@ -60,7 +61,7 @@ public class ActionCardUtils {
             return new ActionCardState(
                     AppApplication.stringOf(R.string.storage),
                     AppApplication.stringOf(R.string.storage),
-                    R.drawable.ic_family_storage, null, card
+                    R.drawable.ic_family_storage, SelectStorageActivity.class, card
             );
         }
         if (card.equals(EActionCards.NEWS_CENTER)){
