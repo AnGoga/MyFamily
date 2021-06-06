@@ -3,6 +3,7 @@ package com.angogasapps.myfamily.ui.screens.buy_list;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -17,7 +18,7 @@ import io.reactivex.disposables.Disposable;
 
 public class ListOfBuyListsFragment extends Fragment {
     private FragmentListOfBuyListsBinding binding;
-    private LinearLayoutManager layoutManager;
+    private GridLayoutManager layoutManager;
     private BuyListAdapter adapter;
     private Disposable disposable;
 
@@ -50,7 +51,7 @@ public class ListOfBuyListsFragment extends Fragment {
 
     private void initRecyclerView() {
         adapter = new BuyListAdapter(getContext());
-        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new GridLayoutManager(getContext(), 2);
         binding.recycleView.setLayoutManager(layoutManager);
         binding.recycleView.setAdapter(adapter);
     }

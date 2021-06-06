@@ -29,6 +29,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:fontFamily="@font/poly_italic"
             android:maxLines="1"
             android:id="@+id/title_edit_text"
             android:layout_width="match_parent"
@@ -40,6 +41,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:fontFamily="@font/poly_italic"
             android:id="@+id/body_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

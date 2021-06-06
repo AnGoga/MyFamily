@@ -2,6 +2,12 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 <!--    <solid android:color="#89FF7D" />-->
 <!--    <solid android:color="#c3ff8b" />-->
-    <solid android:color="#34db57" />
+<!--    <solid android:color="#34db57" />-->
+
+    <solid android:color="@color/news_center_bg" />
+
+<!--    <solid android:color="#f8e8db" />-->
+
+<!--    <solid android:color="#699fba" />-->
     <corners android:radius="10dp" />
 </shape>

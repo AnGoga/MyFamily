@@ -20,6 +20,9 @@
     <color name="pale_text_color">#808080</color>
 
 
+    <color name="news_center_bg">#ccf4e8</color>
+
+
 <!--    toaster-->
 <!--    <color name="defaultTextColor">#FFFFFF</color>-->
 <!--    <color name="errorColor">#D50000</color>-->

@@ -59,6 +59,8 @@ public class FirebaseVarsAndConsts {
     public static final String CHILD_FROM_PHONE = "fromPhone";
     public static final String CHILD_TIME_CREATE = "timeCreate";
 
+    public static final String CHILD_PHOTO_FAMILY_STORAGE = "family_photo_storage";
+    public static final String CHILD_BASE_STORAGE = "base_storage";
 
     public static final String CHILD_MESSANGES = "messanges";
     public static final String CHILD_MEMBERS = "members";

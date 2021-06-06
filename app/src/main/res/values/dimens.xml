@@ -10,8 +10,8 @@
     <dimen name="big_normal_margin">32dp</dimen>
 
 
-    <dimen name="normal_text_size">30sp</dimen>
-    <dimen name="small_text_size">20sp</dimen>
+    <dimen name="normal_text_size">18sp</dimen>
+    <dimen name="small_text_size">13.5sp</dimen>
 
 
     <dimen name="registerActivityPhoneHeight">200dp</dimen>

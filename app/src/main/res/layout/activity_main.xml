@@ -62,11 +62,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/mainActivityHeaderHeight"
             android:layout_margin="17dp"
-            android:background="@drawable/mainActivityHeaderWelcome"
+            android:background="@drawable/news_center_background"
             tools:ignore="MissingConstraints"
 
-            android:backgroundTint="#ccf4e8"
             />
+
+<!-- android:background="@drawable/mainActivityHeaderWelcome"       -->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycle_view"

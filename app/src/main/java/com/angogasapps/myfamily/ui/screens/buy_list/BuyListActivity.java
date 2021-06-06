@@ -31,6 +31,20 @@ public class BuyListActivity extends AppCompatActivity {
         fragment1 = new ListOfBuyListsFragment();
         fragment2 = new BuyListFragment();
 
+        initInterfaces();
+        setUpToolBar();
+
+        getSupportFragmentManager()
+                .beginTransaction().add(R.id.container, fragment1).commit();
+
+    }
+
+    public void setUpToolBar(){
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    private void initInterfaces(){
         iGoToBuyListFragment = (buyList) -> {
             fragment2.setBuyList(buyList);
             getSupportFragmentManager()
@@ -41,12 +55,9 @@ public class BuyListActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().remove(fragment2).commit();
             Toasty.error(this, R.string.this_buy_list_was_remove).show();
             getSupportFragmentManager().beginTransaction().add(R.id.container, fragment1).commit();
+
+            setTitle(R.string.app_name);
         };
-
-
-        getSupportFragmentManager()
-                .beginTransaction().add(R.id.container, fragment1).commit();
-
     }
 
     public static IGoToBuyListFragment getIGoToBuyListFragment(){
@@ -61,5 +72,17 @@ public class BuyListActivity extends AppCompatActivity {
     }
     public interface IGOToListOfBuyListsFragment{
         void go();
+    }
+
+    @Override
+    public void onBackPressed() {
+        setTitle(R.string.app_name);
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 }

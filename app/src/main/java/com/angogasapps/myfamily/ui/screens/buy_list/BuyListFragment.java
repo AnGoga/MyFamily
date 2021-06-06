@@ -34,7 +34,9 @@ public class BuyListFragment extends Fragment {
         initObserver();
         initRecyclerView();
 
-        binding.buyListName.setText(buyList.getName());
+//        binding.buyListName.setText(buyList.getName());
+
+        getActivity().setTitle(buyList.getName());
 
         return binding.getRoot();
     }

@@ -8,7 +8,7 @@
         <item name="colorPrimary">#6aba9f</item>
         <!-- window under tool bar-->
 <!--        <item name="colorPrimaryVariant">@color/appColorDark</item>-->
-        <item name="colorPrimaryVariant">#f6fafb</item>
+        <item name="colorPrimaryVariant">#439378</item>
 
 
         <item name="colorOnPrimary">@color/white</item>

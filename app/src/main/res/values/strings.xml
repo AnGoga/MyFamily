@@ -92,7 +92,7 @@
     <string name="image">Картинка</string>
     <string name="video">Видео</string>
     <string name="settings">Настройки</string>
-    <string name="create_news">Создать новсть</string>
+    <string name="create_news">Создать новость</string>
     <string name="news_text">Текст новости</string>
     <string name="enter_news_text">Введите текст новости</string>
     <string name="chose_image">Выберите картику</string>

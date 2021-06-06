@@ -17,10 +17,15 @@
         android:paddingTop="5dp"
         android:paddingLeft="7dp">
         <TextView
+            android:fontFamily="@font/helvetica_cyrillic_upright"
+
             style="@style/CardViewNameText"
             android:id="@+id/cardViewTextViewTextName"
             tools:text="@string/event_calendar"/>
         <TextView
+
+            android:fontFamily="@font/helvetica_cyrillic_upright"
+
             android:textColor="#9d9d9d"
             style="@style/CardViewSubscriptText"
             android:id="@+id/cardViewTextSubscript"
