@@ -21,6 +21,5 @@ public class TextNewsViewHolder extends BaseNewsViewHolder{
     public void update(NewsObject newsObject) {
         binding.text.setText(newsObject.getValue());
         binding.textName.setText(Family.getInstance().getNameByPhone(newsObject.getFromPhone()));
-        binding.userPhoto.setImageBitmap(Family.getInstance().getMemberImageByPhone(newsObject.getFromPhone()));
     }
 }

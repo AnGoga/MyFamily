@@ -92,7 +92,7 @@
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_gravity="bottom|right"
-            android:src="@drawable/buy_list_card_bg" />
+            android:src="@drawable/ic_buy_list_card_image" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

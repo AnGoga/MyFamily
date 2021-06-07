@@ -13,7 +13,9 @@
 
 
         <TextView
+            android:fontFamily="@font/poly_italic"
             android:id="@+id/date_text"
+            android:textSize="25sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +26,7 @@
             android:id="@+id/smile_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="40dp"
+            android:textSize="60dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -1,46 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="50dp"
+        android:paddingBottom="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_gravity="center_vertical"
-            android:id="@+id/user_photo"
-            android:layout_width="@dimen/user_photo_size"
-            android:layout_height="@dimen/user_photo_size"
-            android:layout_marginRight="4dp"
-            android:src="@drawable/default_user_photo" />
+        android:orientation="vertical">
 
         <TextView
+            android:fontFamily="@font/poly_italic"
+            android:id="@+id/text"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/calibri"
             android:id="@+id/text_name"
-            style="@style/boldTextView"
-            android:textSize="25sp"
-            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:textAlignment="textEnd"
+            android:textSize="15sp"
+            tools:ignore="RtlCompat" />
+
 
     </LinearLayout>
+</ScrollView>
 
-    <ScrollView
-        android:id="@+id/scroll_view"
-        android:background="@drawable/text_news_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <TextView
-            style="@style/text_view_in_text_news"
-            android:id="@+id/text"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </ScrollView>
-
-</LinearLayout>

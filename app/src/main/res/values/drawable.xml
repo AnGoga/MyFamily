@@ -38,7 +38,7 @@
     <drawable name="ic_dairy_book">@drawable/ic_dairy_book</drawable>
     <drawable name="ic_change_personal_data">@drawable/ic_change_personal_data</drawable>
 
-    <drawable name="buy_list_add">@drawable/ic_buy_list_add</drawable>
+    <drawable name="buy_list_add">@drawable/ic_plus_btn</drawable>
 
 
     <drawable name="ic_basket">@drawable/ic_shopping_basket</drawable>

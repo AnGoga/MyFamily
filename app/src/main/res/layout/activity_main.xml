@@ -56,16 +56,11 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:orientation="horizontal"
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/mainActivityHeaderHeight"
+        <com.angogasapps.myfamily.ui.customview.news_center.NewsCenterLayout
+            android:id="@+id/news_center"
             android:layout_margin="17dp"
-            android:background="@drawable/news_center_background"
-            tools:ignore="MissingConstraints"
-
-            />
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mainActivityHeaderHeight"/>
 
 <!-- android:background="@drawable/mainActivityHeaderWelcome"       -->
 

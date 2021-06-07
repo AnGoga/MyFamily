@@ -27,7 +27,6 @@ public class ImageNewsViewHolder extends BaseNewsViewHolder{
     @Override
     public void update(NewsObject newsObject) {
         binding.textName.setText(Family.getInstance().getNameByPhone(newsObject.getFromPhone()));
-        binding.userPhoto.setImageBitmap(Family.getInstance().getMemberImageByPhone(newsObject.getFromPhone()));
         Glide
                 .with(context)
                 .load(newsObject.getValue())

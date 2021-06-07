@@ -16,7 +16,6 @@ import com.angogasapps.myfamily.databinding.ActivityMainBinding;
 import com.angogasapps.myfamily.models.events.NewsEvent;
 import com.angogasapps.myfamily.ui.screens.main.adapters.ItemTouchHelperCallback;
 import com.angogasapps.myfamily.ui.screens.main.adapters.MainActivityAdapter;
-import com.angogasapps.myfamily.ui.screens.main.adapters.NewsAdapter;
 import com.angogasapps.myfamily.ui.screens.news_center.NewsManager;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
 import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils;
@@ -31,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private MainActivityAdapter cardsAdapter;
     private GridLayoutManager layoutManager;
     private ItemTouchHelper itemTouchHelper;
-    private Disposable disposable;
-    private NewsAdapter newsAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
         initNewsLayout();
         FcmMessageManager.subscribeToFamilyChat();
-        MainActivityUtils.waitEndDownloadThread(this, newsAdapter);
     }
 
     private void initRecyclerView() {
@@ -74,24 +71,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initNewsLayout() {
-        newsAdapter = new NewsAdapter(this, NewsManager.getInstance().getAllNews());
-        disposable = NewsManager.getInstance().subject().subscribe(event -> {
-            if (NewsManager.getInstance().getAllNews().size() == 0){
-                binding.viewPager.setBackgroundResource(R.drawable.default_family_emblem);
-            }else if (NewsManager.getInstance().getAllNews().size() >= 1 &&
-                    event.getEvent().equals(NewsEvent.ENewsEvents.added)){
-                binding.viewPager.setBackgroundResource(0);
-            }
-            newsAdapter.update(event);
-        });
-        binding.viewPager.setAdapter(newsAdapter);
-//        binding.viewPager.setClipToPadding(false);
-//        binding.viewPager.setPadding(10,0,10,0);
-
-        binding.viewPager.setOffscreenPageLimit(3);
-
-
+        binding.newsCenter.setUpCenter(this);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -113,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (!disposable.isDisposed())
-            disposable.dispose();
+        binding.newsCenter.destroyCenter();
     }
 }

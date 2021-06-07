@@ -31,6 +31,7 @@
                 android:textSize="20sp"
                 tools:text="31 мая"/>
             <TextView
+                android:layout_marginLeft="20dp"
                 android:layout_gravity="right"
                 tools:text="🤔"
                 android:textSize="20sp"
