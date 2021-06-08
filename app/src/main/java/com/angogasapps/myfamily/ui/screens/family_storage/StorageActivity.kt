@@ -7,19 +7,32 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.ActivityStorageBinding
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_NODE
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 
 class StorageActivity : AppCompatActivity() {
+    private val job = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.Default + job)
+
     lateinit var binding: ActivityStorageBinding
     lateinit var adapter: StorageAdapter
     lateinit var layoutManager: LinearLayoutManager
+
+    lateinit var ROOT_NODE: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStorageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        analyzeIntent()
         initRecyclerView()
         initOnClicks()
+    }
+
+    private fun analyzeIntent() {
+        ROOT_NODE = intent.getStringExtra(TYPE_NODE)
     }
 
     private fun initOnClicks() {
@@ -29,10 +42,24 @@ class StorageActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        adapter = StorageAdapter(this)
+        adapter = StorageAdapter(this) { name: String ->
+            run {
+                this@StorageActivity.title = name
+            }
+        }
         layoutManager = LinearLayoutManager(this)
         binding.recycleView.adapter = adapter
         binding.recycleView.layoutManager = layoutManager
+        updateRecyclerView()
+    }
+
+    private fun updateRecyclerView() {
+        scope.launch {
+            StorageManager.getInstance().getData(ROOT_NODE).collect { isSuccess ->
+                if (!isSuccess) return@collect
+                withContext(Dispatchers.Main){ adapter.update() }
+            }
+        }
     }
 
     private fun showSelectDialog(){
@@ -63,5 +90,10 @@ class StorageActivity : AppCompatActivity() {
 
     private fun showFileCreateDialog() {
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
     }
 }

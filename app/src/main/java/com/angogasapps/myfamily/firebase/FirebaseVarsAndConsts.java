@@ -29,6 +29,7 @@ public class FirebaseVarsAndConsts {
     public static volatile HashMap<String, Bitmap> chatImageMessangesMap = new HashMap<>();
     public static volatile Bitmap familyEmblemImage = null;
 
+    public static final String TYPE_NODE = "node";
 
     public static final String TYPE_TEXT_MESSAGE = "message";
     public static final String TYPE_IMAGE_MESSAGE = "image";
@@ -39,6 +40,12 @@ public class FirebaseVarsAndConsts {
     public static final String NODE_CHAT = "chat";
     public static final String NODE_BUY_LIST = "buy_list";
     public static final String NODE_NEWS = "news";
+
+    public static final String NODE_IMAGE_STORAGE = "image_storage";
+    public static final String NODE_FILE_STORAGE = "file_storage";
+    public static final String NODE_VIDEO_STORAGE = "video_storage";
+//    public static final String NODE__STORAGE = "news";
+
 
 
     public static final String CHILD_ID = "id";
@@ -59,8 +66,8 @@ public class FirebaseVarsAndConsts {
     public static final String CHILD_FROM_PHONE = "fromPhone";
     public static final String CHILD_TIME_CREATE = "timeCreate";
 
-    public static final String CHILD_PHOTO_FAMILY_STORAGE = "family_photo_storage";
-    public static final String CHILD_BASE_STORAGE = "base_storage";
+//    public static final String CHILD_PHOTO_FAMILY_STORAGE = "family_photo_storage";
+    public static final String CHILD_BASE_FOLDER = "base_folder";
 
     public static final String CHILD_MESSANGES = "messanges";
     public static final String CHILD_MEMBERS = "members";

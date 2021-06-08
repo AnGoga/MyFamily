@@ -12,8 +12,7 @@ class FirebaseStorageParser private constructor(){
             val list = ArrayList<StorageObject>()
             return parse1(snapshot)
         }
-
-
+        /*
         //        private fun parse(snapshot: DataSnapshot, list: ArrayList<StorageObject>): ArrayList<StorageObject>{
 //            for (child: DataSnapshot in snapshot.children){
 //                val type = child.child(CHILD_TYPE).asString()
@@ -37,8 +36,9 @@ class FirebaseStorageParser private constructor(){
 //        }
 //
 //    }
+        */
         private fun parse1(snapshot: DataSnapshot): ArrayList<StorageObject> {
-            val rootFolder: StorageObject = parseStorageObject(snapshot, snapshot.child(CHILD_BASE_STORAGE))
+            val rootFolder: StorageObject = parseStorageObject(snapshot, snapshot.child(CHILD_BASE_FOLDER))
 
             val list = (rootFolder as ArrayFolder).value
 

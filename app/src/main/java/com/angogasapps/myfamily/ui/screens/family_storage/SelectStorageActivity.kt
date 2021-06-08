@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.angogasapps.myfamily.databinding.ActivitySelectStorageBinding
-import com.angogasapps.myfamily.databinding.ActivityStorageBinding
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 
 class SelectStorageActivity : AppCompatActivity() {
     lateinit var binding: ActivitySelectStorageBinding
@@ -20,9 +20,13 @@ class SelectStorageActivity : AppCompatActivity() {
     private fun initOnClicks() {
         binding.cardImages.setOnClickListener {
             startActivity(Intent(this, StorageActivity::class.java)
-//                    .also { it.putExtra("type", "images") }
-            )
+                    .also { it.putExtra(TYPE_NODE, NODE_IMAGE_STORAGE) }
+            )}
 
-        }
+        binding.cardFiles.setOnClickListener {
+            startActivity(Intent(this, StorageActivity::class.java)
+                    .also { it.putExtra(TYPE_NODE, NODE_FILE_STORAGE) }
+            )}
+
     }
 }
