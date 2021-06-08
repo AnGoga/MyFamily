@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/simple_background"
     tools:context=".ui.screens.personal_dairy.PersonalDairyActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -15,11 +16,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_btn"
-        android:layout_width="@dimen/floating_button_size"
-        android:layout_height="@dimen/floating_button_size"
-        android:layout_margin="@dimen/normal_margin"
-        app:maxImageSize="@dimen/floating_button_size"
-        android:src="@drawable/ic_add_white_64"
+        style="@style/buy_list_floating_action_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/simple_background"
     tools:context=".ui.screens.personal_data.PersonalDataActivity">
 
 
@@ -31,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/normal_margin"
-            app:cardElevation="16dp">
+            app:cardElevation="5dp">
 
             <LinearLayout
 
@@ -61,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/normal_margin"
-            app:cardElevation="16dp">
+            app:cardElevation="5dp">
 
             <LinearLayout
 
@@ -91,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/normal_margin"
-            app:cardElevation="16dp">
+            app:cardElevation="5dp">
 
             <LinearLayout
 

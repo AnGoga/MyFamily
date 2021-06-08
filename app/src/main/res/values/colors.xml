@@ -22,6 +22,8 @@
 
     <color name="news_center_bg">#ccf4e8</color>
 
+    <color name="simple_background">#f6fafb</color>
+
 
 <!--    toaster-->
 <!--    <color name="defaultTextColor">#FFFFFF</color>-->

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/simple_background"
     tools:context=".ui.screens.personal_dairy.DairyBuilderActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -37,10 +38,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/title"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/simple_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/date_text" />
 
         <EditText
             android:fontFamily="@font/poly_italic"
@@ -49,7 +53,9 @@
             android:layout_height="wrap_content"
             android:gravity="top|left"
             android:minLines="5"
+            android:background="@color/simple_background"
             android:hint="@string/write_here"
+            android:layout_margin="10dp"
             android:inputType="textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +85,7 @@
             android:id="@+id/option_bar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:translationZ="20dp"
+            app:cardElevation="5dp"
             android:layout_margin="2dp"
             app:layout_constraintBottom_toTopOf="@id/terminal_btn"
             app:layout_constraintEnd_toEndOf="parent"

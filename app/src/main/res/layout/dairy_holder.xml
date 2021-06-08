@@ -9,7 +9,7 @@
     android:layout_margin="10dp"
     android:padding="10dp"
     app:cardCornerRadius="10dp"
-    android:translationZ="20dp">
+    app:cardElevation="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,12 +31,11 @@
                 android:textSize="20sp"
                 tools:text="31 мая"/>
             <TextView
-                android:layout_marginLeft="20dp"
-                android:layout_gravity="right"
+                android:gravity="end"
                 tools:text="🤔"
                 android:textSize="20sp"
                 android:id="@+id/smile_text"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 

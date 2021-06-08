@@ -19,7 +19,6 @@ import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class DairyBuilderActivity : AppCompatActivity() {
@@ -36,6 +35,9 @@ class DairyBuilderActivity : AppCompatActivity() {
         binding = ActivityDairyBuilderBinding.inflate(layoutInflater)
         setContentView(binding.root)
         dairy = intent.extras?.get("data") as? DairyObject?
+
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
 
         initOnClicks()
         initFields(dairy)
