@@ -10,33 +10,6 @@
     tools:context=".ui.screens.buy_list.BuyListFragment">
 
 
-<!--    <ImageView-->
-<!--        android:layout_width="40dp"-->
-<!--        android:layout_height="40dp"-->
-<!--        android:layout_marginLeft="15dp"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:src="@drawable/ic_buy_list_ic_cash"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-
-<!--    <TextView-->
-<!--        android:id="@+id/buy_list_name"-->
-<!--        style="@style/boldTextView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:textAlignment="textStart"-->
-<!--        android:textSize="19sp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-
-<!--        android:paddingLeft="40dp"-->
-<!--        android:textColor="#383838"-->
-
-<!--        android:layout_margin="10dp"-->
-<!--        tools:text="Список №1" />-->
-
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginTop="10dp"
 
@@ -52,12 +25,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_btn"
-        android:layout_width="@dimen/floating_button_size"
-        android:layout_height="@dimen/floating_button_size"
-        android:layout_margin="@dimen/normal_margin"
-        android:src="@drawable/buy_list_add"
-        android:scaleType="center"
-        app:maxImageSize="@dimen/floating_button_size"
+        style="@style/buy_list_floating_action_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
