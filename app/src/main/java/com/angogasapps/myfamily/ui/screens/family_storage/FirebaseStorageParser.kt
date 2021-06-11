@@ -8,35 +8,12 @@ import com.google.firebase.database.DataSnapshot
 class FirebaseStorageParser private constructor(){
 
     companion object {
+/*
         fun parse(snapshot: DataSnapshot): ArrayList<StorageObject> {
             val list = ArrayList<StorageObject>()
             return parse1(snapshot)
         }
-        /*
-        //        private fun parse(snapshot: DataSnapshot, list: ArrayList<StorageObject>): ArrayList<StorageObject>{
-//            for (child: DataSnapshot in snapshot.children){
-//                val type = child.child(CHILD_TYPE).asString()
-//
-//                val key = child.key!!
-//                val name = child.child(CHILD_NAME).asString()!!
-//
-//                when(type){
-//                    TYPE_FILE -> {
-//                        val value = child.child(CHILD_VALUE).asString()!!
-//                        val file = File(id = key, name = name, value = value)
-//                        list.add(file)
-//                    }
-//                    TYPE_FOLDER -> {
-//                        val folder = ArrayFolder(key, name, parse(snapshot, ArrayList<StorageObject>()))
-//                        list.add(folder)
-//                    }
-//                }
-//            }
-//            return list
-//        }
-//
-//    }
-        */
+
         private fun parse1(snapshot: DataSnapshot): ArrayList<StorageObject> {
             val rootFolder: StorageObject = parseStorageObject(snapshot, snapshot.child(CHILD_BASE_FOLDER))
 
@@ -50,7 +27,7 @@ class FirebaseStorageParser private constructor(){
 
             val id = snapshot.key!!
             val type = snapshot.child(CHILD_TYPE).asString()!!
-            val name = snapshot.child(CHILD_NAME).asString()!!
+            val name = snapshot.child(CHILD_NAME).asString()?:""
 
             if (type == TYPE_FILE){
                 val value = snapshot.child(CHILD_VALUE).asString()!!
@@ -63,7 +40,37 @@ class FirebaseStorageParser private constructor(){
                 obj = ArrayFolder(id, name, value)
             }
             return obj!!
+        }*/
+
+
+        fun parse(snapshot: DataSnapshot): ArrayList<StorageObject> {
+            return parseFolder(snapshot, snapshot.child(CHILD_BASE_FOLDER)).value
         }
 
+        private fun parseFolder(root: DataSnapshot, snapshot: DataSnapshot): ArrayFolder{
+            val id = snapshot.key!!
+            val name = snapshot.child(CHILD_NAME).asString()?:""
+            val value = ArrayList<StorageObject>()
+
+            for (child in snapshot.child(CHILD_VALUE).children){
+
+                when(child.child(CHILD_TYPE).asString()!!){
+                    TYPE_FOLDER -> {
+                        value.add(parseFolder(root, root.child(child.key!!)))
+                    }
+                    TYPE_FILE -> {
+                        value.add(parseFile(child))
+                    }
+                }
+            }
+            return ArrayFolder(id = id, name = name, value = value)
+        }
+
+        private fun parseFile(snapshot: DataSnapshot): File{
+            val id = snapshot.key!!
+            val name = snapshot.child(CHILD_NAME).asString()?:""
+            val value = snapshot.child(CHILD_VALUE).asString()?:""
+            return File(id = id, name = name, value = value)
+        }
     }
 }

@@ -26,11 +26,11 @@ class StorageManager private constructor() {
 
     @ExperimentalCoroutinesApi
     fun getData(node: String): Flow<Boolean> = callbackFlow{
-        DATABASE_ROOT.child(node).child(USER.family).child(CHILD_BASE_FOLDER)
+        DATABASE_ROOT.child(node).child(USER.family)
                 .addListenerForSingleValueEvent(object: ValueEventListener{
                     override fun onCancelled(error: DatabaseError) {
                         error.toException().printStackTrace()
-                        this@callbackFlow.sendBlocking(false)
+                        this@callbackFlow.trySendBlocking(false)
                     }
 
                     override fun onDataChange(snapshot: DataSnapshot) {
@@ -38,7 +38,7 @@ class StorageManager private constructor() {
                         try {
                             list = FirebaseStorageParser.parse(snapshot)
 //                            map = list.toMapFolder()
-                            this@callbackFlow.sendBlocking(true)
+                            this@callbackFlow.trySendBlocking(true)
                         }catch (e: Exception){
                             e.printStackTrace()
                         }

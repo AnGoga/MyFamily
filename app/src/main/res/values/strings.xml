@@ -110,5 +110,7 @@
     <string name="videos">Видео</string>
     <string name="Documents">Документы</string>
     <string name="Notes">Заметки</string>
+    <string name="create_folder">Создать папку</string>
+    <string name="folder_name_is_empty">Название папки не может быть пустым</string>
 
 </resources>

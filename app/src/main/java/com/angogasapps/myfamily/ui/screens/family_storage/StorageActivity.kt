@@ -7,7 +7,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.ActivityStorageBinding
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_BASE_FOLDER
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_NODE
+import com.angogasapps.myfamily.ui.screens.family_storage.dialogs.CreateFolderDialog
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 
@@ -85,7 +88,9 @@ class StorageActivity : AppCompatActivity() {
 
 
     private fun showFolderCreateDialog() {
-
+        CreateFolderDialog(this).show(
+                rootNode = ROOT_NODE,
+                rootFolder = if (adapter.stack.empty()) CHILD_BASE_FOLDER else adapter.stack.peek())
     }
 
     private fun showFileCreateDialog() {

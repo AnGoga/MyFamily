@@ -37,7 +37,8 @@ class StorageAdapter(val context: Context, var onChangeDirectory: (dirName: Stri
 
 
     fun update() {
-
+        this.list = StorageManager.getInstance().list
+        notifyDataSetChanged()
     }
 
 /*    fun showFolder(id: String){
