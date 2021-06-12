@@ -21,12 +21,14 @@ class StorageAdapter(val context: Context, var onChangeDirectory: (dirName: Stri
         val fileDraw = AppApplication.getInstance().resources.getDrawable(R.drawable.ic_file)
         val folderDraw = AppApplication.getInstance().resources.getDrawable(R.drawable.ic_folder)
     }
+
     val stack: Stack<String> = Stack()
     var list: ArrayList<StorageObject> = ArrayList()
+    val inflater: LayoutInflater = LayoutInflater.from(context)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StorageHolder {
-        return StorageHolder(View.inflate(context, R.layout.storage_view_holder, parent))
+        return StorageHolder(inflater.inflate(R.layout.storage_view_holder, parent, false))
     }
 
     override fun onBindViewHolder(holder: StorageHolder, position: Int) {
@@ -52,28 +54,32 @@ class StorageAdapter(val context: Context, var onChangeDirectory: (dirName: Stri
         for (obj in list){
             if (obj.id == id) {
                 this.list = (obj as ArrayFolder).value
+                onChangeDirectory(obj.name)
                 break
             }
         }
+
         notifyDataSetChanged()
     }
 
-    fun exitFromUpFolder(){
-        if (stack.isEmpty()) return
+    fun exitFromUpFolder(): Boolean{
+        if (stack.isEmpty()) return false
         stack.pop()
         this.list = StorageManager.getInstance().getListByStack(stack)
         notifyDataSetChanged()
+
+        return true
     }
 
-    inner class StorageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+    inner class StorageHolder : RecyclerView.ViewHolder {
         val binding: StorageViewHolderBinding
 
-        init {
+        constructor(itemView: View) : super(itemView) {
             binding = StorageViewHolderBinding.bind(itemView)
         }
 
         fun update(obj: StorageObject) {
+            binding.text.text = obj.name
             binding.root.setOnClickListener(null)
             if (obj.isFile()){
                 binding.image.setImageDrawable(fileDraw)
@@ -84,6 +90,7 @@ class StorageAdapter(val context: Context, var onChangeDirectory: (dirName: Stri
                 }
             }
         }
+
     }
 
 }

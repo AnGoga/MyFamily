@@ -97,6 +97,12 @@ class StorageActivity : AppCompatActivity() {
 
     }
 
+    override fun onBackPressed() {
+        if (!adapter.exitFromUpFolder()){
+            super.onBackPressed()
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         job.cancel()
