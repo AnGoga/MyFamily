@@ -1,11 +1,13 @@
 package com.angogasapps.myfamily.utils
 
 import android.text.Editable
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.AppApplication
 import com.angogasapps.myfamily.models.DairyObject
 import com.angogasapps.myfamily.models.storage.ArrayFolder
-import com.angogasapps.myfamily.models.storage.Folder
 import com.angogasapps.myfamily.models.storage.MapFolder
 import com.angogasapps.myfamily.models.storage.StorageObject
+import com.angogasapps.myfamily.ui.screens.family_storage.StorageManager
 import com.google.firebase.database.DataSnapshot
 import java.text.SimpleDateFormat
 import java.util.*
@@ -54,6 +56,8 @@ fun ArrayList<StorageObject>.toMapFolder(): HashMap<String, StorageObject>{
     }
     return map
 }
+
+
 
 
 

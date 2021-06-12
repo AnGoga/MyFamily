@@ -28,5 +28,11 @@ class SelectStorageActivity : AppCompatActivity() {
                     .also { it.putExtra(TYPE_NODE, NODE_FILE_STORAGE) }
             )}
 
+        binding.cardNotes.setOnClickListener {
+            startActivity(Intent(this, StorageActivity::class.java)
+                    .also { it.putExtra(TYPE_NODE, NODE_NOTE_STORAGE) }
+            )}
+
+
     }
 }

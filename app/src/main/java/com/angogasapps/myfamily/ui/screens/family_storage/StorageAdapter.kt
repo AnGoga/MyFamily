@@ -23,9 +23,13 @@ class StorageAdapter(val context: Context, var onChangeDirectory: (dirName: Stri
     }
 
     val stack: Stack<String> = Stack()
+    val namesStack: Stack<String> = Stack()
     var list: ArrayList<StorageObject> = ArrayList()
     val inflater: LayoutInflater = LayoutInflater.from(context)
 
+    init {
+        namesStack.push(AppApplication.getInstance().getString(R.string.app_name))
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StorageHolder {
         return StorageHolder(inflater.inflate(R.layout.storage_view_holder, parent, false))
@@ -54,6 +58,7 @@ class StorageAdapter(val context: Context, var onChangeDirectory: (dirName: Stri
         for (obj in list){
             if (obj.id == id) {
                 this.list = (obj as ArrayFolder).value
+                namesStack.push(obj.name)
                 onChangeDirectory(obj.name)
                 break
             }
@@ -62,12 +67,13 @@ class StorageAdapter(val context: Context, var onChangeDirectory: (dirName: Stri
         notifyDataSetChanged()
     }
 
-    fun exitFromUpFolder(): Boolean{
+    fun exitFromUpFolder(): Boolean {
         if (stack.isEmpty()) return false
         stack.pop()
         this.list = StorageManager.getInstance().getListByStack(stack)
+        namesStack.pop()
+        onChangeDirectory(namesStack.peek())
         notifyDataSetChanged()
-
         return true
     }
 

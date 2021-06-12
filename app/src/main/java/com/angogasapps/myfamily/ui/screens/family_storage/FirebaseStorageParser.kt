@@ -8,41 +8,6 @@ import com.google.firebase.database.DataSnapshot
 class FirebaseStorageParser private constructor(){
 
     companion object {
-/*
-        fun parse(snapshot: DataSnapshot): ArrayList<StorageObject> {
-            val list = ArrayList<StorageObject>()
-            return parse1(snapshot)
-        }
-
-        private fun parse1(snapshot: DataSnapshot): ArrayList<StorageObject> {
-            val rootFolder: StorageObject = parseStorageObject(snapshot, snapshot.child(CHILD_BASE_FOLDER))
-
-            val list = (rootFolder as ArrayFolder).value
-
-            return list
-        }
-
-        private fun parseStorageObject(root: DataSnapshot, snapshot: DataSnapshot): StorageObject{
-            var obj: StorageObject? = null
-
-            val id = snapshot.key!!
-            val type = snapshot.child(CHILD_TYPE).asString()!!
-            val name = snapshot.child(CHILD_NAME).asString()?:""
-
-            if (type == TYPE_FILE){
-                val value = snapshot.child(CHILD_VALUE).asString()!!
-                obj = File(id, name, value)
-            }else if (type == TYPE_FOLDER){
-                val value = ArrayList<StorageObject>()
-                for (child in snapshot.children){
-                    value.add(parseStorageObject(root, root.child(child.key!!)))
-                }
-                obj = ArrayFolder(id, name, value)
-            }
-            return obj!!
-        }*/
-
-
         fun parse(snapshot: DataSnapshot): ArrayList<StorageObject> {
             return parseFolder(snapshot, snapshot.child(CHILD_BASE_FOLDER)).value
         }
