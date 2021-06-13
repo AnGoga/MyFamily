@@ -112,5 +112,7 @@
     <string name="Notes">Заметки</string>
     <string name="create_folder">Создать папку</string>
     <string name="folder_name_is_empty">Название папки не может быть пустым</string>
+    <string name="add_image">Добавьте картинку</string>
+    <string name="enter_image_name">Введите имя картинке</string>
 
 </resources>

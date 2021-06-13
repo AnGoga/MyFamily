@@ -46,7 +46,7 @@ public class FirebaseVarsAndConsts {
     public static final String NODE_VIDEO_STORAGE = "video_storage";
     public static final String NODE_NOTE_STORAGE = "note_storage";
 
-
+    public static final String ROOT_FOLDER = "root_folder";
 
     public static final String CHILD_ID = "id";
     public static final String CHILD_PHONE = "phone";

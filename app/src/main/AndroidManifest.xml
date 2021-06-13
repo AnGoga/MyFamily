@@ -26,7 +26,8 @@
         android:theme="@style/Theme.MyFamily"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.screens.family_storage.StorageActivity"></activity>
+        <activity android:name=".ui.screens.family_storage.CreateImageFileActivity"></activity>
+        <activity android:name=".ui.screens.family_storage.StorageActivity" />
         <activity android:name=".ui.screens.family_storage.SelectStorageActivity" />
         <activity
             android:name=".ui.screens.personal_dairy.DairyBuilderActivity"
