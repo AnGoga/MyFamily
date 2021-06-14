@@ -1,14 +1,11 @@
 package com.angogasapps.myfamily.ui.screens.family_storage
 
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.ActivityStorageBinding
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.ui.screens.family_storage.dialogs.CreateFolderDialog
 import kotlinx.coroutines.*
@@ -19,10 +16,10 @@ class StorageActivity : AppCompatActivity() {
     private val scope = CoroutineScope(Dispatchers.Default + job)
 
     lateinit var binding: ActivityStorageBinding
-    lateinit var adapter: StorageAdapter
+    lateinit var adapter: FileStorageAdapter
     lateinit var layoutManager: LinearLayoutManager
 
-    lateinit var ROOT_NODE: String
+    lateinit var rootNode: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +32,7 @@ class StorageActivity : AppCompatActivity() {
     }
 
     private fun analyzeIntent() {
-        ROOT_NODE = intent.getStringExtra(TYPE_NODE)
+        rootNode = intent.getStringExtra(TYPE_NODE)
     }
 
     private fun initOnClicks() {
@@ -45,7 +42,7 @@ class StorageActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        adapter = StorageAdapter(this) { name: String ->
+        adapter = FileStorageAdapter(this, rootNode = rootNode) { name: String ->
             run {
                 this@StorageActivity.title = name
             }
@@ -58,7 +55,7 @@ class StorageActivity : AppCompatActivity() {
 
     private fun updateRecyclerView() {
         scope.launch {
-            StorageManager.getInstance().getData(ROOT_NODE).collect { isSuccess ->
+            StorageManager.getInstance().getData(rootNode).collect { isSuccess ->
                 if (!isSuccess) return@collect
                 withContext(Dispatchers.Main){ adapter.update() }
             }
@@ -89,17 +86,21 @@ class StorageActivity : AppCompatActivity() {
 
     private fun showFolderCreateDialog() {
         CreateFolderDialog(this).show(
-                rootNode = ROOT_NODE,
-                rootFolder = if (adapter.stack.empty()) CHILD_BASE_FOLDER else adapter.stack.peek())
+                rootNode = rootNode,
+                rootFolder = adapter.getRootFolder())
     }
 
     private fun showFileCreateDialog() {
-        when(ROOT_NODE){
-            NODE_IMAGE_STORAGE -> {
-               startActivity(
-                       Intent(this, CreateImageFileActivity::class.java)
-                       .also { it.putExtra(ROOT_FOLDER, if (adapter.stack.isEmpty()) CHILD_BASE_FOLDER else adapter.stack.peek()) }
-               )
+        when(rootNode){
+//            NODE_IMAGE_STORAGE -> {
+//               startActivity(
+//                       Intent(this, CreateImageFileActivity::class.java)
+//                       .also { it.putExtra(ROOT_FOLDER, adapter.getRootFolder()) }
+//               )
+//            }
+            NODE_NOTE_STORAGE -> {
+                startActivity(Intent(this, StorageNoteBuilderActivity::class.java)
+                        .also { it.putExtra(ROOT_FOLDER, adapter.getRootFolder()) })
             }
         }
     }

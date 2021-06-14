@@ -48,6 +48,8 @@ public class FirebaseVarsAndConsts {
 
     public static final String ROOT_FOLDER = "root_folder";
 
+    public static final String DATA = "data";
+
     public static final String CHILD_ID = "id";
     public static final String CHILD_PHONE = "phone";
     public static final String CHILD_FAMILY = "family";

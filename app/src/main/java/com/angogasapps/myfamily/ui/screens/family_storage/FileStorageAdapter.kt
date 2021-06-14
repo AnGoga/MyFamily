@@ -1,8 +1,7 @@
 package com.angogasapps.myfamily.ui.screens.family_storage
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.app.AppApplication
 import com.angogasapps.myfamily.databinding.StorageViewHolderBinding
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.models.storage.ArrayFolder
+import com.angogasapps.myfamily.models.storage.File
 import com.angogasapps.myfamily.models.storage.StorageObject
 import java.util.*
 import kotlin.collections.ArrayList
 
-class StorageAdapter(val context: Context, var onChangeDirectory: (dirName: String) -> Unit)
-        : RecyclerView.Adapter<StorageAdapter.StorageHolder>() {
+class FileStorageAdapter(val context: Context, val rootNode: String ,var onChangeDirectory: (dirName: String) -> Unit)
+        : RecyclerView.Adapter<FileStorageAdapter.StorageHolder>() {
     companion object{
         val fileDraw = AppApplication.getInstance().resources.getDrawable(R.drawable.ic_file)
         val folderDraw = AppApplication.getInstance().resources.getDrawable(R.drawable.ic_folder)
@@ -41,17 +42,15 @@ class StorageAdapter(val context: Context, var onChangeDirectory: (dirName: Stri
 
     override fun getItemCount(): Int = list.size
 
+    fun getRootFolder(): String {
+        return if (stack.empty()) CHILD_BASE_FOLDER else stack.peek()
+    }
+
 
     fun update() {
         this.list = StorageManager.getInstance().list
         notifyDataSetChanged()
     }
-
-/*    fun showFolder(id: String){
-        stack.push(id)
-        this.list = StorageManager.getInstance().getListByStack(stack)
-        notifyDataSetChanged()
-    }    */
 
     fun showFolder(id: String){
         stack.push(id)
@@ -89,6 +88,19 @@ class StorageAdapter(val context: Context, var onChangeDirectory: (dirName: Stri
             binding.root.setOnClickListener(null)
             if (obj.isFile()){
                 binding.image.setImageDrawable(fileDraw)
+                binding.root.setOnClickListener {
+                    if (rootNode == NODE_NOTE_STORAGE)
+                        context.startActivity(Intent(context, StorageNoteBuilderActivity::class.java)
+                            .also {
+                                val file = obj as File
+                                it.putExtra(CHILD_NAME, file?.name)
+                                it.putExtra(CHILD_ID, file?.id)
+                                it.putExtra(CHILD_VALUE, file?.value)
+                                it.putExtra(ROOT_FOLDER, getRootFolder())
+                            }
+                        )
+                }
+
             }else if (obj.isFolder()){
                 binding.image.setImageDrawable(folderDraw)
                 binding.root.setOnClickListener {
