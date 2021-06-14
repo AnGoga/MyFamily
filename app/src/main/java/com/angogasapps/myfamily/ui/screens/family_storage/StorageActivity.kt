@@ -16,7 +16,7 @@ class StorageActivity : AppCompatActivity() {
     private val scope = CoroutineScope(Dispatchers.Default + job)
 
     lateinit var binding: ActivityStorageBinding
-    lateinit var adapter: FileStorageAdapter
+    lateinit var adapter: StorageAdapter
     lateinit var layoutManager: LinearLayoutManager
 
     lateinit var rootNode: String
@@ -28,7 +28,15 @@ class StorageActivity : AppCompatActivity() {
 
         analyzeIntent()
         initRecyclerView()
+        initSwipeRefresh()
         initOnClicks()
+
+    }
+
+    private fun initSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener {
+            updateRecyclerView()
+        }
     }
 
     private fun analyzeIntent() {
@@ -37,12 +45,16 @@ class StorageActivity : AppCompatActivity() {
 
     private fun initOnClicks() {
         binding.floatingBtn.setOnClickListener {
-            showSelectDialog()
+            if (rootNode == NODE_IMAGE_STORAGE) {
+                showFolderCreateDialog()
+            }else{
+                showSelectDialog()
+            }
         }
     }
 
     private fun initRecyclerView() {
-        adapter = FileStorageAdapter(this, rootNode = rootNode) { name: String ->
+        adapter = StorageAdapter(this, rootNode = rootNode) { name: String ->
             run {
                 this@StorageActivity.title = name
             }
@@ -57,7 +69,10 @@ class StorageActivity : AppCompatActivity() {
         scope.launch {
             StorageManager.getInstance().getData(rootNode).collect { isSuccess ->
                 if (!isSuccess) return@collect
-                withContext(Dispatchers.Main){ adapter.update() }
+                withContext(Dispatchers.Main){
+                    adapter.update()
+                    binding.swipeRefresh.isRefreshing = false
+                }
             }
         }
     }
@@ -92,12 +107,6 @@ class StorageActivity : AppCompatActivity() {
 
     private fun showFileCreateDialog() {
         when(rootNode){
-//            NODE_IMAGE_STORAGE -> {
-//               startActivity(
-//                       Intent(this, CreateImageFileActivity::class.java)
-//                       .also { it.putExtra(ROOT_FOLDER, adapter.getRootFolder()) }
-//               )
-//            }
             NODE_NOTE_STORAGE -> {
                 startActivity(Intent(this, StorageNoteBuilderActivity::class.java)
                         .also { it.putExtra(ROOT_FOLDER, adapter.getRootFolder()) })

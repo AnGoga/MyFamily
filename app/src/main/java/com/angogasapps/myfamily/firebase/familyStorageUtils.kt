@@ -40,7 +40,7 @@ fun createFile(name: String, value: String, rootNode: String, rootFolder: String
     }
 }
 
-fun createImageFile(name: String, rootNode: String, value: Uri, rootFolder: String, onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
+fun createImageFile(name: String = "", rootNode: String, value: Uri, rootFolder: String, onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
     val ref = DATABASE_ROOT.child(rootNode).child(USER.family).child(rootFolder).child(CHILD_VALUE)
     val key = ref.push().key!!
 

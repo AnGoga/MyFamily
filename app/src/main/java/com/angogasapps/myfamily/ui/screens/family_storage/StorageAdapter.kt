@@ -13,24 +13,22 @@ import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
 import com.angogasapps.myfamily.models.storage.StorageObject
+import com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity.ImageGalleryActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
-class FileStorageAdapter(val context: Context, val rootNode: String ,var onChangeDirectory: (dirName: String) -> Unit)
-        : RecyclerView.Adapter<FileStorageAdapter.StorageHolder>() {
+class StorageAdapter(val context: Context, val rootNode: String, var onChangeDirectory: (dirName: String) -> Unit)
+        : RecyclerView.Adapter<StorageAdapter.StorageHolder>() {
     companion object{
         val fileDraw = AppApplication.getInstance().resources.getDrawable(R.drawable.ic_file)
         val folderDraw = AppApplication.getInstance().resources.getDrawable(R.drawable.ic_folder)
     }
 
-    val stack: Stack<String> = Stack()
+    var stack: Stack<String> = Stack()
     val namesStack: Stack<String> = Stack()
     var list: ArrayList<StorageObject> = ArrayList()
     val inflater: LayoutInflater = LayoutInflater.from(context)
 
-    init {
-        namesStack.push(AppApplication.getInstance().getString(R.string.app_name))
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StorageHolder {
         return StorageHolder(inflater.inflate(R.layout.storage_view_holder, parent, false))
@@ -49,6 +47,21 @@ class FileStorageAdapter(val context: Context, val rootNode: String ,var onChang
 
     fun update() {
         this.list = StorageManager.getInstance().list
+        namesStack.clear()
+        namesStack.push(AppApplication.getInstance().getString(R.string.app_name))
+        val cashStack = Stack<String>()
+
+        for (id in stack){
+            for (obj in list){
+                if (obj.id == id){
+                    this.list = (obj as ArrayFolder).value
+                    cashStack.push(id)
+                    namesStack.push(obj.name)
+                    onChangeDirectory(obj.name)
+                }
+            }
+        }
+        this.stack = cashStack
         notifyDataSetChanged()
     }
 
@@ -93,22 +106,23 @@ class FileStorageAdapter(val context: Context, val rootNode: String ,var onChang
                         context.startActivity(Intent(context, StorageNoteBuilderActivity::class.java)
                             .also {
                                 val file = obj as File
-                                it.putExtra(CHILD_NAME, file?.name)
-                                it.putExtra(CHILD_ID, file?.id)
-                                it.putExtra(CHILD_VALUE, file?.value)
+                                it.putExtra(CHILD_NAME, file.name)
+                                it.putExtra(CHILD_ID, file.id)
+                                it.putExtra(CHILD_VALUE, file.value)
                                 it.putExtra(ROOT_FOLDER, getRootFolder())
                             }
-                        )
-                }
-
+                        )}
             }else if (obj.isFolder()){
                 binding.image.setImageDrawable(folderDraw)
                 binding.root.setOnClickListener {
-                    showFolder(obj.id)
+                    if (rootNode == NODE_IMAGE_STORAGE){
+                        context.startActivity(Intent(context, ImageGalleryActivity::class.java)
+                                .also { it.putExtra(CHILD_ID, obj.id) })
+                    }else {
+                        showFolder(obj.id)
+                    }
                 }
             }
         }
-
     }
-
 }
