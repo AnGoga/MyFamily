@@ -2,6 +2,7 @@ package com.angogasapps.myfamily.ui.screens.family_storage
 
 import android.content.Context
 import android.content.Intent
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.angogasapps.myfamily.databinding.StorageViewHolderBinding
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
+import com.angogasapps.myfamily.models.storage.Folder
 import com.angogasapps.myfamily.models.storage.StorageObject
 import com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity.ImageGalleryActivity
 import java.util.*
@@ -112,6 +114,10 @@ class StorageAdapter(val context: Context, val rootNode: String, var onChangeDir
                                 it.putExtra(ROOT_FOLDER, getRootFolder())
                             }
                         )}
+                binding.root.setOnLongClickListener {
+
+                    return@setOnLongClickListener true
+                }
             }else if (obj.isFolder()){
                 binding.image.setImageDrawable(folderDraw)
                 binding.root.setOnClickListener {
@@ -121,6 +127,10 @@ class StorageAdapter(val context: Context, val rootNode: String, var onChangeDir
                     }else {
                         showFolder(obj.id)
                     }
+                }
+                binding.root.setOnLongClickListener {
+
+                    return@setOnLongClickListener true
                 }
             }
         }

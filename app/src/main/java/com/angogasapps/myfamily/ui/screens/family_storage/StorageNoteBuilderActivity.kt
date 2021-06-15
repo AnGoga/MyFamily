@@ -3,11 +3,9 @@ package com.angogasapps.myfamily.ui.screens.family_storage
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.angogasapps.myfamily.R
-import com.angogasapps.myfamily.databinding.ActivityStorageBinding
 import com.angogasapps.myfamily.databinding.ActivityStorageNoteBuilderBinding
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.firebase.createFile
-import com.angogasapps.myfamily.models.storage.File
 import es.dmoral.toasty.Toasty
 
 class StorageNoteBuilderActivity : AppCompatActivity() {

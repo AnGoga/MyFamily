@@ -4,7 +4,6 @@ import android.net.Uri
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.models.storage.TYPE_FILE
 import com.angogasapps.myfamily.models.storage.TYPE_FOLDER
-import java.util.*
 
 fun createFolder(name: String, rootNode: String, rootFolder: String, onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
     val ref = DATABASE_ROOT.child(rootNode).child(USER.family)
@@ -26,21 +25,25 @@ fun createFolder(name: String, rootNode: String, rootFolder: String, onSuccess: 
     }
 }
 
-fun createFile(name: String, value: String, rootNode: String, rootFolder: String, onSuccess: () -> Unit = {}, onError: () -> Unit = {}, key_: String? = null){
+fun createFile(name: String, value: String, rootNode: String, rootFolder: String,
+               onSuccess: (value: String) -> Unit = {}, onError: () -> Unit = {}, key_: String? = null){
+
     val ref = DATABASE_ROOT.child(rootNode).child(USER.family).child(rootFolder).child(CHILD_VALUE)
     val key = key_ ?: ref.push().key!!
 
     val map = mapOf(Pair(CHILD_NAME, name), Pair(CHILD_VALUE, value), Pair(CHILD_TYPE, TYPE_FILE))
     ref.child(key).updateChildren(map).addOnCompleteListener { task ->
         if (task.isSuccessful){
-            onSuccess()
+            onSuccess(value)
         }else{
             onError()
         }
     }
 }
 
-fun createImageFile(name: String = "", rootNode: String, value: Uri, rootFolder: String, onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
+fun createImageFile(name: String = "", rootNode: String, value: Uri, rootFolder: String,
+                    onSuccess: (value: String) -> Unit = {}, onError: () -> Unit = {}){
+
     val ref = DATABASE_ROOT.child(rootNode).child(USER.family).child(rootFolder).child(CHILD_VALUE)
     val key = ref.push().key!!
 

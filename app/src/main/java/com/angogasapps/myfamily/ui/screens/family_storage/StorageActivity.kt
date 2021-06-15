@@ -63,9 +63,11 @@ class StorageActivity : AppCompatActivity() {
         binding.recycleView.adapter = adapter
         binding.recycleView.layoutManager = layoutManager
         updateRecyclerView()
+
     }
 
     private fun updateRecyclerView() {
+        binding.swipeRefresh.isRefreshing = true
         scope.launch {
             StorageManager.getInstance().getData(rootNode).collect { isSuccess ->
                 if (!isSuccess) return@collect

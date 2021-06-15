@@ -1,17 +1,17 @@
 package com.angogasapps.myfamily.utils
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.text.Editable
-import com.angogasapps.myfamily.R
-import com.angogasapps.myfamily.app.AppApplication
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
 import com.angogasapps.myfamily.models.DairyObject
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.MapFolder
 import com.angogasapps.myfamily.models.storage.StorageObject
-import com.angogasapps.myfamily.ui.screens.family_storage.StorageManager
 import com.google.firebase.database.DataSnapshot
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 private const val dateFormat = "dd/MM/yyyy"
@@ -55,6 +55,16 @@ fun ArrayList<StorageObject>.toMapFolder(): HashMap<String, StorageObject>{
         }
     }
     return map
+}
+
+fun downloadBitmapByURL(url: String): Bitmap? {
+    return try {
+        val photoUrl = URL(url)
+        val downloadStream = photoUrl.openStream()
+        BitmapFactory.decodeStream(downloadStream)
+    } catch (e: Exception) {
+        null
+    }
 }
 
 

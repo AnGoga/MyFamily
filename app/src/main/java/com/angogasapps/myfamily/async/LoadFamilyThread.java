@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 
 import com.angogasapps.myfamily.database.DatabaseManager;
@@ -129,7 +130,7 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
         }
     }
 
-    private Bitmap downloadBitmapByURL(String url){
+    private @Nullable Bitmap downloadBitmapByURL(String url){
         try{
             URL photoUrl = new URL(url);
             InputStream downloadStream = photoUrl.openStream();
