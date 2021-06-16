@@ -2,7 +2,6 @@ package com.angogasapps.myfamily.ui.screens.family_storage
 
 import android.content.Context
 import android.content.Intent
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import com.angogasapps.myfamily.databinding.StorageViewHolderBinding
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
-import com.angogasapps.myfamily.models.storage.Folder
 import com.angogasapps.myfamily.models.storage.StorageObject
 import com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity.ImageGalleryActivity
 import java.util.*
@@ -42,7 +40,7 @@ class StorageAdapter(val context: Context, val rootNode: String, var onChangeDir
 
     override fun getItemCount(): Int = list.size
 
-    fun getRootFolder(): String {
+    fun getRootFolderId(): String {
         return if (stack.empty()) CHILD_BASE_FOLDER else stack.peek()
     }
 
@@ -102,20 +100,20 @@ class StorageAdapter(val context: Context, val rootNode: String, var onChangeDir
             binding.text.text = obj.name
             binding.root.setOnClickListener(null)
             if (obj.isFile()){
+                val file = obj as File
                 binding.image.setImageDrawable(fileDraw)
                 binding.root.setOnClickListener {
                     if (rootNode == NODE_NOTE_STORAGE)
                         context.startActivity(Intent(context, StorageNoteBuilderActivity::class.java)
                             .also {
-                                val file = obj as File
                                 it.putExtra(CHILD_NAME, file.name)
                                 it.putExtra(CHILD_ID, file.id)
                                 it.putExtra(CHILD_VALUE, file.value)
-                                it.putExtra(ROOT_FOLDER, getRootFolder())
+                                it.putExtra(ROOT_FOLDER, getRootFolderId())
                             }
                         )}
                 binding.root.setOnLongClickListener {
-
+                    showDeleteFileDialog(context = context, folderId = getRootFolderId(), file = file, rootNode = rootNode)
                     return@setOnLongClickListener true
                 }
             }else if (obj.isFolder()){
@@ -129,7 +127,7 @@ class StorageAdapter(val context: Context, val rootNode: String, var onChangeDir
                     }
                 }
                 binding.root.setOnLongClickListener {
-
+                    showOnLongClickFolderDialog(context, obj as ArrayFolder, rootNode, getRootFolderId())
                     return@setOnLongClickListener true
                 }
             }

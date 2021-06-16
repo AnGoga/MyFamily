@@ -1,7 +1,6 @@
 package com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity
 
 import android.app.Activity
-import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
-import com.angogasapps.myfamily.models.storage.StorageObject
 import com.angogasapps.myfamily.objects.ChatImageShower
 import com.angogasapps.myfamily.ui.screens.family_storage.StorageManager
+import com.angogasapps.myfamily.ui.screens.family_storage.showAcceptRemoveImageDialog
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
 
@@ -35,8 +34,8 @@ class ImageGalleryAdapter(val context: Activity, val scope: CoroutineScope, var 
 
     override fun getItemCount(): Int = folder.value.size
 
-    fun add(url: String){
-        folder.value.add(File(value = url, id = "", name = ""))
+    fun add(url: String, key: String){
+        folder.value.add(File(value = url, id = key, name = ""))
         notifyItemInserted(itemCount - 1)
     }
 
@@ -64,6 +63,25 @@ class ImageGalleryAdapter(val context: Activity, val scope: CoroutineScope, var 
 //            }
             this.itemView.setOnClickListener {
                 ChatImageShower(context as AppCompatActivity).showImage(image)
+//                GalleryImageShower(context as AppCompatActivity)
+//                        .showImage(imageView = image, folderId = folder.id, file = folder.value[position] as File)
+            }
+            this.itemView.setOnLongClickListener {
+                val imageFile = folder.value[position] as File
+                showAcceptRemoveImageDialog(
+                        context = context, image = image,
+                        imageFile = imageFile, folderId = folder.id,
+                        onSuccessRemove = {
+                            folder.value.forEachIndexed {index, obj ->
+                                if (obj.id == imageFile.id){
+                                    folder.value.removeAt(index)
+                                    notifyItemRemoved(index)
+                                    return@forEachIndexed
+                                }
+                            }
+                        }
+                )
+                return@setOnLongClickListener true
             }
         }
     }

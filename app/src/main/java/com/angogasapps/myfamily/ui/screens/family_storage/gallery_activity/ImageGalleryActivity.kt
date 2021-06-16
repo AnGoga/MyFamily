@@ -101,11 +101,11 @@ class ImageGalleryActivity : AppCompatActivity() {
 
             if (uri != null) {
                 createImageFile(
-                        rootNode = FirebaseVarsAndConsts.NODE_IMAGE_STORAGE,
+                        rootNode = NODE_IMAGE_STORAGE,
                         rootFolder = folderId,
                         value = uri,
                         onError = onError,
-                        onSuccess = { adapter.add(it) }
+                        onSuccess = { value, key -> adapter.add(value, key) }
                 )
             } else {
                 onError()

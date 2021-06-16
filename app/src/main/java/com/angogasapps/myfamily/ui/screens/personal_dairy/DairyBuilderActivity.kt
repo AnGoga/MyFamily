@@ -127,7 +127,7 @@ class DairyBuilderActivity : AppCompatActivity() {
                 hasImage = true
                 this.uri = uri
             }else
-                Toasty.error(this, "Что-то пошло не так").show()
+                Toasty.error(this, R.string.something_went_wrong).show()
         }
     }
 
@@ -168,9 +168,9 @@ class DairyBuilderActivity : AppCompatActivity() {
     private fun showRemoveDairyDialog(){
         val builder = AlertDialog.Builder(this)
         with(builder){
-            setTitle("Удалить заметку?")
-            setMessage("Вы действительно хотите удалить эту заметку? Востановить её будет невозможно!")
-            setPositiveButton("Удалить") { it, int ->
+            setTitle(getString(R.string.remove_note_question))
+            setMessage(getString(R.string.accept_remove_dairy))
+            setPositiveButton(R.string.remove) { it, int ->
                 run {
                     if (int == DialogInterface.BUTTON_POSITIVE) {
                         dairy?.let { it1 ->
@@ -183,7 +183,7 @@ class DairyBuilderActivity : AppCompatActivity() {
                     }
                 }
             }
-            setNegativeButton("Спасти") { it, int ->
+            setNegativeButton(getString(R.string.rescue)) { it, int ->
                 run {
                     if (int == DialogInterface.BUTTON_NEGATIVE) {
                         it.dismiss()

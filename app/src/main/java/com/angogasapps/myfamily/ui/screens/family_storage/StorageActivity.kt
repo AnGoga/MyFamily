@@ -7,7 +7,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.angogasapps.myfamily.databinding.ActivityStorageBinding
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
-import com.angogasapps.myfamily.ui.screens.family_storage.dialogs.CreateFolderDialog
+import com.angogasapps.myfamily.firebase.createFolder
+import com.angogasapps.myfamily.ui.screens.family_storage.dialogs.FolderNameGetterDialog
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 
@@ -102,16 +103,16 @@ class StorageActivity : AppCompatActivity() {
 
 
     private fun showFolderCreateDialog() {
-        CreateFolderDialog(this).show(
-                rootNode = rootNode,
-                rootFolder = adapter.getRootFolder())
+        FolderNameGetterDialog(this).show{ name ->
+            createFolder(name = name, rootNode = rootNode, rootFolder = adapter.getRootFolderId())
+        }
     }
 
     private fun showFileCreateDialog() {
         when(rootNode){
             NODE_NOTE_STORAGE -> {
                 startActivity(Intent(this, StorageNoteBuilderActivity::class.java)
-                        .also { it.putExtra(ROOT_FOLDER, adapter.getRootFolder()) })
+                        .also { it.putExtra(ROOT_FOLDER, adapter.getRootFolderId()) })
             }
         }
     }

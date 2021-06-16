@@ -114,5 +114,15 @@
     <string name="folder_name_is_empty">Название папки не может быть пустым</string>
     <string name="add_image">Добавьте картинку</string>
     <string name="enter_image_name">Введите имя картинке</string>
+    <string name="remove_file">Удалить файл</string>
+    <string name="dialog_delet_file_accept">Вы действительно хотите удалить файл file_name Восстановить его будет невозможно!</string>
+    <string name="rescue">Спасти</string>
+    <string name="remove_note_question">Удалить заметку?</string>
+    <string name="accept_remove_dairy">Вы действительно хотите удалить эту заметку? Востановить её будет невозможно!</string>
+    <string name="remove_image">Удалить картику</string>
+    <string name="accept_remove_image">Вы действительно хотите удалить эту картику? Восстановиь её будет невозможно!</string>
+    <string name="rename">Переименовать</string>
+    <string name="remove_folder">Удалить папку</string>
+    <string name="accept_remove_folder">Вы точно хотите удалить папку folder_name ? Восстановить её будет невозможно!</string>
 
 </resources>
