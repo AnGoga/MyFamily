@@ -38,7 +38,7 @@
     <string name="error">Что-то пошло не так</string>
     <string name="my_family">Моя семья</string>
     <string name="something_went_wrong">Что-то пошло не так</string>
-    <string name="link_to_invite">Ссылка для пришлашения в семью</string>
+    <string name="link_to_invite">Ссылка для приглашения в семью</string>
     <string name="copy_to_clipboard_manager">Скопировано в буфер обмена</string>
     <string name="you_was_invite_to_family">Вас пригласили в семью</string>
     <string name="do_you_want_join_to_invite_family">Вас Пригласили в семью, не хотите ли присоедениться к ней?</string>
@@ -112,6 +112,7 @@
     <string name="Notes">Заметки</string>
     <string name="create_folder">Создать папку</string>
     <string name="folder_name_is_empty">Название папки не может быть пустым</string>
+    <string name="file_name_is_empty">Название файла не может быть пустым</string>
     <string name="add_image">Добавьте картинку</string>
     <string name="enter_image_name">Введите имя картинке</string>
     <string name="remove_file">Удалить файл</string>
@@ -124,5 +125,9 @@
     <string name="rename">Переименовать</string>
     <string name="remove_folder">Удалить папку</string>
     <string name="accept_remove_folder">Вы точно хотите удалить папку folder_name ? Восстановить её будет невозможно!</string>
+    <string name="choose_file">Выберите файл</string>
+    <string name="file_manager_not_found">Файловый менеджер не найден</string>
+    <string name="folder_name">Название папки</string>
+    <string name="file_name">Название файла</string>
 
 </resources>

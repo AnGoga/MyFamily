@@ -111,9 +111,11 @@ class StorageAdapter(val context: Context, val rootNode: String, var onChangeDir
                                 it.putExtra(CHILD_VALUE, file.value)
                                 it.putExtra(ROOT_FOLDER, getRootFolderId())
                             }
-                        )}
+                        )
+                }
                 binding.root.setOnLongClickListener {
-                    showDeleteFileDialog(context = context, folderId = getRootFolderId(), file = file, rootNode = rootNode)
+//                    showRemoveFileDialog(context = context, folderId = getRootFolderId(), file = file, rootNode = rootNode)
+                    showOnLongClickFileDialog(context = context, file = file, rootNode = rootNode, rootFolderId = getRootFolderId())
                     return@setOnLongClickListener true
                 }
             }else if (obj.isFolder()){

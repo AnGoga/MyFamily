@@ -8,18 +8,18 @@ import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.firebase.createFolder
 import es.dmoral.toasty.Toasty
 
-class FolderNameGetterDialog {
+class NameGetterDialog {
     val context: Context
 
     constructor(context: Context) {
         this.context = context
     }
 
-     fun show(name: String = "", function: (name: String) -> Unit) {
+     fun show(isFolder: Boolean, name: String = "", function: (name: String) -> Unit) {
          val alertDialog = androidx.appcompat.app.AlertDialog.Builder(context)
 
 
-         alertDialog.setTitle(context.getString(R.string.create_folder))
+         alertDialog.setTitle(context.getString(if (isFolder )R.string.folder_name else R.string.file_name))
 
 
          val input = EditText(context)
@@ -39,7 +39,8 @@ class FolderNameGetterDialog {
              if (name != null && name != "") {
                  function(name)
              }else{
-                 Toasty.warning(context, context.getString(R.string.folder_name_is_empty)).show()
+                 Toasty.warning(context,
+                         context.getString(if (isFolder)R.string.folder_name_is_empty else R.string.file_name_is_empty)).show()
              }
              dialog?.dismiss()
          }

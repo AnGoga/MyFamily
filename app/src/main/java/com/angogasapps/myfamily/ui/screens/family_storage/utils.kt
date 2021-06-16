@@ -8,16 +8,17 @@ import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_IMAGE_STORAGE
 import com.angogasapps.myfamily.firebase.removeFile
 import com.angogasapps.myfamily.firebase.removeFolder
+import com.angogasapps.myfamily.firebase.renameFile
 import com.angogasapps.myfamily.firebase.renameFolder
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
-import com.angogasapps.myfamily.ui.screens.family_storage.dialogs.FolderNameGetterDialog
+import com.angogasapps.myfamily.ui.screens.family_storage.dialogs.NameGetterDialog
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-fun showDeleteFileDialog(context: Context, file: File, folderId: String, rootNode: String) {
+fun showRemoveFileDialog(context: Context, file: File, folderId: String, rootNode: String) {
     val listener: (dialog: DialogInterface, which: Int) -> Unit = { dialog, which ->
         if (which == AlertDialog.BUTTON_POSITIVE){
             removeFile(file = file, folderId = folderId, rootNode = rootNode,
@@ -64,8 +65,6 @@ fun showAcceptRemoveImageDialog(context: Context, image: ImageView, imageFile: F
 
 fun showOnLongClickFolderDialog(context: Context, folder: ArrayFolder, rootNode: String, rootFolderId: String) {
     val builder = AlertDialog.Builder(context)
-//    builder.setTitle("")
-
     val array = arrayOf(context.getString(R.string.rename), context.getString(R.string.remove))
     builder.setItems(array) { dialog, which ->
         when(which){
@@ -82,7 +81,7 @@ fun showOnLongClickFolderDialog(context: Context, folder: ArrayFolder, rootNode:
 }
 
 fun showRenameFolderDialog(context: Context, folder: ArrayFolder, rootNode: String) {
-    FolderNameGetterDialog(context).show(folder.name) { name ->
+    NameGetterDialog(context).show(isFolder = true, name = folder.name) { name ->
         renameFolder(folder = folder, newName = name, rootNode = rootNode)
     }
 }
@@ -104,3 +103,35 @@ fun showRemoveFolderDialog(context: Context, folder: ArrayFolder, rootNode: Stri
       .setNegativeButton(R.string.cancel, listener)
       .create().show()
 }
+
+
+
+fun showOnLongClickFileDialog(context: Context, file: File, rootNode: String, rootFolderId: String) {
+    val builder = AlertDialog.Builder(context)
+    val array = arrayOf(context.getString(R.string.rename), context.getString(R.string.remove))
+    builder.setItems(array) { dialog, which ->
+        when(which){
+            0 -> {
+                showRenameFileDialog(context, file, rootNode, rootFolderId)
+            }
+            1 -> {
+                showRemoveFileDialog(context = context, folderId = rootFolderId, file = file, rootNode = rootNode)            }
+        }
+        dialog.dismiss()
+    }
+    builder.create().show()
+}
+
+fun showRenameFileDialog(context: Context, file: File, rootNode: String, folderId: String) {
+    NameGetterDialog(context).show(isFolder = false, name = file.name) {
+        renameFile(
+                file = file,
+                newName = it,
+                rootNode = rootNode,
+                folderId = folderId,
+                onSuccess = { file.name = it
+                })
+    }
+}
+
+

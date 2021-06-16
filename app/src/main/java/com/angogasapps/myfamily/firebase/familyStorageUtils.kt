@@ -7,11 +7,6 @@ import com.angogasapps.myfamily.models.storage.File
 import com.angogasapps.myfamily.models.storage.TYPE_FILE
 import com.angogasapps.myfamily.models.storage.TYPE_FOLDER
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.net.URL
 
 fun createFolder(name: String, rootNode: String, rootFolder: String, onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
     val ref = DATABASE_ROOT.child(rootNode).child(USER.family)
@@ -29,6 +24,24 @@ fun createFolder(name: String, rootNode: String, rootFolder: String, onSuccess: 
             }
         }else{
             onError()
+        }
+    }
+}
+
+fun createStorageFile(uri: Uri, name: String, rootFolderId: String){
+    val key = DATABASE_ROOT.child(NODE_FILE_STORAGE).child(USER.family).child(rootFolderId).push().key!!
+    val path = STORAGE_ROOT.child(NODE_FILE_STORAGE).child(USER.family).child(rootFolderId).child(key)
+
+    path.putFile(uri).addOnCompleteListener {
+        if (it.isSuccessful){
+            path.downloadUrl.addOnCompleteListener { it2 ->
+                createFile(
+                        name = name,
+                        value = it2.result.toString(),
+                        rootNode = NODE_FILE_STORAGE,
+                        rootFolder = rootFolderId
+                )
+            }
         }
     }
 }
@@ -140,6 +153,17 @@ fun renameFolder(folder: ArrayFolder, newName: String, rootNode: String){
 
           }else{
 
+          }
+      }
+}
+
+fun renameFile(file: File, newName: String, rootNode: String, folderId: String, onSuccess: () -> Unit = {}, onError: () -> Unit = {}){
+    DATABASE_ROOT.child(rootNode).child(USER.family).child(folderId).child(CHILD_VALUE).child(file.id).child(CHILD_NAME)
+      .setValue(newName).addOnCompleteListener {
+          if (it.isSuccessful){
+              onSuccess()
+          }else {
+              onError()
           }
       }
 }

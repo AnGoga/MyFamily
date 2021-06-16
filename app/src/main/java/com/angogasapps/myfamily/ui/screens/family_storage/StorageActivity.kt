@@ -1,16 +1,20 @@
 package com.angogasapps.myfamily.ui.screens.family_storage
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.angogasapps.myfamily.databinding.ActivityStorageBinding
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.firebase.createFolder
-import com.angogasapps.myfamily.ui.screens.family_storage.dialogs.FolderNameGetterDialog
+import com.angogasapps.myfamily.firebase.createStorageFile
+import com.angogasapps.myfamily.ui.screens.family_storage.dialogs.NameGetterDialog
+import com.angogasapps.myfamily.utils.FILE_SELECT_CODE
+import com.angogasapps.myfamily.utils.showFileChooser
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
+
 
 class StorageActivity : AppCompatActivity() {
     private val job = SupervisorJob()
@@ -103,7 +107,7 @@ class StorageActivity : AppCompatActivity() {
 
 
     private fun showFolderCreateDialog() {
-        FolderNameGetterDialog(this).show{ name ->
+        NameGetterDialog(this).show(isFolder = true){ name ->
             createFolder(name = name, rootNode = rootNode, rootFolder = adapter.getRootFolderId())
         }
     }
@@ -114,7 +118,30 @@ class StorageActivity : AppCompatActivity() {
                 startActivity(Intent(this, StorageNoteBuilderActivity::class.java)
                         .also { it.putExtra(ROOT_FOLDER, adapter.getRootFolderId()) })
             }
+            NODE_FILE_STORAGE -> {
+                showFileChooser(this)
+            }
         }
+    }
+
+
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            FILE_SELECT_CODE -> if (resultCode == RESULT_OK) {
+                val uri = data?.data ?: return
+//                val path = getPath(this, uri) ?: return
+//                val file = File(path)
+//                if (!file.exists()) return
+                // if (file.size > allowedSpace) return
+                NameGetterDialog(this).show(isFolder = false){
+                    createStorageFile(uri = uri, name = it, rootFolderId = adapter.getRootFolderId())
+                }
+
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onBackPressed() {

@@ -1,14 +1,22 @@
 package com.angogasapps.myfamily.utils
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.text.Editable
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import androidx.core.app.ActivityCompat.startActivityForResult
+import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.models.DairyObject
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.MapFolder
 import com.angogasapps.myfamily.models.storage.StorageObject
 import com.google.firebase.database.DataSnapshot
+import es.dmoral.toasty.Toasty
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
@@ -68,7 +76,39 @@ fun downloadBitmapByURL(url: String): Bitmap? {
 }
 
 
+fun getPath(context: Context, uri: Uri): String? {
+    if ("content".equals(uri.scheme, ignoreCase = true)) {
+        val projection = arrayOf("_data")
+        try {
+            val cursor = context.getContentResolver().query(uri, projection, null, null, null)
+            val column_index: Int = cursor?.getColumnIndexOrThrow("_data")!!
+            if (cursor.moveToFirst()!!) {
+                return cursor.getString(column_index)
+            }
+        } catch (e: java.lang.Exception) {
+            // Eat it
+        }
+    } else if ("file".equals(uri.getScheme(), ignoreCase = true)) {
+        return uri.path
+    }
+    return null
+}
 
+val FILE_SELECT_CODE = 129202
+
+fun showFileChooser(context: Activity) {
+    val intent = Intent(Intent.ACTION_GET_CONTENT).also {
+        it.type = "*/*"
+        it.addCategory(Intent.CATEGORY_OPENABLE)
+    }
+    try {
+        context.startActivityForResult(
+                Intent.createChooser(intent, context.getString(R.string.choose_file)),
+                FILE_SELECT_CODE)
+    } catch (ex: ActivityNotFoundException) {
+        Toasty.error(context, context.getString(R.string.file_manager_not_found)).show()
+    }
+}
 
 
 
