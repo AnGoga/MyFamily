@@ -5,7 +5,105 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.screens.findorcreatefamily.FindOrCreateFamilyActivity"
-    android:id="@+id/findOrCreateFamilyDataContainer">
+    tools:context=".ui.screens.findorcreatefamily.FindOrCreateFamilyActivity">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_family_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/normal_margin"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/add_emblem_btn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mainActivityHeaderHeight">
+
+                <ImageView
+                    android:id="@+id/family_emblem_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/mainActivityHeaderWelcome"/>
+                <!--                android:background="@drawable/mainActivityHeaderWelcome"-->
+
+                <ImageView
+                    android:layout_width="@dimen/fragment_create_family_add_emblem_photo_size"
+                    android:layout_height="@dimen/fragment_create_family_add_emblem_photo_size"
+                    android:src="@drawable/fragment_create_family_add_emblem_photo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <EditText
+                android:id="@+id/family_name_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/normal_margin"
+                android:hint="@string/family_last_name"/>
+
+            <Button
+                android:id="@+id/createFamilyButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/normal_margin"
+                android:layout_marginTop="0dp"
+                android:text="@string/create"
+                android:background="@drawable/cardview_background"/>
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/normal_margin"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_family_create">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/enter_family_identification"
+                android:layout_margin="@dimen/normal_margin"
+                android:theme="@style/boldTextView" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/normal_margin"/>
+
+            <Button
+                android:id="@+id/join_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/join"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

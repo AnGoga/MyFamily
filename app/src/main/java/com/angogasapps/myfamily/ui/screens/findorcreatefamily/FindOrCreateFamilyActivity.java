@@ -3,58 +3,57 @@ package com.angogasapps.myfamily.ui.screens.findorcreatefamily;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.databinding.ActivityFindOrCreateFamilyBinding;
 import com.angogasapps.myfamily.firebase.FindFamilyFunks;
+import com.angogasapps.myfamily.firebase.RegisterFamilyFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily;
 import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily;
-import com.angogasapps.myfamily.ui.screens.main.DeprecatedMainActivity;
 
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 import com.angogasapps.myfamily.utils.FamilyManager;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import es.dmoral.toasty.Toasty;
 
 public class FindOrCreateFamilyActivity extends AppCompatActivity {
-    String familyIdParam;
+    private String familyIdParam;
+    private ActivityFindOrCreateFamilyBinding binding;
+    private Uri mFamilyEmblemUri;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_find_or_create_family);
+        binding = ActivityFindOrCreateFamilyBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        analysisIntent();
-
+        analyzeIntent();
+        setJoinBtnOnClick();
+        addCreateFamilyOnClick();
     }
 
-    private void startFragments(){
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.findOrCreateFamilyDataContainer, new FindOrCreateFamilyFragment()).commit();
-    }
 
-    private void analysisIntent(){
+    private void analyzeIntent(){
         Intent intent = getIntent();
         familyIdParam = intent.getStringExtra(FamilyManager.PARAM_FAMILY_ID);
 
-        if (familyIdParam == null){
-            startFragments();
-            return;
-        }
-        if (familyIdParam.equals("")) {
-            startFragments();
-            return;
+        if (familyIdParam != null && !familyIdParam.equals("")){
+            showInviteDialog();
         }
 
-        showInviteDialog();
+
     }
     private void showInviteDialog() {
 
@@ -62,7 +61,7 @@ public class FindOrCreateFamilyActivity extends AppCompatActivity {
                 .setMessage(R.string.do_you_want_join_to_invite_family)
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> { joinToInviteFamily();})
                 .setNegativeButton(getString(R.string.no), (dialog, which) -> {dialog.dismiss();})
-                .setOnDismissListener(dialog -> startFragments())
+//                .setOnDismissListener(dialog -> startFragments())
                 .create();
         alertDialog.show();
     }
@@ -79,7 +78,7 @@ public class FindOrCreateFamilyActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onFailure() {
-                        startFragments();
+
                     }
                 });
             }
@@ -98,4 +97,91 @@ public class FindOrCreateFamilyActivity extends AppCompatActivity {
         Toasty.error(this, R.string.link_is_not_correct).show();
     }
 
+    public void setJoinBtnOnClick() {
+        binding.joinBtn.setOnClickListener(v -> {
+            String text = binding.editText.getText().toString();
+            if (text.isEmpty()) {
+                Toasty.warning(FindOrCreateFamilyActivity.this, R.string.enter_identification).show();
+            } else {
+                FindFamilyFunks.tryFindFamilyById(text, new IOnFindFamily() {
+                    @Override
+                    public void onSuccess() {
+                        FindFamilyFunks.joinUserToFamily(text, new IOnJoinToFamily() {
+                            @Override
+                            public void onSuccess() {
+                                Toasty.success(FindOrCreateFamilyActivity.this,
+                                        R.string.you_success_join_to_you_family).show();
+
+                                FindOrCreateFamilyActivity.this.startActivity(
+                                        new Intent(FindOrCreateFamilyActivity.this.getApplicationContext(),
+                                        MainActivity.class));
+                                FindOrCreateFamilyActivity.this.finish();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                Toasty.error(FindOrCreateFamilyActivity.this,
+                                        R.string.error).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Toasty.error(FindOrCreateFamilyActivity.this, R.string.family_not_found).show();
+                    }
+
+                    @Override
+                    public void onCancelled() {
+                        Toasty.error(FindOrCreateFamilyActivity.this,
+                                R.string.you_canceled_searches).show();
+                    }
+                });
+            }
+        });
+    }
+
+    public void addCreateFamilyOnClick(){
+        binding.addEmblemBtn.setOnClickListener(v -> {
+            addFamilyEmblem();
+        });
+
+        binding.createFamilyButton.setOnClickListener(v -> {
+            String familyName = binding.familyNameEditText.getText().toString();
+            if (familyName.isEmpty()){
+                Toasty.info(this, R.string.enter_family_last_name).show();
+                return;
+            }
+            if(mFamilyEmblemUri == null){
+                mFamilyEmblemUri = Uri.EMPTY;
+            }
+            RegisterFamilyFunks.createNewFamily(this,
+                    familyName, mFamilyEmblemUri, () -> {
+                        //когда регистрация новой семьи в базе данных прошла успешно
+                        Toasty.success(this.getApplicationContext(),
+                                R.string.everything_went_well).show();
+                        startActivity(new Intent(this, MainActivity.class));
+                        this.finish();
+                    });
+        });
+    }
+
+    private void addFamilyEmblem() {
+        CropImage.activity().setAspectRatio(1, 1)
+                .setRequestedSize(300, 300)
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
+                .start(FindOrCreateFamilyActivity.this);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            mFamilyEmblemUri = CropImage.getActivityResult(data).getUri();
+            binding.familyEmblemImage.setBackground(null);
+            binding.familyEmblemImage.setImageURI(mFamilyEmblemUri);
+        }catch (Exception e){
+            e.printStackTrace();
+            Toasty.error(this, "неизвестная ошибка").show();
+        }
+    }
 }

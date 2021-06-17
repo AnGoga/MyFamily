@@ -16,21 +16,21 @@ public class FindOrCreateFamilyFragment extends Fragment {
 
     private FragmentFindOrCreateFamilyBinding binding;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        binding = FragmentFindOrCreateFamilyBinding.inflate(getLayoutInflater(), container, false);
-
-        binding.createFamilyButton.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.findOrCreateFamilyDataContainer, new CreateFamilyFragment()).addToBackStack(null).commit();
-        });
-        binding.findFamilyButton.setOnClickListener(v -> {
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.findOrCreateFamilyDataContainer, new FindFamilyFragment()).addToBackStack(null).commit();
-        });
-        return binding.getRoot();
-
-    }
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//
+//        binding = FragmentFindOrCreateFamilyBinding.inflate(getLayoutInflater(), container, false);
+//
+//        binding.createFamilyButton.setOnClickListener(v -> {
+//            getActivity().getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.findOrCreateFamilyDataContainer, new CreateFamilyFragment()).addToBackStack(null).commit();
+//        });
+//        binding.findFamilyButton.setOnClickListener(v -> {
+//            getActivity().getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.findOrCreateFamilyDataContainer, new FindFamilyFragment()).addToBackStack(null).commit();
+//        });
+//        return binding.getRoot();
+//
+//    }
 }

@@ -79,10 +79,10 @@ public class RegisterFamilyFunks {
 
     private static HashMap<String, Object> getFamilyByItems(String name, String emblemUri){
 
-        HashMap<String, Object> creator = new HashMap<>();
-        creator.put(CHILD_ROLE, ROLE_CREATOR);
+//        HashMap<String, Object> creator = new HashMap<>();
+//        creator.put(CHILD_ROLE, ROLE_CREATOR);
         HashMap<String, Object> member = new HashMap<>();
-        member.put(UID, creator);
+        member.put(UID, ROLE_CREATOR);
 
         HashMap<String, Object> familyMap = new HashMap<>();
         familyMap.put(CHILD_NAME, name);
