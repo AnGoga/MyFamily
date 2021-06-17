@@ -26,8 +26,8 @@
     <drawable name="default_chat_background">@drawable/chat_background</drawable>
     <drawable name="default_chat_image_message">@drawable/ic_default_chat_image</drawable>
 
-    <drawable name="ic_chat_send_message">@drawable/ic_send_message</drawable>
-    <drawable name="ic_chat_send_audio">@drawable/ic_send_audio</drawable>
+    <drawable name="ic_chat_send_message">@drawable/ic_send_text_message_btn</drawable>
+    <drawable name="ic_chat_send_audio">@drawable/ic_voice_btn</drawable>
     <drawable name="ic_chat_clip">@drawable/ic_clip</drawable>
 
     <drawable name="ic_voice_message_play">@drawable/ic_play</drawable>

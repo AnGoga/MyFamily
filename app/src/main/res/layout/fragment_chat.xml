@@ -57,13 +57,12 @@
                         android:id="@+id/send_message_btn"
                         android:layout_height="match_parent"
                         android:layout_width="match_parent"
-                        app:civ_circle_background_color="@color/green"
                         android:src="@drawable/ic_chat_send_message"/>
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/audio_btn"
                         android:layout_height="match_parent"
                         android:layout_width="match_parent"
-                        android:src="@drawable/ic_chat_microphone" />
+                        android:src="@drawable/ic_chat_send_audio" />
 <!--                        android:src="@drawable/ic_chat_send_audio" />-->
                 </RelativeLayout>
             </LinearLayout>

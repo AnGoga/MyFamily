@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer name="image_message_height">300</integer>
-    <integer name="image_message_wight">300</integer>
+    <integer name="image_message_height">600</integer>
+    <integer name="image_message_wight">600</integer>
 
 </resources>
