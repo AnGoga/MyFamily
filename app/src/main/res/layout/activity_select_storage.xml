@@ -21,7 +21,7 @@
             style="@style/family_storage_card_option">
 
             <TextView
-                style="@style/boldTextView"
+                style="@style/select_storage_activity_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pictures" />
@@ -33,7 +33,7 @@
             style="@style/family_storage_card_option">
 
             <TextView
-                style="@style/boldTextView"
+                style="@style/select_storage_activity_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/videos" />
@@ -56,7 +56,7 @@
             style="@style/family_storage_card_option">
 
             <TextView
-                style="@style/boldTextView"
+                style="@style/select_storage_activity_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Documents" />
@@ -68,7 +68,7 @@
             style="@style/family_storage_card_option">
 
             <TextView
-                style="@style/boldTextView"
+                style="@style/select_storage_activity_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Notes" />

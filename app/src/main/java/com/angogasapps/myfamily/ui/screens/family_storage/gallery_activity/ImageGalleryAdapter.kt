@@ -72,13 +72,15 @@ class ImageGalleryAdapter(val context: Activity, val scope: CoroutineScope, var 
                         context = context, image = image,
                         imageFile = imageFile, folderId = folder.id,
                         onSuccessRemove = {
+                            var ind = 0
                             folder.value.forEachIndexed {index, obj ->
                                 if (obj.id == imageFile.id){
-                                    folder.value.removeAt(index)
-                                    notifyItemRemoved(index)
+                                    ind = index
                                     return@forEachIndexed
                                 }
                             }
+                            folder.value.removeAt(ind)
+                            notifyItemRemoved(ind)
                         }
                 )
                 return@setOnLongClickListener true
