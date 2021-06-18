@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.ActivityDairyBuilderBinding
 import com.angogasapps.myfamily.models.DairyObject
+import com.angogasapps.myfamily.objects.ChatImageShower
 import com.angogasapps.myfamily.utils.*
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -71,6 +72,11 @@ class DairyBuilderActivity : AppCompatActivity() {
         }
         binding.dateText.setOnClickListener {
             getDayDate()
+        }
+        binding.image.setOnClickListener {
+            if (hasImage){
+                ChatImageShower(this).showImage(binding.image)
+            }
         }
     }
 

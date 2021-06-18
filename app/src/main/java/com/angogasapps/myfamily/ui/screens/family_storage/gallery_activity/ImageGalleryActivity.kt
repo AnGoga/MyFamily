@@ -75,6 +75,7 @@ class ImageGalleryActivity : AppCompatActivity() {
         layoutManager = StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
         adapter = ImageGalleryAdapter(this, scope, folder)
 
+//        binding.recycleView.isNestedScrollingEnabled = false
         binding.recycleView.layoutManager = layoutManager
         binding.recycleView.adapter = adapter
     }

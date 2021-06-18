@@ -5,37 +5,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/simple_background"
     tools:context=".ui.screens.family_settings.InviteUserActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/normal_margin"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/textView2"
             style="@style/boldTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/link_to_invite" />
+            android:text="@string/link_to_invite"
+            app:layout_constraintStart_toStartOf="@+id/invite_text"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/invite_text"
-            style="@style/boldTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:textAlignment="textStart"
+            android:layout_marginRight="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            tools:text="jenjcincjdnc" />
 
         <ImageView
             android:id="@+id/copy_link_btn"
+            android:layout_marginRight="@dimen/normal_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_copy_text" />
-    </LinearLayout>
+            android:src="@drawable/ic_copy_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/normal_margin"
@@ -44,22 +59,36 @@
         tools:layout_editor_absoluteX="16dp">
 
         <TextView
+            android:id="@+id/textView3"
             style="@style/boldTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/family_identeficator" />
+            android:text="@string/family_identeficator"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/identivicator_text"
-            style="@style/boldTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:textAlignment="textStart"
+            android:layout_marginRight="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView3"
+            tools:text="cdcdbucducbdcbduhb dehqb " />
 
         <ImageView
             android:id="@+id/copy_identivicator_btn"
+            android:layout_marginRight="@dimen/normal_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_copy_text" />
-    </LinearLayout>
+            android:src="@drawable/ic_copy_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

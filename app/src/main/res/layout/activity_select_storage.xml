@@ -26,6 +26,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/pictures" />
 
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                style="@style/family_storage_ico"
+                android:src="@drawable/ic_family_images"/>
+
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -37,6 +44,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/videos" />
+
+
+            <ImageView
+                style="@style/family_storage_ico"
+                android:src="@drawable/ic_family_videos"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -61,6 +73,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/Documents" />
 
+
+            <ImageView
+                style="@style/family_storage_ico"
+                android:src="@drawable/ic_family_files"/>
+
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -72,6 +89,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Notes" />
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                style="@style/family_storage_ico"
+                android:src="@drawable/ic_family_note"/>
 
         </androidx.cardview.widget.CardView>
 
