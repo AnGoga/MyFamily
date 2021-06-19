@@ -19,6 +19,7 @@ import com.angogasapps.myfamily.ui.screens.main.adapters.MainActivityAdapter;
 import com.angogasapps.myfamily.ui.screens.news_center.NewsManager;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
 import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils;
+import com.angogasapps.myfamily.ui.screens.splash.SplashActivity;
 
 import io.reactivex.disposables.Disposable;
 
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.menu_item_signout){
             AUTH.signOut();
+            startActivity(new Intent(this, SplashActivity.class));
             finish();
         }
         return super.onOptionsItemSelected(item);

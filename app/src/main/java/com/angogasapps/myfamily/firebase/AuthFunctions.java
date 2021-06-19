@@ -43,7 +43,6 @@ public class AuthFunctions {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.getValue() == null){
                                 //новый пользователь
-                                //registerNewUser(activity);
                                 RegisterActivity.iNewUser.getUserPersonalData();
                             }else{
                                 //старый пользователь
@@ -62,7 +61,6 @@ public class AuthFunctions {
             }
         });
     }
-    // оправка пользователю SMS сообщения с кодом
     public static synchronized void authorizationUser(String mPhoneNumber, long I, TimeUnit timeUnit,
                                        Activity activity, PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallback) {
 

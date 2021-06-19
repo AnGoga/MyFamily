@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -60,10 +64,7 @@ public class EnterPersonalDataFragment extends Fragment {
 
         binding.registerButton.setOnClickListener(v -> {
             String mUserName = binding.userNameEditText.getText().toString();
-            Log.d("tag", "Name -> " + mUserName + "; Time -> " + mTimeMillisBirthday);
             if (!mUserName.isEmpty() && mTimeMillisBirthday != 0L){
-                Log.d("tag", "True");
-
                 RegisterUserFunks.registerNewUser(getActivity(), mUserName, mTimeMillisBirthday, userPhotoUri);
             }
         });
@@ -80,12 +81,11 @@ public class EnterPersonalDataFragment extends Fragment {
         binding.birthdayTextView.setText(DateUtils.formatDateTime(getActivity(),
                 mTimeMillisBirthday,
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
-                        //| DateUtils.FORMAT_SHOW_TIME));
     }
 
     private void getUserPhoto() {
         CropImage.activity().setAspectRatio(1, 1)
-                .setRequestedSize(240, 240)
+                .setRequestedSize(256, 256)
                 .setCropShape(CropImageView.CropShape.OVAL)
                 .start(getActivity(), this);
     }
@@ -101,4 +101,5 @@ public class EnterPersonalDataFragment extends Fragment {
             Toasty.error(getActivity().getApplicationContext(), "неизвестная ошибка").show();
         }
     }
+
 }

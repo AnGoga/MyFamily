@@ -38,21 +38,17 @@ public class EnterPhoneFragment extends Fragment {
         Activity context = getActivity();
 
         AUTH = FirebaseAuth.getInstance();
-        //callback, который сработает после верификации пользователя
         mCallback = new PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
             @Override
-            // если верификация успешная
             public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
                 trySignInWithCredential(context, credential);
             }
             @Override
-            //в верификации произошла ошибка
             public void onVerificationFailed(@NonNull FirebaseException e) {
                 Toasty.error(EnterPhoneFragment.this.getActivity(), "Auth Error: " + e.getMessage()).show();
             }
 
             @Override
-            //выполниться когда смс с кодом только что отправили
             public void onCodeSent(@NonNull String id, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 EnterPhoneFragment.this.getActivity()
                         .getSupportFragmentManager()
@@ -62,12 +58,7 @@ public class EnterPhoneFragment extends Fragment {
             }
         };
 
-        // кнопка на EnterPhoneFragment для отправки сообщения с кодом
         binding.btnNext.setOnClickListener((view) -> {
-            // !!!!!
-            // TODO:
-            // if  editTextPhone.getText().toString().isCorrectNumberPhone <-- напиши эту функцию!
-            //!!!!!
             if (binding.phoneEditText.getText().toString().isEmpty()) {
                 Toasty.error(getActivity(), R.string.enter_your_number_phone).show();
             } else {
