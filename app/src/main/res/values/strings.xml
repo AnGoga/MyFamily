@@ -129,5 +129,8 @@
     <string name="file_manager_not_found">Файловый менеджер не найден</string>
     <string name="folder_name">Название папки</string>
     <string name="file_name">Название файла</string>
+    <string name="enter_your_name">Введите своё имя</string>
+    <string name="enter_birhday">Выберите дату рождения</string>
+    <string name="unknown_error">неизвестная ошибка</string>
 
 </resources>

@@ -1,105 +1,91 @@
-package com.angogasapps.myfamily.ui.screens.registeractivity;
+package com.angogasapps.myfamily.ui.screens.registeractivity
 
-import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.text.format.DateUtils
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.DatePicker
+import androidx.fragment.app.Fragment
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.databinding.FragmentEnterPersonalDataBinding
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.RegisterUserFunks
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
+import es.dmoral.toasty.Toasty
+import java.util.*
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
-import android.text.format.DateUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.databinding.FragmentEnterPersonalDataBinding;
-import com.angogasapps.myfamily.firebase.RegisterUserFunks;
-
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
-
-import java.util.Calendar;
-
-import es.dmoral.toasty.Toasty;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
-
-public class EnterPersonalDataFragment extends Fragment {
-    private FragmentEnterPersonalDataBinding binding;
-
-    private Calendar timeContainer;
-    private Long mTimeMillisBirthday = 0L;
-    private Uri userPhotoUri = Uri.EMPTY;
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentEnterPersonalDataBinding.inflate(getLayoutInflater(), container, false);
-
-        binding.numberPhoneText
-                .setText(getString(R.string.you_phone_number) + ": " + AUTH.getCurrentUser().getPhoneNumber());
-
-        timeContainer = Calendar.getInstance();
-
-        DatePickerDialog.OnDateSetListener onDateSetListener = (view1, year, monthOfYear, dayOfMonth) -> {
-            timeContainer.set(Calendar.YEAR, year);
-            timeContainer.set(Calendar.MONTH, monthOfYear);
-            timeContainer.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            setInitialDateTime();
-        };
-
-        binding.selectBirthdayBtn.setOnClickListener(v -> {
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), onDateSetListener,
-                    timeContainer.get(Calendar.YEAR), timeContainer.get(Calendar.MONTH), timeContainer.get(Calendar.DAY_OF_MONTH));
-            datePickerDialog.show();
-        });
-
-        binding.registerButton.setOnClickListener(v -> {
-            String mUserName = binding.userNameEditText.getText().toString();
-            if (!mUserName.isEmpty() && mTimeMillisBirthday != 0L){
-                RegisterUserFunks.registerNewUser(getActivity(), mUserName, mTimeMillisBirthday, userPhotoUri);
+class EnterPersonalDataFragment(val onOldUserSignIn: () -> Unit) : Fragment() {
+    private lateinit var binding: FragmentEnterPersonalDataBinding
+    private var timeContainer: Calendar = Calendar.getInstance()
+    private var mTimeMillisBirthday = 0L
+    private var userPhotoUri = Uri.EMPTY
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+        binding = FragmentEnterPersonalDataBinding.inflate(layoutInflater, container, false)
+        binding.numberPhoneText.text = getString(R.string.you_phone_number) + ": " + FirebaseVarsAndConsts.AUTH.currentUser!!.phoneNumber
+        val onDateSetListener = OnDateSetListener { view1: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+            timeContainer.set(Calendar.YEAR, year)
+            timeContainer.set(Calendar.MONTH, monthOfYear)
+            timeContainer.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            setInitialDateTime()
+        }
+        binding.selectBirthdayBtn.setOnClickListener { v: View? ->
+            val datePickerDialog = DatePickerDialog(requireActivity(), onDateSetListener,
+                    timeContainer.get(Calendar.YEAR), timeContainer.get(Calendar.MONTH), timeContainer.get(Calendar.DAY_OF_MONTH))
+            datePickerDialog.show()
+        }
+        binding.registerButton.setOnClickListener { v: View? ->
+            val mUserName = binding.userNameEditText.text.toString().trim()
+            if (mUserName.isEmpty()) {
+                context?.let { Toasty.error(it, getString(R.string.enter_your_name)) }
+                return@setOnClickListener
             }
-        });
+            if (mTimeMillisBirthday == 0L) {
+                context?.let { Toasty.error(it, getString(R.string.enter_birhday)) }
+                return@setOnClickListener
+            }
 
-        binding.selectUserPhotoLayout.setOnClickListener(v -> {
-            getUserPhoto();
-        });
+            RegisterUserFunks.registerNewUser(mUserName, mTimeMillisBirthday, userPhotoUri, onOldUserSignIn, onError = {
+                if (it != null) {
+                    println(it.stackTrace.toString())
+                    Toasty.error(requireContext(), R.string.something_went_wrong).show()
+                }
+            })
 
-        return binding.getRoot();
+        }
+        binding.selectUserPhotoLayout.setOnClickListener { v: View? -> userPhoto }
+        return binding.root
     }
 
-    private void setInitialDateTime() {
-        mTimeMillisBirthday = timeContainer.getTimeInMillis();
-        binding.birthdayTextView.setText(DateUtils.formatDateTime(getActivity(),
-                mTimeMillisBirthday,
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+    private fun setInitialDateTime() {
+        mTimeMillisBirthday = timeContainer.timeInMillis
+        binding.birthdayTextView.text = DateUtils.formatDateTime(activity,
+                mTimeMillisBirthday, DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR)
     }
 
-    private void getUserPhoto() {
-        CropImage.activity().setAspectRatio(1, 1)
-                .setRequestedSize(256, 256)
-                .setCropShape(CropImageView.CropShape.OVAL)
-                .start(getActivity(), this);
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private val userPhoto: Unit
+        private get() {
+            CropImage.activity().setAspectRatio(1, 1)
+                    .setRequestedSize(256, 256)
+                    .setCropShape(CropImageView.CropShape.OVAL)
+                    .start(requireActivity(), this)
+        }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         try {
-            userPhotoUri = CropImage.getActivityResult(data).getUri();
-            binding.userPhotoImageView.setBackground(null);
-            binding.userPhotoImageView.setImageURI(userPhotoUri);
-        }catch (Exception e){
-            e.printStackTrace();
-            Toasty.error(getActivity().getApplicationContext(), "неизвестная ошибка").show();
+            userPhotoUri = CropImage.getActivityResult(data).uri
+            binding.userPhotoImageView.background = null
+            binding.userPhotoImageView.setImageURI(userPhotoUri)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toasty.error(requireActivity().applicationContext, getString(R.string.unknown_error)).show()
         }
     }
-
 }

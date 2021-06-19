@@ -1,73 +1,61 @@
-package com.angogasapps.myfamily.ui.screens.registeractivity;
+package com.angogasapps.myfamily.ui.screens.registeractivity
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER
+import com.angogasapps.myfamily.models.User
+import com.angogasapps.myfamily.ui.screens.splash.SplashActivity
+import es.dmoral.toasty.Toasty
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+class RegisterActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_register)
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.async.LoadFamilyThread;
-import com.angogasapps.myfamily.ui.screens.splash.SplashActivity;
-
-
-import es.dmoral.toasty.Toasty;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-
-
-public class RegisterActivity extends AppCompatActivity {
-    public static INewUser iNewUser;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        iNewUser = () -> {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.registerDataContainer, new EnterPersonalDataFragment())
-                    .addToBackStack("")
-                    .commit();
-        };
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.registerDataContainer, new EnterPhoneFragment())
-                .commit();
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.clear();
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_item_signout){
-            AUTH.signOut();
-            startActivity(new Intent(this, SplashActivity.class));
-            finish();
+        val onOldUserSignIn: () -> Unit = {
+            Toasty.success(this, getString(R.string.welcome)).show()
+            startActivity(Intent(this, SplashActivity::class.java))
+            finish()
         }
-        return super.onOptionsItemSelected(item);
+
+        val onNewUserSignIn: () -> Unit = {
+            if (USER == null){
+                USER = User().also { it.id = AUTH.currentUser!!.uid }
+            }
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(
+                            R.id.registerDataContainer,
+                            EnterPersonalDataFragment(onOldUserSignIn = onOldUserSignIn)
+                    )
+                    .addToBackStack("")
+                    .commit()
+        }
+        supportFragmentManager
+                .beginTransaction()
+                .add(R.id.registerDataContainer, EnterPhoneFragment(onNewUserSignIn = onNewUserSignIn, onOldUserSignIn = onOldUserSignIn))
+                .commit()
     }
 
-
-    public static void welcomeFunc(Activity activity) {
-        //TODO
-//        new LoadFamilyThread(activity).execute(USER);
-        Toasty.success(activity, activity.getString(R.string.welcome)).show();
-        activity.startActivity(new Intent(activity, SplashActivity.class));
-        activity.finish();
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menu.clear()
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
-    public interface INewUser{
-        void getUserPersonalData();
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_item_signout) {
+            AUTH.signOut()
+            startActivity(Intent(this, SplashActivity::class.java))
+            finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

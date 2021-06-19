@@ -5,18 +5,23 @@ import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.ActivityFindOrCreateFamilyBinding;
 import com.angogasapps.myfamily.firebase.FindFamilyFunks;
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
 import com.angogasapps.myfamily.firebase.RegisterFamilyFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily;
 import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily;
 
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
+import com.angogasapps.myfamily.ui.screens.splash.SplashActivity;
 import com.angogasapps.myfamily.utils.FamilyManager;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -183,5 +188,21 @@ public class FindOrCreateFamilyActivity extends AppCompatActivity {
             e.printStackTrace();
             Toasty.error(this, "неизвестная ошибка").show();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_item_signout){
+            FirebaseVarsAndConsts.AUTH.signOut();
+            startActivity(new Intent(this, SplashActivity.class));
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

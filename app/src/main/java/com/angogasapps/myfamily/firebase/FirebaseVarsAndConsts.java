@@ -22,7 +22,7 @@ public class FirebaseVarsAndConsts {
     public static DatabaseReference DATABASE_ROOT;
     public static StorageReference STORAGE_ROOT;
     public static FirebaseDynamicLinks DYNAMIC_LINK_ROOT;
-    public static User USER;
+    public static User USER = new User();
     public static String UID;
 
 //    public static volatile HashMap<String, User> familyMembersMap = new HashMap<>();
