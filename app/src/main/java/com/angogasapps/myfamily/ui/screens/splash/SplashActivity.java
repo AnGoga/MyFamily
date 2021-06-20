@@ -15,7 +15,6 @@ import com.angogasapps.myfamily.firebase.AuthFunctions;
 import com.angogasapps.myfamily.firebase.interfaces.IAuthUser;
 import com.angogasapps.myfamily.models.Family;
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity;
-import com.angogasapps.myfamily.ui.screens.main.DeprecatedMainActivity;
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity;
 import com.angogasapps.myfamily.utils.FamilyManager;
@@ -97,7 +96,6 @@ public class SplashActivity extends AppCompatActivity {
             }
         }else {
             if (AUTH.getCurrentUser() != null) {
-
                 // Вход с данными из БД
                 signInWithRoom();
 
@@ -110,13 +108,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void signInWithRoom(){
-        DatabaseManager.loadUsersAndMessages(() -> {
-//            for (User user: DatabaseManager.getUserList()){
-//                familyMembersMap.put(user.getId(), user);
-//            }
-//            if (familyMembersMap.containsKey(AUTH.getCurrentUser().getUid())){
-//                USER = familyMembersMap.get(AUTH.getCurrentUser().getUid());
-//            }
+        DatabaseManager.comeInByDatabase(() -> {
             Family.getInstance().setUsersList(DatabaseManager.getUserList());
             if (Family.getInstance().containsUserWithId(AUTH.getCurrentUser().getUid())){
                 USER = Family.getInstance().getUserById(AUTH.getCurrentUser().getUid());

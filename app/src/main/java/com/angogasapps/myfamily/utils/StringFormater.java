@@ -2,6 +2,9 @@ package com.angogasapps.myfamily.utils;
 
 
 
+import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.app.AppApplication;
+
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,9 +34,9 @@ public class StringFormater {
         if (role == null)
             return "";
         if (role.equals(ROLE_MEMBER))
-            return "Участник";
+            return AppApplication.getInstance().getString(R.string.participant);
         if (role.equals(ROLE_CREATOR))
-            return "Создатель";
+            return AppApplication.getInstance().getString(R.string.creator);
 
 
         return role;

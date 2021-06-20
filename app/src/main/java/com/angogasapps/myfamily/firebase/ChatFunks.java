@@ -11,9 +11,11 @@ import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.async.notification.FcmMessageManager;
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
 import com.angogasapps.myfamily.models.Message;
+import com.angogasapps.myfamily.utils.Async;
 import com.angogasapps.myfamily.utils.StringFormater;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.core.ServerValues;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
@@ -47,14 +49,16 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.chatImageM
 
 public class ChatFunks {
     public static void sendMessage(String type, String value) {
-        if (!AppApplication.isOnline())
-            Toast.makeText(
-                    AppApplication.getInstance().getApplicationContext(),
-                    R.string.have_not_internet_connection,
-                    Toast.LENGTH_SHORT
-            ).show();
+        Async.runInNewThread(() -> {
+            if (!AppApplication.isOnline())
+                Toast.makeText(
+                        AppApplication.getInstance().getApplicationContext(),
+                        R.string.have_not_internet_connection,
+                        Toast.LENGTH_SHORT
+                ).show();
 
-        sendMessageWithKey(type, value, getMessageKey());
+            sendMessageWithKey(type, value, getMessageKey());
+        });
     }
     public static void sendMessageWithKey(String type, String value, String key){
         DatabaseReference path = DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily());
@@ -70,6 +74,8 @@ public class ChatFunks {
         messageMap.put(CHILD_TIME, ServerValue.TIMESTAMP);
 
         String finalValue = value;
+
+//        path.child(key).setValue(messageMap, -1 * System.currentTimeMillis()).addOnCompleteListener(task -> {
         path.child(key).updateChildren(messageMap).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Message message = new Message();

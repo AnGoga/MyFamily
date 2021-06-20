@@ -1,7 +1,8 @@
 package com.angogasapps.myfamily.ui.screens.chat
 
+import kotlin.collections.ArrayList
 import android.app.Activity
-import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,20 +13,18 @@ import com.angogasapps.myfamily.ui.screens.chat.holders.AppBaseViewHolder
 import com.angogasapps.myfamily.ui.screens.chat.holders.ImageMessageHolder
 import com.angogasapps.myfamily.ui.screens.chat.holders.TextMessageHolder
 import com.angogasapps.myfamily.ui.screens.chat.holders.VoiceMessageHolder
-import com.angogasapps.myfamily.utils.ChatAdapterUtils
-import java.util.*
+import kotlinx.coroutines.GlobalScope
 
-class ChatAdapter(private val activity: Activity, var messagesList: ArrayList<Message>) : RecyclerView.Adapter<AppBaseViewHolder>() {
-    private val context: Context = activity.applicationContext
-    private val inflater: LayoutInflater = LayoutInflater.from(context)
+class ChatAdapter(private val activity: Activity, val messagesList: ArrayList<Message>) : RecyclerView.Adapter<AppBaseViewHolder>() {
+    private val inflater: LayoutInflater = LayoutInflater.from(activity)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppBaseViewHolder {
-        when (viewType) {
-            0 -> return TextMessageHolder(inflater.inflate(R.layout.text_message_holder, parent, false))
-            1 -> return ImageMessageHolder(inflater.inflate(R.layout.image_message_holder, parent, false))
-            2 -> return VoiceMessageHolder(inflater.inflate(R.layout.voice_message_holder, parent, false))
+        return when (viewType) {
+            0 -> TextMessageHolder(inflater.inflate(R.layout.text_message_holder, parent, false))
+            1 -> ImageMessageHolder(inflater.inflate(R.layout.image_message_holder, parent, false))
+            2 -> VoiceMessageHolder(inflater.inflate(R.layout.voice_message_holder, parent, false))
 
-            else -> return TextMessageHolder(inflater.inflate(R.layout.text_message_holder, parent, false))
+            else -> TextMessageHolder(inflater.inflate(R.layout.text_message_holder, parent, false))
         }
     }
 
@@ -52,23 +51,11 @@ class ChatAdapter(private val activity: Activity, var messagesList: ArrayList<Me
         return messagesList.size
     }
 
-    fun addMessage(message: Message) {
-        messagesList = ChatAdapterUtils.sortMessagesList(messagesList)
-
-        if (messagesList.contains(message))
-            return
-
-        if (messagesList.size == 0) {
-            messagesList.add(message)
-            activity.runOnUiThread { notifyItemInserted(0) }
-            return
-        }
-        if (message.time >= messagesList[messagesList.size - 1].time) {
-            messagesList.add(message)
-            activity.runOnUiThread { notifyItemInserted(messagesList.size - 1) }
-        } else {
-            messagesList.add(0, message)
-            activity.runOnUiThread { notifyItemInserted(0) }
+    fun update(event: ChatEvent) {
+        when(event.event){
+            EChatEvent.added -> {
+                notifyItemInserted(event.index)
+            }
         }
     }
 }

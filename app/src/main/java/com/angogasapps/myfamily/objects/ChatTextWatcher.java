@@ -3,10 +3,7 @@ package com.angogasapps.myfamily.objects;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-
-import com.angogasapps.myfamily.ui.screens.chat.ChatFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

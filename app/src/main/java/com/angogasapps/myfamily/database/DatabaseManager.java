@@ -21,9 +21,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DatabaseManager {
     public static volatile boolean usersLoadIsEnd = false;
-    public static volatile boolean messagesLoadIsEnd = false;
 
-    private static volatile ArrayList<Message> messagesList = new ArrayList<>();
     private static volatile ArrayList<User> userList = new ArrayList<>();
 
 
@@ -44,53 +42,15 @@ public class DatabaseManager {
         }
     }
 
-    public static void loadUsersAndMessages(IOnEnd iOnEnd) {
-        Observer<Object> observer = new Observer<Object>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-            }
-
-            @Override
-            public void onNext(@NonNull Object o) {
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-            }
-
-            @Override
-            public void onComplete() {
-
-                if (usersLoadIsEnd && messagesLoadIsEnd){
-                    iOnEnd.onEnd();
-                }
-            }
-        };
-
-        Observable.create(emitter -> {
-            UserDao userDao = DatabaseManager.getInstance().getUserDao();
-            userList = new ArrayList<>(userDao.getAll());
-            usersLoadIsEnd = true;
-            emitter.onComplete();
-        }).subscribeOn(Schedulers.newThread())
-                .observeOn(Schedulers.newThread())
-                .subscribe(observer);
-
-        Observable.create(emitter -> {
-            MessageDao messageDao = DatabaseManager.getInstance().getMessageDao();
-            messagesList = new ArrayList(messageDao.getAll());
-            messagesLoadIsEnd = true;
-            emitter.onComplete();
-
-        }).subscribeOn(Schedulers.newThread())
-                .observeOn(Schedulers.newThread())
-                .subscribe(observer);
+    public static void comeInByDatabase(IOnEnd onEnd){
+        Async.runInNewThread(() -> {
+           UserDao dao = getInstance().getUserDao();
+           userList = new ArrayList<>(dao.getAll());
+           onEnd.onEnd();
+        });
     }
 
 
-    public static ArrayList<Message> getMessagesList() {
-        return messagesList;
-    }
 
     public static ArrayList<User> getUserList() {
         return userList;
@@ -100,12 +60,12 @@ public class DatabaseManager {
         void onEnd();
     }
 
-    public static void searchNewUsers(ArrayList<User> users){
+    public static void updateInfoForUsers(ArrayList<User> users){
         Async.runInNewThread(() -> {
-            ArrayList<User> cashUserList = new ArrayList<>(database.getUserDao().getAll());
-            for (User user : users)
-                if (!cashUserList.contains(user))
-                    database.getUserDao().insert(user);
+            UserDao dao = getInstance().getUserDao();
+            for (User user : users) {
+                dao.insert(user);
+            }
         });
     }
 }

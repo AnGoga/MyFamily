@@ -26,12 +26,18 @@
         android:theme="@style/Theme.MyFamily"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.screens.chat.MyChatActivity"></activity>
-        <activity android:name=".ui.screens.family_storage.gallery_activity.ImageGalleryActivity" />
-        <activity android:name=".ui.screens.family_storage.StorageNoteBuilderActivity" />
-        <activity android:name=".ui.screens.family_storage.CreateImageFileActivity" />
-        <activity android:name=".ui.screens.family_storage.StorageActivity" />
-        <activity android:name=".ui.screens.family_storage.SelectStorageActivity" />
+        <activity android:name=".ui.screens.chat.ChatActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.screens.family_storage.gallery_activity.ImageGalleryActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.screens.family_storage.StorageNoteBuilderActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.screens.family_storage.CreateImageFileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.screens.family_storage.StorageActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.screens.family_storage.SelectStorageActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.screens.personal_dairy.DairyBuilderActivity"
             android:screenOrientation="portrait" />
@@ -72,9 +78,6 @@
             android:name=".ui.screens.family_settings.FamilySettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.screens.chat.ChatActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Base.Theme.AppCompat" />
@@ -100,15 +103,6 @@
                 <data
                     android:host="angogasapps.page.link"
                     android:scheme="https" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.screens.main.DeprecatedMainActivity"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.screens.findorcreatefamily.FindOrCreateFamilyActivity" />

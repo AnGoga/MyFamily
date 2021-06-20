@@ -16,7 +16,6 @@ import com.angogasapps.myfamily.utils.StringFormater;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.angogasapps.myfamily.utils.WithUsers.*;
 
 public class AppBaseViewHolder extends RecyclerView.ViewHolder {
 //    protected ViewBinding binding;

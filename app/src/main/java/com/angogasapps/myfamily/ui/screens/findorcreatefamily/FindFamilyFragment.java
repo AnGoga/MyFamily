@@ -1,7 +1,6 @@
 package com.angogasapps.myfamily.ui.screens.findorcreatefamily;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,10 +12,8 @@ import android.view.ViewGroup;
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.FragmentFindFamilyBinding;
 import com.angogasapps.myfamily.firebase.FindFamilyFunks;
-import com.angogasapps.myfamily.firebase.RegisterFamilyFunks;
 import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily;
 import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily;
-import com.angogasapps.myfamily.ui.screens.main.DeprecatedMainActivity;
 import com.angogasapps.myfamily.ui.screens.main.MainActivity;
 
 import es.dmoral.toasty.Toasty;

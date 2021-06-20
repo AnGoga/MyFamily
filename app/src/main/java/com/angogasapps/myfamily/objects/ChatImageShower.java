@@ -1,35 +1,21 @@
 package com.angogasapps.myfamily.objects;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.databinding.DialogImageShowerBinding;
-import com.angogasapps.myfamily.ui.screens.chat.ChatFragment;
 import com.github.chrisbanes.photoview.PhotoView;
 
 public class ChatImageShower {

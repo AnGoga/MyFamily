@@ -3,6 +3,7 @@ package com.angogasapps.myfamily.ui.screens.chat
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.AbsListView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,8 +14,10 @@ import com.angogasapps.myfamily.databinding.FragmentChatBinding
 import com.angogasapps.myfamily.firebase.ChatFunks
 import com.angogasapps.myfamily.firebase.FirebaseHelper
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.models.Message
 import com.angogasapps.myfamily.objects.ChatAudioRecorder
 import com.angogasapps.myfamily.objects.ChatTextWatcher
+import com.angogasapps.myfamily.ui.screens.chat.ChatManager.Companion.dangerFirstVisibleItemPosition
 import com.angogasapps.myfamily.utils.Permissions
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -25,17 +28,17 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import java.io.File
 
-class MyChatActivity : AppCompatActivity() {
+class ChatActivity : AppCompatActivity() {
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
 
     private lateinit var binding: FragmentChatBinding
     private lateinit var mRecorder: ChatAudioRecorder
-    private lateinit var adapter: MyChatAdapter
+    private lateinit var adapter: ChatAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private var isScrollToBottom = true
     private var isScrolling = false
-    private val chatManager = ChatManager.getInstance(scope)
+    private val chatManager = ChatManager.getInstance(scope, this::addMessage)
     private lateinit var disposable: Disposable
 
 
@@ -46,21 +49,17 @@ class MyChatActivity : AppCompatActivity() {
 
         initOnClicks()
         initRecycleView()
-        subscribeToChannel()
     }
 
-    private fun subscribeToChannel() {
-        disposable = chatManager.subject
-          .subscribeOn(Schedulers.newThread())
-          .observeOn(AndroidSchedulers.mainThread()).subscribe {
-              adapter.update(it)
-              if (isScrollToBottom)
-                  binding.recycleView.smoothScrollToPosition(adapter.itemCount)
-        }
+
+    private fun addMessage(event: ChatEvent) = runOnUiThread {
+        adapter.update(event)
+        if (isScrollToBottom)
+            binding.recycleView.smoothScrollToPosition(adapter.itemCount)
     }
 
     private fun initRecycleView() {
-        adapter = MyChatAdapter(this, chatManager.list)
+        adapter = ChatAdapter(this, chatManager.list)
         layoutManager = LinearLayoutManager(this)
         binding.recycleView.adapter = adapter
         binding.recycleView.layoutManager = layoutManager
@@ -75,7 +74,7 @@ class MyChatActivity : AppCompatActivity() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (isScrolling && dy < 0 && layoutManager.findFirstVisibleItemPosition() <= ChatFragment.dangerFirstVisibleItemPosition) {
+                if (isScrolling && dy < 0 && layoutManager.findFirstVisibleItemPosition() <= dangerFirstVisibleItemPosition) {
                     isScrollToBottom = false
                     isScrolling = false
                     chatManager.getMoreMessage()
@@ -134,11 +133,5 @@ class MyChatActivity : AppCompatActivity() {
             else
                 Toasty.error(this, R.string.something_went_wrong).show()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (!disposable.isDisposed)
-            disposable.dispose()
     }
 }

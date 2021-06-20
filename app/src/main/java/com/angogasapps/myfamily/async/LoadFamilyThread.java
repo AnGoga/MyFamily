@@ -238,7 +238,7 @@ public final class LoadFamilyThread extends AsyncTask<User, Integer, ArrayList<U
             user.setRole(usersRoleMap.get(user.getId()));
         }
 //        Family.getInstance().setUsersList(familyMembersList);
-        DatabaseManager.searchNewUsers(familyMembersList);
+        DatabaseManager.updateInfoForUsers(familyMembersList);
     }
 
     private void initUsersArray(){
