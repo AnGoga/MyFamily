@@ -17,7 +17,7 @@ import com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity.Image
 import java.util.*
 import kotlin.collections.ArrayList
 
-class StorageAdapter(val context: Context, val rootNode: String, var onChangeDirectory: (dirName: String) -> Unit)
+open class StorageAdapter(val context: Context, val rootNode: String, var onChangeDirectory: (dirName: String) -> Unit)
         : RecyclerView.Adapter<StorageAdapter.StorageHolder>() {
     companion object{
         val fileDraw = AppApplication.getInstance().resources.getDrawable(R.drawable.ic_file)
@@ -89,6 +89,9 @@ class StorageAdapter(val context: Context, val rootNode: String, var onChangeDir
         return true
     }
 
+    protected open fun onFileClick(file: File){}
+    protected open fun onFolderClick(folder: ArrayFolder){showFolder(folder.id)}
+
     inner class StorageHolder : RecyclerView.ViewHolder {
         val binding: StorageViewHolderBinding
 
@@ -102,34 +105,20 @@ class StorageAdapter(val context: Context, val rootNode: String, var onChangeDir
             if (obj.isFile()){
                 val file = obj as File
                 binding.image.setImageDrawable(fileDraw)
-                binding.root.setOnClickListener {
-                    if (rootNode == NODE_NOTE_STORAGE)
-                        context.startActivity(Intent(context, StorageNoteBuilderActivity::class.java)
-                            .also {
-                                it.putExtra(CHILD_NAME, file.name)
-                                it.putExtra(CHILD_ID, file.id)
-                                it.putExtra(CHILD_VALUE, file.value)
-                                it.putExtra(ROOT_FOLDER, getRootFolderId())
-                            }
-                        )
-                }
+                binding.root.setOnClickListener { onFileClick(file) }
                 binding.root.setOnLongClickListener {
-//                    showRemoveFileDialog(context = context, folderId = getRootFolderId(), file = file, rootNode = rootNode)
                     showOnLongClickFileDialog(context = context, file = file, rootNode = rootNode, rootFolderId = getRootFolderId())
                     return@setOnLongClickListener true
                 }
             }else if (obj.isFolder()){
                 binding.image.setImageDrawable(folderDraw)
+                val folder = obj as ArrayFolder
+
                 binding.root.setOnClickListener {
-                    if (rootNode == NODE_IMAGE_STORAGE){
-                        context.startActivity(Intent(context, ImageGalleryActivity::class.java)
-                                .also { it.putExtra(CHILD_ID, obj.id) })
-                    }else {
-                        showFolder(obj.id)
-                    }
+                    onFolderClick(folder)
                 }
                 binding.root.setOnLongClickListener {
-                    showOnLongClickFolderDialog(context, obj as ArrayFolder, rootNode, getRootFolderId())
+                    showOnLongClickFolderDialog(context, folder, rootNode, getRootFolderId())
                     return@setOnLongClickListener true
                 }
             }

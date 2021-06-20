@@ -90,11 +90,10 @@ class ChatManager private constructor(private val scope: CoroutineScope, val onG
                 databaseList.sortBy { it.time }
             }
             if (databaseList.size <= messagesCount){
-                for (i in 0..(databaseList.size - 1) ) {
+                for (i in 0 until databaseList.size) {
                     addMessage(databaseList[i])
                 }
             }else  if (databaseList.size - messagesCount >= 0){
-//                for (i in (databaseList.size - messagesCount)..(databaseList.size - 1)) {
                 for (i in (databaseList.size - 1) downTo (databaseList.size - messagesCount)) {
                     val message = databaseList[i]
                     addMessage(message)

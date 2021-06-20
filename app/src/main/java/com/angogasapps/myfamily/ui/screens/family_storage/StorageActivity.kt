@@ -9,6 +9,9 @@ import com.angogasapps.myfamily.databinding.ActivityStorageBinding
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.firebase.createFolder
 import com.angogasapps.myfamily.firebase.createStorageFile
+import com.angogasapps.myfamily.ui.screens.family_storage.adapters.FileStorageAdapter
+import com.angogasapps.myfamily.ui.screens.family_storage.adapters.ImageStorageAdapter
+import com.angogasapps.myfamily.ui.screens.family_storage.adapters.NoteStorageAdapter
 import com.angogasapps.myfamily.ui.screens.family_storage.dialogs.NameGetterDialog
 import com.angogasapps.myfamily.utils.FILE_SELECT_CODE
 import com.angogasapps.myfamily.utils.showFileChooser
@@ -59,11 +62,15 @@ class StorageActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        adapter = StorageAdapter(this, rootNode = rootNode) { name: String ->
-            run {
-                this@StorageActivity.title = name
-            }
+        val onChangeDirectory = { name: String -> this@StorageActivity.title = name }
+
+        adapter = when(rootNode){
+            NODE_NOTE_STORAGE -> NoteStorageAdapter(this, rootNode, onChangeDirectory)
+            NODE_IMAGE_STORAGE -> ImageStorageAdapter(this, rootNode, onChangeDirectory)
+            NODE_FILE_STORAGE -> FileStorageAdapter(this, rootNode, onChangeDirectory)
+            else -> StorageAdapter(this, rootNode, onChangeDirectory)
         }
+
         layoutManager = LinearLayoutManager(this)
         binding.recycleView.adapter = adapter
         binding.recycleView.layoutManager = layoutManager
@@ -131,10 +138,6 @@ class StorageActivity : AppCompatActivity() {
         when (requestCode) {
             FILE_SELECT_CODE -> if (resultCode == RESULT_OK) {
                 val uri = data?.data ?: return
-//                val path = getPath(this, uri) ?: return
-//                val file = File(path)
-//                if (!file.exists()) return
-                // if (file.size > allowedSpace) return
                 NameGetterDialog(this).show(isFolder = false){
                     createStorageFile(uri = uri, name = it, rootFolderId = adapter.getRootFolderId())
                 }
