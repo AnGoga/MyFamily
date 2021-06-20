@@ -88,7 +88,6 @@ public class ChatFragment extends Fragment {
         });
 
         binding.audioBtn.setOnTouchListener((v, event) -> {
-
             if (Permissions.havePermission(Permissions.AUDIO_RECORD_PERM, getActivity())) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mRecorder = new ChatAudioRecorder(getActivity(), getMessageKey());

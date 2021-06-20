@@ -39,10 +39,6 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-    private void saveMessages(){
-        
-    }
-
     private void loadMessages(){
         /*Async.runInNewThread(() -> {
             messageList = new ArrayList<>(messageDao.getAll());
@@ -99,17 +95,5 @@ public class ChatActivity extends AppCompatActivity {
 
     private void initDatabase(){
         messageDao = DatabaseManager.getInstance().getMessageDao();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-//        AppApplication.setExitChatStatus();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        AppApplication.setReturnToChatStatus();
     }
 }

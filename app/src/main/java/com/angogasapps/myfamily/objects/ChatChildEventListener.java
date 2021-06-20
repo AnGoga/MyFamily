@@ -11,12 +11,8 @@ import com.google.firebase.database.DatabaseError;
 
 
 public class ChatChildEventListener implements ChildEventListener {
-//    ChatFragment chatFragment;
-    IOnAddMessage iOnAddMessage;
+    private IOnAddMessage iOnAddMessage;
 
-//    public ChatChildEventListener(ChatFragment chatFragment) {
-//        this.chatFragment = chatFragment;
-//    }
     public ChatChildEventListener(IOnAddMessage iOnAddMessage){
         this.iOnAddMessage = iOnAddMessage;
     }
@@ -27,9 +23,6 @@ public class ChatChildEventListener implements ChildEventListener {
     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
         Message message = new Message(snapshot);
         iOnAddMessage.onAddMessage(message);
-//        chatFragment.mAdapter.addMessage(message, chatFragment.isScrollToBottom);
-//        if (chatFragment.isScrollToBottom)
-//            chatFragment.mRecycleView.smoothScrollToPosition(chatFragment.mAdapter.getItemCount());
     }
 
     @Override

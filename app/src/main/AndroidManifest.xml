@@ -26,7 +26,8 @@
         android:theme="@style/Theme.MyFamily"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.screens.family_storage.gallery_activity.ImageGalleryActivity"></activity>
+        <activity android:name=".ui.screens.chat.MyChatActivity"></activity>
+        <activity android:name=".ui.screens.family_storage.gallery_activity.ImageGalleryActivity" />
         <activity android:name=".ui.screens.family_storage.StorageNoteBuilderActivity" />
         <activity android:name=".ui.screens.family_storage.CreateImageFileActivity" />
         <activity android:name=".ui.screens.family_storage.StorageActivity" />
