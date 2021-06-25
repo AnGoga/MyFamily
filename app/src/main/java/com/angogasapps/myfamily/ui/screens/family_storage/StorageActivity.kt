@@ -12,6 +12,7 @@ import com.angogasapps.myfamily.firebase.createStorageFile
 import com.angogasapps.myfamily.ui.screens.family_storage.adapters.FileStorageAdapter
 import com.angogasapps.myfamily.ui.screens.family_storage.adapters.ImageStorageAdapter
 import com.angogasapps.myfamily.ui.screens.family_storage.adapters.NoteStorageAdapter
+import com.angogasapps.myfamily.ui.screens.family_storage.adapters.StorageAdapter
 import com.angogasapps.myfamily.ui.screens.family_storage.dialogs.NameGetterDialog
 import com.angogasapps.myfamily.utils.FILE_SELECT_CODE
 import com.angogasapps.myfamily.utils.showFileChooser

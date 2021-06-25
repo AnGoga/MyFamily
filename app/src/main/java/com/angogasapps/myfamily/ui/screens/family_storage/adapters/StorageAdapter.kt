@@ -1,7 +1,6 @@
-package com.angogasapps.myfamily.ui.screens.family_storage
+package com.angogasapps.myfamily.ui.screens.family_storage.adapters
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,9 @@ import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
 import com.angogasapps.myfamily.models.storage.StorageObject
-import com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity.ImageGalleryActivity
+import com.angogasapps.myfamily.ui.screens.family_storage.StorageManager
+import com.angogasapps.myfamily.ui.screens.family_storage.showOnLongClickFileDialog
+import com.angogasapps.myfamily.ui.screens.family_storage.showOnLongClickFolderDialog
 import java.util.*
 import kotlin.collections.ArrayList
 

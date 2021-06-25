@@ -1,6 +1,8 @@
 package com.angogasapps.myfamily.firebase
 
 import android.net.Uri
+import android.os.Environment
+import com.angogasapps.myfamily.app.AppApplication
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
@@ -166,6 +168,25 @@ fun renameFile(file: File, newName: String, rootNode: String, folderId: String, 
               onError()
           }
       }
+}
+
+fun downloadFile(file: File, onSuccess: (dFile: java.io.File, contentType: String) -> Unit = {it1, it2 ->}, onError: () -> Unit = {}){
+    val path = FirebaseStorage.getInstance().getReferenceFromUrl(file.value)
+
+    path.metadata.addOnCompleteListener { metadata ->
+        if (metadata.isSuccessful){
+            val contentType = metadata.result.contentType?:""
+            val dFile = java.io.File(
+                    AppApplication.getInstance().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
+                    """${file.name}.${contentType.split("/")[1]}"""
+            )
+            path.getFile(dFile).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    onSuccess(dFile, contentType)
+                } else{ onError() }
+            }
+        } else { onError() }
+    }
 }
 
 

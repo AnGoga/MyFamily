@@ -3,9 +3,7 @@ package com.angogasapps.myfamily.ui.screens.family_storage.adapters
 import android.content.Context
 import android.content.Intent
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
-import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
-import com.angogasapps.myfamily.ui.screens.family_storage.StorageAdapter
 import com.angogasapps.myfamily.ui.screens.family_storage.StorageNoteBuilderActivity
 
 class NoteStorageAdapter(context: Context, rootNode: String, onChangeDirectory: (dirName: String) -> Unit)

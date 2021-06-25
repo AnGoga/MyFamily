@@ -5,7 +5,6 @@ import android.content.Intent
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
-import com.angogasapps.myfamily.ui.screens.family_storage.StorageAdapter
 import com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity.ImageGalleryActivity
 
 class ImageStorageAdapter(context: Context, rootNode: String, onChangeDirectory: (dirName: String) -> Unit)
