@@ -22,10 +22,10 @@ import com.angogasapps.myfamily.utils.Permissions
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import java.io.File
 
 class ChatActivity : AppCompatActivity() {
@@ -60,7 +60,13 @@ class ChatActivity : AppCompatActivity() {
 
     private fun initRecycleView() {
         adapter = ChatAdapter(this, chatManager.list)
-        layoutManager = LinearLayoutManager(this)
+        layoutManager = object: LinearLayoutManager(this){
+            override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
+                try {
+                    super.onLayoutChildren(recycler, state)
+                } catch (e: IndexOutOfBoundsException) {}
+            }
+        }
         binding.recycleView.adapter = adapter
         binding.recycleView.layoutManager = layoutManager
         binding.recycleView.setHasFixedSize(true)

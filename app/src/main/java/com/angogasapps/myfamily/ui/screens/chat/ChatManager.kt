@@ -9,8 +9,11 @@ import com.angogasapps.myfamily.objects.ChatChildEventListener
 import com.google.firebase.database.ServerValue
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.lang.Exception
 import java.util.*
+import java.util.concurrent.locks.ReentrantLock
 import kotlin.collections.ArrayList
 
 class ChatManager private constructor(private val scope: CoroutineScope, val onGetMessage: (event: ChatEvent) -> Unit){
@@ -21,9 +24,6 @@ class ChatManager private constructor(private val scope: CoroutineScope, val onG
     private val chatRef = DATABASE_ROOT.child(NODE_CHAT).child(USER.family)
     private val messageDao: MessageDao = DatabaseManager.getInstance().messageDao
     private val listener: ChatChildEventListener = ChatChildEventListener(this::onGetMessageFromFirebase)
-
-
-    val subject = PublishSubject.create<ChatEvent>()
 
     init { init() }
 
@@ -44,35 +44,40 @@ class ChatManager private constructor(private val scope: CoroutineScope, val onG
         getMoreMessage(startMessageCount)
     }
 
-    private fun addMessage(message: Message): Job = scope.launch(Dispatchers.Main) {
-        synchronized(ChatManager::class.java) {
-            if (list.contains(message))
-                return@launch
-            if (list.size >= downloadMessagesCountStep)
-                list.subList(0, downloadMessagesCountStep - 1).sortBy { it.time }
-            else
-                list.sortBy { it.time }
+    private fun addMessage(message: Message) {
+        if (list.contains(message))
+            return
+        if (list.size >= startMessageCount)
+            list.subList(0, startMessageCount - 1).sortBy { it.time }
+        else
+            list.sortBy { it.time }
 
-            var index = list.size
+        var index = list.size
 
-            if (list.size == 0) {
-                list.add(message)
+        if (list.size == 0) {
+            list.add(message)
 
-            } else if (list[list.size - 1].time >= message.time) {
-                list.add(0, message)
-                index = 0
-            } else {
-                list.add(message)
+        } else if (list[list.size - 1].time >= message.time) {
+            list.add(0, message)
+            index = 0
+        } else {
+            list.add(message)
+        }
+
+        saveMessageLocal(message)
+
+        val event = ChatEvent(EChatEvent.added, message, index)
+        onGetMessage(event)
+    }
+
+    private fun tryAddMessage(message: Message){
+        scope.launch(Dispatchers.Main) {
+            synchronized(ChatManager::class.java) {
+                addMessage(message)
             }
-
-            saveMessageLocal(message)
-
-            val event = ChatEvent(EChatEvent.added, message, index)
-            Log.d("chat_event", "id = ${message.id}")
-            onGetMessage(event)
-
         }
     }
+
     fun getMoreMessage(){
         getMoreMessage(downloadMessagesCountStep)
     }
@@ -91,12 +96,12 @@ class ChatManager private constructor(private val scope: CoroutineScope, val onG
             }
             if (databaseList.size <= messagesCount){
                 for (i in 0 until databaseList.size) {
-                    addMessage(databaseList[i])
+                    tryAddMessage(databaseList[i])
                 }
             }else  if (databaseList.size - messagesCount >= 0){
                 for (i in (databaseList.size - 1) downTo (databaseList.size - messagesCount)) {
                     val message = databaseList[i]
-                    addMessage(message)
+                    tryAddMessage(message)
                 }
             }
         }
@@ -114,7 +119,7 @@ class ChatManager private constructor(private val scope: CoroutineScope, val onG
 
     private fun onGetMessageFromFirebase(message: Message) {
         println(message.id)
-        addMessage(message)
+        tryAddMessage(message)
     }
 }
 
