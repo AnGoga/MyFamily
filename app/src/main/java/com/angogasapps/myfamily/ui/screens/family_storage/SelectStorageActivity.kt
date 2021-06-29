@@ -33,6 +33,9 @@ class SelectStorageActivity : AppCompatActivity() {
                     .also { it.putExtra(TYPE_NODE, NODE_NOTE_STORAGE) }
             )}
 
-
+        binding.cardVideos.setOnClickListener {
+            startActivity(Intent(this, StorageActivity::class.java)
+                    .also { it.putExtra(TYPE_NODE, NODE_VIDEO_STORAGE) })
+        }
     }
 }

@@ -9,10 +9,7 @@ import com.angogasapps.myfamily.databinding.ActivityStorageBinding
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.firebase.createFolder
 import com.angogasapps.myfamily.firebase.createStorageFile
-import com.angogasapps.myfamily.ui.screens.family_storage.adapters.FileStorageAdapter
-import com.angogasapps.myfamily.ui.screens.family_storage.adapters.ImageStorageAdapter
-import com.angogasapps.myfamily.ui.screens.family_storage.adapters.NoteStorageAdapter
-import com.angogasapps.myfamily.ui.screens.family_storage.adapters.StorageAdapter
+import com.angogasapps.myfamily.ui.screens.family_storage.storage_adapters.*
 import com.angogasapps.myfamily.ui.screens.family_storage.dialogs.NameGetterDialog
 import com.angogasapps.myfamily.utils.FILE_SELECT_CODE
 import com.angogasapps.myfamily.utils.showFileChooser
@@ -25,7 +22,7 @@ class StorageActivity : AppCompatActivity() {
     private val scope = CoroutineScope(Dispatchers.Default + job)
 
     lateinit var binding: ActivityStorageBinding
-    lateinit var adapter: StorageAdapter
+    lateinit var adapter: BaseStorageAdapter
     lateinit var layoutManager: LinearLayoutManager
 
     lateinit var rootNode: String
@@ -54,7 +51,7 @@ class StorageActivity : AppCompatActivity() {
 
     private fun initOnClicks() {
         binding.floatingBtn.setOnClickListener {
-            if (rootNode == NODE_IMAGE_STORAGE) {
+            if (rootNode == NODE_IMAGE_STORAGE || rootNode == NODE_VIDEO_STORAGE) {
                 showFolderCreateDialog()
             }else{
                 showSelectDialog()
@@ -67,9 +64,9 @@ class StorageActivity : AppCompatActivity() {
 
         adapter = when(rootNode){
             NODE_NOTE_STORAGE -> NoteStorageAdapter(this, rootNode, onChangeDirectory)
-            NODE_IMAGE_STORAGE -> ImageStorageAdapter(this, rootNode, onChangeDirectory)
             NODE_FILE_STORAGE -> FileStorageAdapter(this, rootNode, onChangeDirectory)
-            else -> StorageAdapter(this, rootNode, onChangeDirectory)
+            NODE_VIDEO_STORAGE, NODE_IMAGE_STORAGE -> MediaStorageAdapter(this, rootNode, onChangeDirectory)
+            else -> BaseStorageAdapter(this, rootNode, onChangeDirectory)
         }
 
         layoutManager = LinearLayoutManager(this)

@@ -41,6 +41,7 @@ public class FirebaseVarsAndConsts {
     public static final String NODE_BUY_LIST = "buy_list";
     public static final String NODE_NEWS = "news";
 
+    public static final String CHILD_ROOT_NODE = "root_node";
     public static final String NODE_IMAGE_STORAGE = "image_storage";
     public static final String NODE_FILE_STORAGE = "file_storage";
     public static final String NODE_VIDEO_STORAGE = "video_storage";

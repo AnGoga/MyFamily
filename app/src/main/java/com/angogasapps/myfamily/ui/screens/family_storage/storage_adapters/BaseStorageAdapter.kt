@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.screens.family_storage.adapters
+package com.angogasapps.myfamily.ui.screens.family_storage.storage_adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -18,8 +18,8 @@ import com.angogasapps.myfamily.ui.screens.family_storage.showOnLongClickFolderD
 import java.util.*
 import kotlin.collections.ArrayList
 
-open class StorageAdapter(val context: Context, val rootNode: String, var onChangeDirectory: (dirName: String) -> Unit)
-        : RecyclerView.Adapter<StorageAdapter.StorageHolder>() {
+open class BaseStorageAdapter(val context: Context, val rootNode: String, var onChangeDirectory: (dirName: String) -> Unit)
+        : RecyclerView.Adapter<BaseStorageAdapter.StorageHolder>() {
     companion object{
         val fileDraw = AppApplication.getInstance().resources.getDrawable(R.drawable.ic_file)
         val folderDraw = AppApplication.getInstance().resources.getDrawable(R.drawable.ic_folder)

@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity
+package com.angogasapps.myfamily.ui.screens.family_storage.gallery_storage_adapters
 
 import android.app.Activity
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_IMAGE_STORAGE
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_VIDEO_STORAGE
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
 import com.angogasapps.myfamily.objects.ChatImageShower
@@ -17,15 +19,17 @@ import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
 
 
-class ImageGalleryAdapter(val context: Activity, val scope: CoroutineScope, var folder: ArrayFolder): RecyclerView.Adapter<ImageGalleryAdapter.ImageGalleryHolder>() {
-    private val inflater: LayoutInflater
-
-    init {
-        inflater = LayoutInflater.from(context)
-    }
+class MediaGalleryStorageAdapter(val context: Activity, val scope: CoroutineScope, var folder: ArrayFolder, val rootNode: String)
+    : RecyclerView.Adapter<MediaGalleryStorageAdapter.ImageGalleryHolder>() {
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageGalleryHolder {
-        return ImageGalleryHolder(inflater.inflate(R.layout.image_gallery_holder, parent, false))
+        return when(viewType){
+            0 -> ImageGalleryHolder(inflater.inflate(R.layout.image_gallery_holder, parent, false))
+            1 -> null!! /* VideoGalleryHolder(. . .) */
+            else -> ImageGalleryHolder(inflater.inflate(R.layout.image_gallery_holder, parent, false))
+
+        }
     }
 
     override fun onBindViewHolder(holder: ImageGalleryHolder, position: Int) {
@@ -33,6 +37,14 @@ class ImageGalleryAdapter(val context: Activity, val scope: CoroutineScope, var 
     }
 
     override fun getItemCount(): Int = folder.value.size
+
+    override fun getItemViewType(position: Int): Int {
+        return when(rootNode){
+            NODE_IMAGE_STORAGE -> 0
+            NODE_VIDEO_STORAGE -> 1
+            else -> -1
+        }
+    }
 
     fun add(url: String, key: String){
         folder.value.add(File(value = url, id = key, name = ""))
@@ -50,27 +62,27 @@ class ImageGalleryAdapter(val context: Activity, val scope: CoroutineScope, var 
         context.finish()
     }
 
+    abstract inner class BaseStorageGalleryHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        abstract fun update(value: String)
+    }
 
-    inner class ImageGalleryHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    inner class ImageGalleryHolder(itemView: View): BaseStorageGalleryHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.image)
 
 
-        fun update(value: String){
+        override fun update(value: String){
             Glide.with(context).load(value).into(image)
-//            scope.launch(Dispatchers.IO) {
-//                val bm = downloadBitmapByURL(value)
-//                withContext(Dispatchers.Main){ image.setImageBitmap(bm) }
-//            }
             this.itemView.setOnClickListener {
                 ChatImageShower(context as AppCompatActivity).showImage(image)
-//                GalleryImageShower(context as AppCompatActivity)
-//                        .showImage(imageView = image, folderId = folder.id, file = folder.value[position] as File)
             }
             this.itemView.setOnLongClickListener {
                 val imageFile = folder.value[position] as File
                 showAcceptRemoveImageDialog(
-                        context = context, image = image,
-                        imageFile = imageFile, folderId = folder.id,
+                        context = context,
+                        image = image,
+                        imageFile = imageFile,
+                        folderId = folder.id,
                         onSuccessRemove = {
                             var ind = 0
                             folder.value.forEachIndexed {index, obj ->
@@ -87,5 +99,4 @@ class ImageGalleryAdapter(val context: Activity, val scope: CoroutineScope, var 
             }
         }
     }
-
 }

@@ -1,15 +1,14 @@
-package com.angogasapps.myfamily.ui.screens.family_storage.adapters
+package com.angogasapps.myfamily.ui.screens.family_storage.storage_adapters
 
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.net.Uri
 import android.os.StrictMode
 import com.angogasapps.myfamily.firebase.downloadFile
 import com.angogasapps.myfamily.models.storage.File
 
 class FileStorageAdapter(context: Context, rootNode: String, onChangeDirectory: (dirName: String) -> Unit)
-    : StorageAdapter(context, rootNode, onChangeDirectory) {
+    : BaseStorageAdapter(context, rootNode, onChangeDirectory) {
 
     override fun onFileClick(file: File) {
         StrictMode::class.java.getMethod("disableDeathOnFileUriExposure").invoke(null)
