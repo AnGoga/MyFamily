@@ -20,19 +20,19 @@ import kotlinx.coroutines.CoroutineScope
 
 
 class MediaGalleryStorageAdapter(val context: Activity, val scope: CoroutineScope, var folder: ArrayFolder, val rootNode: String)
-    : RecyclerView.Adapter<MediaGalleryStorageAdapter.ImageGalleryHolder>() {
+    : RecyclerView.Adapter<MediaGalleryStorageAdapter.BaseStorageGalleryHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageGalleryHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseStorageGalleryHolder {
         return when(viewType){
             0 -> ImageGalleryHolder(inflater.inflate(R.layout.image_gallery_holder, parent, false))
-            1 -> null!! /* VideoGalleryHolder(. . .) */
+            1 -> VideoGalleryHolder(inflater.inflate(R.layout.video_gallery_holder, parent, false))
             else -> ImageGalleryHolder(inflater.inflate(R.layout.image_gallery_holder, parent, false))
 
         }
     }
 
-    override fun onBindViewHolder(holder: ImageGalleryHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseStorageGalleryHolder, position: Int) {
         holder.update((folder.value[position] as File).value)
     }
 
@@ -69,8 +69,6 @@ class MediaGalleryStorageAdapter(val context: Activity, val scope: CoroutineScop
 
     inner class ImageGalleryHolder(itemView: View): BaseStorageGalleryHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.image)
-
-
         override fun update(value: String){
             Glide.with(context).load(value).into(image)
             this.itemView.setOnClickListener {
@@ -97,6 +95,12 @@ class MediaGalleryStorageAdapter(val context: Activity, val scope: CoroutineScop
                 )
                 return@setOnLongClickListener true
             }
+        }
+    }
+
+    inner class VideoGalleryHolder(itemView: View): BaseStorageGalleryHolder(itemView){
+        override fun update(value: String) {
+
         }
     }
 }

@@ -12,18 +12,23 @@ import com.angogasapps.myfamily.models.events.NewsEvent
 import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils
 import com.angogasapps.myfamily.ui.screens.news_center.NewsManager
 import com.angogasapps.myfamily.ui.screens.news_center.QuoteManager
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import io.reactivex.disposables.Disposable
 
 class NewsCenterLayout : ConstraintLayout {
     private val viewPager: ViewPager2
+    private val tabLayout: TabLayout
     private val inflater: LayoutInflater
     private lateinit var activity: Activity
     private lateinit var adapter: NewsAdapter
     private var disposable: Disposable? = null
+
     init {
         inflater = LayoutInflater.from(context)
         val root = inflater.inflate(R.layout.news_center_layout, this)
         viewPager = root.findViewById(R.id.view_pager)
+        tabLayout = root.findViewById(R.id.tab_layout)
         QuoteManager.getInstance()
     }
 
@@ -37,6 +42,7 @@ class NewsCenterLayout : ConstraintLayout {
         this.activity = activity
         adapter = NewsAdapter(activity, NewsManager.getInstance().allNews)
         viewPager.adapter = adapter
+        setupMediator()
         viewPager.offscreenPageLimit = 3
         showQuote()
 
@@ -55,6 +61,12 @@ class NewsCenterLayout : ConstraintLayout {
         MainActivityUtils.waitEndDownloadThread(activity, adapter)
     }
 
+    private fun setupMediator(){
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            
+        }.attach()
+    }
+
     private fun showQuote() {
         adapter.showQuote(QuoteManager.getInstance().getRandomQuote())
     }
@@ -67,6 +79,5 @@ class NewsCenterLayout : ConstraintLayout {
         if (!disposable?.isDisposed!!)
             disposable?.dispose()
     }
-
 
 }
