@@ -42,10 +42,20 @@ class NewsCenterLayout : ConstraintLayout {
         this.activity = activity
         adapter = NewsAdapter(activity, NewsManager.getInstance().allNews)
         viewPager.adapter = adapter
-        setupMediator()
+        setupTabMediator()
         viewPager.offscreenPageLimit = 3
         showQuote()
+        setupSubscribe()
+        MainActivityUtils.waitEndDownloadThread(activity, adapter)
+    }
 
+    private fun setupTabMediator(){
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+
+        }.attach()
+    }
+
+    private fun setupSubscribe(){
         disposable = NewsManager.getInstance().subject().subscribe { event: NewsEvent ->
             if (NewsManager.getInstance().allNews.size == 0) {
                 adapter.update(event)
@@ -57,14 +67,6 @@ class NewsCenterLayout : ConstraintLayout {
             }
             adapter.update(event)
         }
-
-        MainActivityUtils.waitEndDownloadThread(activity, adapter)
-    }
-
-    private fun setupMediator(){
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            
-        }.attach()
     }
 
     private fun showQuote() {
