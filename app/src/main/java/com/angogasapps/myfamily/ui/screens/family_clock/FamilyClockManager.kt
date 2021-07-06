@@ -10,7 +10,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.BroadcastChannel
-import javax.inject.Singleton
 
 
 class FamilyClockManager private constructor(val scope: CoroutineScope){
@@ -34,27 +33,21 @@ class FamilyClockManager private constructor(val scope: CoroutineScope){
     private fun initListener() {
         path.addChildEventListener(object: ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val value = snapshot.getValue(ClockObject::class.java)!!
-                val event = FamilyClockEvent(EFirebaseEvents.added, value)
-                channel.trySend(event)
+                onGetEvent(snapshot, EFirebaseEvents.added)
             }
-
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                val value = snapshot.getValue(ClockObject::class.java)!!
-                val event = FamilyClockEvent(EFirebaseEvents.changed, value)
-                channel.trySend(event)
+                onGetEvent(snapshot, EFirebaseEvents.changed)
             }
-
             override fun onChildRemoved(snapshot: DataSnapshot) {
-                val value = snapshot.getValue(ClockObject::class.java)!!
-                val event = FamilyClockEvent(EFirebaseEvents.removed, value)
-                channel.trySend(event)
+                onGetEvent(snapshot, EFirebaseEvents.removed)
             }
-
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-
             override fun onCancelled(error: DatabaseError) {}
 
         })
+    }
+
+    private fun onGetEvent(snapshot: DataSnapshot, event: EFirebaseEvents){
+        channel.trySend(FamilyClockEvent(event, snapshot.getValue(ClockObject::class.java)!!))
     }
 }

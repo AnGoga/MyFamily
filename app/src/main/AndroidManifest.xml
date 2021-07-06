@@ -26,7 +26,11 @@
         android:theme="@style/Theme.MyFamily"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.screens.family_clock.FamilyClockActivity"></activity>
+        <receiver
+            android:name=".ui.screens.family_clock.FamilyClockReceiver"
+            android:process=":remote" />
+
+        <activity android:name=".ui.screens.family_clock.FamilyClockActivity" />
         <activity
             android:name=".ui.screens.chat.ChatActivity"
             android:screenOrientation="portrait" />
