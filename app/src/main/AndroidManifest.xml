@@ -26,20 +26,26 @@
         android:theme="@style/Theme.MyFamily"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.screens.chat.ChatActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.screens.family_storage.gallery_activity.MediaGalleryStorageActivity"
-            android:screenOrientation="portrait"/>
-<!--        <activity android:name=".ui.screens.family_storage.gallery_activity."-->
-<!--            android:screenOrientation="portrait"/>-->
-        <activity android:name=".ui.screens.family_storage.StorageNoteBuilderActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.screens.family_storage.CreateImageFileActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.screens.family_storage.StorageActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.screens.family_storage.SelectStorageActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.screens.family_clock.FamilyClockActivity"></activity>
+        <activity
+            android:name=".ui.screens.chat.ChatActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.screens.family_storage.gallery_activity.MediaGalleryStorageActivity"
+            android:screenOrientation="portrait" /> <!-- <activity android:name=".ui.screens.family_storage.gallery_activity." -->
+        <!-- android:screenOrientation="portrait"/> -->
+        <activity
+            android:name=".ui.screens.family_storage.StorageNoteBuilderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.screens.family_storage.CreateImageFileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.screens.family_storage.StorageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.screens.family_storage.SelectStorageActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.screens.personal_dairy.DairyBuilderActivity"
             android:screenOrientation="portrait" />

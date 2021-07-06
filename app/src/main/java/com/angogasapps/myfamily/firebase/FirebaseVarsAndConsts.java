@@ -40,6 +40,7 @@ public class FirebaseVarsAndConsts {
     public static final String NODE_CHAT = "chat";
     public static final String NODE_BUY_LIST = "buy_list";
     public static final String NODE_NEWS = "news";
+    public static final String NODE_CLOCK = "family_clock";
 
     public static final String CHILD_ROOT_NODE = "root_node";
     public static final String NODE_IMAGE_STORAGE = "image_storage";

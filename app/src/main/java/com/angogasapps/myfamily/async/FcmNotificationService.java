@@ -35,7 +35,6 @@ public class FcmNotificationService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
-
         Log.i("TAG", "Сообщение-уведомление получено -> " + remoteMessage.toString());
 
     }
