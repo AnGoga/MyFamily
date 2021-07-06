@@ -13,15 +13,15 @@ import kotlinx.coroutines.channels.BroadcastChannel
 import javax.inject.Singleton
 
 
-class FamilyClockManager private constructor(scope: CoroutineScope){
+class FamilyClockManager private constructor(val scope: CoroutineScope){
     val path = DATABASE_ROOT.child(NODE_CLOCK).child(USER.family).child(USER.id)
     val channel: BroadcastChannel<FamilyClockEvent> = BroadcastChannel(1)
 
     companion object {
         private var manager: FamilyClockManager? = null
 
-        fun getInstance(scope: CoroutineScope): FamilyClockManager{
-            if (FamilyClockManager == null)
+        fun getInstance(scope: CoroutineScope): FamilyClockManager {
+            if (manager == null)
                 manager = FamilyClockManager(scope)
             return manager!!
         }

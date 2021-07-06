@@ -14,7 +14,7 @@ import com.angogasapps.myfamily.models.family_clock.FamilyClockEvent
 import com.angogasapps.myfamily.utils.StringFormater
 import com.angogasapps.myfamily.utils.asDate
 
-class ClockAdapter(context: Context): RecyclerView.Adapter<ClockAdapter.ClockViewHolder>() {
+class ClockAdapter(val context: Context): RecyclerView.Adapter<ClockAdapter.ClockViewHolder>() {
     val inflater: LayoutInflater = LayoutInflater.from(context)
     val list = ArrayList<ClockObject>()
 
@@ -43,13 +43,13 @@ class ClockAdapter(context: Context): RecyclerView.Adapter<ClockAdapter.ClockVie
         }
     }
 
-    inner class ClockViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+   inner class ClockViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ClockViewHolderBinding.bind(itemView)
 
-        fun update(obj: ClockObject){
+        fun update(obj: ClockObject) {
             binding.timeText.text = StringFormater.formatLongToTime(obj.time)
             binding.dateText.text = obj.time.asDate()
-            binding.from.text = Family.getInstance().getNameByPhone(obj.fromPhone)
+            binding.from.text = context.getString(R.string.clock_is_on_by) + Family.getInstance().getNameByPhone(obj.fromPhone)
         }
     }
 }

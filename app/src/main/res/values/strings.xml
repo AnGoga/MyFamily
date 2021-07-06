@@ -134,5 +134,6 @@
     <string name="unknown_error">неизвестная ошибка</string>
     <string name="participant">Участник</string>
     <string name="creator">Создатель</string>
+    <string name="clock_is_on_by">\"Будильник заведён: \"</string>
 
 </resources>

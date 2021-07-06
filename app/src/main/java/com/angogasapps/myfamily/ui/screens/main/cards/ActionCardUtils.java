@@ -5,6 +5,7 @@ import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.models.ActionCardState;
 import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity;
 import com.angogasapps.myfamily.ui.screens.chat.ChatActivity;
+import com.angogasapps.myfamily.ui.screens.family_clock.FamilyClockActivity;
 import com.angogasapps.myfamily.ui.screens.family_settings.FamilySettingsActivity;
 import com.angogasapps.myfamily.ui.screens.family_storage.SelectStorageActivity;
 import com.angogasapps.myfamily.ui.screens.news_center.NewsCenterActivity;
@@ -47,7 +48,7 @@ public class ActionCardUtils {
             return new ActionCardState(
                     AppApplication.stringOf(R.string.clock),
                     AppApplication.stringOf(R.string.clock),
-                    R.drawable.ic_family_clock, null, card
+                    R.drawable.ic_family_clock, FamilyClockActivity.class, card
             );
         }
         if (card.equals(EActionCards.MY_FAMILY)){
