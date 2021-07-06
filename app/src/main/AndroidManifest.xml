@@ -28,7 +28,7 @@
         tools:targetApi="m">
         <activity android:name=".ui.screens.chat.ChatActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.screens.family_storage.gallery_storage_adapters.MediaGalleryStorageActivity"
+        <activity android:name=".ui.screens.family_storage.gallery_activity.MediaGalleryStorageActivity"
             android:screenOrientation="portrait"/>
 <!--        <activity android:name=".ui.screens.family_storage.gallery_activity."-->
 <!--            android:screenOrientation="portrait"/>-->

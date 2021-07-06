@@ -7,6 +7,7 @@ import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
 import com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity.MediaGalleryStorageActivity
 
+//adapter in Images and Videos file explorer
 class MediaStorageAdapter(context: Context, rootNode: String, onChangeDirectory: (dirName: String) -> Unit)
         : BaseStorageAdapter(context, rootNode, onChangeDirectory) {
 

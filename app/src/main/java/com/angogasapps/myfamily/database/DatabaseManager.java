@@ -68,4 +68,8 @@ public class DatabaseManager {
             }
         });
     }
+
+    public static void resetDatabase(){
+        getInstance().clearAllTables();
+    }
 }

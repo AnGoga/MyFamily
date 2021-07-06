@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.AppApplication
 import com.angogasapps.myfamily.databinding.ActivityImageGalleryBinding
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.firebase.createImageFile
@@ -48,7 +49,7 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
 
     private fun updateRecycler() {
         scope.launch {
-            StorageManager.getInstance().getData(NODE_IMAGE_STORAGE).collect { isSuccess ->
+            StorageManager.getInstance().getData(rootNode).collect { isSuccess ->
                 withContext(Dispatchers.Main){
                     adapter.update()
                     binding.swipeRefresh.isRefreshing = false
@@ -75,7 +76,6 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
         layoutManager = StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
         adapter = MediaGalleryStorageAdapter(this, scope, folder, rootNode)
 
-//        binding.recycleView.isNestedScrollingEnabled = false
         binding.recycleView.layoutManager = layoutManager
         binding.recycleView.adapter = adapter
     }
@@ -87,9 +87,16 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
     }
 
     private fun onFloatingBtnClick() {
-        CropImage.activity()
-                .setCropShape(CropImageView.CropShape.RECTANGLE)
-                .start(this)
+        when (rootNode) {
+            NODE_IMAGE_STORAGE -> {
+                CropImage.activity()
+                        .setCropShape(CropImageView.CropShape.RECTANGLE)
+                        .start(this)
+            }
+            NODE_VIDEO_STORAGE -> {
+                AppApplication.showInDevelopingToast()
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

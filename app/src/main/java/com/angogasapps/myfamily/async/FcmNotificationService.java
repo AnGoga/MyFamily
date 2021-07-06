@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.angogasapps.myfamily.app.AppNotificationManager;
 import com.angogasapps.myfamily.async.notification.TokensManager;
+import com.angogasapps.myfamily.utils.Async;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -21,10 +22,11 @@ public class FcmNotificationService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         USER.setToken(token);
-//        TokensManager.getInstance().updateToken(token, USER);
-        TokensManager.getInstance().updateToken(token);
+        Async.runInNewThread(() -> {
+            while(!LoadFamilyThread.isEnd){  }
+            TokensManager.getInstance().updateToken(token);
+        });
     }
-
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {

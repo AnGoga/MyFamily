@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.angogasapps.myfamily.R;
+import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.async.notification.FcmMessageManager;
+import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.databinding.ActivityMainBinding;
 import com.angogasapps.myfamily.models.events.NewsEvent;
 import com.angogasapps.myfamily.ui.screens.main.adapters.ItemTouchHelperCallback;
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.menu_item_signout){
             AUTH.signOut();
+            DatabaseManager.resetDatabase();
             startActivity(new Intent(this, SplashActivity.class));
             finish();
         }
