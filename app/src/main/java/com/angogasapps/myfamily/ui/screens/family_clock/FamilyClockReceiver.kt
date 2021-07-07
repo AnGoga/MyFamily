@@ -10,9 +10,10 @@ class FamilyClockReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         println(intent.toString() + Thread.currentThread())
 
-        context.startActivity(Intent(context, AlarmClockActivity::class.java)
+        val intent = Intent(context, AlarmClockActivity::class.java)
                 .also { it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); }
-        )
+
+        context.startActivity(intent)
 
     }
 }

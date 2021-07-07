@@ -23,6 +23,8 @@ class ClockWakeUpperManager private constructor(){
 
     @Synchronized
     fun wakeUpClock(obj: ClockObject){
+        if (obj.time <= System.currentTimeMillis()) return
+
         val context: Context = AppApplication.getInstance()
         val intent = Intent(context, FamilyClockReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0)
