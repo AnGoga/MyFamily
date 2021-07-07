@@ -63,28 +63,3 @@ public class FcmChatNotificationCreator {
     }
 
 }
-/*
-JSONObject mainObj = new JSONObject();
-        JSONObject messageObj = new JSONObject();
-        JSONObject notificationObj = new JSONObject();
-        JSONObject dataObj = new JSONObject();
-
-        notificationObj.put(CHILD_TITLE, StringFormater.convertStringToUTF8(USER.getName()));
-        if (message.getType().equals(TYPE_TEXT_MESSAGE)) {
-            notificationObj.put(CHILD_BODY, StringFormater.convertStringToUTF8(message.getValue()));
-        }else if (message.getType().equals(TYPE_VOICE_MESSAGE)){
-            // do . . .
-        }else if (message.getType().equals(TYPE_IMAGE_MESSAGE)){
-            notificationObj.put(CHILD_IMAGE, message.getValue());
-        }
-
-
-        dataObj.put(CHILD_TYPE, message.getType());
-
-        messageObj.put(CHILD_TOPIC, to);
-        messageObj.put(NODE_NOTIFICATION, notificationObj);
-        messageObj.put(NODE_DATA, dataObj);
-
-        mainObj.put("message", messageObj);
-        return mainObj;
- */

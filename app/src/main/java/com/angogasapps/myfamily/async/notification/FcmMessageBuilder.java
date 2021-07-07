@@ -16,6 +16,7 @@ public class FcmMessageBuilder {
     private static final String CHILD_TOPIC = "topic";
     private static final String CHILD_TITLE = "title";
     private static final String CHILD_BODY = "body";
+    public static final String CHILD_MESSAGE = "message";
 
     private static final String CHILD_IMAGE = "image";
 
@@ -74,7 +75,7 @@ public class FcmMessageBuilder {
             messageObj.put(NODE_NOTIFICATION, notificationObj);
             messageObj.put(NODE_DATA, dataObj);
 
-            mainObj.put("message", messageObj);
+            mainObj.put(CHILD_MESSAGE, messageObj);
             return mainObj;
         } catch (Exception e) {
             Log.e("tag", "ERROR on build FcmMessage");

@@ -137,5 +137,7 @@
     <string name="clock_is_on_by">\"Будильник заведён: \"</string>
     <string name="date">Дата</string>
     <string name="time">Время</string>
+    <string name="selected_time_is_end">Указанное время прошло</string>
+    <string name="notone_not_selected">Ни один из членов семьи не выбран</string>
 
 </resources>

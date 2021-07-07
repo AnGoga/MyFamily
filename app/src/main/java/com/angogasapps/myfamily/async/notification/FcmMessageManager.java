@@ -46,7 +46,7 @@ public class FcmMessageManager {
     }
 
 
-    private static void sendNotificationMessage(JSONObject fcmMessage) throws IOException {
+    public static void sendNotificationMessage(JSONObject fcmMessage) throws IOException {
         HttpURLConnection connection = getConnection();
         connection.setDoOutput(true);
         DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());

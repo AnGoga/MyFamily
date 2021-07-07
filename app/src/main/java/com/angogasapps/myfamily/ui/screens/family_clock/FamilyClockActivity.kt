@@ -57,7 +57,6 @@ class FamilyClockActivity : AppCompatActivity() {
         binding.recycleView.layoutManager = layoutManager
     }
 
-
     private fun onGetNewClockEvent(obj: FamilyClockEvent) {
         adapter.update(obj)
         when(obj.event){

@@ -63,6 +63,10 @@ public class FirebaseVarsAndConsts {
     public static final String CHILD_FROM = "from";
     public static final String CHILD_VALUE = "value";
     public static final String CHILD_TIME = "time";
+    public static final String CHILD_TO = "to";
+    public static final String CHILD_FROM_ID = "fromId";
+    public static final String CHILD_OPTIONS = "options";
+    public static final String CHILD_DATA = "data";
 
     public static final String CHILD_PRODUCTS = "products";
     public static final String CHILD_COMMENT = "comment";

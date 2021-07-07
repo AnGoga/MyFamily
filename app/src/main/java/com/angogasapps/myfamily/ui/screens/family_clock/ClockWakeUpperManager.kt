@@ -13,6 +13,7 @@ class ClockWakeUpperManager private constructor(){
 
     companion object{
         private var manager: ClockWakeUpperManager? = null
+        @Synchronized
         fun getInstance(): ClockWakeUpperManager {
             if (manager == null)
                 manager = ClockWakeUpperManager()
@@ -20,6 +21,7 @@ class ClockWakeUpperManager private constructor(){
         }
     }
 
+    @Synchronized
     fun wakeUpClock(obj: ClockObject){
         val context: Context = AppApplication.getInstance()
         val intent = Intent(context, FamilyClockReceiver::class.java)
