@@ -85,6 +85,8 @@ class AlarmClockBuilderActivity : AppCompatActivity() {
 
     private fun showTimePickerDialog() {
         val onTimeSet: (view: TimePicker, hourOfDay: Int, minute: Int) -> Unit = { view, hourOfDay, minute ->
+            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+            calendar.set(Calendar.MINUTE, minute)
             initTimeText()
         }
 

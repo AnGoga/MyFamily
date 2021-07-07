@@ -2,8 +2,10 @@ package com.angogasapps.myfamily.firebase
 
 import com.angogasapps.myfamily.async.notification.FcmMessageBuilder
 import com.angogasapps.myfamily.async.notification.FcmMessageBuilder.CHILD_MESSAGE
+import com.angogasapps.myfamily.async.notification.FcmMessageBuilder.CHILD_TOPIC
 import com.angogasapps.myfamily.async.notification.FcmMessageManager
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
+import com.angogasapps.myfamily.models.Family
 import com.angogasapps.myfamily.models.family_clock.ClockObject
 import kotlinx.coroutines.*
 import org.json.JSONObject
@@ -38,13 +40,15 @@ private fun buildJSON(obj: ClockObject, to: String): JSONObject {
         val data = JSONObject()
         obj.options?.let { for (key in it.keys) data.put(key, it[key]) }
 
-        data.put(CHILD_TIME, obj.time)
+        data.put(CHILD_TIME, obj.time.toString())
         data.put(CHILD_FROM_ID, obj.fromId)
         data.put(CHILD_FROM_PHONE, obj.fromPhone)
         data.put(CHILD_ID, obj.id)
+        data.put(CHILD_TYPE, TYPE_ALARM_CLOCK_MESSAGE)
 
-        json.put(CHILD_TOKEN, to)
+        json.put(CHILD_TOPIC, to)
         json.put(CHILD_DATA, data)
+
         return JSONObject().put(CHILD_MESSAGE, json)
     }catch (e: Exception){
         e.printStackTrace()

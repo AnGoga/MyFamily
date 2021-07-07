@@ -35,6 +35,8 @@ public class FirebaseVarsAndConsts {
     public static final String TYPE_IMAGE_MESSAGE = "image";
     public static final String TYPE_VOICE_MESSAGE = "voice";
 
+    public static final String TYPE_ALARM_CLOCK_MESSAGE = "alarm_clock_message";
+
     public static final String NODE_USERS = "users";
     public static final String NODE_FAMILIES = "families";
     public static final String NODE_CHAT = "chat";
@@ -67,6 +69,7 @@ public class FirebaseVarsAndConsts {
     public static final String CHILD_FROM_ID = "fromId";
     public static final String CHILD_OPTIONS = "options";
     public static final String CHILD_DATA = "data";
+
 
     public static final String CHILD_PRODUCTS = "products";
     public static final String CHILD_COMMENT = "comment";

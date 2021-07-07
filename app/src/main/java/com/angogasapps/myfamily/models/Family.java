@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
@@ -58,6 +59,7 @@ public class Family {
         return isContains;
     }
 
+    @Nullable
     public User getUserById(String id){
         for (User user : usersList){
             if (user.getId().equals(id)){
@@ -88,6 +90,7 @@ public class Family {
         return User.default_user_photo;
     }
 
+    @Nullable
     public User getUserByPhone(String phone){
         for (User user : usersList){
             if (user.getId().equals(phone)){

@@ -11,6 +11,9 @@ import com.angogasapps.myfamily.utils.Async;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class FcmNotificationService extends FirebaseMessagingService {
@@ -36,6 +39,16 @@ public class FcmNotificationService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         Log.i("TAG", "Сообщение-уведомление получено -> " + remoteMessage.toString());
+
+        Map<String, String> map = remoteMessage.getData();
+        if (map != null){
+            if (map.size() > 0){
+                analyzeData(map);
+            }
+        }
+    }
+
+    private void analyzeData(Map<String, String> map){
 
     }
 }

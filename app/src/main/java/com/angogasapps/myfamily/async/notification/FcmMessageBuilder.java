@@ -13,7 +13,7 @@ public class FcmMessageBuilder {
 
     private static final String NODE_DATA = "data";
     private static final String NODE_NOTIFICATION = "notification";
-    private static final String CHILD_TOPIC = "topic";
+    public static final String CHILD_TOPIC = "topic";
     private static final String CHILD_TITLE = "title";
     private static final String CHILD_BODY = "body";
     public static final String CHILD_MESSAGE = "message";

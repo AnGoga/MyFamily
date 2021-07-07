@@ -10,20 +10,15 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
 import com.angogasapps.myfamily.async.LoadFamilyThread;
 import com.angogasapps.myfamily.async.notification.FcmMessageManager;
 import com.angogasapps.myfamily.database.DatabaseManager;
 import com.angogasapps.myfamily.databinding.ActivityMainBinding;
-import com.angogasapps.myfamily.models.events.NewsEvent;
 import com.angogasapps.myfamily.ui.screens.main.adapters.ItemTouchHelperCallback;
 import com.angogasapps.myfamily.ui.screens.main.adapters.MainActivityAdapter;
-import com.angogasapps.myfamily.ui.screens.news_center.NewsManager;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
 import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils;
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity;
-
-import io.reactivex.disposables.Disposable;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
@@ -48,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         initRecyclerView();
         initNewsLayout();
-        FcmMessageManager.subscribeToFamilyChat();
+        FcmMessageManager.subscribeToTopics();
+//        FcmMessageManager.updateToken();
     }
 
     private void initRecyclerView() {

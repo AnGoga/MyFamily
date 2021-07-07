@@ -23,6 +23,10 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_TOKEN;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_USERS;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 
 public class FcmMessageManager {
@@ -95,12 +99,15 @@ public class FcmMessageManager {
         return stringBuilder.toString();
     }
 
-    public static void subscribeToFamilyChat(){
+    public static void subscribeToTopics(){
         if (canSubscribeToFamily()) {
             FirebaseMessaging.getInstance().subscribeToTopic(USER.getFamily() + "-chat").addOnCompleteListener(task -> {
                 Log.d("TAG", "subscribeToFamily: " + task.toString());
             });
         }
+        FirebaseMessaging.getInstance().subscribeToTopic(USER.getId()).addOnCompleteListener(task -> {
+            Log.d("TAG", "subscribeToSelf: " + task.toString());
+        });
     }
 
     public static void unsubscribeFromFamilyChat(){
@@ -120,10 +127,21 @@ public class FcmMessageManager {
         editor.putBoolean("can_send_notification", isHavePermission);
         editor.apply();
         if (isHavePermission){
-            subscribeToFamilyChat();
+            subscribeToTopics();
         }else{
             unsubscribeFromFamilyChat();
         }
     }
 
+    public static void updateToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                USER.setToken(task.getResult());
+                DATABASE_ROOT.child(NODE_USERS).child(AUTH.getCurrentUser().getUid()).child(CHILD_TOKEN)
+                  .setValue(task.getResult().toString()).addOnCompleteListener(task1 -> {
+                      if (task1.isSuccessful()){  } else { task1.getException().printStackTrace(); }
+                });
+            }
+        });
+    }
 }
