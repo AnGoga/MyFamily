@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.angogasapps.myfamily">
+    package="com.angogasapps.myfamily" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -25,7 +25,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFamily"
         android:usesCleartextTraffic="true"
-        tools:targetApi="m">
+        tools:targetApi="m" >
+        <activity android:name=".ui.screens.family_clock.AlarmClockBuilderActivity" >
+        </activity>
+        <activity android:name=".ui.screens.family_clock.AlarmClockActivity" />
+
         <receiver
             android:name=".ui.screens.family_clock.FamilyClockReceiver"
             android:process=":remote" />
@@ -72,7 +76,7 @@
         <service
             android:name=".async.FcmNotificationService"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <!-- <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/> -->
@@ -100,7 +104,7 @@
         <activity
             android:name=".ui.screens.splash.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme" >
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
@@ -119,8 +123,8 @@
         </activity>
         <activity android:name=".ui.screens.findorcreatefamily.FindOrCreateFamilyActivity" />
 
-        <receiver android:name=".app.UninstallIntentReceiver">
-            <intent-filter android:priority="0">
+        <receiver android:name=".app.UninstallIntentReceiver" >
+            <intent-filter android:priority="0" >
                 <action android:name="android.intent.action.QUERY_PACKAGE_RESTART" />
 
                 <data android:scheme="package" />

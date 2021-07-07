@@ -135,5 +135,7 @@
     <string name="participant">Участник</string>
     <string name="creator">Создатель</string>
     <string name="clock_is_on_by">\"Будильник заведён: \"</string>
+    <string name="date">Дата</string>
+    <string name="time">Время</string>
 
 </resources>

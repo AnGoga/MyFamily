@@ -15,6 +15,7 @@ import kotlinx.coroutines.channels.BroadcastChannel
 class FamilyClockManager private constructor(val scope: CoroutineScope){
     val path = DATABASE_ROOT.child(NODE_CLOCK).child(USER.family).child(USER.id)
     val channel: BroadcastChannel<FamilyClockEvent> = BroadcastChannel(1)
+    lateinit var listener: ChildEventListener
 
     companion object {
         private var manager: FamilyClockManager? = null
@@ -24,6 +25,14 @@ class FamilyClockManager private constructor(val scope: CoroutineScope){
                 manager = FamilyClockManager(scope)
             return manager!!
         }
+
+        fun killManager() {
+            manager?.let {
+                it.path.removeEventListener(it.listener)
+                it.channel.cancel()
+                manager = null
+            }
+        }
     }
 
     init {
@@ -31,7 +40,7 @@ class FamilyClockManager private constructor(val scope: CoroutineScope){
     }
 
     private fun initListener() {
-        path.addChildEventListener(object: ChildEventListener{
+        listener = object: ChildEventListener{
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 onGetEvent(snapshot, EFirebaseEvents.added)
             }
@@ -43,8 +52,8 @@ class FamilyClockManager private constructor(val scope: CoroutineScope){
             }
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {}
-
-        })
+        }
+        path.addChildEventListener(listener)
     }
 
     private fun onGetEvent(snapshot: DataSnapshot, event: EFirebaseEvents){

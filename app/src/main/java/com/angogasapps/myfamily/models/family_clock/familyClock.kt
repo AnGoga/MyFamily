@@ -4,10 +4,11 @@ import com.angogasapps.myfamily.firebase.EFirebaseEvents
 
 data class ClockObject(
         val id: String,
+        var to: ArrayList<String>, // users id
         var fromPhone: String,
         var fromId: String,
         var time: Long,
-        var melodyValue: String? = null
+        var options: HashMap<String, String>?= null
 )
 
 data class FamilyClockEvent(

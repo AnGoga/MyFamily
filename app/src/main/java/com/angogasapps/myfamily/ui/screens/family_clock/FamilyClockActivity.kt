@@ -1,5 +1,6 @@
 package com.angogasapps.myfamily.ui.screens.family_clock
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +32,13 @@ class FamilyClockActivity : AppCompatActivity() {
 
         initRecyclerView()
         initSubscribe()
+        initOnClicks()
+    }
+
+    private fun initOnClicks() {
+        binding.floatingBtn.setOnClickListener {
+            startActivity(Intent(this, AlarmClockBuilderActivity::class.java))
+        }
     }
 
     private fun initSubscribe() = scope.launch{
@@ -61,6 +69,7 @@ class FamilyClockActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        FamilyClockManager.killManager()
         channel.cancel()
         job.cancel()
     }

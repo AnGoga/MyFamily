@@ -16,6 +16,7 @@ import com.angogasapps.myfamily.utils.asDate
 
 class ClockAdapter(val context: Context): RecyclerView.Adapter<ClockAdapter.ClockViewHolder>() {
     val inflater: LayoutInflater = LayoutInflater.from(context)
+
     val list = ArrayList<ClockObject>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClockViewHolder {
@@ -29,15 +30,25 @@ class ClockAdapter(val context: Context): RecyclerView.Adapter<ClockAdapter.Cloc
     override fun getItemCount() = list.size
 
     fun update(event: FamilyClockEvent) = synchronized(list){
-        for (i in list){
-            if (i.id == event.value.id){
-                val index = list.indexOf(i)
-                list[index] = event.value
+        if(event.event == EFirebaseEvents.added) {
+                list.add(event.value)
+                notifyItemInserted(itemCount - 1)
+                return@synchronized
+            }
 
-                when(event.event){
-                    EFirebaseEvents.added -> notifyItemInserted(index)
-                    EFirebaseEvents.changed -> notifyItemChanged(index)
-                    EFirebaseEvents.removed -> notifyItemRemoved(index)
+        for (i in list){
+            if (i.id == event.value.id) {
+                val index = list.indexOf(i)
+
+                when (event.event) {
+                    EFirebaseEvents.changed -> {
+                        list[index] = event.value
+                        notifyItemChanged(index)
+                    }
+                    EFirebaseEvents.removed -> {
+                        list.removeAt(index)
+                        notifyItemRemoved(index)
+                    }
                 }
             }
         }
