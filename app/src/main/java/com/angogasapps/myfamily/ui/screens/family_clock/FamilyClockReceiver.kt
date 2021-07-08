@@ -5,6 +5,8 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
+import android.net.Uri
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.angogasapps.myfamily.app.AppNotificationManager.CHANNEL_ID
@@ -23,17 +25,32 @@ class FamilyClockReceiver : BroadcastReceiver() {
         val fullScreenPendingIntent = PendingIntent.getActivity(context, 0,
                 fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val builder =
-                NotificationCompat.Builder(context, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.sym_def_app_icon)
-                        .setContentTitle("Incoming call")
-                        .setContentText("(919) 555-1234")
-                        .setPriority(NotificationCompat.PRIORITY_MAX)
-                        .setCategory(NotificationCompat.CATEGORY_CALL)
-                        .setFullScreenIntent(fullScreenPendingIntent, true)
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.sym_def_app_icon)
+                .setContentTitle("Incoming call")
+                .setContentText("(919) 555-1234")
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setCategory(NotificationCompat.CATEGORY_CALL)
+                .setFullScreenIntent(fullScreenPendingIntent, true)
+                .setAutoCancel(false)
 
 
         NotificationManagerCompat.from(context).notify(115, builder.build())
+
+
+        /*var alert: Uri? = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        var r = RingtoneManager.getRingtone(context, alert)
+
+        if (r == null) {
+            alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            r = RingtoneManager.getRingtone(context, alert)
+            if (r == null) {
+                alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+                r = RingtoneManager.getRingtone(context, alert)
+            }
+        }
+        r?.play()*/
+
     }
 }
 

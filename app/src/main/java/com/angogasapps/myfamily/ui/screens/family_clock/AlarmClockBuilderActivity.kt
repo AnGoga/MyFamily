@@ -97,7 +97,6 @@ class AlarmClockBuilderActivity : AppCompatActivity() {
     }
 
     private fun onSaveButtonClick(view: View){
-        calendar.set(Calendar.MILLISECOND, 0)
         val obj: ClockObject = buildClockObject()
         if (obj.time <= System.currentTimeMillis()){
             Toasty.warning(this, getString(R.string.selected_time_is_end)).show()
@@ -116,6 +115,6 @@ class AlarmClockBuilderActivity : AppCompatActivity() {
                 adapter.getIdOfCheckedUsers(),
                 USER.phone,
                 USER.id,
-                calendar.timeInMillis
+                calendar.timeInMillis - (calendar.timeInMillis % 1_000)
         )
 }
