@@ -98,10 +98,12 @@
 
             <Button
                 android:id="@+id/join_btn"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/join"/>
+                android:text="@string/join"
+                android:layout_margin="@dimen/normal_margin"
+                android:background="@drawable/cardview_background"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

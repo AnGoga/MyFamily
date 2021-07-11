@@ -19,6 +19,7 @@ import com.angogasapps.myfamily.ui.screens.main.adapters.MainActivityAdapter;
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
 import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils;
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity;
+import com.angogasapps.myfamily.utils.Async;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
@@ -62,8 +63,17 @@ public class MainActivity extends AppCompatActivity {
     private void initToolbar() {
         getSupportActionBar().hide();
         binding.toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
-        if (USER.getUserPhoto() != null)
-            binding.toolbarUserImage.setImageBitmap(USER.getUserPhoto());
+
+
+        Async.runInNewThread(() -> {
+            while (!LoadFamilyThread.isEnd) {  }
+            if (USER.getUserPhoto() != null)
+                runOnUiThread(() -> {
+                    binding.toolbarUserImage.setImageBitmap(USER.getUserPhoto());
+                });
+
+        });
+
         binding.toolbarUserImage.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, PersonalDataActivity.class));
         });
@@ -80,9 +90,15 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.menu_item_signout){
             AUTH.signOut();
-            DatabaseManager.resetDatabase();
-            startActivity(new Intent(this, SplashActivity.class));
-            finish();
+            Async.runInNewThread(() -> {
+                // reset all managers and services
+                DatabaseManager.resetDatabase();
+                runOnUiThread(() -> {
+                    startActivity(new Intent(this, SplashActivity.class));
+                    finish();
+                });
+            });
+
         }
         return super.onOptionsItemSelected(item);
     }

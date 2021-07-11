@@ -16,26 +16,26 @@ class FamilyClockReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
-//        val intent = Intent(context, AlarmClockActivity::class.java)
-//                .also { it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); }
+        val intent = Intent(context, AlarmClockActivity::class.java)
+                .also { it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); }
+
+        context.startActivity(intent)
+
+//        val fullScreenIntent = Intent(context, AlarmClockActivity::class.java)
+//        val fullScreenPendingIntent = PendingIntent.getActivity(context, 0,
+//                fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 //
-//        context.startActivity(intent)
-
-        val fullScreenIntent = Intent(context, AlarmClockActivity::class.java)
-        val fullScreenPendingIntent = PendingIntent.getActivity(context, 0,
-                fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.sym_def_app_icon)
-                .setContentTitle("Incoming call")
-                .setContentText("(919) 555-1234")
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setCategory(NotificationCompat.CATEGORY_CALL)
-                .setFullScreenIntent(fullScreenPendingIntent, true)
-                .setAutoCancel(false)
-
-
-        NotificationManagerCompat.from(context).notify(115, builder.build())
+//        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+//                .setSmallIcon(R.drawable.sym_def_app_icon)
+//                .setContentTitle("Incoming call")
+//                .setContentText("(919) 555-1234")
+//                .setPriority(NotificationCompat.PRIORITY_MAX)
+//                .setCategory(NotificationCompat.CATEGORY_CALL)
+//                .setFullScreenIntent(fullScreenPendingIntent, true)
+//                .setAutoCancel(false)
+//
+//
+//        NotificationManagerCompat.from(context).notify(115, builder.build())
 
 
         /*var alert: Uri? = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)

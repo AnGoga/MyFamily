@@ -31,9 +31,9 @@
         android:theme="@style/Theme.MyFamily"
         android:usesCleartextTraffic="true"
         tools:targetApi="m" >
-        <activity android:name=".ui.screens.family_clock.AlarmClockBuilderActivity"
+        <activity android:name=".ui.screens.family_clock.AlarmClockBuilderActivity" />
+        <activity android:name=".ui.screens.family_clock.AlarmClockActivity"
             android:showOnLockScreen="true"/>
-        <activity android:name=".ui.screens.family_clock.AlarmClockActivity" />
 
         <receiver
             android:name=".ui.screens.family_clock.FamilyClockReceiver"

@@ -12,7 +12,7 @@
     <LinearLayout
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="50dp"
+        android:paddingTop="35dp"
         android:paddingBottom="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,7 +23,7 @@
             android:id="@+id/text"
             android:textSize="20sp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/black" />
 

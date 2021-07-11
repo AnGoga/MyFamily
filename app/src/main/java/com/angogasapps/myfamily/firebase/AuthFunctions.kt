@@ -7,6 +7,8 @@ import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER
 import com.angogasapps.myfamily.firebase.interfaces.IAuthUser
 import com.angogasapps.myfamily.models.User
+import com.angogasapps.myfamily.utils.Async
+import com.angogasapps.myfamily.utils.downloadBitmapByURL
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
@@ -70,6 +72,14 @@ object AuthFunctions {
                         USER = snapshot.getValue(User::class.java)
                         if (USER != null) {
                             USER.setId(snapshot.key)
+                            if (!USER.photoURL.equals("")){
+                                Async.runInNewThread {
+                                    downloadBitmapByURL(USER.photoURL).let {
+                                        USER.setBitmap(it)
+                                    }
+                                }
+                            }
+
                             iAuthUser.onEndDownloadUser()
                         } else {
                             AUTH.signOut()

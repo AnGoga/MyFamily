@@ -22,8 +22,6 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
 public class PersonalDataActivity extends AppCompatActivity {
     private ActivityPersonalDataBinding binding;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
