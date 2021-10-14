@@ -1,8 +1,8 @@
 package com.angogasapps.myfamily.firebase
 
 import com.angogasapps.myfamily.async.notification.FcmMessageBuilder
-import com.angogasapps.myfamily.async.notification.FcmMessageBuilder.CHILD_MESSAGE
-import com.angogasapps.myfamily.async.notification.FcmMessageBuilder.CHILD_TOPIC
+import com.angogasapps.myfamily.async.notification.FcmMessageBuilder.Companion.CHILD_MESSAGE
+import com.angogasapps.myfamily.async.notification.FcmMessageBuilder.Companion.CHILD_TOPIC
 import com.angogasapps.myfamily.async.notification.FcmMessageManager
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
 import com.angogasapps.myfamily.models.Family

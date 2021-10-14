@@ -42,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
             chatNotificationPref = findPreference("chat_notification");
 
             chatNotificationPref.setOnPreferenceClickListener(preference -> {
-                FcmMessageManager.setPermissionToGetChatNotifications(chatNotificationPref.isChecked());
+                FcmMessageManager.INSTANCE.setPermissionToGetChatNotifications(chatNotificationPref.isChecked());
                 return false;
             });
         }

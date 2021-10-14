@@ -1,34 +1,12 @@
-package com.angogasapps.myfamily.models.buy_list;
+package com.angogasapps.myfamily.models.buy_list
 
-public class BuyListEvent {
-    private int index;
-    private EBuyListEvents events;
-    private String buyListId;
 
-    public int getIndex() {
-        return index;
-    }
-    public void setIndex(int index) {
-        this.index = index;
-    }
+class BuyListEvent {
+    var index = 0
+    var event: EBuyListEvents? = null
+    var buyListId: String? = null
 
-    public EBuyListEvents getEvent() {
-        return events;
-    }
-    public void setEvents(EBuyListEvents events) {
-        this.events = events;
-    }
-
-    public String getBuyListId() {
-        return buyListId;
-    }
-    public void setBuyListId(String buyListId) {
-        this.buyListId = buyListId;
-    }
-
-    public enum EBuyListEvents {
+    enum class EBuyListEvents {
         productAdded, productRemoved, productChanged, buyListRemoved, buyListAdded, buyListChanged
     }
 }
-
-

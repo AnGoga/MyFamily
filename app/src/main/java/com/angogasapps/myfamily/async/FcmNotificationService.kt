@@ -22,7 +22,7 @@ class FcmNotificationService : FirebaseMessagingService() {
         FirebaseVarsAndConsts.USER.token = token
         Async.runInNewThread {
             while (!LoadFamilyThread.isEnd) {}
-            TokensManager.getInstance().updateToken(token)
+            TokensManager.updateToken(token)
         }
     }
 

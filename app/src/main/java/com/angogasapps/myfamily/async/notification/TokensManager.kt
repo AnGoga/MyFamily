@@ -1,52 +1,41 @@
-package com.angogasapps.myfamily.async.notification;
+package com.angogasapps.myfamily.async.notification
 
-import com.angogasapps.myfamily.models.User;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GetTokenResult
+import com.angogasapps.myfamily.models.User
+import com.google.android.gms.tasks.Task
+import java.lang.Exception
 
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_TOKEN;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_USERS;
-
-public class TokensManager {
-    private static TokensManager manager;
-
-    public static TokensManager getInstance(){
-        if (manager == null)
-            manager = new TokensManager();
-        return manager;
+object TokensManager {
+    fun updateToken(token: String?, user: User) {
+        FirebaseVarsAndConsts.DATABASE_ROOT.child(FirebaseVarsAndConsts.NODE_USERS).child(user.id)
+            .child(FirebaseVarsAndConsts.CHILD_TOKEN).setValue(token)
+            .addOnCompleteListener { task: Task<Void?>? -> }
     }
 
-    public void updateToken(String token, User user){
-        DATABASE_ROOT.child(NODE_USERS).child(user.getId()).child(CHILD_TOKEN).setValue(token)
-          .addOnCompleteListener(task -> {
-            // . . . . .
-        });
-    }
-
-    public void updateToken(String token){
+    fun updateToken(token: String?) {
         try {
-            FirebaseDatabase.getInstance().getReference()
-                    .child(NODE_USERS)
-                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child(CHILD_TOKEN).setValue(token)
-                    .addOnCompleteListener(task -> {
-                        // . . . . .
-                    });
-        }catch (Exception e){
-            e.printStackTrace();
+            FirebaseDatabase.getInstance().reference
+                .child(FirebaseVarsAndConsts.NODE_USERS)
+                .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                .child(FirebaseVarsAndConsts.CHILD_TOKEN).setValue(token)
+                .addOnCompleteListener { task: Task<Void?>? -> }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    public void updateToken(User user){
-        FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        String idToken = task.getResult().getToken();
-                        updateToken(idToken, user);
-                    } else {
-                        task.getException().printStackTrace();
-                    }
-                });
+    fun updateToken(user: User) {
+        FirebaseAuth.getInstance().currentUser!!.getIdToken(true)
+            .addOnCompleteListener { task: Task<GetTokenResult> ->
+                if (task.isSuccessful) {
+                    val idToken = task.result.token
+                    updateToken(idToken, user)
+                } else {
+                    task.exception!!.printStackTrace()
+                }
+            }
     }
 }

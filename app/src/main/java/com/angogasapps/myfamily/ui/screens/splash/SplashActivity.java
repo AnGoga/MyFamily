@@ -55,7 +55,7 @@ public class SplashActivity extends AppCompatActivity {
     private void onEndDownloadUser(){
         Log.d("tag", "\n" + USER.toString());
 
-        TokensManager.getInstance().updateToken(USER);
+        TokensManager.INSTANCE.updateToken(USER);
 
 
         if (USER.getFamily().equals("")){

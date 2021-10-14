@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import android.os.Bundle
 import com.angogasapps.myfamily.async.LoadFamilyThread
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
-import com.angogasapps.myfamily.async.notification.FcmMessageManager
 import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils
 import com.angogasapps.myfamily.ui.screens.main.adapters.ItemTouchHelperCallback
 import com.angogasapps.myfamily.utils.Async
@@ -19,6 +18,7 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.async.notification.FcmMessageManager
 import com.angogasapps.myfamily.database.DatabaseManager
 import com.angogasapps.myfamily.databinding.ActivityMainBinding
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity

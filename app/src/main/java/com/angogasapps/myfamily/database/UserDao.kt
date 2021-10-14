@@ -1,32 +1,22 @@
-package com.angogasapps.myfamily.database;
+package com.angogasapps.myfamily.database
 
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-import androidx.room.Update;
-
-import com.angogasapps.myfamily.models.User;
-
-import java.util.List;
+import androidx.room.*
+import com.angogasapps.myfamily.models.User
 
 @Dao
-public interface UserDao {
-
-    @Query("SELECT * FROM User")
-    List<User> getAll();
+interface UserDao {
+    @get:Query("SELECT * FROM User")
+    val all: List<User?>?
 
     @Query("SELECT * FROM User WHERE id = :id")
-    User getById(String id);
+    fun getById(id: String?): User?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(User user);
+    fun insert(user: User?)
 
     @Update
-    void update(User user);
+    fun update(user: User?)
 
     @Delete
-    void delete(User user);
-
+    fun delete(user: User?)
 }

@@ -61,7 +61,7 @@ public class BuyListManager {
 
                     BuyListEvent event = new BuyListEvent();
                     event.setIndex(buyLists.size() - 1);
-                    event.setEvents(BuyListEvent.EBuyListEvents.buyListAdded);
+                    event.setEvent(BuyListEvent.EBuyListEvents.buyListAdded);
                     event.setBuyListId(buyList.getId());
                     subject.onNext(event);
                 }
@@ -78,7 +78,7 @@ public class BuyListManager {
 
                 BuyListEvent event = new BuyListEvent();
                 event.setBuyListId(buyList.getId());
-                event.setEvents(BuyListEvent.EBuyListEvents.buyListRemoved);
+                event.setEvent(BuyListEvent.EBuyListEvents.buyListRemoved);
                 for (int i = 0; i < buyLists.size(); i++) {
                     if (buyLists.get(i).getId().equals(buyList.getId())){
                         event.setIndex(i);
@@ -142,7 +142,7 @@ public class BuyListManager {
                         oldBuyList.setName(newBuyList.getName());
                         event.setBuyListId(newBuyList.getId());
                         event.setIndex(i);
-                        event.setEvents(BuyListEvent.EBuyListEvents.buyListChanged);
+                        event.setEvent(BuyListEvent.EBuyListEvents.buyListChanged);
                         subject.onNext(event);
                         return;
                     }
@@ -153,17 +153,17 @@ public class BuyListManager {
                         oldBuyList.getProducts().add(newBuyList.getProducts().get(newBuyList.getProducts().size() - 1));
                         index = oldBuyList.getProducts().size() - 1;
 
-                        event.setEvents(BuyListEvent.EBuyListEvents.productAdded);
+                        event.setEvent(BuyListEvent.EBuyListEvents.productAdded);
                     }else if(newBuyList.getProducts().size() < oldBuyList.getProducts().size()){
                         // Один продукт удалён
                         index = BuyListUtils.getIndexOfRemoveProduct(oldBuyList.getProducts(), newBuyList.getProducts());
                         oldBuyList.getProducts().remove(index);
-                        event.setEvents(BuyListEvent.EBuyListEvents.productRemoved);
+                        event.setEvent(BuyListEvent.EBuyListEvents.productRemoved);
                     }else {//if(newBuyList.getProducts().size() == oldBuyList.getProducts().size()){
                         //Один продукт изменился
                         index = BuyListUtils.getIndexOfChangeProduct(oldBuyList.getProducts(), newBuyList.getProducts());
                         oldBuyList.getProducts().set(index, newBuyList.getProducts().get(index));
-                        event.setEvents(BuyListEvent.EBuyListEvents.productChanged);
+                        event.setEvent(BuyListEvent.EBuyListEvents.productChanged);
                     }
                     event.setIndex(index);
                     event.setBuyListId(newBuyList.getId());

@@ -1,65 +1,45 @@
-package com.angogasapps.myfamily.async.notification;
+package com.angogasapps.myfamily.async.notification
 
-import android.content.Context;
-import android.util.Log;
+import android.util.Log
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
-import com.angogasapps.myfamily.models.Message;
+import com.angogasapps.myfamily.app.AppApplication.Companion.getInstance
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import org.json.JSONObject
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.models.Message
+import java.lang.Exception
+import java.lang.StringBuilder
 
-import org.json.JSONObject;
 
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_IMAGE_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_TEXT_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.TYPE_VOICE_MESSAGE;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-
-public class FcmChatNotificationCreator {
-    
-    public static JSONObject fromChatMessage(Message message) {
-        return fromChatMessage(message, USER.getFamily() + "-chat");
+fun fromChatMessage(message: Message, to: String = FirebaseVarsAndConsts.USER.family + "-chat"): JSONObject {
+    var notifyObject = JSONObject()
+    try {
+        notifyObject = buildFrom(message, to)
+    } catch (e: Exception) {
+        Log.e("tag", "ERROR on build FcmMessage")
     }
+    return notifyObject
+}
 
-    public static JSONObject fromChatMessage(Message message, String to) {
-        JSONObject notifObject = new JSONObject();
-        try {
-            notifObject = buildFrom(message, to);
-        } catch (Exception e) {
-            Log.e("tag", "ERROR on build FcmMessage");
-        }
-        return notifObject;
+private fun buildFrom(message: Message, to: String): JSONObject {
+    val builder = FcmMessageBuilder()
+    builder.setTo(to)
+    builder.setTitle(FirebaseVarsAndConsts.USER.name)
+    builder.setBody(getTextToChatMessageNotification(message))
+    if (message.type == FirebaseVarsAndConsts.TYPE_IMAGE_MESSAGE) {
+        builder.setImage(message.value!!)
     }
+    return builder.build()
+}
 
-
-    private static JSONObject buildFrom(Message message, String to) {
-        FcmMessageBuilder builder = new FcmMessageBuilder();
-
-        builder.setTo(to);
-        builder.setTitle(USER.getName());
-
-        builder.setBody(getTextToChatMessageNotification(message));
-
-        if (message.getType().equals(TYPE_IMAGE_MESSAGE)){
-            builder.setImage(message.getValue());
-        }
-
-        return builder.build();
+private fun getTextToChatMessageNotification(message: Message): String {
+    var context = getInstance().applicationContext
+    val string = StringBuilder()
+    when (message.type) {
+        FirebaseVarsAndConsts.TYPE_TEXT_MESSAGE -> string.append(message.value)
+        FirebaseVarsAndConsts.TYPE_IMAGE_MESSAGE -> string.append("\uD83D\uDCF7" + " ").append(context.getString(R.string.photo))
+        FirebaseVarsAndConsts.TYPE_VOICE_MESSAGE -> string.append("\uD83C\uDFA4" + " ").append(context!!.getString(R.string.voice))
     }
-
-    private static String getTextToChatMessageNotification(Message message){
-        Context context = AppApplication.getInstance().getApplicationContext();
-        StringBuilder string = new StringBuilder();
-
-        if (message.getType().equals(TYPE_TEXT_MESSAGE))
-            string.append(message.getValue());
-        else if (message.getType().equals(TYPE_IMAGE_MESSAGE))
-            string.append("\uD83D\uDCF7" + " ").append(context.getString(R.string.photo));
-        else if (message.getType().equals(TYPE_VOICE_MESSAGE))
-            string.append("\uD83C\uDFA4" + " ").append(context.getString(R.string.voice));
-
-        context = null;
-
-        return string.toString();
-    }
-
+    context = null
+    return string.toString()
 }

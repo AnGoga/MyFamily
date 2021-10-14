@@ -1,147 +1,157 @@
-package com.angogasapps.myfamily.async.notification;
+package com.angogasapps.myfamily.async.notification
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.content.res.AssetManager;
-import android.util.Log;
-
-import com.angogasapps.myfamily.app.AppApplication;
-import com.angogasapps.myfamily.models.Message;
-import com.angogasapps.myfamily.utils.Async;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.firebase.messaging.FirebaseMessaging;
-
-
-import org.json.JSONObject;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Scanner;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_TOKEN;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_USERS;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-
-public class FcmMessageManager {
-    private static final String postUrl = "https://fcm.googleapis.com/v1/projects/myfamily-1601b/messages:send";
-    private static final String MESSAGING_SCOPE = "https://www.googleapis.com/auth/firebase.messaging";
-    private static final String[] SCOPES = { MESSAGING_SCOPE };
+import android.content.Context
+import com.angogasapps.myfamily.async.notification.fromChatMessage
+import com.angogasapps.myfamily.app.AppApplication.Companion.getInstance
+import com.angogasapps.myfamily.utils.Async
+import com.angogasapps.myfamily.utils.Async.doInThread
+import org.json.JSONObject
+import kotlin.Throws
+import android.content.res.AssetManager
+import com.angogasapps.myfamily.app.AppApplication
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
+import com.google.firebase.messaging.FirebaseMessaging
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.google.android.gms.tasks.OnCompleteListener
+import android.content.SharedPreferences
+import android.util.Log
+import com.angogasapps.myfamily.models.Message
+import com.google.android.gms.tasks.Task
+import java.io.DataOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.lang.Exception
+import java.lang.StringBuilder
+import java.net.HttpURLConnection
+import java.net.URL
+import java.util.*
 
 
-    public static void sendChatNotificationMessage(Message message){
+private const val postUrl = "https://fcm.googleapis.com/v1/projects/myfamily-1601b/messages:send"
+private const val MESSAGING_SCOPE = "https://www.googleapis.com/auth/firebase.messaging"
+private val SCOPES = arrayOf(MESSAGING_SCOPE)
 
-        Async.runInNewThread(() -> {
+object FcmMessageManager {
+    fun sendChatNotificationMessage(message: Message) {
+        Async.runInNewThread {
             try {
-//                JSONObject messageObject = FcmMessage.buildMessageObj(message, to);
-                JSONObject messageObject = FcmChatNotificationCreator.fromChatMessage(message);
-                Log.d("TAG", "sendMessage: \n" + messageObject);
-                sendNotificationMessage(messageObject);
-            }catch (Exception e){
-                e.printStackTrace();
+                val messageObject = fromChatMessage(message)
+                Log.d("TAG", "sendMessage: \n$messageObject")
+                sendNotificationMessage(messageObject)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-        });
+        }
     }
 
-
-    public static void sendNotificationMessage(JSONObject fcmMessage) throws IOException {
-        HttpURLConnection connection = getConnection();
-        connection.setDoOutput(true);
-        DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
-        outputStream.writeBytes(fcmMessage.toString());
-        outputStream.flush();
-        outputStream.close();
-
-        int responseCode = connection.getResponseCode();
+    @Throws(IOException::class)
+    fun sendNotificationMessage(fcmMessage: JSONObject) {
+        val connection = connection
+        connection.doOutput = true
+        val outputStream = DataOutputStream(connection.outputStream)
+        outputStream.writeBytes(fcmMessage.toString())
+        outputStream.flush()
+        outputStream.close()
+        val responseCode = connection.responseCode
         if (responseCode == 200) {
-            String response = inputstreamToString(connection.getInputStream());
-            System.out.println("Message успешно отправлено в Firebase");
-            System.out.println(response);
+            val response = inputstreamToString(connection.inputStream)
+            println("Message успешно отправлено в Firebase")
+            println(response)
         } else {
-            System.out.println("При отправке message в Firebase произошла ошибка");
-            String response = inputstreamToString(connection.getErrorStream());
-            System.out.println(response);
+            println("При отправке message в Firebase произошла ошибка")
+            val response = inputstreamToString(connection.errorStream)
+            println(response)
         }
     }
 
-    private static HttpURLConnection getConnection() throws IOException {
-        URL url = new URL(postUrl);
-        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-        httpURLConnection.setRequestProperty("Authorization", "Bearer " + getAccessToken());
-        httpURLConnection.setRequestProperty("Content-Type", "application/json; UTF-8");
-        return httpURLConnection;
+    @get:Throws(IOException::class)
+    private val connection: HttpURLConnection
+        private get() {
+            val url = URL(postUrl)
+            val httpURLConnection = url.openConnection() as HttpURLConnection
+            httpURLConnection.setRequestProperty("Authorization", "Bearer " + accessToken)
+            httpURLConnection.setRequestProperty("Content-Type", "application/json; UTF-8")
+            return httpURLConnection
+        }
 
-    }
-
-    private static String getAccessToken() throws IOException{
-        AssetManager assetManager = AppApplication.getInstance().getAssets();
-
-        GoogleCredential googleCredential = GoogleCredential
+    @get:Throws(IOException::class)
+    private val accessToken: String
+        private get() {
+            val assetManager = getInstance().assets
+            val googleCredential = GoogleCredential
                 .fromStream(assetManager.open("service-account.json"))
-                .createScoped(Arrays.asList(SCOPES));
-        googleCredential.refreshToken();
-        return googleCredential.getAccessToken();
+                .createScoped(Arrays.asList(*SCOPES))
+            googleCredential.refreshToken()
+            return googleCredential.accessToken
+        }
 
-    }
-
-    private static String inputstreamToString(InputStream inputStream) throws IOException {
-        StringBuilder stringBuilder = new StringBuilder();
-        Scanner scanner = new Scanner(inputStream);
+    @Throws(IOException::class)
+    private fun inputstreamToString(inputStream: InputStream): String {
+        val stringBuilder = StringBuilder()
+        val scanner = Scanner(inputStream)
         while (scanner.hasNext()) {
-            stringBuilder.append(scanner.nextLine());
+            stringBuilder.append(scanner.nextLine())
         }
-        return stringBuilder.toString();
+        return stringBuilder.toString()
     }
 
-    public static void subscribeToTopics(){
+    fun subscribeToTopics() {
         if (canSubscribeToFamily()) {
-            FirebaseMessaging.getInstance().subscribeToTopic(USER.getFamily() + "-chat").addOnCompleteListener(task -> {
-                Log.d("TAG", "subscribeToFamily: " + task.toString());
-            });
+            FirebaseMessaging.getInstance()
+                .subscribeToTopic(FirebaseVarsAndConsts.USER.family + "-chat")
+                .addOnCompleteListener { task: Task<Void?> ->
+                    Log.d(
+                        "TAG",
+                        "subscribeToFamily: $task"
+                    )
+                }
         }
-        FirebaseMessaging.getInstance().subscribeToTopic(USER.getId()).addOnCompleteListener(task -> {
-            Log.d("TAG", "subscribeToSelf: " + task.toString());
-        });
+        FirebaseMessaging.getInstance().subscribeToTopic(FirebaseVarsAndConsts.USER.id)
+            .addOnCompleteListener { task: Task<Void?> -> Log.d("TAG", "subscribeToSelf: $task") }
     }
 
-    public static void unsubscribeFromFamilyChat(){
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(USER.getFamily() + "-chat").addOnCompleteListener(task -> {
-            Log.d("TAG", "unsubscribeFromFamily: " + task.toString());
-        });
-    }
-
-    private static boolean canSubscribeToFamily(){
-        SharedPreferences sf = AppApplication.getInstance().getSharedPreferences("family-chat", Context.MODE_PRIVATE);
-        return sf.getBoolean("can_send_notification", true);
-    }
-
-    public static void setPermissionToGetChatNotifications(boolean isHavePermission){
-        SharedPreferences sf = AppApplication.getInstance().getSharedPreferences("family-chat", Context.MODE_PRIVATE);
-        Editor editor = sf.edit();
-        editor.putBoolean("can_send_notification", isHavePermission);
-        editor.apply();
-        if (isHavePermission){
-            subscribeToTopics();
-        }else{
-            unsubscribeFromFamilyChat();
-        }
-    }
-
-    public static void updateToken() {
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                USER.setToken(task.getResult());
-                DATABASE_ROOT.child(NODE_USERS).child(AUTH.getCurrentUser().getUid()).child(CHILD_TOKEN)
-                  .setValue(task.getResult().toString()).addOnCompleteListener(task1 -> {
-                      if (task1.isSuccessful()){  } else { task1.getException().printStackTrace(); }
-                });
+    fun unsubscribeFromFamilyChat() {
+        FirebaseMessaging.getInstance()
+            .unsubscribeFromTopic(FirebaseVarsAndConsts.USER.family + "-chat")
+            .addOnCompleteListener { task: Task<Void?> ->
+                Log.d(
+                    "TAG",
+                    "unsubscribeFromFamily: $task"
+                )
             }
-        });
+    }
+
+    private fun canSubscribeToFamily(): Boolean {
+        val sf = getInstance().getSharedPreferences("family-chat", Context.MODE_PRIVATE)
+        return sf.getBoolean("can_send_notification", true)
+    }
+
+    fun setPermissionToGetChatNotifications(isHavePermission: Boolean) {
+        val sf = getInstance().getSharedPreferences("family-chat", Context.MODE_PRIVATE)
+        val editor = sf.edit()
+        editor.putBoolean("can_send_notification", isHavePermission)
+        editor.apply()
+        if (isHavePermission) {
+            subscribeToTopics()
+        } else {
+            unsubscribeFromFamilyChat()
+        }
+    }
+
+    fun updateToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
+            if (task.isSuccessful) {
+                FirebaseVarsAndConsts.USER.token = task.result
+                FirebaseVarsAndConsts.DATABASE_ROOT.child(FirebaseVarsAndConsts.NODE_USERS).child(
+                    FirebaseVarsAndConsts.AUTH.currentUser!!.uid
+                ).child(FirebaseVarsAndConsts.CHILD_TOKEN)
+                    .setValue(task.result.toString()).addOnCompleteListener { task1: Task<Void?> ->
+                        if (task1.isSuccessful) {
+                        } else {
+                            task1.exception!!.printStackTrace()
+                        }
+                    }
+            }
+        }
     }
 }

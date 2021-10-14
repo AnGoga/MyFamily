@@ -83,7 +83,7 @@ public class ChatFunks {
                 message.setType(type);
                 message.setValue(finalValue);
 //                MessageNotificationManager.getInstance().sendNotificationMessage(message, USER);
-                FcmMessageManager.sendChatNotificationMessage(message);
+                FcmMessageManager.INSTANCE.sendChatNotificationMessage(message);
             }
         });
     }

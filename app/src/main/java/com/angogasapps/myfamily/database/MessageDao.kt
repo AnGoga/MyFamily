@@ -1,30 +1,22 @@
-package com.angogasapps.myfamily.database;
+package com.angogasapps.myfamily.database
 
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-import androidx.room.Update;
-
-import com.angogasapps.myfamily.models.Message;
-
-import java.util.List;
+import androidx.room.*
+import com.angogasapps.myfamily.models.Message
 
 @Dao
-public interface MessageDao {
-    @Query("SELECT * FROM Message")
-    List<Message> getAll();
+interface MessageDao {
+    @get:Query("SELECT * FROM Message")
+    val all: List<Message>
 
     @Query("SELECT * FROM Message WHERE id = :id")
-    Message getById(String id);
+    fun getById(id: String): Message
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Message message);
+    fun insert(message: Message)
 
     @Update
-    void update(Message message);
+    fun update(message: Message)
 
     @Delete
-    void delete(Message message);
+    fun delete(message: Message)
 }

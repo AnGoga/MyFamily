@@ -9,7 +9,7 @@ import com.angogasapps.myfamily.models.QUOTE_ID
 import com.angogasapps.myfamily.models.Quote
 import com.angogasapps.myfamily.models.events.NewsEvent
 import com.angogasapps.myfamily.models.events.NewsObject
-import com.angogasapps.myfamily.models.events.NewsObject.TYPE_TEXT
+import com.angogasapps.myfamily.models.events.NewsObject.Companion.TYPE_TEXT
 import com.angogasapps.myfamily.ui.screens.main.holders.BaseNewsViewHolder
 import com.angogasapps.myfamily.ui.screens.main.holders.ImageNewsViewHolder
 import com.angogasapps.myfamily.ui.screens.main.holders.TextNewsViewHolder
