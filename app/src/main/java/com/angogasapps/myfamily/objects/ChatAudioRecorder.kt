@@ -1,83 +1,64 @@
-package com.angogasapps.myfamily.objects;
+package com.angogasapps.myfamily.objects
 
-import android.app.Activity;
-import android.media.MediaRecorder;
+import android.app.Activity
+import kotlin.jvm.Volatile
+import android.media.MediaRecorder
+import java.io.File
+import java.io.IOException
+import java.lang.Exception
+import kotlin.Throws
 
-import java.io.File;
-import java.io.IOException;
+class ChatAudioRecorder(
+    private val activity: Activity,
+    val key: String
+) {
+    @Volatile
+    var file: File? = null
+        private set
 
-public class ChatAudioRecorder {
-
-    private volatile Activity activity;
-    private volatile File file;
-    private volatile String key;
-    private volatile MediaRecorder recorder;
-
-
-    public ChatAudioRecorder(Activity activity, String key) {
-        this.activity = activity;
-        this.key = key;
-        this.recorder = new MediaRecorder();
-    }
-
-
-
-    public void startRecording() {
-
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
+    private val recorder: MediaRecorder = MediaRecorder()
+    fun startRecording() {
+        object : Thread() {
+            override fun run() {
+                super.run()
                 try {
-                    ChatAudioRecorder.this.file = createNewFile();
-                    prepareRecorder();
-                    recorder.start();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    file = createNewFile()
+                    prepareRecorder()
+                    recorder.start()
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
-        }.start();
+        }.start()
     }
 
-    public void stopRecording(IStopRecording mInterface){
+    fun stopRecording(onSuccess: () -> Unit) {
         try {
-            recorder.stop();
-            mInterface.onSuccess();
-        }catch (Exception e){
-            e.printStackTrace();
+            recorder.stop()
+            onSuccess()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-    public File getFile(){
-        return this.file;
+    @Throws(IOException::class)
+    private fun prepareRecorder() {
+        recorder.reset()
+        recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT)
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT)
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT)
+        recorder.setOutputFile(file!!.absolutePath)
+        recorder.prepare()
     }
 
-    public String getKey(){
-        return this.key;
-    }
-
-
-    private void prepareRecorder() throws IOException {
-        recorder.reset();
-        recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        recorder.setOutputFile(file.getAbsolutePath());
-        recorder.prepare();
-    }
-
-    private File createNewFile() {
-        File file = new File(activity.getFilesDir(), key);
+    private fun createNewFile(): File {
+        val file = File(activity.filesDir, key)
         try {
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
+            file.createNewFile()
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-        return file;
+        return file
     }
 
-    public interface IStopRecording {
-        void onSuccess();
-    }
 }

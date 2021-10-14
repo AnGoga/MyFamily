@@ -1,51 +1,19 @@
-package com.angogasapps.myfamily.objects;
+package com.angogasapps.myfamily.objects
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.angogasapps.myfamily.models.Message
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 
-import com.angogasapps.myfamily.models.Message;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-
-
-
-public class ChatChildEventListener implements ChildEventListener {
-    private IOnAddMessage iOnAddMessage;
-
-    public ChatChildEventListener(IOnAddMessage iOnAddMessage){
-        this.iOnAddMessage = iOnAddMessage;
+class ChatChildEventListener(private val onAddMessage: (message: Message) -> Unit) : ChildEventListener {
+    override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+        val message = Message(snapshot)
+        onAddMessage(message)
     }
 
+    override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+    override fun onChildRemoved(snapshot: DataSnapshot) {}
+    override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+    override fun onCancelled(error: DatabaseError) {}
 
-
-    @Override
-    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-        Message message = new Message(snapshot);
-        iOnAddMessage.onAddMessage(message);
-    }
-
-    @Override
-    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-    }
-
-    @Override
-    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-    }
-
-    @Override
-    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError error) {
-
-    }
-
-    public interface IOnAddMessage{
-        void onAddMessage(Message message);
-    }
 }

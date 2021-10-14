@@ -21,8 +21,8 @@ import kotlin.collections.ArrayList
 open class BaseStorageAdapter(val context: Context, val rootNode: String, var onChangeDirectory: (dirName: String) -> Unit)
         : RecyclerView.Adapter<BaseStorageAdapter.StorageHolder>() {
     companion object{
-        val fileDraw = AppApplication.getInstance().resources.getDrawable(R.drawable.ic_file)
-        val folderDraw = AppApplication.getInstance().resources.getDrawable(R.drawable.ic_folder)
+        val fileDraw = AppApplication.app.resources.getDrawable(R.drawable.ic_file)
+        val folderDraw = AppApplication.app.resources.getDrawable(R.drawable.ic_folder)
     }
 
     var stack: Stack<String> = Stack()
@@ -49,7 +49,7 @@ open class BaseStorageAdapter(val context: Context, val rootNode: String, var on
     fun update() {
         this.list = StorageManager.getInstance().list
         namesStack.clear()
-        namesStack.push(AppApplication.getInstance().getString(R.string.app_name))
+        namesStack.push(AppApplication.app.getString(R.string.app_name))
         val cashStack = Stack<String>()
 
         for (id in stack){

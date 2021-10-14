@@ -46,7 +46,7 @@ class StorageActivity : AppCompatActivity() {
     }
 
     private fun analyzeIntent() {
-        rootNode = intent.getStringExtra(TYPE_NODE)
+        rootNode = intent.getStringExtra(TYPE_NODE)?:""
     }
 
     private fun initOnClicks() {
@@ -139,7 +139,6 @@ class StorageActivity : AppCompatActivity() {
                 NameGetterDialog(this).show(isFolder = false){
                     createStorageFile(uri = uri, name = it, rootFolderId = adapter.getRootFolderId())
                 }
-
             }
         }
         super.onActivityResult(requestCode, resultCode, data)

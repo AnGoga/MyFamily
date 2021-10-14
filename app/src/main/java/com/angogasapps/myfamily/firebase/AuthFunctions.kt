@@ -71,7 +71,7 @@ object AuthFunctions {
                         //TODO:
                         USER = snapshot.getValue(User::class.java)
                         if (USER != null) {
-                            USER.setId(snapshot.key)
+                            USER.id = snapshot.key?:""
                             if (!USER.photoURL.equals("")){
                                 Async.runInNewThread {
                                     downloadBitmapByURL(USER.photoURL).let {

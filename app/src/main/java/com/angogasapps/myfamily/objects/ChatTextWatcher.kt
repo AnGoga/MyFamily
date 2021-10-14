@@ -1,45 +1,30 @@
-package com.angogasapps.myfamily.objects;
+package com.angogasapps.myfamily.objects
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.EditText;
+import android.widget.EditText
+import android.text.TextWatcher
+import android.text.Editable
+import android.view.View
+import de.hdodenhof.circleimageview.CircleImageView
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-public class ChatTextWatcher implements TextWatcher {
-    private CircleImageView sendButton;
-    private CircleImageView audioButton;
-    private EditText editText;
-
-
-    public ChatTextWatcher(CircleImageView sendButton, CircleImageView audioButton, EditText editText) {
-        this.sendButton = sendButton;
-        this.audioButton = audioButton;
-        this.editText = editText;
-    }
+class ChatTextWatcher(
+    private val sendButton: CircleImageView,
+    private val audioButton: CircleImageView,
+    private val editText: EditText
+) : TextWatcher {
     //до
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
-    }
     //после
-    @Override
-    public void afterTextChanged(Editable s) {
-        String text = editText.getText().toString();
-        if (text.replaceAll("\\s+","").isEmpty()){
-            sendButton.setVisibility(View.INVISIBLE);
-            audioButton.setVisibility(View.VISIBLE);
-        }else{
-            sendButton.setVisibility(View.VISIBLE);
-            audioButton.setVisibility(View.INVISIBLE);
+    override fun afterTextChanged(s: Editable) {
+        val text = editText.text.toString()
+        if (text.replace("\\s+".toRegex(), "").isEmpty()) {
+            sendButton.visibility = View.INVISIBLE
+            audioButton.visibility = View.VISIBLE
+        } else {
+            sendButton.visibility = View.VISIBLE
+            audioButton.visibility = View.INVISIBLE
         }
     }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-
+    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 }

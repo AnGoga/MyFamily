@@ -1,158 +1,56 @@
-package com.angogasapps.myfamily.models;
+package com.angogasapps.myfamily.models
 
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
-import com.google.firebase.database.DataSnapshot;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.UID;
-
+import com.angogasapps.myfamily.app.AppApplication.Companion.getInstance
+import androidx.room.PrimaryKey
+import android.graphics.Bitmap
+import com.google.firebase.database.DataSnapshot
+import android.graphics.BitmapFactory
+import androidx.room.Entity
+import androidx.room.Ignore
+import com.angogasapps.myfamily.app.AppApplication
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
 
 @Entity
-public class User {
+data class User(
     @PrimaryKey
-    @NonNull
-    protected String id = " ";
-    protected String phone = "";
-    protected String family = "";
-    protected String name = "";
-    protected Long birthday = 0L;
-    protected String photoURL = "";
-    protected String role = "";
-    protected String token = "";
+    var id: String = "",
+    var phone: String = "",
+    var family: String = "",
+    var name: String = "",
+    var birthday: Long = 0L,
+    var photoURL: String = "",
+    var role: String = "",
+    var token: String = ""
+) {
+
     @Ignore
-    protected Bitmap userPhoto;
+    var userPhoto = BitmapFactory.decodeResource(
+        getInstance().applicationContext.resources,
+        R.drawable.ic_default_user_photo
+    )
+    get() = synchronized(this) { return if (userPhoto != null) userPhoto!! else default_user_photo!! }
+    public set
 
-    public static final Bitmap default_user_photo;
+    companion object {
+        @JvmField
+        val default_user_photo: Bitmap? = null
 
-    static {
-        default_user_photo = BitmapFactory.decodeResource(
-                AppApplication.getInstance().getApplicationContext().getResources(),
-                R.drawable.ic_default_user_photo
-        );
-    }
-
-
-    public User(){}
-
-    public User(User user){
-        this.id = user.getId();
-        this.phone = user.getPhone();
-        this.family = user.getFamily();
-        this.name = user.getName();
-        this.birthday = user.getBirthday();
-        this.photoURL = user.getPhotoURL();
-        this.role = user.getRole();
-        this.userPhoto = user.getUserPhoto();
-    }
-
-    public static User from(DataSnapshot snapshot){
-        User user = snapshot.getValue(User.class);
-        user.setId(snapshot.getKey());
-        return user;
-    }
-
-
-    public void setBitmap(Bitmap bitmap){
-        this.userPhoto = bitmap;
-    }
-    public void setRole(String role){
-        this.role = role;
-    }
-    public void setId(String id){
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "id = " + UID + "\nphone = " + this.phone + "\nfamily = " + this.family +
-                "\nname = " + this.name + "\nbirthday = " + this.birthday + "\ntoken = " + this.token;
-    }
-
-    @Override
-    public boolean equals(@Nullable Object obj) {
-        if (!(obj instanceof User))
-            return false;
-        return this.id.equals(((User)obj).getId());
-    }
-
-    public boolean haveFamily(){
-        return !this.getFamily().equals("");
-    }
-
-    @NonNull
-    public String getId() {
-        return id;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getFamily() {
-        return family;
-    }
-
-    public void setFamily(String family) {
-        this.family = family;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Long birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getPhotoURL() {
-        return photoURL;
-    }
-
-    public void setPhotoURL(String photoURL) {
-        this.photoURL = photoURL;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public Bitmap getUserPhoto() {
-        synchronized (this) {
-            return userPhoto != null ? userPhoto : default_user_photo;
+        @JvmStatic
+        fun from(snapshot: DataSnapshot): User {
+            val user = snapshot.getValue(
+                User::class.java
+            )
+            user!!.id = snapshot.key!!
+            return user
         }
     }
 
-    public void setUserPhoto(Bitmap userPhoto) {
-        this.userPhoto = userPhoto;
+    fun setBitmap(bitmap: Bitmap?) {
+        userPhoto = bitmap
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    fun haveFamily(): Boolean {
+        return family != ""
     }
 }

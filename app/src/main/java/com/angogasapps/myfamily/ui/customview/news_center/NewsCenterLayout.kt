@@ -15,6 +15,7 @@ import com.angogasapps.myfamily.ui.screens.news_center.QuoteManager
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.CoroutineScope
 
 class NewsCenterLayout : ConstraintLayout {
     private val viewPager: ViewPager2
@@ -38,7 +39,7 @@ class NewsCenterLayout : ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
 
-    fun setUpCenter(activity: Activity){
+    fun setUpCenter(activity: Activity, scope: CoroutineScope){
         this.activity = activity
         adapter = NewsAdapter(activity, NewsManager.getInstance().allNews)
         viewPager.adapter = adapter
@@ -46,7 +47,7 @@ class NewsCenterLayout : ConstraintLayout {
         viewPager.offscreenPageLimit = 3
         showQuote()
         setupSubscribe()
-        MainActivityUtils.waitEndDownloadThread(activity, adapter)
+        MainActivityUtils.waitEndDownloadThread(activity, adapter, scope)
     }
 
     private fun setupTabMediator(){

@@ -177,7 +177,7 @@ fun downloadFile(file: File, onSuccess: (dFile: java.io.File, contentType: Strin
         if (metadata.isSuccessful){
             val contentType = metadata.result.contentType?:""
             val dFile = java.io.File(
-                    AppApplication.getInstance().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
+                    AppApplication.app.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
                     """${file.name}.${contentType.split("/")[1]}"""
             )
             path.getFile(dFile).addOnCompleteListener {

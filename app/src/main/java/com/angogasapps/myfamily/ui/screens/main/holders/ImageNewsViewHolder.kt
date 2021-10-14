@@ -1,35 +1,30 @@
-package com.angogasapps.myfamily.ui.screens.main.holders;
+package com.angogasapps.myfamily.ui.screens.main.holders
 
-import android.app.Activity;
-import android.view.View;
+import android.app.Activity
+import android.view.View
+import com.angogasapps.myfamily.ui.screens.main.holders.BaseNewsViewHolder
+import com.angogasapps.myfamily.models.events.NewsObject
+import com.angogasapps.myfamily.models.Family
+import com.bumptech.glide.Glide
+import com.angogasapps.myfamily.objects.ChatImageShower
+import androidx.appcompat.app.AppCompatActivity
+import com.angogasapps.myfamily.databinding.ImageNewsViewHolderBinding
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.angogasapps.myfamily.databinding.ImageNewsViewHolderBinding;
-import com.angogasapps.myfamily.models.Family;
-import com.angogasapps.myfamily.models.events.NewsObject;
-import com.angogasapps.myfamily.objects.ChatImageShower;
-import com.bumptech.glide.Glide;
-
-public class ImageNewsViewHolder extends BaseNewsViewHolder{
-    private ImageNewsViewHolderBinding binding;
-
-    public ImageNewsViewHolder(Activity context, @NonNull View itemView) {
-        super(context, itemView);
-        binding = ImageNewsViewHolderBinding.bind(itemView);
-
-        binding.getRoot().setOnClickListener(v -> {
-            new ChatImageShower((AppCompatActivity) context).showImage(binding.image);
-        });
+class ImageNewsViewHolder(context: Activity, itemView: View)
+    : BaseNewsViewHolder(context, itemView)
+{
+    private val binding: ImageNewsViewHolderBinding = ImageNewsViewHolderBinding.bind(itemView)
+    override fun update(newsObject: NewsObject) {
+        binding.textName.text = Family.getInstance().getNameByPhone(newsObject.fromPhone)
+        Glide
+            .with(context)
+            .load(newsObject.value)
+            .into(binding.image)
     }
 
-    @Override
-    public void update(NewsObject newsObject) {
-        binding.textName.setText(Family.getInstance().getNameByPhone(newsObject.getFromPhone()));
-        Glide
-                .with(context)
-                .load(newsObject.getValue())
-                .into(binding.image);
+    init {
+        binding.root.setOnClickListener { v: View? ->
+            ChatImageShower((context as AppCompatActivity)).showImage(binding.image)
+        }
     }
 }

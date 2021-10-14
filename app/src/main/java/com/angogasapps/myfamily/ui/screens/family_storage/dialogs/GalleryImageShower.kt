@@ -21,7 +21,7 @@ class GalleryImageShower(val context: AppCompatActivity) {
         dialog = GalleryImageShowerDialog()
     }
 
-    fun showImage(imageView: ImageView?, file: File, folderId: String) {
+    fun showImage(imageView: ImageView, file: File, folderId: String) {
         dialog.init(imageView, file, folderId)
         dialog.show(context.supportFragmentManager.beginTransaction(), ImageShowerDialog.TAG)
     }
@@ -31,7 +31,7 @@ class GalleryImageShower(val context: AppCompatActivity) {
             var file: File? = null
             var folderId: String? = null
 
-            fun init(imageView: ImageView?, file: File, folderId: String) {
+            fun init(imageView: ImageView, file: File, folderId: String) {
                 this.setImage(imageView)
                 this.file = file
                 this.folderId = folderId

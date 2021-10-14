@@ -1,112 +1,97 @@
-package com.angogasapps.myfamily.ui.customview;
+package com.angogasapps.myfamily.ui.customview
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.TypedArray;
-import android.util.AttributeSet;
-import android.widget.ImageView;
+import com.angogasapps.myfamily.utils.showInDevelopingToast
+import android.widget.TextView
+import android.annotation.SuppressLint
+import android.content.Context
+import android.view.LayoutInflater
+import com.angogasapps.myfamily.R
+import android.content.res.TypedArray
+import com.angogasapps.myfamily.models.ActionCardState
+import android.content.Intent
+import android.util.AttributeSet
+import android.view.View
+import android.widget.ImageView
+import androidx.cardview.widget.CardView
+import com.angogasapps.myfamily.databinding.CardviewBinding
 
+class CardView : CardView {
+    private var mCardDrawable = 0
+    private lateinit var mCardName: String
+    private lateinit var mCardSubscript: String
+    private lateinit var textName: TextView
+    private lateinit var textSubscript: TextView
+    private lateinit var imageView: ImageView
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
-import com.angogasapps.myfamily.databinding.CardviewBinding;
-import com.angogasapps.myfamily.models.ActionCardState;
-
-
-import android.view.LayoutInflater;
-import android.widget.TextView;
-
-public class CardView extends androidx.cardview.widget.CardView {
-    public int mCardDrawable;
-    public String mCardName;
-    public String mCardSubscript;
-
-    private TextView textName;
-    private TextView textSubscript;
-    private ImageView imageView;
-
-    private OnClickListener plugClickListener = v -> {
-        AppApplication.showInDevelopingToast();
-    };
-
-
-    private CardviewBinding binding;
-
-    public CardView(@NonNull Context context, int mCardDrawable, String mCardName, String mCardSubscript) {
-        super(context);
-        this.mCardDrawable = mCardDrawable;
-        this.mCardName = mCardName;
-        this.mCardSubscript = mCardSubscript;
+    companion object{
+        @JvmStatic
+        private val plugClickListener = OnClickListener { v: View? -> showInDevelopingToast() }
     }
 
-    public CardView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        initAttribute(context, attrs);
-        initializeViews(context);
+    constructor(
+        context: Context,
+        mCardDrawable: Int,
+        mCardName: String,
+        mCardSubscript: String
+    ) : super(context) {
+        this.mCardDrawable = mCardDrawable
+        this.mCardName = mCardName
+        this.mCardSubscript = mCardSubscript
     }
 
-    public CardView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        initAttribute(context, attrs);
-        initializeViews(context);
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        initAttribute(context, attrs)
+        initializeViews(context)
     }
-    private void initializeViews(Context context) {
-        @SuppressLint("ServiceCast")
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.cardview, this);
-//        binding = CardviewBinding.inflate(inflater, this, false);
 
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
+        initAttribute(context, attrs)
+        initializeViews(context)
     }
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
+
+    private fun initializeViews(context: Context) {
+        @SuppressLint("ServiceCast") val inflater =
+            context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        inflater.inflate(R.layout.cardview, this)
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
         //set attributes
-        textName = this.findViewById(R.id.cardViewTextViewTextName);
-        textSubscript = this.findViewById(R.id.cardViewTextSubscript);
-        imageView = this.findViewById(R.id.cardViewDrawable);
-
-//        ((TextView)this.findViewById(R.id.cardViewTextViewTextName)).setText(mCardName);
-//        ((TextView)this.findViewById(R.id.cardViewTextSubscript)).setText(mCardSubscript);
-//        ((ImageView)this.findViewById(R.id.cardViewDrawable)).setBackgroundResource(mCardDrawable);
-        update(mCardName, mCardSubscript, mCardDrawable);
-
+        textName = findViewById(R.id.cardViewTextViewTextName)
+        textSubscript = findViewById(R.id.cardViewTextSubscript)
+        imageView = findViewById(R.id.cardViewDrawable)
+        update(mCardName, mCardSubscript, mCardDrawable)
     }
-    private void initAttribute(Context context, AttributeSet attrs) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CardView);
+
+    private fun initAttribute(context: Context, attrs: AttributeSet?) {
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CardView)
 
         //init vars
-        mCardName = typedArray.getString(R.styleable.CardView_itemCardName);
-        mCardSubscript = typedArray.getString(R.styleable.CardView_itemCardSubscript);
-        mCardDrawable = typedArray.getResourceId(R.styleable.CardView_itemCardDrawable, 0);
-
-        typedArray.recycle();
+        mCardName = typedArray.getString(R.styleable.CardView_itemCardName)?:""
+        mCardSubscript = typedArray.getString(R.styleable.CardView_itemCardSubscript)?:""
+        mCardDrawable = typedArray.getResourceId(R.styleable.CardView_itemCardDrawable, 0)
+        typedArray.recycle()
     }
 
-    private void update(String name, String subscribe, int drawable) {
-//        binding.cardViewTextViewTextName.setText(name);
-//        binding.cardViewTextSubscript.setText(subscribe);
-//        binding.cardViewDrawable.setImageResource(drawable);
-
-        textName.setText(name);
-        textSubscript.setText(subscribe);
-        imageView.setBackgroundResource(drawable);
+    private fun update(name: String?, subscribe: String?, drawable: Int) {
+        textName.text = name
+        textSubscript.text = subscribe
+        imageView.setBackgroundResource(drawable)
     }
 
-    public void update(ActionCardState state){
-//        this.textName.setText(state.getCardName());
-//        this.textSubscript.setText(state.getCardSubscript());
-//        this.imageView.setBackgroundResource(state.getCardDrawable());
-        update(state.getCardName(), state.getCardSubscript(), state.getCardDrawable());
-        if (state.getActivityClass() != null){
-            getRootView().setOnClickListener(v -> {
-                getContext().startActivity(new Intent(getContext(), state.getActivityClass()));
-            });
-        }else{
-            getRootView().setOnClickListener(plugClickListener);
+    fun update(state: ActionCardState) {
+        update(state.name, state.subscript, state.drawable)
+        if (state.mClass != null) {
+            rootView.setOnClickListener { v: View? ->
+                context.startActivity(Intent(context, state.mClass))
+            }
+        } else {
+            rootView.setOnClickListener(plugClickListener)
         }
     }
 }

@@ -1,61 +1,58 @@
-package com.angogasapps.myfamily.ui.screens.main.cards;
+package com.angogasapps.myfamily.ui.screens.main.cards
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import com.angogasapps.myfamily.ui.screens.main.cards.ActionCardUtils.getState
+import com.angogasapps.myfamily.models.ActionCardState
+import com.angogasapps.myfamily.ui.screens.main.cards.ActionCardUtils.EActionCards
+import com.angogasapps.myfamily.ui.screens.main.cards.ActionCardUtils
+import android.app.Activity
+import android.content.Context
+import androidx.recyclerview.widget.RecyclerView
+import com.angogasapps.myfamily.utils.Async
+import com.angogasapps.myfamily.utils.Async.doInThread
+import com.angogasapps.myfamily.async.LoadFamilyThread
+import android.content.SharedPreferences
+import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils
+import kotlinx.coroutines.CoroutineScope
+import java.lang.StringBuilder
+import java.util.ArrayList
 
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.angogasapps.myfamily.async.LoadFamilyThread;
-import com.angogasapps.myfamily.models.ActionCardState;
-import com.angogasapps.myfamily.ui.screens.main.cards.ActionCardUtils;
-import com.angogasapps.myfamily.utils.Async;
-
-
-import java.util.ArrayList;
-
-public class MainActivityUtils {
-    private static ArrayList<ActionCardState> getDefaultCardsArray(Context context){
-        ArrayList<ActionCardState> list = new ArrayList<>();
-        for (ActionCardUtils.EActionCards card : ActionCardUtils.EActionCards.values()) {
-            list.add(ActionCardUtils.getState(card));
+object MainActivityUtils {
+    private fun getDefaultCardsArray(context: Context): ArrayList<ActionCardState> {
+        val list = ArrayList<ActionCardState>()
+        for (card in EActionCards.values()) {
+            list.add(getState(card))
         }
-        return list;
+        return list
     }
 
-    public static void waitEndDownloadThread(Activity activity, RecyclerView.Adapter<?> adapter){
-        Async.runInNewThread(() -> {
-            while (!LoadFamilyThread.isEnd){}
-            activity.runOnUiThread(adapter::notifyDataSetChanged);
-        });
+    fun waitEndDownloadThread(activity: Activity, adapter: RecyclerView.Adapter<*>, scope: CoroutineScope) {
+        Async.runInNewThread {
+            while (!LoadFamilyThread.isEnd) { }
+            activity.runOnUiThread { adapter.notifyDataSetChanged() }
+        }
     }
 
-    public static void savePreferCardPlaces(Context context, ArrayList<ActionCardState> list){
-        SharedPreferences sf = context.getSharedPreferences("data", Context.MODE_PRIVATE);
-        Editor editor = sf.edit();
-
-        StringBuilder str = new StringBuilder();
-        for (ActionCardState state : list){
-            str.append(state.getActionCardsName()).append(" ");
+    fun savePreferCardPlaces(context: Context, list: ArrayList<ActionCardState>) {
+        val sf = context.getSharedPreferences("data", Context.MODE_PRIVATE)
+        val editor = sf.edit()
+        val str = StringBuilder()
+        for (state in list) {
+            str.append(state.name).append(" ")
         }
-        editor.putString("card_place", str.toString());
-        editor.apply();
+        editor.putString("card_place", str.toString())
+        editor.apply()
     }
 
-    public static ArrayList<ActionCardState> getPreferCardsArray(Context context){
-        SharedPreferences sf = context.getSharedPreferences("data", Context.MODE_PRIVATE);
-
-        String str = sf.getString("card_place", "");
-        if (str.equals("")){
-            return getDefaultCardsArray(context);
+    fun getPreferCardsArray(context: Context): ArrayList<ActionCardState> {
+        val sf = context.getSharedPreferences("data", Context.MODE_PRIVATE)
+        val str = sf.getString("card_place", "")
+        if (str == "") {
+            return getDefaultCardsArray(context)
         }
-        ArrayList<ActionCardState> list = new ArrayList<>();
-        for (String card : str.split(" ")){
-            list.add(ActionCardUtils.getState(ActionCardUtils.EActionCards.valueOf(card)));
+        val list = ArrayList<ActionCardState>()
+        for (card in str!!.split(" ".toRegex()).toTypedArray()) {
+            list.add(getState(EActionCards.valueOf(card)))
         }
-        return list;
+        return list
     }
-
-
 }

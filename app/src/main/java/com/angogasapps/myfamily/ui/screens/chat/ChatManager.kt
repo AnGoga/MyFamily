@@ -23,7 +23,7 @@ class ChatManager private constructor(private val scope: CoroutineScope, val onG
     private var databaseList = ArrayList<Message>()
     private val chatRef = DATABASE_ROOT.child(NODE_CHAT).child(USER.family)
     private val messageDao: MessageDao = DatabaseManager.getInstance().messageDao
-    private val listener: ChatChildEventListener = ChatChildEventListener(this::onGetMessageFromFirebase)
+    private val listener: ChatChildEventListener = ChatChildEventListener(::onGetMessageFromFirebase)
 
     init { init() }
 

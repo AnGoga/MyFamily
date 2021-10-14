@@ -1,208 +1,205 @@
-package com.angogasapps.myfamily.ui.screens.findorcreatefamily;
+package com.angogasapps.myfamily.ui.screens.findorcreatefamily
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.app.AlertDialog
+import android.content.DialogInterface
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.content.Intent
+import android.net.Uri
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import com.angogasapps.myfamily.utils.FamilyManager
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.databinding.ActivityFindOrCreateFamilyBinding
+import com.angogasapps.myfamily.firebase.FindFamilyFunks
+import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily
+import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily
+import com.angogasapps.myfamily.ui.screens.main.MainActivity
+import es.dmoral.toasty.Toasty
+import com.angogasapps.myfamily.firebase.RegisterFamilyFunks
+import com.angogasapps.myfamily.firebase.interfaces.IOnEndRegisterNewFamily
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.ui.screens.splash.SplashActivity
+import java.lang.Exception
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.databinding.ActivityFindOrCreateFamilyBinding;
-import com.angogasapps.myfamily.firebase.FindFamilyFunks;
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
-import com.angogasapps.myfamily.firebase.RegisterFamilyFunks;
-import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily;
-import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily;
-
-import com.angogasapps.myfamily.ui.screens.main.MainActivity;
-import com.angogasapps.myfamily.ui.screens.splash.SplashActivity;
-import com.angogasapps.myfamily.utils.FamilyManager;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
-
-import es.dmoral.toasty.Toasty;
-
-public class FindOrCreateFamilyActivity extends AppCompatActivity {
-    private String familyIdParam;
-    private ActivityFindOrCreateFamilyBinding binding;
-    private Uri mFamilyEmblemUri;
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityFindOrCreateFamilyBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+class FindOrCreateFamilyActivity : AppCompatActivity() {
+    private var familyIdParam: String? = null
+    private lateinit var binding: ActivityFindOrCreateFamilyBinding
+    private var mFamilyEmblemUri: Uri? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityFindOrCreateFamilyBinding.inflate(
+            layoutInflater
+        )
+        setContentView(binding.root)
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        analyzeIntent();
-        setJoinBtnOnClick();
-        addCreateFamilyOnClick();
+    override fun onStart() {
+        super.onStart()
+        analyzeIntent()
+        setJoinBtnOnClick()
+        addCreateFamilyOnClick()
     }
 
-
-    private void analyzeIntent(){
-        Intent intent = getIntent();
-        familyIdParam = intent.getStringExtra(FamilyManager.PARAM_FAMILY_ID);
-
-        if (familyIdParam != null && !familyIdParam.equals("")){
-            showInviteDialog();
+    private fun analyzeIntent() {
+        val intent = intent
+        familyIdParam = intent.getStringExtra(FamilyManager.PARAM_FAMILY_ID)
+        if (familyIdParam != null && familyIdParam != "") {
+            showInviteDialog()
         }
-
-
-    }
-    private void showInviteDialog() {
-
-        AlertDialog alertDialog = new Builder(this).setTitle(R.string.you_was_invite_to_family)
-                .setMessage(R.string.do_you_want_join_to_invite_family)
-                .setPositiveButton(getString(R.string.yes), (dialog, which) -> { joinToInviteFamily();})
-                .setNegativeButton(getString(R.string.no), (dialog, which) -> {dialog.dismiss();})
-//                .setOnDismissListener(dialog -> startFragments())
-                .create();
-        alertDialog.show();
     }
 
-    private void joinToInviteFamily(){
-        FindFamilyFunks.tryFindFamilyById(familyIdParam, new IOnFindFamily() {
-            @Override
-            public void onSuccess() {
-                FindFamilyFunks.joinUserToFamily(familyIdParam, new IOnJoinToFamily() {
-                    @Override
-                    public void onSuccess() {
-                        startActivity(new Intent(FindOrCreateFamilyActivity.this, MainActivity.class));
-                        FindOrCreateFamilyActivity.this.finish();
+    private fun showInviteDialog() {
+        val alertDialog = AlertDialog.Builder(this).setTitle(R.string.you_was_invite_to_family)
+            .setMessage(R.string.do_you_want_join_to_invite_family)
+            .setPositiveButton(getString(R.string.yes)) { dialog: DialogInterface?, which: Int -> joinToInviteFamily() }
+            .setNegativeButton(getString(R.string.no)) { dialog: DialogInterface, which: Int -> dialog.dismiss() }
+            //                .setOnDismissListener(dialog -> startFragments())
+            .create()
+        alertDialog.show()
+    }
+
+    private fun joinToInviteFamily() {
+        FindFamilyFunks.tryFindFamilyById(familyIdParam, object : IOnFindFamily {
+            override fun onSuccess() {
+                FindFamilyFunks.joinUserToFamily(familyIdParam, object : IOnJoinToFamily {
+                    override fun onSuccess() {
+                        startActivity(
+                            Intent(
+                                this@FindOrCreateFamilyActivity,
+                                MainActivity::class.java
+                            )
+                        )
+                        finish()
                     }
-                    @Override
-                    public void onFailure() {
 
-                    }
-                });
+                    override fun onFailure() {}
+                })
             }
-            @Override
-            public void onFailure() {
-                familyNotFound();
+
+            override fun onFailure() {
+                familyNotFound()
             }
-            @Override
-            public void onCancelled() {
-                familyNotFound();
+
+            override fun onCancelled() {
+                familyNotFound()
             }
-        });
+        })
     }
 
-    private void familyNotFound(){
-        Toasty.error(this, R.string.link_is_not_correct).show();
+    private fun familyNotFound() {
+        Toasty.error(this, R.string.link_is_not_correct).show()
     }
 
-    public void setJoinBtnOnClick() {
-        binding.joinBtn.setOnClickListener(v -> {
-            String text = binding.editText.getText().toString();
+    fun setJoinBtnOnClick() {
+        binding.joinBtn.setOnClickListener { v: View? ->
+            val text = binding.editText.text.toString()
             if (text.isEmpty()) {
-                Toasty.warning(FindOrCreateFamilyActivity.this, R.string.enter_identification).show();
+                Toasty.warning(this@FindOrCreateFamilyActivity, R.string.enter_identification)
+                    .show()
             } else {
-                FindFamilyFunks.tryFindFamilyById(text, new IOnFindFamily() {
-                    @Override
-                    public void onSuccess() {
-                        FindFamilyFunks.joinUserToFamily(text, new IOnJoinToFamily() {
-                            @Override
-                            public void onSuccess() {
-                                Toasty.success(FindOrCreateFamilyActivity.this,
-                                        R.string.you_success_join_to_you_family).show();
-
-                                FindOrCreateFamilyActivity.this.startActivity(
-                                        new Intent(FindOrCreateFamilyActivity.this.getApplicationContext(),
-                                        MainActivity.class));
-                                FindOrCreateFamilyActivity.this.finish();
+                FindFamilyFunks.tryFindFamilyById(text, object : IOnFindFamily {
+                    override fun onSuccess() {
+                        FindFamilyFunks.joinUserToFamily(text, object : IOnJoinToFamily {
+                            override fun onSuccess() {
+                                Toasty.success(
+                                    this@FindOrCreateFamilyActivity,
+                                    R.string.you_success_join_to_you_family
+                                ).show()
+                                this@FindOrCreateFamilyActivity.startActivity(
+                                    Intent(
+                                        this@FindOrCreateFamilyActivity.applicationContext,
+                                        MainActivity::class.java
+                                    )
+                                )
+                                finish()
                             }
 
-                            @Override
-                            public void onFailure() {
-                                Toasty.error(FindOrCreateFamilyActivity.this,
-                                        R.string.error).show();
+                            override fun onFailure() {
+                                Toasty.error(
+                                    this@FindOrCreateFamilyActivity,
+                                    R.string.error
+                                ).show()
                             }
-                        });
+                        })
                     }
 
-                    @Override
-                    public void onFailure() {
-                        Toasty.error(FindOrCreateFamilyActivity.this, R.string.family_not_found).show();
+                    override fun onFailure() {
+                        Toasty.error(this@FindOrCreateFamilyActivity, R.string.family_not_found)
+                            .show()
                     }
 
-                    @Override
-                    public void onCancelled() {
-                        Toasty.error(FindOrCreateFamilyActivity.this,
-                                R.string.you_canceled_searches).show();
+                    override fun onCancelled() {
+                        Toasty.error(
+                            this@FindOrCreateFamilyActivity,
+                            R.string.you_canceled_searches
+                        ).show()
                     }
-                });
+                })
             }
-        });
+        }
     }
 
-    public void addCreateFamilyOnClick(){
-        binding.addEmblemBtn.setOnClickListener(v -> {
-            addFamilyEmblem();
-        });
+    fun addCreateFamilyOnClick() {
+        binding.addEmblemBtn.setOnClickListener { v: View? -> addFamilyEmblem() }
+        binding.createFamilyButton.setOnClickListener { v: View? ->
+            val familyName = binding.familyNameEditText.text.toString()
+            if (familyName.isEmpty()) {
+                Toasty.info(this, R.string.enter_family_last_name).show()
+                return@setOnClickListener
+            }
+            if (mFamilyEmblemUri == null) {
+                mFamilyEmblemUri = Uri.EMPTY
+            }
+            RegisterFamilyFunks.createNewFamily(
+                this,
+                familyName, mFamilyEmblemUri
+            ) {
 
-        binding.createFamilyButton.setOnClickListener(v -> {
-            String familyName = binding.familyNameEditText.getText().toString();
-            if (familyName.isEmpty()){
-                Toasty.info(this, R.string.enter_family_last_name).show();
-                return;
+                //когда регистрация новой семьи в базе данных прошла успешно
+                Toasty.success(
+                    this.applicationContext,
+                    R.string.everything_went_well
+                ).show()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
             }
-            if(mFamilyEmblemUri == null){
-                mFamilyEmblemUri = Uri.EMPTY;
-            }
-            RegisterFamilyFunks.createNewFamily(this,
-                    familyName, mFamilyEmblemUri, () -> {
-                        //когда регистрация новой семьи в базе данных прошла успешно
-                        Toasty.success(this.getApplicationContext(),
-                                R.string.everything_went_well).show();
-                        startActivity(new Intent(this, MainActivity.class));
-                        this.finish();
-                    });
-        });
+        }
     }
 
-    private void addFamilyEmblem() {
+    private fun addFamilyEmblem() {
         CropImage.activity().setAspectRatio(1, 1)
-                .setRequestedSize(300, 300)
-                .setCropShape(CropImageView.CropShape.RECTANGLE)
-                .start(FindOrCreateFamilyActivity.this);
+            .setRequestedSize(300, 300)
+            .setCropShape(CropImageView.CropShape.RECTANGLE)
+            .start(this@FindOrCreateFamilyActivity)
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         try {
-            mFamilyEmblemUri = CropImage.getActivityResult(data).getUri();
-            binding.familyEmblemImage.setBackground(null);
-            binding.familyEmblemImage.setImageURI(mFamilyEmblemUri);
-        }catch (Exception e){
-            e.printStackTrace();
-            Toasty.error(this, "неизвестная ошибка").show();
+            mFamilyEmblemUri = CropImage.getActivityResult(data).uri
+            binding.familyEmblemImage.background = null
+            binding.familyEmblemImage.setImageURI(mFamilyEmblemUri)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toasty.error(this, "неизвестная ошибка").show()
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_item_signout){
-            FirebaseVarsAndConsts.AUTH.signOut();
-            startActivity(new Intent(this, SplashActivity.class));
-            finish();
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_item_signout) {
+            FirebaseVarsAndConsts.AUTH.signOut()
+            startActivity(Intent(this, SplashActivity::class.java))
+            finish()
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item)
     }
 }

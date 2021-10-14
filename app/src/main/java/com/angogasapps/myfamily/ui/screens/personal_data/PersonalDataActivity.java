@@ -18,6 +18,7 @@ import com.angogasapps.myfamily.ui.screens.settings.SettingsActivity;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
+import static com.angogasapps.myfamily.utils.UtilsKt.showInDevelopingToast;
 
 public class PersonalDataActivity extends AppCompatActivity {
     private ActivityPersonalDataBinding binding;
@@ -37,7 +38,7 @@ public class PersonalDataActivity extends AppCompatActivity {
         });
 
         OnClickListener plugClickListener = v -> {
-            AppApplication.showInDevelopingToast();
+            showInDevelopingToast();
         };
 
         binding.changePersonalData.setOnClickListener(plugClickListener);

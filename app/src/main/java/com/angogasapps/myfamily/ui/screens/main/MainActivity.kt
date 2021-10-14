@@ -1,117 +1,106 @@
-package com.angogasapps.myfamily.ui.screens.main;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.async.LoadFamilyThread;
-import com.angogasapps.myfamily.async.notification.FcmMessageManager;
-import com.angogasapps.myfamily.database.DatabaseManager;
-import com.angogasapps.myfamily.databinding.ActivityMainBinding;
-import com.angogasapps.myfamily.ui.screens.main.adapters.ItemTouchHelperCallback;
-import com.angogasapps.myfamily.ui.screens.main.adapters.MainActivityAdapter;
-import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity;
-import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils;
-import com.angogasapps.myfamily.ui.screens.splash.SplashActivity;
-import com.angogasapps.myfamily.utils.Async;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-
-public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding binding;
-    private MainActivityAdapter cardsAdapter;
-    private GridLayoutManager layoutManager;
-    private ItemTouchHelper itemTouchHelper;
+package com.angogasapps.myfamily.ui.screens.main
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+import androidx.appcompat.app.AppCompatActivity
+import com.angogasapps.myfamily.ui.screens.main.adapters.MainActivityAdapter
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import android.os.Bundle
+import com.angogasapps.myfamily.async.LoadFamilyThread
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.async.notification.FcmMessageManager
+import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils
+import com.angogasapps.myfamily.ui.screens.main.adapters.ItemTouchHelperCallback
+import com.angogasapps.myfamily.utils.Async
+import com.angogasapps.myfamily.utils.Async.doInThread
+import android.content.Intent
+import android.view.MenuItem
+import android.view.View
+import androidx.lifecycle.lifecycleScope
+import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.database.DatabaseManager
+import com.angogasapps.myfamily.databinding.ActivityMainBinding
+import com.angogasapps.myfamily.ui.screens.splash.SplashActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-        new LoadFamilyThread(this).execute(USER);
-
-
-
-        initToolbar();
-        initRecyclerView();
-        initNewsLayout();
-        FcmMessageManager.subscribeToTopics();
-//        FcmMessageManager.updateToken();
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var cardsAdapter: MainActivityAdapter
+    private lateinit var layoutManager: GridLayoutManager
+    private lateinit var itemTouchHelper: ItemTouchHelper
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        LoadFamilyThread(this).execute(FirebaseVarsAndConsts.USER)
+        initToolbar()
+        initRecyclerView()
+        initNewsLayout()
+        FcmMessageManager.subscribeToTopics()
+        //        FcmMessageManager.updateToken();
     }
 
-    private void initRecyclerView() {
-        cardsAdapter = new MainActivityAdapter(this, MainActivityUtils.getPreferCardsArray(this));
-        layoutManager = new GridLayoutManager(this, 2);
-
-        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(cardsAdapter);
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(binding.recycleView);
-
-        binding.recycleView.setAdapter(cardsAdapter);
-        binding.recycleView.setLayoutManager(layoutManager);
+    private fun initRecyclerView() {
+        cardsAdapter = MainActivityAdapter(this, MainActivityUtils.getPreferCardsArray(this))
+        layoutManager = GridLayoutManager(this, 2)
+        val callback: ItemTouchHelper.Callback = ItemTouchHelperCallback(cardsAdapter)
+        itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(binding.recycleView)
+        binding.recycleView.adapter = cardsAdapter
+        binding.recycleView.layoutManager = layoutManager
     }
 
-    private void initToolbar() {
-        getSupportActionBar().hide();
-        binding.toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
-
-
-        Async.runInNewThread(() -> {
-            while (!LoadFamilyThread.isEnd) {  }
-            if (USER.getUserPhoto() != null)
-                runOnUiThread(() -> {
-                    binding.toolbarUserImage.setImageBitmap(USER.getUserPhoto());
-                });
-
-        });
-
-        binding.toolbarUserImage.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, PersonalDataActivity.class));
-        });
-    }
-
-    private void initNewsLayout() {
-        binding.newsCenter.setUpCenter(this);
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.menu_item_signout){
-            AUTH.signOut();
-            Async.runInNewThread(() -> {
-                // reset all managers and services
-                DatabaseManager.resetDatabase();
-                runOnUiThread(() -> {
-                    startActivity(new Intent(this, SplashActivity.class));
-                    finish();
-                });
-            });
-
+    private fun initToolbar() {
+        supportActionBar!!.hide()
+        binding.toolbar.setOnMenuItemClickListener { item: MenuItem -> onOptionsItemSelected(item) }
+        lifecycleScope.launch(Dispatchers.IO) {
+            while (!LoadFamilyThread.isEnd) { }
+            if (FirebaseVarsAndConsts.USER.userPhoto != null)
+                withContext(Dispatchers.Main) {
+                    binding.toolbarUserImage.setImageBitmap(FirebaseVarsAndConsts.USER.userPhoto)
+            }
         }
-        return super.onOptionsItemSelected(item);
+        binding.toolbarUserImage.setOnClickListener { v: View? ->
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    PersonalDataActivity::class.java
+                )
+            )
+        }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MainActivityUtils.savePreferCardPlaces(this, cardsAdapter.getList());
+    private fun initNewsLayout() {
+        binding.newsCenter.setUpCenter(this, lifecycleScope)
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        binding.newsCenter.destroyCenter();
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.menu_item_signout) {
+            FirebaseVarsAndConsts.AUTH.signOut()
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                // reset all managers and services
+                DatabaseManager.resetDatabase()
+                withContext(Dispatchers.Main) {
+                    startActivity(Intent(this@MainActivity, SplashActivity::class.java))
+                    finish()
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MainActivityUtils.savePreferCardPlaces(this, cardsAdapter.list)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.newsCenter.destroyCenter()
     }
 }

@@ -13,7 +13,7 @@ class QuoteManager private constructor() {
     }
 
     private fun init(){
-        list = AppApplication.getInstance().resources.getStringArray(R.array.quotes).asList()
+        list = AppApplication.app.resources.getStringArray(R.array.quotes).asList()
     }
 
     fun getRandomQuote(): Quote{

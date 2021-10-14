@@ -16,6 +16,9 @@ import java.util.ArrayList;
 
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.ROLE_MEMBER;
 
+import kotlin.jvm.JvmField;
+import kotlin.jvm.JvmStatic;
+
 public class Family {
     private static Family family;
 

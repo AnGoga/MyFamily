@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import com.angogasapps.myfamily.firebase.NewsCenterFunks;
 import com.angogasapps.myfamily.models.events.NewsEvent;
 import com.angogasapps.myfamily.models.events.NewsObject;
-import com.angogasapps.myfamily.utils.NewsUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,6 +18,7 @@ import io.reactivex.subjects.PublishSubject;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_NEWS;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
+import static com.angogasapps.myfamily.utils.NewsUtilsKt.getIndexOfDeleteNews;
 
 public class NewsManager {
     private static NewsManager newsManager;
@@ -82,7 +82,7 @@ public class NewsManager {
 
     private synchronized void onChildRemoved(DataSnapshot snapshot){
         NewsObject object = NewsObject.from(snapshot);
-        int index = NewsUtils.getIndexOfDeleteNews(newsList, object);
+        int index = getIndexOfDeleteNews(newsList, object);
         if (index == -1) return;
         newsList.remove(index);
 

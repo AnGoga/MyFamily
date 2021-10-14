@@ -64,7 +64,7 @@ public class ChatFunks {
         DatabaseReference path = DATABASE_ROOT.child(NODE_CHAT).child(USER.getFamily());
 
         if (type.equals(TYPE_TEXT_MESSAGE)) {
-            value = StringFormater.formatStringToSend(value);
+            value = value.trim();
         }
 
         HashMap<String, Object> messageMap = new HashMap<>();

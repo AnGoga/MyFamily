@@ -1,34 +1,26 @@
-package com.angogasapps.myfamily.utils;
+package com.angogasapps.myfamily.utils
 
-import com.angogasapps.myfamily.models.events.NewsObject;
-import com.google.firebase.database.ServerValue;
+import com.angogasapps.myfamily.models.events.NewsObject
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.google.firebase.database.ServerValue
+import java.util.ArrayList
+import java.util.HashMap
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_FROM_PHONE;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_TIME_CREATE;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_TYPE;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_VALUE;
+fun getMap(obj: NewsObject): HashMap<String, Any> {
+    val map = HashMap<String, Any>()
+    map[FirebaseVarsAndConsts.CHILD_TYPE] = obj.type
+    map[FirebaseVarsAndConsts.CHILD_FROM_PHONE] = obj.fromPhone
+    map[FirebaseVarsAndConsts.CHILD_VALUE] = obj.value
+    map[FirebaseVarsAndConsts.CHILD_TIME_CREATE] = ServerValue.TIMESTAMP
+    return map
+}
 
-public class NewsUtils {
-    public static HashMap<String, Object> getMap(NewsObject object){
-        HashMap<String, Object> map = new HashMap<>();
-
-        map.put(CHILD_TYPE, object.getType());
-        map.put(CHILD_FROM_PHONE, object.getFromPhone());
-        map.put(CHILD_VALUE, object.getValue());
-        map.put(CHILD_TIME_CREATE, ServerValue.TIMESTAMP);
-
-        return map;
-    }
-
-    public static int getIndexOfDeleteNews(ArrayList<NewsObject> newsList, NewsObject newNews){
-        for (int i = 0; i < newsList.size(); i++) {
-            if (newsList.get(i).getId().equals(newNews.getId())){
-                return i;
-            }
+fun getIndexOfDeleteNews(newsList: ArrayList<NewsObject>, newNews: NewsObject): Int {
+    for (i in newsList.indices) {
+        if (newsList[i].id == newNews.id) {
+            return i
         }
-        return -1;
     }
+    return -1
 }

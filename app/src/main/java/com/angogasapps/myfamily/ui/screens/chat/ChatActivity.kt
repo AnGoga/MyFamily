@@ -3,7 +3,6 @@ package com.angogasapps.myfamily.ui.screens.chat
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.widget.AbsListView
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +13,6 @@ import com.angogasapps.myfamily.databinding.FragmentChatBinding
 import com.angogasapps.myfamily.firebase.ChatFunks
 import com.angogasapps.myfamily.firebase.FirebaseHelper
 import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
-import com.angogasapps.myfamily.models.Message
 import com.angogasapps.myfamily.objects.ChatAudioRecorder
 import com.angogasapps.myfamily.objects.ChatTextWatcher
 import com.angogasapps.myfamily.ui.screens.chat.ChatManager.Companion.dangerFirstVisibleItemPosition
@@ -108,8 +106,9 @@ class ChatActivity : AppCompatActivity() {
                     mRecorder.startRecording()
                 } else if (event.action === MotionEvent.ACTION_UP) {
                     mRecorder.stopRecording {
-                        val voiceFile: File = mRecorder.file
-                        ChatFunks.sendVoice(voiceFile, mRecorder.key)
+                        mRecorder.file?.let {
+                            ChatFunks.sendVoice(it, mRecorder.key)
+                        }
                     }
                 }
             }

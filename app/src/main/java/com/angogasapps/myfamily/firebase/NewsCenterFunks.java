@@ -4,7 +4,6 @@ import android.net.Uri;
 
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
 import com.angogasapps.myfamily.models.events.NewsObject;
-import com.angogasapps.myfamily.utils.NewsUtils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
 
@@ -12,6 +11,7 @@ import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_R
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_NEWS;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.STORAGE_ROOT;
 import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
+import static com.angogasapps.myfamily.utils.NewsUtilsKt.getMap;
 
 public class NewsCenterFunks {
     public static synchronized void createNewTextNews(String newsText, IOnEndCommunicationWithFirebase i){
@@ -55,7 +55,7 @@ public class NewsCenterFunks {
 
     private static synchronized void sendNewNews(NewsObject newsObject, String key, IOnEndCommunicationWithFirebase i){
         DATABASE_ROOT.child(NODE_NEWS).child(USER.getFamily()).child(key)
-                .updateChildren(NewsUtils.getMap(newsObject)).addOnCompleteListener(task -> {
+                .updateChildren(getMap(newsObject)).addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 i.onSuccess();
             }else{

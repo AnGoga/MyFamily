@@ -9,8 +9,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.text.Editable
+import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat.startActivityForResult
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.AppApplication
 import com.angogasapps.myfamily.models.DairyObject
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.MapFolder
@@ -110,6 +112,14 @@ fun showFileChooser(context: Activity) {
     }
 }
 
+
+fun stringOf(@StringRes res: Int): String {
+    return AppApplication.app.applicationContext.getString(res)
+}
+
+fun showInDevelopingToast() {
+    Toasty.info(AppApplication.app, R.string.in_developing).show()
+}
 
 
 

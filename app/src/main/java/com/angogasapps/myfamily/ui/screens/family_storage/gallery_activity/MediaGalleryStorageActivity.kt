@@ -13,6 +13,7 @@ import com.angogasapps.myfamily.firebase.createImageFile
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.ui.screens.family_storage.StorageManager
 import com.angogasapps.myfamily.ui.screens.family_storage.gallery_storage_adapters.MediaGalleryStorageAdapter
+import com.angogasapps.myfamily.utils.showInDevelopingToast
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
@@ -94,7 +95,7 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
                         .start(this)
             }
             NODE_VIDEO_STORAGE -> {
-                AppApplication.showInDevelopingToast()
+                showInDevelopingToast()
             }
         }
     }
