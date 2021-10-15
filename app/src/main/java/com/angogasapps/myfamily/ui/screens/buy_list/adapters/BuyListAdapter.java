@@ -43,7 +43,6 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.BuyListH
         synchronized (this) {
             holder.setTextName(buyListsArray.get(position).getName());
             holder.binding.getRoot().setOnLongClickListener(v -> {
-//                (new ChangeOrDeleteBuyListDialog(context, buyListsArray.get(position))).show();
                 (new ChangeOrDeleteBuyListDialog(context, buyListsArray.get(holder.getPosition()))).show();
                 return true;
             });

@@ -1,51 +1,37 @@
-package com.angogasapps.myfamily.ui.screens.personal_data;
+package com.angogasapps.myfamily.ui.screens.personal_data
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.cardview.widget.CardView;
+import com.angogasapps.myfamily.utils.showInDevelopingToast
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import android.content.Intent
+import android.view.View
+import com.angogasapps.myfamily.databinding.ActivityPersonalDataBinding
+import com.angogasapps.myfamily.ui.screens.settings.SettingsActivity
+import com.angogasapps.myfamily.ui.screens.personal_dairy.PersonalDairyActivity
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
+class PersonalDataActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityPersonalDataBinding
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
-import com.angogasapps.myfamily.databinding.ActivityPersonalDataBinding;
-import com.angogasapps.myfamily.ui.screens.personal_dairy.PersonalDairyActivity;
-import com.angogasapps.myfamily.ui.screens.settings.SettingsActivity;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityPersonalDataBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-import static com.angogasapps.myfamily.utils.UtilsKt.showInDevelopingToast;
-
-public class PersonalDataActivity extends AppCompatActivity {
-    private ActivityPersonalDataBinding binding;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityPersonalDataBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        if (USER.getUserPhoto() != null){
-            binding.userImage.setImageBitmap(USER.getUserPhoto());
+        if (FirebaseVarsAndConsts.USER.userPhoto != null) {
+            binding.userImage.setImageBitmap(FirebaseVarsAndConsts.USER.userPhoto)
         }
-
-        binding.settings.setOnClickListener(v -> {
-            startActivity(new Intent(PersonalDataActivity.this, SettingsActivity.class));
-        });
-
-        OnClickListener plugClickListener = v -> {
-            showInDevelopingToast();
-        };
-
-        binding.changePersonalData.setOnClickListener(plugClickListener);
-        binding.personalDairy.setOnClickListener(v -> {
-            startActivity(new Intent(PersonalDataActivity.this, PersonalDairyActivity.class));
-        });
-
-
+        binding.settings.setOnClickListener {
+            startActivity(
+                Intent(this@PersonalDataActivity, SettingsActivity::class.java)
+            )
+        }
+        val plugClickListener = View.OnClickListener { showInDevelopingToast() }
+        binding.changePersonalData.setOnClickListener(plugClickListener)
+        binding.personalDairy.setOnClickListener {
+            startActivity(
+                Intent(this@PersonalDataActivity, PersonalDairyActivity::class.java)
+            )
+        }
     }
 }

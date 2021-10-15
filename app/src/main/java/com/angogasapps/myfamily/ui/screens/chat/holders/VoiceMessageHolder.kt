@@ -1,40 +1,24 @@
-package com.angogasapps.myfamily.ui.screens.chat.holders;
+package com.angogasapps.myfamily.ui.screens.chat.holders
 
-import android.view.View;
+import android.view.View
+import com.angogasapps.myfamily.ui.customview.ChatVoiceMessageView
+import com.angogasapps.myfamily.R
 
-import androidx.annotation.NonNull;
+class VoiceMessageHolder(rootView: View) : AppBaseViewHolder(rootView) {
+    var leftVoiceMessageView: ChatVoiceMessageView = rootView.findViewById(R.id.left_voice_view)
+    var rightVoiceMessageView: ChatVoiceMessageView = rootView.findViewById(R.id.right_voice_view)
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.ui.customview.ChatVoiceMessageView;
-
-
-
-public class VoiceMessageHolder extends AppBaseViewHolder{
-    ChatVoiceMessageView leftVoiceMessageView, rightVoiceMessageView;
-    public VoiceMessageHolder(@NonNull View itemView) {
-        super(itemView);
-        leftVoiceMessageView = itemView.findViewById(R.id.left_voice_view);
-        rightVoiceMessageView = itemView.findViewById(R.id.right_voice_view);
+    override fun initLeftFields() {
+        leftVoiceMessageView.setFromName(name)
+        leftVoiceMessageView.messageKey = messageKey
+        leftVoiceMessageView.setTime(time)
+        leftVoiceMessageView.voiceFileUrl = value
     }
 
-    @Override
-    protected void initLeftFields() {
-        leftVoiceMessageView.setFromName(name);
-        leftVoiceMessageView.setMessageKey(messageKey);
-        leftVoiceMessageView.setTime(time);
-        leftVoiceMessageView.setVoiceFileUrl(value);
-
-
+    override fun initRightFields() {
+        rightVoiceMessageView.setFromName(name)
+        rightVoiceMessageView.messageKey = messageKey
+        rightVoiceMessageView.setTime(time)
+        rightVoiceMessageView.voiceFileUrl = value
     }
-
-    @Override
-    protected void initRightFields() {
-        rightVoiceMessageView.setFromName(name);
-        rightVoiceMessageView.setMessageKey(messageKey);
-        rightVoiceMessageView.setTime(time);
-        rightVoiceMessageView.setVoiceFileUrl(value);
-
-
-    }
-
 }

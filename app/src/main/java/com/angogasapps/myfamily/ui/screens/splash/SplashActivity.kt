@@ -1,126 +1,107 @@
-package com.angogasapps.myfamily.ui.screens.splash;
+package com.angogasapps.myfamily.ui.screens.splash
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.AppApplication.Companion.isOnline
+import com.angogasapps.myfamily.async.notification.TokensManager.updateToken
+import com.angogasapps.myfamily.database.DatabaseManager
+import com.angogasapps.myfamily.firebase.AuthFunctions.downloadUser
+import com.angogasapps.myfamily.firebase.FirebaseHelper
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.interfaces.IAuthUser
+import com.angogasapps.myfamily.models.Family
+import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity
+import com.angogasapps.myfamily.ui.screens.main.MainActivity
+import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity
+import com.angogasapps.myfamily.utils.FamilyManager
+import es.dmoral.toasty.Toasty
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
-import com.angogasapps.myfamily.async.notification.TokensManager;
-import com.angogasapps.myfamily.database.DatabaseManager;
-import com.angogasapps.myfamily.firebase.AuthFunctions;
-import com.angogasapps.myfamily.firebase.interfaces.IAuthUser;
-import com.angogasapps.myfamily.models.Family;
-import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity;
-import com.angogasapps.myfamily.ui.screens.main.MainActivity;
-import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity;
-import com.angogasapps.myfamily.utils.FamilyManager;
-
-import es.dmoral.toasty.Toasty;
-
-import static com.angogasapps.myfamily.firebase.FirebaseHelper.initFirebase;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-
-public class SplashActivity extends AppCompatActivity {
-    private String familyIdParam = "";
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        initFirebase();
+class SplashActivity : AppCompatActivity() {
+    private var familyIdParam: String = ""
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        FirebaseHelper.initFirebase()
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        start();
+    public override fun onStart() {
+        super.onStart()
+        start()
     }
 
-    private void analysisIntent() {
-
-        Intent intent = getIntent();
-        Uri data = intent.getData();
-        if (data != null) {
-            familyIdParam = data.getQueryParameter(FamilyManager.PARAM_FAMILY_ID);
-            System.out.println("\ndata = " + data.toString() + "\nfamily id = " + familyIdParam);
-
+    private fun analysisIntent() {
+        intent.data?.let {
+            familyIdParam = it.getQueryParameter(FamilyManager.PARAM_FAMILY_ID)?:""
+            println("\ndata = $it\nfamily id = $familyIdParam")
         }
     }
 
-    private void onEndDownloadUser(){
-        Log.d("tag", "\n" + USER.toString());
-
-        TokensManager.INSTANCE.updateToken(USER);
-
-
-        if (USER.getFamily().equals("")){
-            Intent intent = new Intent(this, FindOrCreateFamilyActivity.class);
-            intent.putExtra(FamilyManager.PARAM_FAMILY_ID, familyIdParam);
-            startActivity(intent);
-        }else {
-//            startActivity(new Intent(SplashActivity.this, DeprecatedMainActivity.class));
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+    private fun onEndDownloadUser() {
+        Log.d("tag", """${FirebaseVarsAndConsts.USER} """.trimIndent())
+        updateToken(FirebaseVarsAndConsts.USER)
+        if (FirebaseVarsAndConsts.USER.family == "") {
+            val intent = Intent(this, FindOrCreateFamilyActivity::class.java)
+            intent.putExtra(FamilyManager.PARAM_FAMILY_ID, familyIdParam)
+            startActivity(intent)
+        } else {
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
         }
-        finish();
+        finish()
     }
 
-    private void onError(){
-        start();
+    private fun onError() {
+        start()
     }
 
-    public void start(){
-        if (AppApplication.isOnline()){
-            if (AUTH.getCurrentUser() != null){
+    fun start() {
+        if (isOnline) {
+            if (FirebaseVarsAndConsts.AUTH.currentUser != null) {
                 //интернет есть, пользователь аторизован
-                analysisIntent();
-                AuthFunctions.downloadUser(new IAuthUser() {
-                    @Override
-                    public void onEndDownloadUser() {
-                        SplashActivity.this.onEndDownloadUser();
+                analysisIntent()
+                downloadUser(object : IAuthUser {
+                    override fun onEndDownloadUser() {
+                        this@SplashActivity.onEndDownloadUser()
                     }
 
-                    @Override
-                    public void onError() {
-                        SplashActivity.this.onError();
+                    override fun onError() {
+                        this@SplashActivity.onError()
                     }
-                });
-            }else{
+                })
+            } else {
                 //интернет есть, пользователь не авторизован
-                startActivity(new Intent(this, RegisterActivity.class));
-                finish();
+                startActivity(Intent(this, RegisterActivity::class.java))
+                finish()
             }
-        }else {
-            if (AUTH.getCurrentUser() != null) {
+        } else {
+            if (FirebaseVarsAndConsts.AUTH.currentUser != null) {
                 // Вход с данными из БД
-                signInWithRoom();
-
-
-            }else{
+                signInWithRoom()
+            } else {
                 //интернета нет, пользователь не авторизован
-                Toasty.error(this, R.string.connection_is_not).show();
+                Toasty.error(this, R.string.connection_is_not).show()
             }
         }
     }
 
-    public void signInWithRoom(){
-        DatabaseManager.comeInByDatabase(() -> {
-            Family.getInstance().setUsersList(DatabaseManager.getUserList());
-            if (Family.getInstance().containsUserWithId(AUTH.getCurrentUser().getUid())){
-                USER = Family.getInstance().getUserById(AUTH.getCurrentUser().getUid());
+    private fun signInWithRoom() {
+        DatabaseManager.comeInByDatabase {
+            Family.getInstance().usersList = DatabaseManager.getUserList()
+            if (Family.getInstance()
+                    .containsUserWithId(FirebaseVarsAndConsts.AUTH.currentUser!!.uid)
+            ) {
+                FirebaseVarsAndConsts.USER = Family.getInstance().getUserById(
+                    FirebaseVarsAndConsts.AUTH.currentUser!!.uid
+                )
             }
-
-            if (USER.getFamily().equals("")) {
-                Toasty.error(this, R.string.connection_is_not).show();
-            }else{
+            if (FirebaseVarsAndConsts.USER.family == "") {
+                Toasty.error(this, R.string.connection_is_not).show()
+            } else {
 //                startActivity(new Intent(SplashActivity.this, DeprecatedMainActivity.class));
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                finish()
             }
-        });
+        }
     }
 }

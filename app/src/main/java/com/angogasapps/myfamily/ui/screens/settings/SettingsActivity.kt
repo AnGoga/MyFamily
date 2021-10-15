@@ -1,52 +1,39 @@
-package com.angogasapps.myfamily.ui.screens.settings;
+package com.angogasapps.myfamily.ui.screens.settings
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.angogasapps.myfamily.async.notification.FcmMessageManager.setPermissionToGetChatNotifications
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.preference.CheckBoxPreference
+import androidx.preference.Preference
+import com.angogasapps.myfamily.ui.screens.settings.SettingsActivity.SettingFragment
+import androidx.preference.PreferenceFragmentCompat
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.async.notification.FcmMessageManager
+import com.angogasapps.myfamily.databinding.ActivitySettingsBinding
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.Bundle;
-import android.preference.PreferenceActivity;
+class SettingsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySettingsBinding
 
-import androidx.preference.CheckBoxPreference;
-import androidx.preference.PreferenceFragmentCompat;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
-import com.angogasapps.myfamily.async.notification.FcmMessageManager;
-import com.angogasapps.myfamily.databinding.ActivitySettingsBinding;
-
-import es.dmoral.toasty.Toasty;
-
-
-public class SettingsActivity extends AppCompatActivity {
-    private ActivitySettingsBinding binding;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivitySettingsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        getSupportFragmentManager().beginTransaction()
-                .add(binding.settingsContainer.getId(), new SettingFragment())
-                .commit();
+        supportFragmentManager.beginTransaction()
+            .add(binding.settingsContainer.id, SettingFragment())
+            .commit()
     }
 
+    class SettingFragment : PreferenceFragmentCompat() {
+        private lateinit var chatNotificationPref: CheckBoxPreference
 
-    public static class SettingFragment extends PreferenceFragmentCompat{
-        private CheckBoxPreference chatNotificationPref;
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            addPreferencesFromResource(R.xml.settings);
-            chatNotificationPref = findPreference("chat_notification");
-
-            chatNotificationPref.setOnPreferenceClickListener(preference -> {
-                FcmMessageManager.INSTANCE.setPermissionToGetChatNotifications(chatNotificationPref.isChecked());
-                return false;
-            });
+        override fun onCreatePreferences(savedInstanceState: Bundle, rootKey: String) {
+            addPreferencesFromResource(R.xml.settings)
+            chatNotificationPref = findPreference("chat_notification")!!
+            chatNotificationPref.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                setPermissionToGetChatNotifications(chatNotificationPref.isChecked)
+                false
+            }
         }
     }
-
-
 }

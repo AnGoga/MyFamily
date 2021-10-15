@@ -1,27 +1,18 @@
-package com.angogasapps.myfamily.ui.screens.chat.holders;
+package com.angogasapps.myfamily.ui.screens.chat.holders
 
-import android.view.View;
-import android.widget.TextView;
+import android.view.View
+import com.angogasapps.myfamily.R
+import android.widget.TextView
 
-import androidx.annotation.NonNull;
+class TextMessageHolder(view: View) : AppBaseViewHolder(view) {
 
-import com.angogasapps.myfamily.R;
-
-public class TextMessageHolder extends AppBaseViewHolder{
-
-    public TextMessageHolder(@NonNull View itemView) {
-        super(itemView);
+    override fun initLeftFields() {
+        super.initLeftFields()
+        (rootView.findViewById<View>(R.id.leftMessageText) as TextView).text = value
     }
 
-    @Override
-    protected void initLeftFields() {
-        super.initLeftFields();
-        ((TextView)view.findViewById(R.id.leftMessageText)).setText(value);
-    }
-
-    @Override
-    protected void initRightFields() {
-        super.initRightFields();
-        ((TextView)view.findViewById(R.id.rightMessageText)).setText(value);
+    override fun initRightFields() {
+        super.initRightFields()
+        (rootView.findViewById<View>(R.id.rightMessageText) as TextView).text = value
     }
 }

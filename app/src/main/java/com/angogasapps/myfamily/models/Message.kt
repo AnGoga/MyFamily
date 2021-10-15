@@ -5,22 +5,21 @@ import androidx.room.PrimaryKey
 import com.google.firebase.database.DataSnapshot
 
 @Entity
-class Message : Comparable<Message> {
+data class Message(
     @PrimaryKey
-    var id = ""
-    var from: String? = null
-    var type: String? = null
-    var time: Long = 0
-    var value: String? = null
-    override fun equals(obj: Any?): Boolean {
-        return if (obj !is Message) false else id == obj.id
+    var id: String = "",
+    var from: String = "",
+    var type: String = "",
+    var time: Long = 0,
+    var value: String = ""
+) : Comparable<Message> {
+
+    override fun equals(other: Any?): Boolean {
+        return if (other !is Message) false else id == other.id
     }
 
-    //    public boolean equals(Message obj) {
-    //        return (this.id.equals(obj.getId()));
-    //    }
-    constructor() {}
-    constructor(snapshot: DataSnapshot) {
+    constructor() : this(id = "") {}
+    constructor(snapshot: DataSnapshot) : this() {
         val cash = snapshot.getValue(
             Message::class.java
         )
@@ -31,22 +30,20 @@ class Message : Comparable<Message> {
         value = cash.value
     }
 
-    override fun compareTo(obj: Message): Int {
-        return if (time > obj.time) {
-            1
-        } else if (time < obj.time) {
-            -1
-        } else {
-            0
+    override fun compareTo(other: Message): Int {
+        return when {
+            time > other.time -> 1
+            time < other.time -> -1
+            else -> 0
         }
     }
 
     override fun hashCode(): Int {
         var result = id.hashCode()
-        result = 31 * result + (from?.hashCode() ?: 0)
-        result = 31 * result + (type?.hashCode() ?: 0)
+        result = 31 * result + from.hashCode()
+        result = 31 * result + type.hashCode()
         result = 31 * result + time.hashCode()
-        result = 31 * result + (value?.hashCode() ?: 0)
+        result = 31 * result + value.hashCode()
         return result
     }
 }
