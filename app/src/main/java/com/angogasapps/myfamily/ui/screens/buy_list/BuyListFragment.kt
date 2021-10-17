@@ -1,91 +1,77 @@
-package com.angogasapps.myfamily.ui.screens.buy_list;
-
-import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.angogasapps.myfamily.databinding.FragmentBuyListBinding;
-import com.angogasapps.myfamily.models.buy_list.BuyList;
-import com.angogasapps.myfamily.models.buy_list.BuyListEvent;
-import com.angogasapps.myfamily.ui.screens.buy_list.adapters.ProductsAdapter;
-import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.BuyListProductCreatorDialog;
-
-import io.reactivex.disposables.Disposable;
+package com.angogasapps.myfamily.ui.screens.buy_list
 
 
-public class BuyListFragment extends Fragment {
-    private FragmentBuyListBinding binding;
-    private BuyList buyList;
-    private ProductsAdapter adapter;
-    private LinearLayoutManager layoutManager;
-    private Disposable observer;
+import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity.Companion.igoToListOfBuyListsFragment
+import com.angogasapps.myfamily.models.buy_list.BuyList
+import com.angogasapps.myfamily.ui.screens.buy_list.adapters.ProductsAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.Fragment
+import com.angogasapps.myfamily.databinding.FragmentBuyListBinding
+import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.BuyListProductCreatorDialog
+import com.angogasapps.myfamily.ui.screens.buy_list.BuyListManager
+import com.angogasapps.myfamily.models.buy_list.BuyListEvent
+import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity
+import io.reactivex.disposables.Disposable
 
+class BuyListFragment : Fragment() {
+    private lateinit var binding: FragmentBuyListBinding
+    lateinit var buyList: BuyList
+    private lateinit var adapter: ProductsAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var observer: Disposable
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentBuyListBinding.inflate(inflater, container, false);
-        initOnClickListeners();
-        initObserver();
-        initRecyclerView();
-
-//        binding.buyListName.setText(buyList.getName());
-
-        getActivity().setTitle(buyList.getName());
-
-        return binding.getRoot();
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentBuyListBinding.inflate(inflater, container, false)
+        initOnClickListeners()
+        initObserver()
+        initRecyclerView()
+        requireActivity().title = buyList.name
+        return binding.root
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (observer != null)
-            if (!observer.isDisposed())
-                observer.dispose();
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (!observer.isDisposed) observer.dispose()
     }
 
-    private void initOnClickListeners() {
-        binding.floatingBtn.setOnClickListener(v -> {
-            (new BuyListProductCreatorDialog(getContext(), buyList.getId())).show();
-        });
+    private fun initOnClickListeners() {
+        binding.floatingBtn.setOnClickListener { v: View? ->
+            BuyListProductCreatorDialog(
+                context, buyList.id
+            ).show()
+        }
     }
 
-    private void initObserver() {
-        observer = BuyListManager.getInstance().subject.subscribe(event -> {
-            if (event.getEvent().equals(BuyListEvent.EBuyListEvents.buyListRemoved)){
-                if (event.getBuyListId().equals(this.buyList.getId())){
-                    onRemoveThisBuyList();
-                    return;
+    private fun initObserver() {
+        observer = BuyListManager.subject.subscribe { event: BuyListEvent ->
+            if (event.event == BuyListEvent.EBuyListEvents.buyListRemoved) {
+                if (event.buyListId == buyList.id) {
+                    onRemoveThisBuyList()
+                    return@subscribe
                 }
             }
-            if (!event.getBuyListId().equals(this.buyList.getId())) {
-                return;
+            if (event.buyListId != buyList.id) {
+                return@subscribe
             }
-            adapter.update(event);
-        });
+            adapter.update(event)
+        }
     }
 
-    private void initRecyclerView() {
-        adapter = new ProductsAdapter(getContext(), buyList);
-        layoutManager = new LinearLayoutManager(getContext());
-        binding.recycleView.setLayoutManager(layoutManager);
-        binding.recycleView.setAdapter(adapter);
+    private fun initRecyclerView() {
+        adapter = ProductsAdapter(requireContext(), buyList)
+        layoutManager = LinearLayoutManager(context)
+        binding.recycleView.layoutManager = layoutManager
+        binding.recycleView.adapter = adapter
     }
 
-    private void onRemoveThisBuyList() {
-        BuyListActivity.getIgoToListOfBuyListsFragment().go();
-    }
-
-    public BuyList getBuyList() {
-        return buyList;
-    }
-
-    public void setBuyList(BuyList buyList) {
-        this.buyList = buyList;
+    private fun onRemoveThisBuyList() {
+        igoToListOfBuyListsFragment.invoke()
     }
 }

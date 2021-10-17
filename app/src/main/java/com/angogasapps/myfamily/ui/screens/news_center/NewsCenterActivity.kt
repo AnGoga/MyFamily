@@ -1,27 +1,29 @@
-package com.angogasapps.myfamily.ui.screens.news_center;
+package com.angogasapps.myfamily.ui.screens.news_center
 
-import androidx.appcompat.app.AppCompatActivity;
-import com.angogasapps.myfamily.databinding.ActivityNewsCenterBinding;
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.content.Intent
+import android.view.View
+import com.angogasapps.myfamily.databinding.ActivityNewsCenterBinding
+import com.angogasapps.myfamily.ui.screens.news_center.CreateNewNewsActivity
 
-import android.content.Intent;
-import android.os.Bundle;
+class NewsCenterActivity : AppCompatActivity() {
+    lateinit var binding: ActivityNewsCenterBinding
 
-import com.angogasapps.myfamily.R;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityNewsCenterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-public class NewsCenterActivity extends AppCompatActivity {
-    ActivityNewsCenterBinding binding;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityNewsCenterBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        binding.createNewNewsBtn.setOnClickListener(v -> {
-            startActivity(new Intent(NewsCenterActivity.this, CreateNewNewsActivity.class));
-        });
-
-        startActivity(new Intent(this, CreateNewNewsActivity.class));
-        finish();
+        binding.createNewNewsBtn.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@NewsCenterActivity,
+                    CreateNewNewsActivity::class.java
+                )
+            )
+        }
+        startActivity(Intent(this, CreateNewNewsActivity::class.java))
+        finish()
     }
 }

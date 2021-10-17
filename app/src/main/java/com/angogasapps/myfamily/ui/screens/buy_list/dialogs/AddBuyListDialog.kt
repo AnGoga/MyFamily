@@ -1,83 +1,69 @@
-package com.angogasapps.myfamily.ui.screens.buy_list.dialogs;
+package com.angogasapps.myfamily.ui.screens.buy_list.dialogs
 
-import android.content.Context;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.content.Context
+import android.content.DialogInterface
+import com.angogasapps.myfamily.models.buy_list.BuyList
+import com.angogasapps.myfamily.R
+import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
+import com.angogasapps.myfamily.firebase.BuyListFunks
+import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
+import es.dmoral.toasty.Toasty
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+class AddBuyListDialog(private val context: Context) {
+    private var buyList: BuyList? = null
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.firebase.BuyListFunks;
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
-import com.angogasapps.myfamily.models.buy_list.BuyList;
-
-import es.dmoral.toasty.Toasty;
-
-public class AddBuyListDialog {
-    private Context context;
-    private BuyList buyList;
-
-
-    public AddBuyListDialog(@NonNull Context context) {
-        this.context = context;
+    constructor(context: Context, buyList: BuyList?) : this(context) {
+        this.buyList = buyList
     }
 
-    public AddBuyListDialog(Context context, BuyList buyList){
-        this(context);
-        this.buyList = buyList;
-    }
-
-    public void show(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-
-
-        alertDialog.setTitle(context.getString(R.string.enter_buy_list_name));
-
-
-        final EditText input = new EditText(context);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
-
-        if (buyList != null){
-            input.setText(buyList.getName());
+    fun show() {
+        val alertDialog = AlertDialog.Builder(
+            context
+        )
+        alertDialog.setTitle(context.getString(R.string.enter_buy_list_name))
+        val input = EditText(context)
+        val lp = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        )
+        input.layoutParams = lp
+        if (buyList != null) {
+            input.setText(buyList!!.name)
         }
-        alertDialog.setView(input);
-
-        alertDialog.setPositiveButton(context.getString(R.string.cancel),
-                (dialog, which) -> {
-                    dialog.cancel();
-                });
-
-        alertDialog.setNegativeButton(context.getString(buyList == null? R.string.add: R.string.change),
-                (dialog, which) -> {
-                    String str = input.getText().toString().trim();
-                    if (str != null && !str.equals("")) {
-                        BuyList inputBuyList;
-                        if (buyList ==null) {
-                            inputBuyList = new BuyList(str);
-                            BuyListFunks.addNewBuyList(inputBuyList, new IOnEndCommunicationWithFirebase() {
-                                @Override
-                                public void onSuccess() {}
-                                @Override
-                                public void onFailure() {}
-                            });
-                        }else{
-                            inputBuyList = new BuyList(buyList);
-                            inputBuyList.setName(str);
-                            BuyListFunks.updateBuyListName(inputBuyList, new IOnEndCommunicationWithFirebase() {
-                                @Override
-                                public void onSuccess() {}
-                                @Override
-                                public void onFailure() {}
-                            });
-                        }
-                    }else{
-                        Toasty.error(context, R.string.enter_buy_list_name).show();
-                    }
-                });
-        alertDialog.show();
+        alertDialog.setView(input)
+        alertDialog.setPositiveButton(
+            context.getString(R.string.cancel)
+        ) { dialog: DialogInterface, which: Int -> dialog.cancel() }
+        alertDialog.setNegativeButton(
+            context.getString(if (buyList == null) R.string.add else R.string.change)
+        ) { dialog: DialogInterface?, which: Int ->
+            val str = input.text.toString().trim { it <= ' ' }
+            if (str != "") {
+                val inputBuyList: BuyList
+                if (buyList == null) {
+                    inputBuyList = BuyList(str)
+                    BuyListFunks.addNewBuyList(
+                        inputBuyList,
+                        object : IOnEndCommunicationWithFirebase {
+                            override fun onSuccess() {}
+                            override fun onFailure() {}
+                        })
+                } else {
+                    inputBuyList = BuyList(buyList!!)
+                    inputBuyList.name = str
+                    BuyListFunks.updateBuyListName(
+                        inputBuyList,
+                        object : IOnEndCommunicationWithFirebase {
+                            override fun onSuccess() {}
+                            override fun onFailure() {}
+                        })
+                }
+            } else {
+                Toasty.error(context, R.string.enter_buy_list_name).show()
+            }
+        }
+        alertDialog.show()
     }
 }

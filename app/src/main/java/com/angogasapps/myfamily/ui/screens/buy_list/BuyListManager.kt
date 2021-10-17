@@ -1,177 +1,135 @@
-package com.angogasapps.myfamily.ui.screens.buy_list;
+package com.angogasapps.myfamily.ui.screens.buy_list
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.angogasapps.myfamily.models.buy_list.BuyList;
-import com.angogasapps.myfamily.models.buy_list.BuyListEvent;
-import com.angogasapps.myfamily.utils.BuyListUtils;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import kotlin.jvm.Volatile
+import com.angogasapps.myfamily.models.buy_list.BuyList
+import io.reactivex.subjects.PublishSubject
+import com.angogasapps.myfamily.models.buy_list.BuyListEvent
+import com.google.firebase.database.ChildEventListener
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.android.schedulers.AndroidSchedulers
+import com.google.firebase.database.DataSnapshot
+import com.angogasapps.myfamily.utils.BuyListUtils
+import com.google.firebase.database.DatabaseError
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.models.buy_list.BuyList.Product
+import com.angogasapps.myfamily.ui.screens.buy_list.BuyListManager
+import java.util.ArrayList
 
-import java.util.ArrayList;
+object BuyListManager {
+    val buyLists = ArrayList<BuyList>()
+    var subject = PublishSubject.create<BuyListEvent>()
+    private lateinit var listener: ChildEventListener
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.PublishSubject;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_BUY_LIST;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-
-public class BuyListManager {
-    private static BuyListManager buyListManager;
-
-    private volatile ArrayList<BuyList> buyLists = new ArrayList<>();
-
-    PublishSubject<BuyListEvent> subject = PublishSubject.create();
-
-    private ChildEventListener listener;
-
-    {
-        initSubjects();
-        initListener();
+    init {
+        initSubjects()
+        initListener()
     }
 
 
-    public static BuyListManager getInstance(){
-        synchronized (BuyListManager.class){
-            if (buyListManager == null)
-                buyListManager = new BuyListManager();
-            return buyListManager;
-        }
+    private fun initSubjects() {
+        val a = subject
+            .observeOn(Schedulers.io())
+            .subscribeOn(AndroidSchedulers.mainThread())
     }
 
-    private void initSubjects() {
-        subject
-                .observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread());
-    }
-
-
-    private void initListener() {
-        listener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                synchronized (this) {
-//                    BuyList buyList = BuyList.from(snapshot);
-                    BuyList buyList = BuyListUtils.parseBuyList(snapshot);
-                    buyLists.add(buyList);
-
-                    BuyListEvent event = new BuyListEvent();
-                    event.setIndex(buyLists.size() - 1);
-                    event.setEvent(BuyListEvent.EBuyListEvents.buyListAdded);
-                    event.setBuyListId(buyList.getId());
-                    subject.onNext(event);
+    private fun initListener() {
+        listener = object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                synchronized(this) {
+                    val buyList = BuyListUtils.parseBuyList(snapshot)
+                    buyLists.add(buyList)
+                    val event = BuyListEvent()
+                    event.index = buyLists.size - 1
+                    event.event = BuyListEvent.EBuyListEvents.buyListAdded
+                    event.buyListId = buyList.id
+                    subject.onNext(event)
                 }
             }
 
-            @Override
-            public void  onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                BuyListManager.this.onChildChanged(snapshot, previousChildName);
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                this@BuyListManager.onChildChanged(snapshot, previousChildName)
             }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                BuyList buyList = BuyListUtils.parseBuyList(snapshot);
-
-                BuyListEvent event = new BuyListEvent();
-                event.setBuyListId(buyList.getId());
-                event.setEvent(BuyListEvent.EBuyListEvents.buyListRemoved);
-                for (int i = 0; i < buyLists.size(); i++) {
-                    if (buyLists.get(i).getId().equals(buyList.getId())){
-                        event.setIndex(i);
-                        buyLists.remove(i);
-                        break;
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                val (id) = BuyListUtils.parseBuyList(snapshot)
+                val event = BuyListEvent()
+                event.buyListId = id
+                event.event = BuyListEvent.EBuyListEvents.buyListRemoved
+                for (i in buyLists.indices) {
+                    if (buyLists[i].id == id) {
+                        event.index = i
+                        buyLists.removeAt(i)
+                        break
                     }
                 }
-                subject.onNext(event);
+                subject.onNext(event)
             }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                error.toException().printStackTrace();
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {
+                error.toException().printStackTrace()
             }
-        };
-
-        DATABASE_ROOT.child(NODE_BUY_LIST).child(USER.getFamily()).addChildEventListener(listener);
-
+        }
+        FirebaseVarsAndConsts.DATABASE_ROOT.child(FirebaseVarsAndConsts.NODE_BUY_LIST)
+            .child(FirebaseVarsAndConsts.USER.family).addChildEventListener(listener)
     }
 
-    public ArrayList<BuyList> getBuyLists() {
-        return buyLists;
-    }
-
-    public void removeProductInBuyList(BuyList buyList, int index){
-        for (BuyList list : buyLists){
-            if (list.getId().equals(buyList.getId())){
-                list.getProducts().remove(index);
-                return;
+    fun removeProductInBuyList(buyList: BuyList, index: Int) {
+        for ((id, _, products) in buyLists) {
+            if (id == buyList.id) {
+                products.removeAt(index)
+                return
             }
         }
     }
 
-    public void addProductToBuyList(BuyList buyList, BuyList.Product product) {
-        for (BuyList list : buyLists) {
-            if (list.getId().equals(buyList.getId())) {
-                list.addProduct(product);
-                return;
+    fun addProductToBuyList(buyList: BuyList, product: Product?) {
+        for (list in buyLists) {
+            if (list.id == buyList.id) {
+                list.addProduct(product!!)
+                return
             }
         }
     }
 
-    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName){
-        synchronized (this) {
-            BuyList newBuyList = BuyListUtils.parseBuyList(snapshot);
-            BuyListEvent event = new BuyListEvent();
-
-//            for(BuyList oldBuyList : buyLists){
-            for(int i = 0; i < buyLists.size(); i++){
-                BuyList oldBuyList = buyLists.get(i);
-
-
-
-                if (oldBuyList.getId().equals(newBuyList.getId())){
-
-
-                    if (!oldBuyList.getName().equals(newBuyList.getName())) {
-                        oldBuyList.setName(newBuyList.getName());
-                        event.setBuyListId(newBuyList.getId());
-                        event.setIndex(i);
-                        event.setEvent(BuyListEvent.EBuyListEvents.buyListChanged);
-                        subject.onNext(event);
-                        return;
+    fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+        synchronized(this) {
+            val (id, name, products) = BuyListUtils.parseBuyList(snapshot)
+            val event = BuyListEvent()
+            for (i in buyLists.indices) {
+                val oldBuyList = buyLists[i]
+                if (oldBuyList.id == id) {
+                    if (oldBuyList.name != name) {
+                        oldBuyList.name = name
+                        event.buyListId = id
+                        event.index = i
+                        event.event = BuyListEvent.EBuyListEvents.buyListChanged
+                        subject.onNext(event)
+                        return
                     }
-
-                    int index = 0;
-                    if (newBuyList.getProducts().size() > oldBuyList.getProducts().size()){
+                    var index = 0
+                    if (products.size > oldBuyList.products.size) {
                         // Добавлен новый продукт
-                        oldBuyList.getProducts().add(newBuyList.getProducts().get(newBuyList.getProducts().size() - 1));
-                        index = oldBuyList.getProducts().size() - 1;
-
-                        event.setEvent(BuyListEvent.EBuyListEvents.productAdded);
-                    }else if(newBuyList.getProducts().size() < oldBuyList.getProducts().size()){
+                        oldBuyList.products.add(products[products.size - 1])
+                        index = oldBuyList.products.size - 1
+                        event.event = BuyListEvent.EBuyListEvents.productAdded
+                    } else if (products.size < oldBuyList.products.size) {
                         // Один продукт удалён
-                        index = BuyListUtils.getIndexOfRemoveProduct(oldBuyList.getProducts(), newBuyList.getProducts());
-                        oldBuyList.getProducts().remove(index);
-                        event.setEvent(BuyListEvent.EBuyListEvents.productRemoved);
-                    }else {//if(newBuyList.getProducts().size() == oldBuyList.getProducts().size()){
+                        index = BuyListUtils.getIndexOfRemoveProduct(oldBuyList.products, products)
+                        oldBuyList.products.removeAt(index)
+                        event.event = BuyListEvent.EBuyListEvents.productRemoved
+                    } else { //if(newBuyList.getProducts().size() == oldBuyList.getProducts().size()){
                         //Один продукт изменился
-                        index = BuyListUtils.getIndexOfChangeProduct(oldBuyList.getProducts(), newBuyList.getProducts());
-                        oldBuyList.getProducts().set(index, newBuyList.getProducts().get(index));
-                        event.setEvent(BuyListEvent.EBuyListEvents.productChanged);
+                        index = BuyListUtils.getIndexOfChangeProduct(oldBuyList.products, products)
+                        oldBuyList.products[index] = products[index]
+                        event.event = BuyListEvent.EBuyListEvents.productChanged
                     }
-                    event.setIndex(index);
-                    event.setBuyListId(newBuyList.getId());
-
-                    subject.onNext(event);
-                    return;
+                    event.index = index
+                    event.buyListId = id
+                    subject.onNext(event)
+                    return
                 }
-
             }
         }
     }

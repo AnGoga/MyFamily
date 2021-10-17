@@ -1,95 +1,81 @@
-package com.angogasapps.myfamily.ui.screens.news_center;
+package com.angogasapps.myfamily.ui.screens.news_center
 
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity
+import com.angogasapps.myfamily.ui.screens.news_center.EditTextFragment
+import com.angogasapps.myfamily.ui.screens.news_center.GetImageFragment
+import android.os.Bundle
+import android.view.View
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.databinding.ActivityCreateNewNewsBinding
+import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
+import es.dmoral.toasty.Toasty
+import com.angogasapps.myfamily.firebase.NewsCenterFunks
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.databinding.ActivityCreateNewNewsBinding;
-import com.angogasapps.myfamily.firebase.NewsCenterFunks;
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
+class CreateNewNewsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityCreateNewNewsBinding
+    private lateinit var editTextFragment: EditTextFragment
+    private lateinit var getImageFragment: GetImageFragment
 
-import es.dmoral.toasty.Toasty;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityCreateNewNewsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-public class CreateNewNewsActivity extends AppCompatActivity {
-    private ActivityCreateNewNewsBinding binding;
-
-    private EditTextFragment editTextFragment;
-    private GetImageFragment getImageFragment;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityCreateNewNewsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        editTextFragment = new EditTextFragment();
-        getImageFragment = new GetImageFragment();
-
-        getSupportFragmentManager()
-                .beginTransaction().add(R.id.data_container, editTextFragment).commit();
-
-        initOnClicks();
+        editTextFragment = EditTextFragment()
+        getImageFragment = GetImageFragment()
+        supportFragmentManager.beginTransaction().add(R.id.data_container, editTextFragment).commit()
+        initOnClicks()
     }
 
-    private void initOnClicks() {
-        binding.btnCreate.setOnClickListener(v -> {
-            createNewNews();
-        });
-        binding.radioText.setOnClickListener(v -> {
-            if (binding.radioText.isChecked()){
-                setEditTextFragment();
+    private fun initOnClicks() {
+        binding.btnCreate.setOnClickListener { createNewNews() }
+        binding.radioText.setOnClickListener {
+            if (binding.radioText.isChecked) {
+                setEditTextFragment()
             }
-        });
-        binding.radioImage.setOnClickListener(v -> {
-            if (binding.radioImage.isChecked()){
-                setGetImageFragment();
-            }
-        });
-//        binding.radioVideo.setActivated(false);
-//        binding.radioVideo.setOnClickListener(v -> {
-//            AppApplication.showInDevelopingToast();
-//        });
-    }
-
-    private void setEditTextFragment(){
-        getSupportFragmentManager()
-                .beginTransaction().replace(R.id.data_container, editTextFragment).commit();
-    }
-
-    private void setGetImageFragment(){
-        getSupportFragmentManager()
-                .beginTransaction().replace(R.id.data_container, getImageFragment).commit();
-    }
-
-    private void createNewNews() {
-        IOnEndCommunicationWithFirebase i = new IOnEndCommunicationWithFirebase() {
-            @Override
-            public void onSuccess() {
-                Toasty.success(CreateNewNewsActivity.this, R.string.news_success_add).show();
-                finish();
-            }
-            @Override
-            public void onFailure() {
-                Toasty.error(CreateNewNewsActivity.this, R.string.something_went_wrong).show();
-            }
-        };
-
-        if (binding.radioText.isChecked()){
-            if (editTextFragment.getText().trim().isEmpty()){
-                editTextFragment.resetEditText();
-                Toasty.warning(this, R.string.enter_news_text).show();
-            }else{
-                NewsCenterFunks.createNewTextNews(editTextFragment.getText().trim(), i);
-            }
-        }else if (binding.radioImage.isChecked()){
-            if (getImageFragment.getImageUri() != null){
-                NewsCenterFunks.createNewImageNews(getImageFragment.getImageUri(), i);
-            }else{
-                Toasty.warning(this, R.string.chose_image).show();
+        }
+        binding.radioImage.setOnClickListener {
+            if (binding.radioImage.isChecked) {
+                setGetImageFragment()
             }
         }
     }
 
+    private fun setEditTextFragment() {
+        supportFragmentManager
+            .beginTransaction().replace(R.id.data_container, editTextFragment).commit()
+    }
 
+    private fun setGetImageFragment() {
+        supportFragmentManager
+            .beginTransaction().replace(R.id.data_container, getImageFragment).commit()
+    }
+
+    private fun createNewNews() {
+        val i: IOnEndCommunicationWithFirebase = object : IOnEndCommunicationWithFirebase {
+            override fun onSuccess() {
+                Toasty.success(this@CreateNewNewsActivity, R.string.news_success_add).show()
+                finish()
+            }
+
+            override fun onFailure() {
+                Toasty.error(this@CreateNewNewsActivity, R.string.something_went_wrong).show()
+            }
+        }
+        if (binding.radioText.isChecked) {
+            if (editTextFragment.text.trim { it <= ' ' }.isEmpty()) {
+                editTextFragment.resetEditText()
+                Toasty.warning(this, R.string.enter_news_text).show()
+            } else {
+                NewsCenterFunks.createNewTextNews(editTextFragment.text.trim { it <= ' ' }, i)
+            }
+        } else if (binding.radioImage.isChecked) {
+            if (getImageFragment.imageUri != null) {
+                NewsCenterFunks.createNewImageNews(getImageFragment.imageUri, i)
+            } else {
+                Toasty.warning(this, R.string.chose_image).show()
+            }
+        }
+    }
 }

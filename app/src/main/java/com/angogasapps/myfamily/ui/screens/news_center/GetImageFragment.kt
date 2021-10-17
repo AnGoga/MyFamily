@@ -1,68 +1,55 @@
-package com.angogasapps.myfamily.ui.screens.news_center;
+package com.angogasapps.myfamily.ui.screens.news_center
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.os.Bundle
+import com.theartofdev.edmodo.cropper.CropImage
+import android.content.Intent
+import android.app.Activity
+import android.net.Uri
+import android.view.View
+import androidx.fragment.app.Fragment
+import com.angogasapps.myfamily.databinding.FragmentGetImageBinding
+import es.dmoral.toasty.Toasty
 
-import androidx.fragment.app.Fragment;
+class GetImageFragment : Fragment() {
+    private lateinit var binding: FragmentGetImageBinding
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+    var imageUri: Uri? = null
+        private set
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.databinding.FragmentGetImageBinding;
-import com.angogasapps.myfamily.firebase.ChatFunks;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
-
-import es.dmoral.toasty.Toasty;
-
-
-public class GetImageFragment extends Fragment {
-    private FragmentGetImageBinding binding;
-
-    private Uri photoUri;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentGetImageBinding.inflate(inflater, container, false);
-        initOnClicks();
-        return binding.getRoot();
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentGetImageBinding.inflate(inflater, container, false)
+        initOnClicks()
+        return binding.root
     }
 
-    private void initOnClicks() {
-        binding.btnAddImage.setOnClickListener(v -> {
-            getPhotoUri();
-        });
+    private fun initOnClicks() {
+        binding.btnAddImage.setOnClickListener { getPhotoUri() }
     }
-    private void getPhotoUri() {
+
+    private fun getPhotoUri() {
         CropImage
-                .activity()
-//                .setAspectRatio(1, 1)
-                .setRequestedSize(1200, 600)
-//                .setCropShape(CropImageView.CropShape.RECTANGLE)
-                .start(getActivity(), this);
+            .activity()
+            .setRequestedSize(1200, 600)
+            .start(requireActivity(), this)
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE
-                && resultCode == Activity.RESULT_OK) {
 
-            Uri photoUri = CropImage.getActivityResult(data).getUri();
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE
+            && resultCode == Activity.RESULT_OK
+        ) {
+            val photoUri = CropImage.getActivityResult(data).uri
             if (photoUri != null) {
-                this.photoUri = photoUri;
-                binding.image.setImageURI(photoUri);
-            }else {
-                Toasty.error(getActivity(), "Что-то пошло не так").show();
+                imageUri = photoUri
+                binding.image.setImageURI(photoUri)
+            } else {
+                Toasty.error(requireActivity(), "Что-то пошло не так").show()
             }
         }
-    }
-
-    public Uri getImageUri(){
-        return this.photoUri;
     }
 }

@@ -1,100 +1,72 @@
-package com.angogasapps.myfamily.ui.screens.news_center;
+package com.angogasapps.myfamily.ui.screens.news_center
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.angogasapps.myfamily.models.events.NewsObject.Companion.from
+import com.angogasapps.myfamily.models.events.NewsObject.Companion.isCanLife
+import com.angogasapps.myfamily.utils.getIndexOfDeleteNews
+import io.reactivex.subjects.PublishSubject
+import com.angogasapps.myfamily.models.events.NewsEvent
+import com.google.firebase.database.ChildEventListener
+import com.angogasapps.myfamily.models.events.NewsObject
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.NewsCenterFunks
+import java.util.ArrayList
+
+object NewsManager {
+    val subject = PublishSubject.create<NewsEvent>()
+    private lateinit var listener: ChildEventListener
+
+    val allNews = ArrayList<NewsObject>()
 
 
-import com.angogasapps.myfamily.firebase.NewsCenterFunks;
-import com.angogasapps.myfamily.models.events.NewsEvent;
-import com.angogasapps.myfamily.models.events.NewsObject;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 
-import java.util.ArrayList;
-
-import io.reactivex.subjects.PublishSubject;
-
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.DATABASE_ROOT;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_NEWS;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-import static com.angogasapps.myfamily.utils.NewsUtilsKt.getIndexOfDeleteNews;
-
-public class NewsManager {
-    private static NewsManager newsManager;
-
-    private PublishSubject<NewsEvent> subject = PublishSubject.create();
-
-    private ChildEventListener listener;
-
-    private volatile ArrayList<NewsObject> newsList = new ArrayList<>();
-
-    {
-        initManager();
+    init {
+        initManager()
     }
 
-    public static NewsManager getInstance(){
-        synchronized (NewsManager.class){
-            if (newsManager == null)
-                newsManager = new NewsManager();
-            return newsManager;
+
+    private fun initManager() {
+        listener = object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                this@NewsManager.onChildAdded(snapshot)
+            }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                this@NewsManager.onChildRemoved(snapshot)
+            }
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
+        }
+        FirebaseVarsAndConsts.DATABASE_ROOT.child(FirebaseVarsAndConsts.NODE_NEWS)
+            .child(FirebaseVarsAndConsts.USER.family).addChildEventListener(listener)
+    }
+
+    @Synchronized
+    private fun onChildAdded(snapshot: DataSnapshot) {
+        val obj = from(snapshot)
+        if (isCanLife(obj)) {
+            allNews.add(obj)
+            val event = NewsEvent()
+            event.event = NewsEvent.ENewsEvents.added
+            event.newsId = obj.id
+            event.index = allNews.size - 1
+            subject.onNext(event)
+        } else {
+            NewsCenterFunks.deleteNewsObject(obj)
         }
     }
 
-    public PublishSubject<NewsEvent> subject(){
-        return this.subject;
+    @Synchronized
+    private fun onChildRemoved(snapshot: DataSnapshot) {
+        val obj = from(snapshot)
+        val index = getIndexOfDeleteNews(allNews, obj)
+        if (index == -1) return
+        allNews.removeAt(index)
+        val event = NewsEvent()
+        event.index = index
+        event.newsId = obj.id
+        event.event = NewsEvent.ENewsEvents.removed
+        subject.onNext(event)
     }
-
-    private void initManager() {
-        listener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                NewsManager.this.onChildAdded(snapshot);
-            }
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                NewsManager.this.onChildRemoved(snapshot);
-            }
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        };
-        DATABASE_ROOT.child(NODE_NEWS).child(USER.getFamily()).addChildEventListener(listener);
-    }
-
-    private synchronized void onChildAdded(DataSnapshot snapshot){
-        NewsObject object = NewsObject.from(snapshot);
-        if (NewsObject.isCanLife(object)) {
-            newsList.add(object);
-
-            NewsEvent event = new NewsEvent();
-            event.setEvent(NewsEvent.ENewsEvents.added);
-            event.setNewsId(object.getId());
-            event.setIndex(newsList.size() - 1);
-            subject.onNext(event);
-        }else{
-            NewsCenterFunks.deleteNewsObject(object);
-        }
-    }
-
-    private synchronized void onChildRemoved(DataSnapshot snapshot){
-        NewsObject object = NewsObject.from(snapshot);
-        int index = getIndexOfDeleteNews(newsList, object);
-        if (index == -1) return;
-        newsList.remove(index);
-
-        NewsEvent event = new NewsEvent();
-        event.setIndex(index);
-        event.setNewsId(object.getId());
-        event.setEvent(NewsEvent.ENewsEvents.removed);
-        subject.onNext(event);
-    }
-
-    public ArrayList<NewsObject> getAllNews(){
-        return this.newsList;
-    }
-
 }

@@ -1,32 +1,27 @@
-package com.angogasapps.myfamily.ui.screens.news_center;
+package com.angogasapps.myfamily.ui.screens.news_center
 
-import android.os.Bundle;
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.Fragment
+import com.angogasapps.myfamily.databinding.FragmentEditTextBinding
 
-import androidx.fragment.app.Fragment;
+class EditTextFragment : Fragment() {
+    private lateinit var binding: FragmentEditTextBinding
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.databinding.FragmentEditTextBinding;
-
-
-public class EditTextFragment extends Fragment {
-    private FragmentEditTextBinding binding;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentEditTextBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentEditTextBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    public String getText(){
-        return binding.editText.getText().toString();
-    }
+    val text: String
+        get() = binding.editText.text.toString()
 
-    public void resetEditText() {
-        binding.editText.setText("");
+    fun resetEditText() {
+        binding.editText.setText("")
     }
 }

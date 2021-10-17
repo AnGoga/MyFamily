@@ -1,44 +1,41 @@
-package com.angogasapps.myfamily.ui.screens.family_settings;
+package com.angogasapps.myfamily.ui.screens.family_settings
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.angogasapps.myfamily.utils.FamilyManager
+import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import android.widget.TextView
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.view.View
+import android.widget.Toast
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.databinding.ActivityInviteUserBinding
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.Toast;
+class InviteUserActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityInviteUserBinding
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.databinding.ActivityInviteUserBinding;
-import com.angogasapps.myfamily.utils.FamilyManager;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityInviteUserBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
-
-public class InviteUserActivity extends AppCompatActivity {
-    private ActivityInviteUserBinding binding;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityInviteUserBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        binding.inviteText.setText(FamilyManager.getInviteLinkToFamily().toString());
-        binding.identivicatorText.setText(USER.getFamily());
-        binding.copyLinkBtn.setOnClickListener(v -> {
-            copyToClipboardFromTextView(binding.inviteText);
-        });
-
-        binding.copyIdentivicatorBtn.setOnClickListener(v -> {
-            copyToClipboardFromTextView(binding.identivicatorText);
-        });
+        binding.inviteText.text = FamilyManager.getInviteLinkToFamily().toString()
+        binding.identivicatorText.text = FirebaseVarsAndConsts.USER.family
+        binding.copyLinkBtn.setOnClickListener {
+            copyToClipboardFromTextView(binding.inviteText)
+        }
+        binding.copyIdentivicatorBtn.setOnClickListener {
+            copyToClipboardFromTextView(
+                binding.identivicatorText
+            )
+        }
     }
 
-    private void copyToClipboardFromTextView(TextView tv){
-        ClipData clipData = ClipData.newPlainText("text", tv.getText());
-        ClipboardManager clipboardManager = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
-        clipboardManager.setPrimaryClip(clipData);
-
-        Toast.makeText(this, R.string.copy_to_clipboard_manager, Toast.LENGTH_LONG).show();
+    private fun copyToClipboardFromTextView(tv: TextView) {
+        val clipData = ClipData.newPlainText("text", tv.text)
+        val clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        clipboardManager.setPrimaryClip(clipData)
+        Toast.makeText(this, R.string.copy_to_clipboard_manager, Toast.LENGTH_LONG).show()
     }
 }

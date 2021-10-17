@@ -1,73 +1,63 @@
-package com.angogasapps.myfamily.ui.screens.buy_list.dialogs;
+package com.angogasapps.myfamily.ui.screens.buy_list.dialogs
 
-import android.content.Context;
-import android.os.Bundle;
-import android.view.View;
+import android.content.Context
+import android.content.DialogInterface
+import android.view.View
+import androidx.appcompat.app.AlertDialog
+import com.angogasapps.myfamily.models.buy_list.BuyList
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.AddBuyListDialog
+import com.angogasapps.myfamily.firebase.BuyListFunks
+import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
+import es.dmoral.toasty.Toasty
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+class ChangeOrDeleteBuyListDialog(private val context: Context, private val buyList: BuyList) {
+    private lateinit var dialog: AlertDialog
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.databinding.ChangeOrDeleteDialogBinding;
-import com.angogasapps.myfamily.firebase.BuyListFunks;
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
-import com.angogasapps.myfamily.models.buy_list.BuyList;
-
-import es.dmoral.toasty.Toasty;
-
-public class ChangeOrDeleteBuyListDialog {
-    private BuyList buyList;
-    private Context context;
-    private AlertDialog dialog;
-
-    public ChangeOrDeleteBuyListDialog(@NonNull Context context, BuyList buyList) {
-        this.context = context;
-        this.buyList = buyList;
-    }
-
-
-    public void show() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String[] list = {context.getString(R.string.rename), context.getString(R.string.remove)};
-        builder.setItems(list, (dialog, which) -> {
-            if (which == 0){
-                onClickEditButton(null);
-            } else if(which == 1){
-                onClickRemoveButton(null);
+    fun show() {
+        val builder = AlertDialog.Builder(
+            context
+        )
+        val list = arrayOf(context.getString(R.string.rename), context.getString(R.string.remove))
+        builder.setItems(list) { dialog: DialogInterface?, which: Int ->
+            if (which == 0) {
+                onClickEditButton()
+            } else if (which == 1) {
+                onClickRemoveButton()
             }
-        });
-        this.dialog = builder.create();
-        dialog.show();
+        }
+        dialog = builder.create()
+        dialog.show()
     }
 
-    public void onClickEditButton(View view){
-        (new AddBuyListDialog(context, buyList)).show();
-        this.dialog.dismiss();
+    private fun onClickEditButton() {
+        AddBuyListDialog(context, buyList).show()
+        dialog.dismiss()
     }
 
-    public void onClickRemoveButton(View view){
-        AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle(R.string.remove_buy_list)
-                .setMessage(context.getString(R.string.change_or_delet_buy_list_dialog_text1)+ "\"" + buyList.getName() + "\" ?"
-                    + "\n" + context.getString(R.string.change_or_delete_product_dialog_text2))
-                .setPositiveButton(R.string.remove, (dialog1, which) -> {
-                    if (which != AlertDialog.BUTTON_POSITIVE) return;
-                    BuyListFunks.deleteBuyList(buyList, new IOnEndCommunicationWithFirebase() {
-                        @Override
-                        public void onSuccess() { /*TODO: . . .*/}
-
-                        @Override
-                        public void onFailure() {
-                            Toasty.error(context, R.string.something_went_wrong).show();
-                        }
-                    });
+    private fun onClickRemoveButton() {
+        val dialog =
+            AlertDialog.Builder(context)
+            .setTitle(R.string.remove_buy_list)
+            .setMessage(
+                """${context.getString(R.string.change_or_delet_buy_list_dialog_text1)}"${buyList.name}" ?
+${context.getString(R.string.change_or_delete_product_dialog_text2)}"""
+            )
+            .setPositiveButton(R.string.remove) { dialog1: DialogInterface?, which: Int ->
+                if (which != AlertDialog.BUTTON_POSITIVE) return@setPositiveButton
+                BuyListFunks.deleteBuyList(buyList, object : IOnEndCommunicationWithFirebase {
+                    override fun onSuccess() { /*TODO: . . .*/ }
+                    override fun onFailure() {
+                        Toasty.error(context, R.string.something_went_wrong).show()
+                    }
                 })
-                .setNegativeButton(R.string.cancel, (dialog1, which) -> {
-                    if (which != AlertDialog.BUTTON_NEGATIVE) return;
-                    dialog1.dismiss();
-                })
-                .create();
-        dialog.show();
-        this.dialog.dismiss();
+            }
+            .setNegativeButton(R.string.cancel) { dialog1: DialogInterface, which: Int ->
+                if (which != AlertDialog.BUTTON_NEGATIVE) return@setNegativeButton
+                dialog1.dismiss()
+            }
+            .create()
+        dialog.show()
+        this.dialog.dismiss()
     }
 }

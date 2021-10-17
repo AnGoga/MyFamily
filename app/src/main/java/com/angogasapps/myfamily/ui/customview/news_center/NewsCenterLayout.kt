@@ -20,17 +20,15 @@ import kotlinx.coroutines.CoroutineScope
 class NewsCenterLayout : ConstraintLayout {
     private val viewPager: ViewPager2
     private val tabLayout: TabLayout
-    private val inflater: LayoutInflater
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
     private lateinit var activity: Activity
     private lateinit var adapter: NewsAdapter
     private var disposable: Disposable? = null
 
     init {
-        inflater = LayoutInflater.from(context)
         val root = inflater.inflate(R.layout.news_center_layout, this)
         viewPager = root.findViewById(R.id.view_pager)
         tabLayout = root.findViewById(R.id.tab_layout)
-        QuoteManager.getInstance()
     }
 
     constructor(context: Context): super(context)
@@ -41,7 +39,7 @@ class NewsCenterLayout : ConstraintLayout {
 
     fun setUpCenter(activity: Activity, scope: CoroutineScope){
         this.activity = activity
-        adapter = NewsAdapter(activity, NewsManager.getInstance().allNews)
+        adapter = NewsAdapter(activity, NewsManager.allNews)
         viewPager.adapter = adapter
         setupTabMediator()
         viewPager.offscreenPageLimit = 3
@@ -57,13 +55,13 @@ class NewsCenterLayout : ConstraintLayout {
     }
 
     private fun setupSubscribe(){
-        disposable = NewsManager.getInstance().subject().subscribe { event: NewsEvent ->
-            if (NewsManager.getInstance().allNews.size == 0) {
+        disposable = NewsManager.subject.subscribe { event: NewsEvent ->
+            if (NewsManager.allNews.size == 0) {
                 adapter.update(event)
                 showQuote()
                 return@subscribe
             }
-            if (NewsManager.getInstance().allNews.size == 2 && event.event == NewsEvent.ENewsEvents.added && NewsManager.getInstance().allNews[0].id == QUOTE_ID) {
+            if (NewsManager.allNews.size == 2 && event.event == NewsEvent.ENewsEvents.added && NewsManager.allNews[0].id == QUOTE_ID) {
                 hideQuote()
             }
             adapter.update(event)
@@ -71,7 +69,7 @@ class NewsCenterLayout : ConstraintLayout {
     }
 
     private fun showQuote() {
-        adapter.showQuote(QuoteManager.getInstance().getRandomQuote())
+        adapter.showQuote(QuoteManager.getRandomQuote())
     }
 
     private fun hideQuote() {

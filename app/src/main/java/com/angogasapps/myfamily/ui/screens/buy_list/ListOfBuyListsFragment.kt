@@ -1,64 +1,56 @@
-package com.angogasapps.myfamily.ui.screens.buy_list;
+package com.angogasapps.myfamily.ui.screens.buy_list
 
-import android.os.Bundle;
+import androidx.recyclerview.widget.GridLayoutManager
+import com.angogasapps.myfamily.ui.screens.buy_list.adapters.BuyListAdapter
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.Fragment
+import com.angogasapps.myfamily.databinding.FragmentListOfBuyListsBinding
+import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.AddBuyListDialog
+import com.angogasapps.myfamily.ui.screens.buy_list.BuyListManager
+import com.angogasapps.myfamily.models.buy_list.BuyListEvent
+import io.reactivex.disposables.Disposable
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
+class ListOfBuyListsFragment : Fragment() {
+    private lateinit var binding: FragmentListOfBuyListsBinding
+    private lateinit var layoutManager: GridLayoutManager
+    private lateinit var adapter: BuyListAdapter
+    private lateinit var disposable: Disposable
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.angogasapps.myfamily.databinding.FragmentListOfBuyListsBinding;
-import com.angogasapps.myfamily.ui.screens.buy_list.adapters.BuyListAdapter;
-import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.AddBuyListDialog;
-
-import io.reactivex.disposables.Disposable;
-
-public class ListOfBuyListsFragment extends Fragment {
-    private FragmentListOfBuyListsBinding binding;
-    private GridLayoutManager layoutManager;
-    private BuyListAdapter adapter;
-    private Disposable disposable;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentListOfBuyListsBinding.inflate(inflater, container, false);
-
-
-        initOnClickListeners();
-        initObserver();
-        initRecyclerView();
-
-        return binding.getRoot();
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentListOfBuyListsBinding.inflate(inflater, container, false)
+        initOnClickListeners()
+        initObserver()
+        initRecyclerView()
+        return binding.root
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (disposable != null)
-            if (!disposable.isDisposed())
-                disposable.dispose();
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (!disposable.isDisposed) disposable.dispose()
     }
 
-    private void initOnClickListeners() {
-        binding.floatingBtn.setOnClickListener(v -> {
-            new AddBuyListDialog(getContext()).show();
-        });
+    private fun initOnClickListeners() {
+        binding.floatingBtn.setOnClickListener {
+            AddBuyListDialog(requireContext()).show()
+        }
     }
 
-    private void initRecyclerView() {
-        adapter = new BuyListAdapter(getContext());
-        layoutManager = new GridLayoutManager(getContext(), 2);
-        binding.recycleView.setLayoutManager(layoutManager);
-        binding.recycleView.setAdapter(adapter);
+    private fun initRecyclerView() {
+        adapter = BuyListAdapter(requireContext())
+        layoutManager = GridLayoutManager(context, 2)
+        binding.recycleView.layoutManager = layoutManager
+        binding.recycleView.adapter = adapter
     }
 
-    private void initObserver() {
-        disposable = BuyListManager.getInstance().subject.subscribe(event->{
-            adapter.update(event);
-        });
+    private fun initObserver() {
+        disposable = BuyListManager.subject.subscribe {
+            adapter.update(it)
+        }
     }
 }

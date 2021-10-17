@@ -1,70 +1,67 @@
-package com.angogasapps.myfamily.ui.screens.buy_list.dialogs;
+package com.angogasapps.myfamily.ui.screens.buy_list.dialogs
 
-import android.content.Context;
-import android.view.View;
+import android.content.Context
+import android.content.DialogInterface
+import android.view.View
+import androidx.appcompat.app.AlertDialog
+import com.angogasapps.myfamily.models.buy_list.BuyList.Product
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.firebase.BuyListFunks
+import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
+import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.BuyListProductCreatorDialog
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+class ChangeOrDeleteProductDialog(
+    private val context: Context,
+    private val buyListId: String,
+    private val product: Product
+) {
+    private lateinit var dialog: AlertDialog
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.firebase.BuyListFunks;
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase;
-import com.angogasapps.myfamily.models.buy_list.BuyList;
-
-public class ChangeOrDeleteProductDialog {
-    private BuyList.Product product;
-    private String buyListId;
-    private Context context;
-    private AlertDialog dialog;
-
-    public ChangeOrDeleteProductDialog(@NonNull Context context, String buyListId, BuyList.Product product) {
-        this.context = context;
-        this.buyListId = buyListId;
-        this.product = product;
+    fun show() {
+        val list = arrayOf(context.getString(R.string.rename), context.getString(R.string.remove))
+        val builder =
+            AlertDialog.Builder(context)
+                .setItems(list) { _: DialogInterface?, which: Int ->
+                    if (which == 0) {
+                        onClickEditButton()
+                    } else if (which == 1) {
+                        onClickRemoveButton()
+                    }
+                }
+        dialog = builder.create()
+        dialog.show()
     }
 
-
-    public void show() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        String[] list = {context.getString(R.string.rename), context.getString(R.string.remove)};
-        builder.setItems(list, (dialog, which) -> {
-            if (which == 0){
-                onClickEditButton(null);
-            } else if(which == 1){
-                onClickRemoveButton(null);
+    private fun onClickRemoveButton() {
+        val dialog = AlertDialog.Builder(
+            context
+        )
+            .setTitle(R.string.remove_product)
+            .setMessage(
+                context.getString(R.string.change_or_delete_product_dialog_text1) + "\"" + product.name + "\"" + "?" +
+                        context.getString(R.string.change_or_delete_product_dialog_text2)
+            )
+            .setPositiveButton(R.string.remove) { dialog1: DialogInterface?, which: Int ->
+                if (which != AlertDialog.BUTTON_POSITIVE) return@setPositiveButton
+                BuyListFunks.deleteProduct(
+                    buyListId,
+                    product,
+                    object : IOnEndCommunicationWithFirebase {
+                        override fun onSuccess() {}
+                        override fun onFailure() {}
+                    })
             }
-        });
-        this.dialog = builder.create();
-        dialog.show();
-
+            .setNegativeButton(R.string.cancel) { dialog1: DialogInterface, which: Int ->
+                if (which != AlertDialog.BUTTON_NEGATIVE) return@setNegativeButton
+                dialog1.dismiss()
+            }
+            .create()
+        dialog.show()
+        this.dialog.dismiss()
     }
 
-    public void onClickRemoveButton(View view){
-        AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle(R.string.remove_product)
-                .setMessage(context.getString(R.string.change_or_delete_product_dialog_text1) + "\"" + product.getName() + "\"" + "?" +
-                        context.getString(R.string.change_or_delete_product_dialog_text2))
-                .setPositiveButton(R.string.remove, (dialog1, which) -> {
-                    if (which != AlertDialog.BUTTON_POSITIVE) return;
-
-                    BuyListFunks.deleteProduct(buyListId, product, new IOnEndCommunicationWithFirebase() {
-                        @Override public void onSuccess() {}
-                        @Override public void onFailure() {}
-                    });
-
-                })
-                .setNegativeButton(R.string.cancel, (dialog1, which) -> {
-                    if (which != AlertDialog.BUTTON_NEGATIVE) return;
-                    dialog1.dismiss();
-                })
-                .create();
-
-        dialog.show();
-        this.dialog.dismiss();
-    }
-
-    public void onClickEditButton(View view){
-        (new BuyListProductCreatorDialog(context, buyListId, product)).show();
-        this.dialog.dismiss();
+    private fun onClickEditButton() {
+        BuyListProductCreatorDialog(context, buyListId, product).show()
+        dialog.dismiss()
     }
 }

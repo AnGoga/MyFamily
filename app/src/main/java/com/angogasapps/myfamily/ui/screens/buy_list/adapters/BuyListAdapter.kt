@@ -1,89 +1,73 @@
-package com.angogasapps.myfamily.ui.screens.buy_list.adapters;
+package com.angogasapps.myfamily.ui.screens.buy_list.adapters
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.content.Context
+import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity.Companion.iGoToBuyListFragment
+import androidx.recyclerview.widget.RecyclerView
+import com.angogasapps.myfamily.ui.screens.buy_list.adapters.BuyListAdapter.BuyListHolder
+import android.view.LayoutInflater
+import android.view.View
+import com.angogasapps.myfamily.models.buy_list.BuyList
+import android.view.ViewGroup
+import com.angogasapps.myfamily.R
+import android.view.View.OnLongClickListener
+import com.angogasapps.myfamily.databinding.BuyListHolderBinding
+import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.ChangeOrDeleteBuyListDialog
+import com.angogasapps.myfamily.models.buy_list.BuyListEvent
+import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity
+import com.angogasapps.myfamily.ui.screens.buy_list.BuyListManager
+import java.util.ArrayList
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class BuyListAdapter(private var context: Context) : RecyclerView.Adapter<BuyListHolder>() {
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.databinding.BuyListHolderBinding;
-import com.angogasapps.myfamily.models.buy_list.BuyList;
-import com.angogasapps.myfamily.models.buy_list.BuyListEvent;
-import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity;
-import com.angogasapps.myfamily.ui.screens.buy_list.BuyListManager;
-import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.ChangeOrDeleteBuyListDialog;
-
-import java.util.ArrayList;
-
-public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.BuyListHolder> {
-    private Context context;
-    private LayoutInflater inflater;
-    private ArrayList<BuyList> buyListsArray;
-
-    {
-        buyListsArray = BuyListManager.getInstance().getBuyLists();
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
+    private var buyListsArray: ArrayList<BuyList> = BuyListManager.buyLists
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BuyListHolder {
+        return BuyListHolder(inflater.inflate(R.layout.buy_list_holder, parent, false))
     }
 
-    public BuyListAdapter(Context context){
-        this.context = context;
-        this.inflater = LayoutInflater.from(context);
-    }
-
-    @NonNull
-    @Override
-    public BuyListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new BuyListHolder(inflater.inflate(R.layout.buy_list_holder, parent, false));
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull BuyListHolder holder, int position) {
-        synchronized (this) {
-            holder.setTextName(buyListsArray.get(position).getName());
-            holder.binding.getRoot().setOnLongClickListener(v -> {
-                (new ChangeOrDeleteBuyListDialog(context, buyListsArray.get(holder.getPosition()))).show();
-                return true;
-            });
+    override fun onBindViewHolder(holder: BuyListHolder, position: Int) {
+        synchronized(this) {
+            holder.setTextName(buyListsArray[position].name)
+            holder.binding.root.setOnLongClickListener {
+                ChangeOrDeleteBuyListDialog(context, buyListsArray[holder.position]).show()
+                true
+            }
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return buyListsArray.size();
+    override fun getItemCount(): Int {
+        return buyListsArray.size
     }
 
-
-    public void updateEnd(){
-        notifyItemInserted(buyListsArray.size() - 1);
+    fun updateEnd() {
+        notifyItemInserted(buyListsArray.size - 1)
     }
 
-    public void update(BuyListEvent event) {
-        if (event.getEvent().equals(BuyListEvent.EBuyListEvents.buyListRemoved)){
-            this.notifyItemRemoved(event.getIndex());
-        }
-        if (event.getEvent().equals(BuyListEvent.EBuyListEvents.buyListAdded)){
-            this.notifyItemChanged(event.getIndex());
-        }
-        if (event.getEvent().equals(BuyListEvent.EBuyListEvents.buyListChanged)){
-            this.notifyItemChanged(event.getIndex());
+    fun update(event: BuyListEvent) {
+        when (event.event) {
+            BuyListEvent.EBuyListEvents.buyListRemoved -> {
+                notifyItemRemoved(event.index)
+            }
+            BuyListEvent.EBuyListEvents.buyListAdded -> {
+                this.notifyItemChanged(event.index)
+            }
+            BuyListEvent.EBuyListEvents.buyListChanged -> {
+                this.notifyItemChanged(event.index)
+            }
         }
     }
 
-    public class BuyListHolder extends RecyclerView.ViewHolder {
-        private BuyListHolderBinding binding;
-        public BuyListHolder(@NonNull View itemView) {
-            super(itemView);
-            binding = BuyListHolderBinding.bind(itemView);
+    inner class BuyListHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val binding: BuyListHolderBinding = BuyListHolderBinding.bind(itemView)
 
-            binding.getRoot().setOnClickListener(v -> {
-                BuyListActivity.getIGoToBuyListFragment().go(BuyListAdapter.this.buyListsArray.get(getLayoutPosition()));
-            });
+        fun setTextName(textName: String) {
+            binding.textName.text = textName
         }
 
-        public void setTextName(String textName){
-            binding.textName.setText(textName);
+        init {
+            binding.root.setOnClickListener {
+                iGoToBuyListFragment.invoke(buyListsArray[layoutPosition])
+            }
         }
     }
 }
