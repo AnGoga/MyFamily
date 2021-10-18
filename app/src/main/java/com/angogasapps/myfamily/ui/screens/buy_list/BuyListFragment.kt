@@ -44,7 +44,7 @@ class BuyListFragment : Fragment() {
     private fun initOnClickListeners() {
         binding.floatingBtn.setOnClickListener { v: View? ->
             BuyListProductCreatorDialog(
-                context, buyList.id
+                requireContext(), buyList.id
             ).show()
         }
     }

@@ -12,7 +12,7 @@ import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.FragmentChatBinding
 import com.angogasapps.myfamily.firebase.ChatFunks
 import com.angogasapps.myfamily.firebase.FirebaseHelper
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.objects.ChatAudioRecorder
 import com.angogasapps.myfamily.objects.ChatTextWatcher
 import com.angogasapps.myfamily.ui.screens.chat.ChatManager.Companion.dangerFirstVisibleItemPosition
@@ -94,7 +94,7 @@ class ChatActivity : AppCompatActivity() {
 
         binding.sendMessageBtn.setOnClickListener { v ->
             isScrollToBottom = true
-            ChatFunks.sendMessage(FirebaseVarsAndConsts.TYPE_TEXT_MESSAGE, binding.chatEditText.text.toString())
+            ChatFunks.sendMessage(TYPE_TEXT_MESSAGE, binding.chatEditText.text.toString())
             binding.chatEditText.setText("")
             binding.recycleView.smoothScrollToPosition(adapter.getItemCount())
         }
@@ -102,7 +102,7 @@ class ChatActivity : AppCompatActivity() {
         binding.audioBtn.setOnTouchListener { v, event ->
             if (Permissions.havePermission(Permissions.AUDIO_RECORD_PERM, this)) {
                 if (event.action === MotionEvent.ACTION_DOWN) {
-                    mRecorder = ChatAudioRecorder(this, FirebaseHelper.getMessageKey())
+                    mRecorder = ChatAudioRecorder(this, FirebaseHelper.messageKey)
                     mRecorder.startRecording()
                 } else if (event.action === MotionEvent.ACTION_UP) {
                     mRecorder.stopRecording {

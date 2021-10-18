@@ -1,7 +1,7 @@
 package com.angogasapps.myfamily.ui.screens.family_storage
 
 import androidx.annotation.NonNull
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.StorageObject
 import com.angogasapps.myfamily.utils.toMapFolder

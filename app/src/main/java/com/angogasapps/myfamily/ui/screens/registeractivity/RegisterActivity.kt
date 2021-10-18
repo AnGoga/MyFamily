@@ -7,9 +7,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.angogasapps.myfamily.R
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER
+import com.angogasapps.myfamily.firebase.*
+import com.angogasapps.myfamily.firebase.AUTH
+import com.angogasapps.myfamily.firebase.USER
 import com.angogasapps.myfamily.models.User
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity
 import es.dmoral.toasty.Toasty

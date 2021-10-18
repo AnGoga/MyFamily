@@ -2,7 +2,7 @@ package com.angogasapps.myfamily.ui.screens.family_storage.storage_adapters
 
 import android.content.Context
 import android.content.Intent
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
 import com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity.MediaGalleryStorageActivity

@@ -1,6 +1,6 @@
 package com.angogasapps.myfamily.ui.screens.family_storage
 
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.models.storage.*
 import com.angogasapps.myfamily.utils.asString
 import com.google.firebase.database.DataSnapshot

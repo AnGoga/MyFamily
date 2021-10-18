@@ -6,7 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.angogasapps.myfamily.databinding.ActivityStorageBinding
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.firebase.createFolder
 import com.angogasapps.myfamily.firebase.createStorageFile
 import com.angogasapps.myfamily.ui.screens.family_storage.storage_adapters.*

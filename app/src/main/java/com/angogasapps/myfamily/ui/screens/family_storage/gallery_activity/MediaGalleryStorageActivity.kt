@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.app.AppApplication
 import com.angogasapps.myfamily.databinding.ActivityImageGalleryBinding
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.firebase.createImageFile
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.ui.screens.family_storage.StorageManager

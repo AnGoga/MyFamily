@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.os.Bundle
 import com.angogasapps.myfamily.async.LoadFamilyThread
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils
 import com.angogasapps.myfamily.ui.screens.main.adapters.ItemTouchHelperCallback
 import com.angogasapps.myfamily.utils.Async
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        LoadFamilyThread(this).execute(FirebaseVarsAndConsts.USER)
+        LoadFamilyThread(this).execute(USER)
         initToolbar()
         initRecyclerView()
         initNewsLayout()
@@ -58,9 +58,9 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.setOnMenuItemClickListener { item: MenuItem -> onOptionsItemSelected(item) }
         lifecycleScope.launch(Dispatchers.IO) {
             while (!LoadFamilyThread.isEnd) { }
-            if (FirebaseVarsAndConsts.USER.userPhoto != null)
+            if (USER.userPhoto != null)
                 withContext(Dispatchers.Main) {
-                    binding.toolbarUserImage.setImageBitmap(FirebaseVarsAndConsts.USER.userPhoto)
+                    binding.toolbarUserImage.setImageBitmap(USER.userPhoto)
             }
         }
         binding.toolbarUserImage.setOnClickListener { v: View? ->
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.menu_item_signout) {
-            FirebaseVarsAndConsts.AUTH.signOut()
+            AUTH.signOut()
 
             lifecycleScope.launch(Dispatchers.IO) {
                 // reset all managers and services

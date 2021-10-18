@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.ActivityStorageNoteBuilderBinding
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.firebase.createFile
 import es.dmoral.toasty.Toasty
 

@@ -7,11 +7,7 @@ import com.google.firebase.database.DataSnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_COMMENT;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_FROM;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_NAME;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_PRODUCTS;
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER;
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConstsKt.*;
 
 public class BuyListUtils {
     /*
@@ -69,7 +65,7 @@ public class BuyListUtils {
 
     public static String getCorrectComment(BuyList.Product product){
         String comment = product.getComment();
-        if (product.getFrom().equals(USER.getPhone())){
+        if (product.getFrom().equals(getUSER().getPhone())){
             if (comment != null){
                 return comment;
             }else{

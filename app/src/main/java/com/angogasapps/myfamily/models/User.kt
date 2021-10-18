@@ -9,7 +9,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import com.angogasapps.myfamily.app.AppApplication
 import com.angogasapps.myfamily.R
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 
 @Entity
 data class User(

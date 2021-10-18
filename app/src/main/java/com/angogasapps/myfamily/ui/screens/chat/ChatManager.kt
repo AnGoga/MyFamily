@@ -3,7 +3,9 @@ package com.angogasapps.myfamily.ui.screens.chat
 import android.util.Log
 import com.angogasapps.myfamily.database.DatabaseManager
 import com.angogasapps.myfamily.database.MessageDao
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
+import com.angogasapps.myfamily.firebase.DATABASE_ROOT
+import com.angogasapps.myfamily.firebase.NODE_CHAT
+import com.angogasapps.myfamily.firebase.USER
 import com.angogasapps.myfamily.models.Message
 import com.angogasapps.myfamily.objects.ChatChildEventListener
 import com.google.firebase.database.ServerValue

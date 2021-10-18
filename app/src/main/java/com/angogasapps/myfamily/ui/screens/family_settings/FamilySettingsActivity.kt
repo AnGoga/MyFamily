@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.content.Intent
 import com.angogasapps.myfamily.ui.screens.family_settings.InviteUserActivity
 import android.graphics.Bitmap
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import android.graphics.BitmapFactory
 import android.view.View
 import com.angogasapps.myfamily.R
@@ -39,7 +39,7 @@ class FamilySettingsActivity : AppCompatActivity() {
     }
 
     private fun setFamilyEmblemBitmap() {
-        var bitmap = FirebaseVarsAndConsts.familyEmblemImage
+        var bitmap = familyEmblemImage
         if (bitmap == null) {
             bitmap = BitmapFactory.decodeResource(resources, R.drawable.default_family_emblem)
         }

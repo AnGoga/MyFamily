@@ -1,7 +1,7 @@
 package com.angogasapps.myfamily.models.storage
 
 import android.os.Parcelable
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.CHILD_TYPE
+import com.angogasapps.myfamily.firebase.CHILD_TYPE
 import com.google.firebase.database.DataSnapshot
 import kotlinx.android.parcel.Parcelize
 

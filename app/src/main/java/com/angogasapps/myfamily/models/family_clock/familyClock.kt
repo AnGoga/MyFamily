@@ -1,7 +1,12 @@
 package com.angogasapps.myfamily.models.family_clock
 
 import com.angogasapps.myfamily.firebase.EFirebaseEvents
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
+import com.angogasapps.myfamily.firebase.CHILD_FROM_ID
+import com.angogasapps.myfamily.firebase.CHILD_FROM_PHONE
+import com.angogasapps.myfamily.firebase.CHILD_ID
+import com.angogasapps.myfamily.firebase.CHILD_OPTIONS
+import com.angogasapps.myfamily.firebase.CHILD_TIME
+import com.angogasapps.myfamily.firebase.CHILD_TO
 
 data class ClockObject(
         var id: String,

@@ -3,8 +3,7 @@ package com.angogasapps.myfamily.firebase
 import android.app.Activity
 import android.util.Log
 import com.angogasapps.myfamily.R
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.AUTH
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.firebase.interfaces.IAuthUser
 import com.angogasapps.myfamily.models.User
 import com.angogasapps.myfamily.utils.Async
@@ -25,7 +24,7 @@ object AuthFunctions {
     fun trySignInWithCredential(activity: Activity?, credential: PhoneAuthCredential?, onNewUserSignIn: () -> Unit, onOldUserSignIn: () -> Unit) {
         AUTH.signInWithCredential(credential!!).addOnCompleteListener { authResultTask: Task<AuthResult?> ->
             if (authResultTask.isSuccessful) {
-                FirebaseDatabase.getInstance().getReference(FirebaseVarsAndConsts.NODE_USERS).orderByChild(FirebaseVarsAndConsts.CHILD_PHONE)
+                FirebaseDatabase.getInstance().getReference(NODE_USERS).orderByChild(CHILD_PHONE)
                         .equalTo(AUTH.currentUser!!.phoneNumber).addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 if (snapshot.value == null) {
@@ -65,11 +64,11 @@ object AuthFunctions {
     @JvmStatic
     @Synchronized
     fun downloadUser(iAuthUser: IAuthUser) {
-        FirebaseVarsAndConsts.DATABASE_ROOT.child(FirebaseVarsAndConsts.NODE_USERS).child(FirebaseVarsAndConsts.UID)
+        DATABASE_ROOT.child(NODE_USERS).child(UID)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         //TODO:
-                        USER = snapshot.getValue(User::class.java)
+                        USER = snapshot.getValue(User::class.java)!!
                         if (USER != null) {
                             USER.id = snapshot.key?:""
                             if (!USER.photoURL.equals("")){

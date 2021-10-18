@@ -3,7 +3,15 @@ package com.angogasapps.myfamily.firebase
 import android.net.Uri
 import android.os.Environment
 import com.angogasapps.myfamily.app.AppApplication
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
+import com.angogasapps.myfamily.firebase.CHILD_NAME
+import com.angogasapps.myfamily.firebase.CHILD_TYPE
+import com.angogasapps.myfamily.firebase.CHILD_VALUE
+import com.angogasapps.myfamily.firebase.DATABASE_ROOT
+import com.angogasapps.myfamily.firebase.NODE_FILE_STORAGE
+import com.angogasapps.myfamily.firebase.NODE_IMAGE_STORAGE
+import com.angogasapps.myfamily.firebase.NODE_NOTE_STORAGE
+import com.angogasapps.myfamily.firebase.STORAGE_ROOT
+import com.angogasapps.myfamily.firebase.USER
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
 import com.angogasapps.myfamily.models.storage.TYPE_FILE

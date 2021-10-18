@@ -11,7 +11,7 @@ import android.content.res.AssetManager
 import com.angogasapps.myfamily.app.AppApplication
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.firebase.messaging.FirebaseMessaging
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import com.google.android.gms.tasks.OnCompleteListener
 import android.content.SharedPreferences
 import android.util.Log
@@ -98,7 +98,7 @@ object FcmMessageManager {
     fun subscribeToTopics() {
         if (canSubscribeToFamily()) {
             FirebaseMessaging.getInstance()
-                .subscribeToTopic(FirebaseVarsAndConsts.USER.family + "-chat")
+                .subscribeToTopic(USER.family + "-chat")
                 .addOnCompleteListener { task: Task<Void?> ->
                     Log.d(
                         "TAG",
@@ -106,13 +106,13 @@ object FcmMessageManager {
                     )
                 }
         }
-        FirebaseMessaging.getInstance().subscribeToTopic(FirebaseVarsAndConsts.USER.id)
+        FirebaseMessaging.getInstance().subscribeToTopic(USER.id)
             .addOnCompleteListener { task: Task<Void?> -> Log.d("TAG", "subscribeToSelf: $task") }
     }
 
     fun unsubscribeFromFamilyChat() {
         FirebaseMessaging.getInstance()
-            .unsubscribeFromTopic(FirebaseVarsAndConsts.USER.family + "-chat")
+            .unsubscribeFromTopic(USER.family + "-chat")
             .addOnCompleteListener { task: Task<Void?> ->
                 Log.d(
                     "TAG",
@@ -141,10 +141,10 @@ object FcmMessageManager {
     fun updateToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
             if (task.isSuccessful) {
-                FirebaseVarsAndConsts.USER.token = task.result
-                FirebaseVarsAndConsts.DATABASE_ROOT.child(FirebaseVarsAndConsts.NODE_USERS).child(
-                    FirebaseVarsAndConsts.AUTH.currentUser!!.uid
-                ).child(FirebaseVarsAndConsts.CHILD_TOKEN)
+                USER.token = task.result
+                DATABASE_ROOT.child(NODE_USERS).child(
+                    AUTH.currentUser!!.uid
+                ).child(CHILD_TOKEN)
                     .setValue(task.result.toString()).addOnCompleteListener { task1: Task<Void?> ->
                         if (task1.isSuccessful) {
                         } else {

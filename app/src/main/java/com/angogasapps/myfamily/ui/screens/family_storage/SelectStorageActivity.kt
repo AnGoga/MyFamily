@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.angogasapps.myfamily.databinding.ActivitySelectStorageBinding
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
+import com.angogasapps.myfamily.firebase.*
 
 class SelectStorageActivity : AppCompatActivity() {
     lateinit var binding: ActivitySelectStorageBinding

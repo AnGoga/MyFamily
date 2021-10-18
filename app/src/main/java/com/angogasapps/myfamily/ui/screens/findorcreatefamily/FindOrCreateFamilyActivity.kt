@@ -14,14 +14,14 @@ import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.ActivityFindOrCreateFamilyBinding
 import com.angogasapps.myfamily.firebase.FindFamilyFunks
 import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily
-import com.angogasapps.myfamily.firebase.interfaces.IOnJoinToFamily
+import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
 import com.angogasapps.myfamily.ui.screens.main.MainActivity
 import es.dmoral.toasty.Toasty
 import com.angogasapps.myfamily.firebase.RegisterFamilyFunks
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndRegisterNewFamily
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
+import com.angogasapps.myfamily.firebase.interfaces.IOnEndRegisterNewFamily
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity
 import java.lang.Exception
 
@@ -63,9 +63,9 @@ class FindOrCreateFamilyActivity : AppCompatActivity() {
     }
 
     private fun joinToInviteFamily() {
-        FindFamilyFunks.tryFindFamilyById(familyIdParam, object : IOnFindFamily {
+        FindFamilyFunks.tryFindFamilyById(familyIdParam!!, object : IOnFindFamily {
             override fun onSuccess() {
-                FindFamilyFunks.joinUserToFamily(familyIdParam, object : IOnJoinToFamily {
+                FindFamilyFunks.joinUserToFamily(familyIdParam!!, object : IOnEndCommunicationWithFirebase {
                     override fun onSuccess() {
                         startActivity(
                             Intent(
@@ -103,7 +103,7 @@ class FindOrCreateFamilyActivity : AppCompatActivity() {
             } else {
                 FindFamilyFunks.tryFindFamilyById(text, object : IOnFindFamily {
                     override fun onSuccess() {
-                        FindFamilyFunks.joinUserToFamily(text, object : IOnJoinToFamily {
+                        FindFamilyFunks.joinUserToFamily(text, object : IOnEndCommunicationWithFirebase {
                             override fun onSuccess() {
                                 Toasty.success(
                                     this@FindOrCreateFamilyActivity,
@@ -156,17 +156,20 @@ class FindOrCreateFamilyActivity : AppCompatActivity() {
             }
             RegisterFamilyFunks.createNewFamily(
                 this,
-                familyName, mFamilyEmblemUri
-            ) {
+                familyName, mFamilyEmblemUri!!,
+                object: IOnEndRegisterNewFamily{
+                    override fun onEndRegister() {
 
-                //когда регистрация новой семьи в базе данных прошла успешно
-                Toasty.success(
-                    this.applicationContext,
-                    R.string.everything_went_well
-                ).show()
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
+                        //когда регистрация новой семьи в базе данных прошла успешно
+                        Toasty.success(
+                            this@FindOrCreateFamilyActivity.applicationContext,
+                            R.string.everything_went_well
+                        ).show()
+                        startActivity(Intent(this@FindOrCreateFamilyActivity, MainActivity::class.java))
+                        finish()
+                    }
+                }
+            )
         }
     }
 
@@ -196,7 +199,7 @@ class FindOrCreateFamilyActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menu_item_signout) {
-            FirebaseVarsAndConsts.AUTH.signOut()
+            AUTH.signOut()
             startActivity(Intent(this, SplashActivity::class.java))
             finish()
         }

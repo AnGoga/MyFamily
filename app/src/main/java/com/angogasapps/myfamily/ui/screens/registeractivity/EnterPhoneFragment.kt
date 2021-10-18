@@ -11,7 +11,7 @@ import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.FragmentEnterPhoneBinding
 import com.angogasapps.myfamily.firebase.AuthFunctions.authorizationUser
 import com.angogasapps.myfamily.firebase.AuthFunctions.trySignInWithCredential
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
@@ -28,7 +28,7 @@ class EnterPhoneFragment(val onNewUserSignIn: () -> Unit, val onOldUserSignIn: (
 
     override fun onStart() {
         super.onStart()
-        FirebaseVarsAndConsts.AUTH = FirebaseAuth.getInstance()
+        AUTH = FirebaseAuth.getInstance()
 
         mCallback = object : OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {

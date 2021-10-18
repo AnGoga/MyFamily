@@ -9,7 +9,7 @@ import com.google.firebase.database.ChildEventListener
 import com.angogasapps.myfamily.models.events.NewsObject
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.firebase.NewsCenterFunks
 import java.util.ArrayList
 
@@ -38,8 +38,8 @@ object NewsManager {
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {}
         }
-        FirebaseVarsAndConsts.DATABASE_ROOT.child(FirebaseVarsAndConsts.NODE_NEWS)
-            .child(FirebaseVarsAndConsts.USER.family).addChildEventListener(listener)
+        DATABASE_ROOT.child(NODE_NEWS)
+            .child(USER.family).addChildEventListener(listener)
     }
 
     @Synchronized

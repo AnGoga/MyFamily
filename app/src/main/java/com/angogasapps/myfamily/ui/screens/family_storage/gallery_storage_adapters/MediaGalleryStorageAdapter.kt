@@ -8,8 +8,8 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.angogasapps.myfamily.R
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_IMAGE_STORAGE
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_VIDEO_STORAGE
+import com.angogasapps.myfamily.firebase.NODE_IMAGE_STORAGE
+import com.angogasapps.myfamily.firebase.NODE_VIDEO_STORAGE
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
 import com.angogasapps.myfamily.objects.ChatImageShower

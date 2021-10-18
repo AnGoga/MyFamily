@@ -1,12 +1,9 @@
 package com.angogasapps.myfamily.firebase
 
-import android.app.Activity
 import android.net.Uri
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndSetUserField
-import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity
+import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
 import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.UploadTask
-import es.dmoral.toasty.Toasty
 import java.lang.Exception
 import java.util.*
 
@@ -14,17 +11,17 @@ object RegisterUserFunks {
     @Synchronized
     fun registerNewUser(userName: String?, userBirthdayTimeMillis: Long?, photoUri: Uri?, onSuccessRegister: () -> Unit, onError: (e: Exception?) -> Unit) {
         // создаём словарь по шаблону класса User
-        val i: IOnEndSetUserField = object : IOnEndSetUserField {
-            override fun onSuccessEnd() {
-                val uid = FirebaseVarsAndConsts.AUTH.currentUser!!.uid
+        val i = object : IOnEndCommunicationWithFirebase {
+            override fun onSuccess() {
+                val uid = AUTH.currentUser!!.uid
                 val userAttrMap = HashMap<String, Any?>()
-                if (photoUri == null) userAttrMap[FirebaseVarsAndConsts.CHILD_PHOTO_URL] = FirebaseVarsAndConsts.DEFAULT_URL
-                userAttrMap[FirebaseVarsAndConsts.CHILD_PHONE] = FirebaseVarsAndConsts.AUTH.currentUser!!.phoneNumber
-                userAttrMap[FirebaseVarsAndConsts.CHILD_FAMILY] = ""
-                userAttrMap[FirebaseVarsAndConsts.CHILD_NAME] = userName
-                userAttrMap[FirebaseVarsAndConsts.CHILD_BIRTHDAY] = userBirthdayTimeMillis
+                if (photoUri == null) userAttrMap[CHILD_PHOTO_URL] = DEFAULT_URL
+                userAttrMap[CHILD_PHONE] = AUTH.currentUser!!.phoneNumber
+                userAttrMap[CHILD_FAMILY] = ""
+                userAttrMap[CHILD_NAME] = userName
+                userAttrMap[CHILD_BIRTHDAY] = userBirthdayTimeMillis
                 //userAttrMap.put(CHILD_PHOTO, photoUri);
-                FirebaseVarsAndConsts.DATABASE_ROOT.child(FirebaseVarsAndConsts.NODE_USERS).child(uid).updateChildren(userAttrMap)
+                DATABASE_ROOT.child(NODE_USERS).child(uid).updateChildren(userAttrMap)
                         .addOnCompleteListener { task: Task<Void?> ->
                             if (task.isSuccessful) {
                                 onSuccessRegister()
@@ -34,32 +31,32 @@ object RegisterUserFunks {
                         }
             }
 
-            override fun onFailureEnd() {}
+            override fun onFailure() {}
         }
         if (photoUri != null) {
-            UserSetterFields.setPhotoURL(FirebaseVarsAndConsts.USER, photoUri, i)
+            UserSetterFields.setPhotoURL(USER, photoUri, i)
         } else {
-            i.onSuccessEnd()
+            i.onSuccess()
         }
     }
 
     @JvmStatic
     @Synchronized
-    fun loadUserPhotoToStorage(photoUri: Uri?, iOnEndSetUserField: IOnEndSetUserField) {
+    fun loadUserPhotoToStorage(photoUri: Uri?, iOnEndSetUserField: IOnEndCommunicationWithFirebase) {
         //TODO:
-        val path = FirebaseVarsAndConsts.STORAGE_ROOT.child(FirebaseVarsAndConsts.FOLDER_USERS_PHOTOS).child(FirebaseVarsAndConsts.AUTH.currentUser!!.uid)
+        val path = STORAGE_ROOT.child(FOLDER_USERS_PHOTOS).child(AUTH.currentUser!!.uid)
         path.putFile(photoUri!!).addOnCompleteListener { task1: Task<UploadTask.TaskSnapshot?> ->
             if (task1.isSuccessful) {
                 path.downloadUrl.addOnCompleteListener { task2: Task<Uri> ->
                     if (task2.isSuccessful) {
                         val photoLink = task2.result.toString()
-                        UserSetterFields.setField(FirebaseVarsAndConsts.AUTH.currentUser!!.uid, FirebaseVarsAndConsts.CHILD_PHOTO_URL, photoLink, iOnEndSetUserField)
+                        UserSetterFields.setField(AUTH.currentUser!!.uid, CHILD_PHOTO_URL, photoLink, iOnEndSetUserField)
                     } else {
-                        iOnEndSetUserField.onFailureEnd()
+                        iOnEndSetUserField.onFailure()
                     }
                 }
             } else {
-                iOnEndSetUserField.onFailureEnd()
+                iOnEndSetUserField.onFailure()
             }
         }
     }

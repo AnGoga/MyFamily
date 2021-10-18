@@ -9,7 +9,7 @@ import com.angogasapps.myfamily.ui.screens.chat.ChatActivity
 import android.app.PendingIntent
 import android.content.Context
 import androidx.core.app.NotificationCompat
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import java.lang.StringBuilder
 
 object MessageNotification {
@@ -58,10 +58,10 @@ object MessageNotification {
         string.append(userName)
         string.append(": ")
         when (message.type) {
-            FirebaseVarsAndConsts.TYPE_TEXT_MESSAGE -> string.append(message.value)
-            FirebaseVarsAndConsts.TYPE_IMAGE_MESSAGE -> string.append("\uD83D\uDCF7" + " ")
+            TYPE_TEXT_MESSAGE -> string.append(message.value)
+            TYPE_IMAGE_MESSAGE -> string.append("\uD83D\uDCF7" + " ")
                 .append(context.getString(R.string.photo))
-            FirebaseVarsAndConsts.TYPE_VOICE_MESSAGE -> string.append(
+            TYPE_VOICE_MESSAGE -> string.append(
                 "\uD83C\uDFA4" + " "
             ).append(context.getString(R.string.voice))
         }

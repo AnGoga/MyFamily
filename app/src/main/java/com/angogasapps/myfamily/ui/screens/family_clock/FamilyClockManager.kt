@@ -1,7 +1,7 @@
 package com.angogasapps.myfamily.ui.screens.family_clock
 
 import com.angogasapps.myfamily.firebase.EFirebaseEvents
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.*
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.models.Family
 import com.angogasapps.myfamily.models.family_clock.ClockObject
 import com.angogasapps.myfamily.models.family_clock.FamilyClockEvent

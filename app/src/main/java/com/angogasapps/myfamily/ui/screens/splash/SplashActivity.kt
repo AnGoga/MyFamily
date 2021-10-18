@@ -10,9 +10,10 @@ import com.angogasapps.myfamily.async.notification.TokensManager.updateToken
 import com.angogasapps.myfamily.database.DatabaseManager
 import com.angogasapps.myfamily.firebase.AuthFunctions.downloadUser
 import com.angogasapps.myfamily.firebase.FirebaseHelper
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.firebase.interfaces.IAuthUser
 import com.angogasapps.myfamily.models.Family
+import com.angogasapps.myfamily.models.User
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity
 import com.angogasapps.myfamily.ui.screens.main.MainActivity
 import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity
@@ -39,9 +40,9 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun onEndDownloadUser() {
-        Log.d("tag", """${FirebaseVarsAndConsts.USER} """.trimIndent())
-        updateToken(FirebaseVarsAndConsts.USER)
-        if (FirebaseVarsAndConsts.USER.family == "") {
+        Log.d("tag", """${USER} """.trimIndent())
+        updateToken(USER)
+        if (USER.family == "") {
             val intent = Intent(this, FindOrCreateFamilyActivity::class.java)
             intent.putExtra(FamilyManager.PARAM_FAMILY_ID, familyIdParam)
             startActivity(intent)
@@ -57,7 +58,7 @@ class SplashActivity : AppCompatActivity() {
 
     fun start() {
         if (isOnline) {
-            if (FirebaseVarsAndConsts.AUTH.currentUser != null) {
+            if (AUTH.currentUser != null) {
                 //интернет есть, пользователь аторизован
                 analysisIntent()
                 downloadUser(object : IAuthUser {
@@ -75,7 +76,7 @@ class SplashActivity : AppCompatActivity() {
                 finish()
             }
         } else {
-            if (FirebaseVarsAndConsts.AUTH.currentUser != null) {
+            if (AUTH.currentUser != null) {
                 // Вход с данными из БД
                 signInWithRoom()
             } else {
@@ -89,13 +90,13 @@ class SplashActivity : AppCompatActivity() {
         DatabaseManager.comeInByDatabase {
             Family.getInstance().usersList = DatabaseManager.getUserList()
             if (Family.getInstance()
-                    .containsUserWithId(FirebaseVarsAndConsts.AUTH.currentUser!!.uid)
+                    .containsUserWithId(AUTH.currentUser!!.uid)
             ) {
-                FirebaseVarsAndConsts.USER = Family.getInstance().getUserById(
-                    FirebaseVarsAndConsts.AUTH.currentUser!!.uid
-                )
+                USER = Family.getInstance().getUserById(
+                    AUTH.currentUser!!.uid
+                )?: User()
             }
-            if (FirebaseVarsAndConsts.USER.family == "") {
+            if (USER.family == "") {
                 Toasty.error(this, R.string.connection_is_not).show()
             } else {
 //                startActivity(new Intent(SplashActivity.this, DeprecatedMainActivity.class));

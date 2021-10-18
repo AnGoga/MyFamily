@@ -1,7 +1,7 @@
 package com.angogasapps.myfamily.utils
 
 import com.angogasapps.myfamily.app.AppApplication.Companion.getInstance
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.app.AppApplication
 import com.angogasapps.myfamily.R
 import java.nio.charset.StandardCharsets
@@ -18,8 +18,8 @@ object StringFormater {
     @JvmStatic
     fun formatToRole(role: String?): String {
         if (role == null) return ""
-        if (role == FirebaseVarsAndConsts.ROLE_MEMBER) return getInstance().getString(R.string.participant)
-        return if (role == FirebaseVarsAndConsts.ROLE_CREATOR) getInstance().getString(R.string.creator) else role
+        if (role == ROLE_MEMBER) return getInstance().getString(R.string.participant)
+        return if (role == ROLE_CREATOR) getInstance().getString(R.string.creator) else role
     }
 
     fun convertUTF8ToString(s: String): String {

@@ -13,7 +13,7 @@ import android.widget.DatePicker
 import androidx.fragment.app.Fragment
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.FragmentEnterPersonalDataBinding
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.firebase.RegisterUserFunks
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -28,7 +28,7 @@ class EnterPersonalDataFragment(val onOldUserSignIn: () -> Unit) : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         binding = FragmentEnterPersonalDataBinding.inflate(layoutInflater, container, false)
-        binding.numberPhoneText.text = getString(R.string.you_phone_number) + ": " + FirebaseVarsAndConsts.AUTH.currentUser!!.phoneNumber
+        binding.numberPhoneText.text = getString(R.string.you_phone_number) + ": " + AUTH.currentUser!!.phoneNumber
         val onDateSetListener = OnDateSetListener { view1: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
             timeContainer.set(Calendar.YEAR, year)
             timeContainer.set(Calendar.MONTH, monthOfYear)

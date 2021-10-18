@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.ActivityAlarmClockBuilderBinding
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.USER
+import com.angogasapps.myfamily.firebase.USER
 import com.angogasapps.myfamily.firebase.sendFamilyClock
 import com.angogasapps.myfamily.models.family_clock.ClockObject
 import es.dmoral.toasty.Toasty

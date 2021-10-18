@@ -1,5 +1,7 @@
 package com.angogasapps.myfamily.models;
 
+import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConstsKt.ROLE_MEMBER;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -10,14 +12,9 @@ import androidx.annotation.Nullable;
 
 import com.angogasapps.myfamily.R;
 import com.angogasapps.myfamily.app.AppApplication;
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts;
 
 import java.util.ArrayList;
 
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.ROLE_MEMBER;
-
-import kotlin.jvm.JvmField;
-import kotlin.jvm.JvmStatic;
 
 public class Family {
     private static Family family;

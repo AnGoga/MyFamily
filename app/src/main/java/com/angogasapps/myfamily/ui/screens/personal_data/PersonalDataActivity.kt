@@ -3,7 +3,7 @@ package com.angogasapps.myfamily.ui.screens.personal_data
 import com.angogasapps.myfamily.utils.showInDevelopingToast
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import android.content.Intent
 import android.view.View
 import com.angogasapps.myfamily.databinding.ActivityPersonalDataBinding
@@ -18,8 +18,8 @@ class PersonalDataActivity : AppCompatActivity() {
         binding = ActivityPersonalDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (FirebaseVarsAndConsts.USER.userPhoto != null) {
-            binding.userImage.setImageBitmap(FirebaseVarsAndConsts.USER.userPhoto)
+        if (USER.userPhoto != null) {
+            binding.userImage.setImageBitmap(USER.userPhoto)
         }
         binding.settings.setOnClickListener {
             startActivity(

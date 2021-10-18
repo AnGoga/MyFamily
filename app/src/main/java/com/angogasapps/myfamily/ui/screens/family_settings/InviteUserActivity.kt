@@ -3,7 +3,7 @@ package com.angogasapps.myfamily.ui.screens.family_settings
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.angogasapps.myfamily.utils.FamilyManager
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import android.widget.TextView
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -20,8 +20,8 @@ class InviteUserActivity : AppCompatActivity() {
         binding = ActivityInviteUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.inviteText.text = FamilyManager.getInviteLinkToFamily().toString()
-        binding.identivicatorText.text = FirebaseVarsAndConsts.USER.family
+        binding.inviteText.text = FamilyManager.inviteLinkToFamily.toString()
+        binding.identivicatorText.text = USER.family
         binding.copyLinkBtn.setOnClickListener {
             copyToClipboardFromTextView(binding.inviteText)
         }

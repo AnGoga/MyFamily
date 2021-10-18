@@ -1,6 +1,6 @@
 package com.angogasapps.myfamily.async.notification
 
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GetTokenResult
@@ -10,17 +10,17 @@ import java.lang.Exception
 
 object TokensManager {
     fun updateToken(token: String?, user: User) {
-        FirebaseVarsAndConsts.DATABASE_ROOT.child(FirebaseVarsAndConsts.NODE_USERS).child(user.id)
-            .child(FirebaseVarsAndConsts.CHILD_TOKEN).setValue(token)
+        DATABASE_ROOT.child(NODE_USERS).child(user.id)
+            .child(CHILD_TOKEN).setValue(token)
             .addOnCompleteListener { task: Task<Void?>? -> }
     }
 
     fun updateToken(token: String?) {
         try {
             FirebaseDatabase.getInstance().reference
-                .child(FirebaseVarsAndConsts.NODE_USERS)
+                .child(NODE_USERS)
                 .child(FirebaseAuth.getInstance().currentUser!!.uid)
-                .child(FirebaseVarsAndConsts.CHILD_TOKEN).setValue(token)
+                .child(CHILD_TOKEN).setValue(token)
                 .addOnCompleteListener { task: Task<Void?>? -> }
         } catch (e: Exception) {
             e.printStackTrace()

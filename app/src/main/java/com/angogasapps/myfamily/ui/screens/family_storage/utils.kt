@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.widget.ImageView
 import com.angogasapps.myfamily.R
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_IMAGE_STORAGE
+import com.angogasapps.myfamily.firebase.NODE_IMAGE_STORAGE
 import com.angogasapps.myfamily.firebase.removeFile
 import com.angogasapps.myfamily.firebase.removeFolder
 import com.angogasapps.myfamily.firebase.renameFile

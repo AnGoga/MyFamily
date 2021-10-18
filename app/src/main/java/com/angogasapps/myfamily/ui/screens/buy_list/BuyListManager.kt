@@ -11,7 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import com.google.firebase.database.DataSnapshot
 import com.angogasapps.myfamily.utils.BuyListUtils
 import com.google.firebase.database.DatabaseError
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts
+import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.models.buy_list.BuyList.Product
 import com.angogasapps.myfamily.ui.screens.buy_list.BuyListManager
 import java.util.ArrayList
@@ -71,8 +71,8 @@ object BuyListManager {
                 error.toException().printStackTrace()
             }
         }
-        FirebaseVarsAndConsts.DATABASE_ROOT.child(FirebaseVarsAndConsts.NODE_BUY_LIST)
-            .child(FirebaseVarsAndConsts.USER.family).addChildEventListener(listener)
+        DATABASE_ROOT.child(NODE_BUY_LIST)
+            .child(USER.family).addChildEventListener(listener)
     }
 
     fun removeProductInBuyList(buyList: BuyList, index: Int) {

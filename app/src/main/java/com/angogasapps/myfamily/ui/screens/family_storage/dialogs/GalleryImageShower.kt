@@ -7,7 +7,7 @@ import android.view.MenuItem
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.angogasapps.myfamily.R
-import com.angogasapps.myfamily.firebase.FirebaseVarsAndConsts.NODE_IMAGE_STORAGE
+import com.angogasapps.myfamily.firebase.NODE_IMAGE_STORAGE
 import com.angogasapps.myfamily.firebase.removeFile
 import com.angogasapps.myfamily.models.storage.File
 import com.angogasapps.myfamily.objects.ChatImageShower
