@@ -11,7 +11,7 @@ class VideoNewsViewHolder(context: Context, itemView: View) :
     BaseNewsViewHolder(context, itemView) {
     private val binding: VideoNewsViewHolderBinding = VideoNewsViewHolderBinding.bind(itemView)
     override fun update(newsObject: NewsObject) {
-        binding.textName.text = Family.getInstance().getNameByPhone(newsObject.fromPhone)
+        binding.textName.text = Family.getNameByPhone(newsObject.fromPhone)
 
         //        binding.userPhoto.setImageBitmap(Family.getInstance().getMemberImageByPhone(newsObject.getFromPhone()));
         //        Glide

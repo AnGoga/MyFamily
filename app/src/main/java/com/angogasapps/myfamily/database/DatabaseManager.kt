@@ -1,75 +1,66 @@
-package com.angogasapps.myfamily.database;
+package com.angogasapps.myfamily.database
 
+import android.content.Context
+import com.angogasapps.myfamily.app.AppApplication.Companion.getInstance
+import com.angogasapps.myfamily.utils.Async.runInNewThread
+import kotlin.jvm.Volatile
+import com.angogasapps.myfamily.database.AppDatabase
+import com.angogasapps.myfamily.database.DatabaseManager
+import androidx.room.Room
+import com.angogasapps.myfamily.app.AppApplication
+import com.angogasapps.myfamily.database.DatabaseManager.IOnEnd
+import com.angogasapps.myfamily.utils.Async
+import com.angogasapps.myfamily.database.UserDao
+import com.angogasapps.myfamily.models.User
+import java.util.ArrayList
 
+object DatabaseManager {
+    @Volatile
+    var usersLoadIsEnd = false
 
-import android.content.Context;
+    @Volatile
+    var userList = ArrayList<User>()
+        private set
+    const val DATABASE_NAME = "database"
 
-import androidx.room.Room;
-
-import com.angogasapps.myfamily.app.AppApplication;
-import com.angogasapps.myfamily.models.Message;
-import com.angogasapps.myfamily.models.User;
-import com.angogasapps.myfamily.utils.Async;
-
-import java.util.ArrayList;
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-
-public class DatabaseManager {
-    public static volatile boolean usersLoadIsEnd = false;
-
-    private static volatile ArrayList<User> userList = new ArrayList<>();
-
-
-    public static final String DATABASE_NAME = "database";
-
-    private static volatile AppDatabase database;
-
-
-    private static void init(Context context) {
-        database = Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME).build();
+    @Volatile
+    private var database: AppDatabase? = null
+    private fun init(context: Context) {
+        database = Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME).build()
     }
 
-    public static AppDatabase getInstance() {
-        synchronized (AppDatabase.class) {
-            if (database == null)
-                init(AppApplication.getInstance().getApplicationContext());
-            return database;
+    val instance: AppDatabase
+        get() {
+            synchronized(AppDatabase::class.java) {
+                if (database == null) init(getInstance().applicationContext)
+                return database!!
+            }
+        }
+
+    fun comeInByDatabase(onEnd: IOnEnd) {
+        runInNewThread {
+            val dao = instance.userDao
+            userList = ArrayList(dao.all)
+            onEnd.onEnd()
         }
     }
 
-    public static void comeInByDatabase(IOnEnd onEnd){
-        Async.runInNewThread(() -> {
-           UserDao dao = getInstance().getUserDao();
-           userList = new ArrayList<>(dao.getAll());
-           onEnd.onEnd();
-        });
-    }
-
-
-
-    public static ArrayList<User> getUserList() {
-        return userList;
-    }
-
-    public interface IOnEnd{
-        void onEnd();
-    }
-
-    public static void updateInfoForUsers(ArrayList<User> users){
-        Async.runInNewThread(() -> {
-            UserDao dao = getInstance().getUserDao();
-            for (User user : users) {
-                dao.insert(user);
+    fun updateInfoForUsers(users: ArrayList<User>) {
+        runInNewThread {
+            val dao = instance.userDao
+            for (user in users) {
+                user.let {
+                    dao.insert(it)
+                }
             }
-        });
+        }
     }
 
-    public static void resetDatabase(){
-        getInstance().clearAllTables();
+    fun resetDatabase() {
+        instance.clearAllTables()
+    }
+
+    interface IOnEnd {
+        fun onEnd()
     }
 }

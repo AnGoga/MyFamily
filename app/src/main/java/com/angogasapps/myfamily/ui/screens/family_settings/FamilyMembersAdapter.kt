@@ -35,7 +35,7 @@ class FamilyMembersAdapter(var context: Context) : RecyclerView.Adapter<FamilyMe
 
     fun reset() {
         mFamilyMembersList = ArrayList()
-        mFamilyMembersList.addAll(Family.getInstance().usersList)
+        mFamilyMembersList.addAll(Family.usersList)
         notifyDataSetChanged()
     }
 
@@ -45,9 +45,9 @@ class FamilyMembersAdapter(var context: Context) : RecyclerView.Adapter<FamilyMe
         var userImage: ImageView = itemView.findViewById(R.id.member_holder_user_photo)
 
         fun initHolder(user: User, context: Context?) {
-            userNameTextView.text = Family.getInstance().getMemberNameById(user.id)
-            userRoleTextView.text = formatToRole(Family.getInstance().getMemberRoleById(user.id))
-            Family.getInstance().getUserById(user.id)!!.userPhoto?.let {
+            userNameTextView.text = Family.getMemberNameById(user.id)
+            userRoleTextView.text = formatToRole(Family.getMemberRoleById(user.id))
+            Family.getUserById(user.id)!!.userPhoto?.let {
                 userImage.setImageBitmap(it)
             }
         }

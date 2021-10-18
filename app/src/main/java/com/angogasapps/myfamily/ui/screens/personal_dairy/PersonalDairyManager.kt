@@ -54,7 +54,7 @@ class PersonalDairyManager private constructor(){
     }
 
     private suspend fun getDataFromRoom() = withContext(Dispatchers.Default){
-        val dairyList: List<DairyObject?>? = DatabaseManager.getInstance().dairyDao.getAll()
+        val dairyList: List<DairyObject?>? = DatabaseManager.instance.dairyDao.getAll()
         if (dairyList.isNullOrEmpty()) {
             return@withContext
         }

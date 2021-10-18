@@ -16,7 +16,7 @@ class AlarmFamilyMembersAdapter(val context: Context): RecyclerView.Adapter<Alar
     val checkedList: ArrayList<Boolean>
 
     init {
-        list = Family.getInstance().usersList
+        list = Family.usersList
         inflater = LayoutInflater.from(context)
         checkedList = ArrayList()
         for (i in 0 until list.size) checkedList.add(false)
@@ -47,7 +47,7 @@ class AlarmFamilyMembersAdapter(val context: Context): RecyclerView.Adapter<Alar
 
         fun update(user: User) {
             binding.checkbox.isChecked = checkedList[position]
-            binding.memberHolderUserName.text = Family.getInstance().getMemberNameById(user.id)
+            binding.memberHolderUserName.text = Family.getMemberNameById(user.id)
             user.userPhoto?.let {
                 binding.memberHolderUserPhoto.setImageBitmap(it)
             }

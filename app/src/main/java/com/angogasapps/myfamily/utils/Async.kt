@@ -1,19 +1,14 @@
-package com.angogasapps.myfamily.utils;
+package com.angogasapps.myfamily.utils
 
-public class Async {
+import kotlin.concurrent.thread
 
-    public static Thread runInNewThread(doInThread inThread){
-        Thread thread = new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                inThread.run();
-            }
-        };
-        thread.start();
-        return thread;
+object Async {
+    fun runInNewThread(block: () -> Unit): Thread {
+        val thread = thread {
+            block()
+        }
+        thread.start()
+        return thread
     }
-    public interface doInThread {
-        void run();
-    }
+
 }

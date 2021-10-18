@@ -26,7 +26,7 @@ open class AppBaseViewHolder(var rootView: View) : RecyclerView.ViewHolder(rootV
 
     open fun init(from: String, time: Long, messageKey: String, value: String, context: Activity) {
         this.from = from
-        this.name = Family.getInstance().getMemberNameById(from)
+        this.name = Family.getMemberNameById(from)
         this.time = formatLongToTime(time)
         this.messageKey = messageKey
         this.value = value

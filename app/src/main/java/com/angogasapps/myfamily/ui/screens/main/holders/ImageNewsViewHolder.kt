@@ -15,7 +15,7 @@ class ImageNewsViewHolder(context: Activity, itemView: View)
 {
     private val binding: ImageNewsViewHolderBinding = ImageNewsViewHolderBinding.bind(itemView)
     override fun update(newsObject: NewsObject) {
-        binding.textName.text = Family.getInstance().getNameByPhone(newsObject.fromPhone)
+        binding.textName.text = Family.getNameByPhone(newsObject.fromPhone)
         Glide
             .with(context)
             .load(newsObject.value)

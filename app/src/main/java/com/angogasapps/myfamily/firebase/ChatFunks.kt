@@ -4,7 +4,6 @@ import com.angogasapps.myfamily.app.AppApplication.Companion.isOnline
 import com.angogasapps.myfamily.app.AppApplication.Companion.getInstance
 import com.angogasapps.myfamily.async.notification.FcmMessageManager.sendChatNotificationMessage
 import com.angogasapps.myfamily.utils.Async
-import com.angogasapps.myfamily.utils.Async.doInThread
 import com.angogasapps.myfamily.app.AppApplication
 import android.widget.Toast
 import com.angogasapps.myfamily.R

@@ -33,7 +33,7 @@ open class DairyDatabaseManager private constructor(){
         if (dairy.uri != "null") {
             dairy.uri = saveImageToAppStorage(dairy.uri)
         }
-        DatabaseManager.getInstance().dairyDao.insert(dairy)
+        DatabaseManager.instance.dairyDao.insert(dairy)
         PersonalDairyManager.getInstance().addDairy(dairy)
     }
 
@@ -68,7 +68,7 @@ open class DairyDatabaseManager private constructor(){
     suspend fun removeDairy(dairy: DairyObject) = withContext(Dispatchers.IO){
         if (dairy.uri != "null")
             removeImage(dairy)
-        DatabaseManager.getInstance().dairyDao.delete(dairy)
+        DatabaseManager.instance.dairyDao.delete(dairy)
         PersonalDairyManager.getInstance().removeDairy(dairy)
     }
 

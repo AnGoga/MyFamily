@@ -6,17 +6,17 @@ import com.angogasapps.myfamily.models.User
 @Dao
 interface UserDao {
     @get:Query("SELECT * FROM User")
-    val all: List<User?>?
+    val all: List<User>
 
     @Query("SELECT * FROM User WHERE id = :id")
-    fun getById(id: String?): User?
+    fun getById(id: String): User?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(user: User?)
+    fun insert(user: User)
 
     @Update
-    fun update(user: User?)
+    fun update(user: User)
 
     @Delete
-    fun delete(user: User?)
+    fun delete(user: User)
 }

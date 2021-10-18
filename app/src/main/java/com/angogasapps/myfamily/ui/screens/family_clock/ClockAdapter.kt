@@ -60,7 +60,7 @@ class ClockAdapter(val context: Context): RecyclerView.Adapter<ClockAdapter.Cloc
         fun update(obj: ClockObject) {
             binding.timeText.text = StringFormater.formatLongToTime(obj.time)
             binding.dateText.text = obj.time.asDate()
-            binding.from.text = context.getString(R.string.clock_is_on_by) + Family.getInstance().getNameByPhone(obj.fromPhone)
+            binding.from.text = context.getString(R.string.clock_is_on_by) + Family.getNameByPhone(obj.fromPhone)
         }
     }
 }

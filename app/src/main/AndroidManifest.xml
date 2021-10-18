@@ -84,7 +84,7 @@
             android:exported="true" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <!-- <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/> -->
+                <!-- <action android:name="com.google.firebase_ID_EVENT"/> -->
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>

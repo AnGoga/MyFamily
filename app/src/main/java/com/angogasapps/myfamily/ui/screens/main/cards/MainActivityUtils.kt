@@ -8,7 +8,6 @@ import android.app.Activity
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import com.angogasapps.myfamily.utils.Async
-import com.angogasapps.myfamily.utils.Async.doInThread
 import com.angogasapps.myfamily.async.LoadFamilyThread
 import android.content.SharedPreferences
 import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils

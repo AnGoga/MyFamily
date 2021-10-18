@@ -11,7 +11,6 @@ import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils
 import com.angogasapps.myfamily.ui.screens.main.adapters.ItemTouchHelperCallback
 import com.angogasapps.myfamily.utils.Async
-import com.angogasapps.myfamily.utils.Async.doInThread
 import android.content.Intent
 import android.view.MenuItem
 import android.view.View

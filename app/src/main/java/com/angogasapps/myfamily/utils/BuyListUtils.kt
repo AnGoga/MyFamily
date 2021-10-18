@@ -1,15 +1,17 @@
-package com.angogasapps.myfamily.utils;
+package com.angogasapps.myfamily.utils
 
-import com.angogasapps.myfamily.models.buy_list.BuyList;
-import com.angogasapps.myfamily.models.Family;
-import com.google.firebase.database.DataSnapshot;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.angogasapps.myfamily.firebase.*
+import com.angogasapps.myfamily.models.Family.getNameByPhone
+import com.google.firebase.database.DataSnapshot
+import com.angogasapps.myfamily.models.buy_list.BuyList
+import com.angogasapps.myfamily.utils.BuyListUtils
+import com.angogasapps.myfamily.models.buy_list.BuyList.Product
+import com.angogasapps.myfamily.models.Family
+import java.util.ArrayList
+import java.util.HashMap
 
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConstsKt.*;
-
-public class BuyListUtils {
+object BuyListUtils {
     /*
   DataSnapshot {
     key = -MY0xumFvGFkkxbaYiLo,
@@ -28,73 +30,71 @@ public class BuyListUtils {
      }
 
  */
-    public static BuyList parseBuyList(DataSnapshot snapshot){
-        BuyList buyList = new BuyList();
-
-        buyList.setId(snapshot.getKey());
-        buyList.setName(snapshot.child(CHILD_NAME).getValue(String.class));
-        buyList.setProducts(getProductsList(snapshot));
-
-        return buyList;
+    fun parseBuyList(snapshot: DataSnapshot): BuyList {
+        val buyList = BuyList()
+        buyList.id = snapshot.key!!
+        buyList.name = snapshot.child(CHILD_NAME).getValue(String::class.java)!!
+        buyList.products = getProductsList(snapshot)
+        return buyList
     }
 
-    private static ArrayList<BuyList.Product> getProductsList(DataSnapshot snapshot){
-        ArrayList<BuyList.Product> list = new ArrayList<>();
-        for (DataSnapshot productSnapshot : snapshot.child(CHILD_PRODUCTS).getChildren()){
-            list.add(getProduct(productSnapshot));
+    private fun getProductsList(snapshot: DataSnapshot): ArrayList<Product> {
+        val list = ArrayList<Product>()
+        for (productSnapshot in snapshot.child(CHILD_PRODUCTS).children) {
+            list.add(getProduct(productSnapshot)!!)
         }
-
-        return list;
+        return list
     }
 
-    private static BuyList.Product getProduct(DataSnapshot snapshot){
-        System.out.println(snapshot);
-        BuyList.Product product = snapshot.getValue(BuyList.Product.class);
-        product.setId(snapshot.getKey());
-        return product;
+    private fun getProduct(snapshot: DataSnapshot): Product? {
+        println(snapshot)
+        val product = snapshot.getValue(Product::class.java)
+        product!!.id = snapshot.key!!
+        return product
     }
 
-    public static HashMap<String, Object> getHashMap(BuyList.Product product){
-        HashMap<String, Object> map = new HashMap<>();
-        map.put(CHILD_NAME, product.getName());
-        map.put(CHILD_FROM, product.getFrom());
-        map.put(CHILD_COMMENT, product.getComment());
-
-        return map;
+    fun getHashMap(product: Product): HashMap<String, Any> {
+        val map = HashMap<String, Any>()
+        map[CHILD_NAME] = product.name
+        map[CHILD_FROM] = product.from
+        map[CHILD_COMMENT] = product.comment
+        return map
     }
 
-    public static String getCorrectComment(BuyList.Product product){
-        String comment = product.getComment();
-        if (product.getFrom().equals(getUSER().getPhone())){
-            if (comment != null){
-                return comment;
-            }else{
-                return "";
-            }
-        }else {
-            if (!comment.equals("")){
-                return comment + " : " + Family.getInstance().getNameByPhone(product.getFrom());
-            }else{
-               return Family.getInstance().getNameByPhone(product.getFrom());
+    fun getCorrectComment(product: Product): String {
+        val comment = product.comment
+        return if (product.from == USER.phone) {
+            comment ?: ""
+        } else {
+            if (comment != "") {
+                comment + " : " + getNameByPhone(product.from)
+            } else {
+                getNameByPhone(product.from)
             }
         }
     }
 
-    public static int getIndexOfRemoveProduct(ArrayList<BuyList.Product> oldBuyList, ArrayList<BuyList.Product> newBuyList){
-        for (int i = 0; i < newBuyList.size(); i++) {
-            if (!oldBuyList.get(i).getId().equals(newBuyList.get(i).getId())){
-                return i;
+    fun getIndexOfRemoveProduct(
+        oldBuyList: ArrayList<Product>,
+        newBuyList: ArrayList<Product>
+    ): Int {
+        for (i in newBuyList.indices) {
+            if (oldBuyList[i].id != newBuyList[i].id) {
+                return i
             }
         }
-        return newBuyList.size();
+        return newBuyList.size
     }
 
-    public static int getIndexOfChangeProduct(ArrayList<BuyList.Product> oldBuyList, ArrayList<BuyList.Product> newBuyList){
-        for (int i = 0; i < newBuyList.size(); i++) {
-            if (!oldBuyList.get(i).equals(newBuyList.get(i))){
-                return i;
+    fun getIndexOfChangeProduct(
+        oldBuyList: ArrayList<Product>,
+        newBuyList: ArrayList<Product>
+    ): Int {
+        for (i in newBuyList.indices) {
+            if (oldBuyList[i] != newBuyList[i]) {
+                return i
             }
         }
-        return 0;
+        return 0
     }
 }

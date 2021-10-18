@@ -181,7 +181,7 @@ class LoadFamilyThread(private var context: Context) : AsyncTask<User?, Int?, Ar
     }
 
     private fun initUsersArray() {
-        Family.getInstance().usersList = familyMembersList
+        Family.usersList = familyMembersList
     }
 
     companion object {

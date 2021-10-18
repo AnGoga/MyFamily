@@ -13,7 +13,7 @@ class TextNewsViewHolder(context: Context, itemView: View) : BaseNewsViewHolder(
     private val binding: TextNewsViewHolderBinding = TextNewsViewHolderBinding.bind(itemView)
     override fun update(newsObject: NewsObject) {
         binding.text.text = newsObject.value
-        binding.textName.text = Family.getInstance().getNameByPhone(newsObject.fromPhone)
+        binding.textName.text = Family.getNameByPhone(newsObject.fromPhone)
     }
 
 }

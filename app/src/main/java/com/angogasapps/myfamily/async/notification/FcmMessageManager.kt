@@ -4,7 +4,6 @@ import android.content.Context
 import com.angogasapps.myfamily.async.notification.fromChatMessage
 import com.angogasapps.myfamily.app.AppApplication.Companion.getInstance
 import com.angogasapps.myfamily.utils.Async
-import com.angogasapps.myfamily.utils.Async.doInThread
 import org.json.JSONObject
 import kotlin.Throws
 import android.content.res.AssetManager

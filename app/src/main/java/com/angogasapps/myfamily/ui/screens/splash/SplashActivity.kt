@@ -87,22 +87,24 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun signInWithRoom() {
-        DatabaseManager.comeInByDatabase {
-            Family.getInstance().usersList = DatabaseManager.getUserList()
-            if (Family.getInstance()
-                    .containsUserWithId(AUTH.currentUser!!.uid)
-            ) {
-                USER = Family.getInstance().getUserById(
-                    AUTH.currentUser!!.uid
-                )?: User()
-            }
-            if (USER.family == "") {
-                Toasty.error(this, R.string.connection_is_not).show()
-            } else {
+        DatabaseManager.comeInByDatabase(object: DatabaseManager.IOnEnd{
+            override fun onEnd() {
+                Family.usersList = DatabaseManager.userList
+                if (Family
+                        .containsUserWithId(AUTH.currentUser!!.uid)
+                ) {
+                    USER = Family.getUserById(
+                        AUTH.currentUser!!.uid
+                    )?: User()
+                }
+                if (USER.family == "") {
+                    Toasty.error(this@SplashActivity, R.string.connection_is_not).show()
+                } else {
 //                startActivity(new Intent(SplashActivity.this, DeprecatedMainActivity.class));
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                finish()
+                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                    finish()
+                }
             }
-        }
+        })
     }
 }

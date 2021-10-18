@@ -1,117 +1,87 @@
-package com.angogasapps.myfamily.models;
+package com.angogasapps.myfamily.models
 
-import static com.angogasapps.myfamily.firebase.FirebaseVarsAndConstsKt.ROLE_MEMBER;
+import android.content.Context
+import com.angogasapps.myfamily.app.AppApplication.Companion.getInstance
+import com.angogasapps.myfamily.models.Family
+import android.graphics.Bitmap
+import android.content.SharedPreferences
+import com.angogasapps.myfamily.app.AppApplication
+import com.angogasapps.myfamily.firebase.ROLE_MEMBER
+import java.util.ArrayList
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+object Family {
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+    var usersList = ArrayList<User>()
 
-import com.angogasapps.myfamily.R;
-import com.angogasapps.myfamily.app.AppApplication;
-
-import java.util.ArrayList;
-
-
-public class Family {
-    private static Family family;
-
-    private ArrayList<User> usersList = new ArrayList<>();
-
-    public static Family getInstance(){
-        synchronized (Family.class){
-            if (family == null)
-                family = new Family();
-            return family;
-        }
-    }
-
-    public String getMemberNameById(String id){
-        for (User user : Family.getInstance().getUsersList()){
-            if (user.getId().equals(id)){
-                return user.getName();
-            }
-
-        }
-        return id;
-    }
-
-    public String getMemberRoleById(String id){
-        for (User user : Family.getInstance().getUsersList()){
-            if (user.getId().equals(id)){
-                return user.getRole();
+    fun getMemberNameById(id: String): String {
+        for ((id1, _, _, name) in usersList) {
+            if (id1 == id) {
+                return name
             }
         }
-        return ROLE_MEMBER;
+        return id
     }
 
-    public boolean containsUserWithId(String id){
-        boolean isContains = false;
-        for (User user : usersList){
-            if (user.getId().equals(id)) {
-                isContains = true;
-                break;
+    fun getMemberRoleById(id: String): String {
+        for ((id1, _, _, _, _, _, role) in usersList) {
+            if (id1 == id) {
+                return role
             }
         }
-        return isContains;
+        return ROLE_MEMBER
     }
 
-    @Nullable
-    public User getUserById(String id){
-        for (User user : usersList){
-            if (user.getId().equals(id)){
-                return user;
+    fun containsUserWithId(id: String): Boolean {
+        var isContains = false
+        for ((id1) in usersList) {
+            if (id1 == id) {
+                isContains = true
+                break
             }
         }
-        return null;
+        return isContains
     }
 
-    public String getNameByPhone(String phone){
-        for (User user : usersList){
-            if (user.getPhone().equals(phone)){
-                return user.getName();
+    fun getUserById(id: String): User? {
+        for (user in usersList) {
+            if (user.id == id) {
+                return user
             }
         }
-        return phone;
+        return null
     }
 
-    public static String getPreferUserName(String phone){
-        SharedPreferences sf = AppApplication.getInstance().getSharedPreferences("phone-name", Context.MODE_PRIVATE);
-        String name = sf.getString(phone, phone);
-        return name;
-    }
-
-    public static Bitmap getMemberImageById(String id){
-        User user = Family.getInstance().getUserById(id);
-        if (user != null) return user.getUserPhoto();
-        return User.default_user_photo;
-    }
-
-    @Nullable
-    public User getUserByPhone(String phone){
-        for (User user : usersList){
-            if (user.getId().equals(phone)){
-                return user;
+    fun getNameByPhone(phone: String): String {
+        for ((_, phone1, _, name) in usersList) {
+            if (phone1 == phone) {
+                return name
             }
         }
-        return null;
+        return phone
     }
 
-    public Bitmap getMemberImageByPhone(String phone){
-        User user = Family.getInstance().getUserByPhone(phone);
-        if (user != null)
-            return user.getUserPhoto();
-        return User.default_user_photo;
+    fun getUserByPhone(phone: String): User? {
+        for (user in usersList) {
+            if (user.id == phone) {
+                return user
+            }
+        }
+        return null
     }
 
-    public ArrayList<User> getUsersList() {
-        return usersList;
+    fun getMemberImageByPhone(phone: String): Bitmap? {
+        val user = getUserByPhone(phone)
+        return if (user != null) user.userPhoto else User.default_user_photo
     }
 
-    public void setUsersList(ArrayList<User> usersList) {
-        this.usersList = usersList;
+    fun getPreferUserName(phone: String?): String? {
+        val sf = getInstance()
+            .getSharedPreferences("phone-name", Context.MODE_PRIVATE)
+        return sf.getString(phone, phone)
+    }
+
+    fun getMemberImageById(id: String): Bitmap? {
+        val user = getUserById(id)
+        return if (user != null) user.userPhoto else User.default_user_photo
     }
 }

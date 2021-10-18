@@ -35,7 +35,7 @@ class AppApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         app = this
-        DatabaseManager.getInstance()
+        DatabaseManager.instance
         AppNotificationManager.createNotificationChanel(applicationContext)
     }
 }
