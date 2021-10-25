@@ -7,6 +7,8 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kotlin.jvm.Volatile
 import android.graphics.Bitmap
 import com.angogasapps.myfamily.models.User
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import java.util.HashMap
 
 
@@ -15,10 +17,12 @@ const val FIREBASE_URL = "https://myfamily-1601b.firebaseio.com"
 const val FIREBASE_DYNAMIC_LINKS_HOST = "https://angogasapps.page.link"
 const val FIREBASE_DYNAMIC_LINKS_HOST_FAMILY_INVITE = "https://angogasapps.page.link/families"
 
-lateinit var AUTH: FirebaseAuth
-lateinit var DATABASE_ROOT: DatabaseReference
-lateinit var STORAGE_ROOT: StorageReference
-lateinit var DYNAMIC_LINK_ROOT: FirebaseDynamicLinks
+
+
+var AUTH: FirebaseAuth = FirebaseAuth.getInstance()
+var DATABASE_ROOT: DatabaseReference = FirebaseDatabase.getInstance().reference
+var STORAGE_ROOT: StorageReference = FirebaseStorage.getInstance().reference
+var DYNAMIC_LINK_ROOT: FirebaseDynamicLinks = FirebaseDynamicLinks.getInstance()
 
 var USER = User()
 lateinit var UID: String

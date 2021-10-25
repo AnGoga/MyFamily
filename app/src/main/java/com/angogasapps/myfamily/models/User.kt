@@ -25,16 +25,16 @@ data class User(
 ) {
 
     @Ignore
-    var userPhoto = BitmapFactory.decodeResource(
-        getInstance().applicationContext.resources,
-        R.drawable.ic_default_user_photo
-    )
-    get() = synchronized(this) { return if (userPhoto != null) userPhoto!! else default_user_photo!! }
+    var userPhoto = default_user_photo
+    get() = field
     public set
 
     companion object {
         @JvmField
-        val default_user_photo: Bitmap? = null
+        val default_user_photo: Bitmap = BitmapFactory.decodeResource(
+            getInstance().applicationContext.resources,
+            R.drawable.ic_default_user_photo
+        )
 
         @JvmStatic
         fun from(snapshot: DataSnapshot): User {
@@ -47,7 +47,9 @@ data class User(
     }
 
     fun setBitmap(bitmap: Bitmap?) {
-        userPhoto = bitmap
+        bitmap?.let {
+            userPhoto = it
+        }
     }
 
     fun haveFamily(): Boolean {

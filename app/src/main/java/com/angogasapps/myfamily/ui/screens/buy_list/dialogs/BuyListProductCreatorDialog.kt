@@ -24,7 +24,7 @@ class BuyListProductCreatorDialog(context: Context, private val buyListId: Strin
         this.product = product
     }
 
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DialogNewProductBinding.inflate(layoutInflater)
         setContentView(binding.root)

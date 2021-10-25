@@ -27,7 +27,7 @@ class SettingsActivity : AppCompatActivity() {
     class SettingFragment : PreferenceFragmentCompat() {
         private lateinit var chatNotificationPref: CheckBoxPreference
 
-        override fun onCreatePreferences(savedInstanceState: Bundle, rootKey: String) {
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.settings)
             chatNotificationPref = findPreference("chat_notification")!!
             chatNotificationPref.onPreferenceClickListener = Preference.OnPreferenceClickListener {

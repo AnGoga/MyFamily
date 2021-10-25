@@ -36,8 +36,9 @@ object MainActivityUtils {
         val editor = sf.edit()
         val str = StringBuilder()
         for (state in list) {
-            str.append(state.name).append(" ")
+            str.append(state.cards.name).append(" ")
         }
+        str.deleteAt(str.length - 1)
         editor.putString("card_place", str.toString())
         editor.apply()
     }

@@ -7,7 +7,6 @@ object Async {
         val thread = thread {
             block()
         }
-        thread.start()
         return thread
     }
 
