@@ -1,13 +1,27 @@
 package com.angogasapps.myfamily.app
 
 import android.app.Application
+import android.content.Context
 import com.angogasapps.myfamily.database.DatabaseManager
 import es.dmoral.toasty.Toasty
 import com.angogasapps.myfamily.R
 import androidx.annotation.StringRes
+import com.angogasapps.myfamily.di.components.AppComponent
+import com.angogasapps.myfamily.di.components.DaggerAppComponent
 import java.lang.Exception
 
 class AppApplication : Application() {
+
+    lateinit var appComponent: AppComponent
+        private set
+
+    override fun onCreate() {
+        super.onCreate()
+        app = this
+        DatabaseManager.instance
+        appComponent = DaggerAppComponent.create()
+        AppNotificationManager.createNotificationChanel(applicationContext)
+    }
 
     companion object {
         lateinit var app: AppApplication
@@ -31,11 +45,10 @@ class AppApplication : Application() {
         @JvmStatic
         fun getInstance() = app
     }
-
-    override fun onCreate() {
-        super.onCreate()
-        app = this
-        DatabaseManager.instance
-        AppNotificationManager.createNotificationChanel(applicationContext)
-    }
 }
+
+val Context.appComponent: AppComponent
+    get() = when (this) {
+        is AppApplication -> appComponent
+        else -> applicationContext.appComponent
+    }

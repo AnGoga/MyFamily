@@ -1,5 +1,8 @@
 package com.angogasapps.myfamily.network.interfaces
 
+import com.angogasapps.myfamily.models.Family
+import com.angogasapps.myfamily.network.Result
+
 interface FamilyService {
-    fun getFamily(id: String): String
+    suspend fun getFamily(id: String): Result<Family>
 }

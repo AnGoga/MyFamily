@@ -38,10 +38,8 @@ data class User(
 
         @JvmStatic
         fun from(snapshot: DataSnapshot): User {
-            val user = snapshot.getValue(
-                User::class.java
-            )
-            user!!.id = snapshot.key!!
+            val user = snapshot.getValue(User::class.java)!!
+            user.id = snapshot.key!!
             return user
         }
     }

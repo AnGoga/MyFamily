@@ -81,6 +81,8 @@ dependencies {
     implementation 'com.google.api-client:google-api-client:1.31.2'
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
 
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2'
+
 
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
@@ -111,7 +113,7 @@ dependencies {
     def room_version = "2.2.6"
 
     implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 
     //RxJava
     implementation "io.reactivex.rxjava2:rxjava:2.2.21"
