@@ -4,6 +4,7 @@ import com.angogasapps.myfamily.network.firebaseImpl.FirebaseFamilyServiceImpl
 import com.angogasapps.myfamily.network.firebaseImpl.FirebaseUserServiceImpl
 import com.angogasapps.myfamily.network.interfaces.FamilyService
 import com.angogasapps.myfamily.network.interfaces.UserService
+import com.angogasapps.myfamily.network.repositories.FamilyRepository
 import com.angogasapps.myfamily.network.repositories.UsersRepository
 import dagger.Component
 import dagger.Module
@@ -25,6 +26,11 @@ class UsersModule {
     fun provideFamilyService(
         usersRepository: UsersRepository
     ): FamilyService = FirebaseFamilyServiceImpl(usersRepository)
+
+    @Provides
+    fun provideFamilyRepository(
+        familyService: FamilyService
+    ) : FamilyRepository = FamilyRepository(familyService)
 
 
 }

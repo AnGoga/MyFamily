@@ -17,24 +17,39 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.angogasapps.myfamily.ui.screens.personal_data.PersonalDataActivity
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.async.notification.FcmMessageManager
 import com.angogasapps.myfamily.database.DatabaseManager
 import com.angogasapps.myfamily.databinding.ActivityMainBinding
+import com.angogasapps.myfamily.network.repositories.FamilyRepository
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var cardsAdapter: MainActivityAdapter
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var itemTouchHelper: ItemTouchHelper
+
+    @Inject lateinit var userRepository: FamilyRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        LoadFamilyThread(this).execute(USER)
+
+        appComponent.inject(this)
+        lifecycleScope.launch {
+            val res = userRepository.getFamily(USER.family)
+            println(res)
+        }
+
+//        LoadFamilyThread(this).execute(USER)
+
+
         initToolbar()
         initRecyclerView()
         initNewsLayout()

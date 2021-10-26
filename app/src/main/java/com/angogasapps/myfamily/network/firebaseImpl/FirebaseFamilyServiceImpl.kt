@@ -2,13 +2,18 @@ package com.angogasapps.myfamily.network.firebaseImpl
 
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.models.Family
+import com.angogasapps.myfamily.models.User
 import com.angogasapps.myfamily.network.Result
 import com.angogasapps.myfamily.network.interfaces.FamilyService
 import com.angogasapps.myfamily.network.repositories.UsersRepository
 import kotlinx.coroutines.tasks.await
+import java.util.ArrayList
 import javax.inject.Inject
 
-class FirebaseFamilyServiceImpl @Inject constructor(private val usersRepository: UsersRepository) : FamilyService {
+class FirebaseFamilyServiceImpl @Inject constructor(
+        private val usersRepository: UsersRepository
+    ) : FamilyService(usersRepository) {
+
     override suspend fun getFamily(id: String): Result<Family> {
         return try {
             val snapshot = DATABASE_ROOT.child(NODE_FAMILIES).child(id).get().await()
@@ -27,6 +32,7 @@ class FirebaseFamilyServiceImpl @Inject constructor(private val usersRepository:
             when (val result = usersRepository.getUsers(idsList)) {
                 is Result.Error -> return Result.Error(result.e)
                 is Result.Success -> {
+                    Family.usersList = ArrayList(result.data)
                     for (user in result.data) {
                         user.role = rolesMap[user.id]?: ROLE_MEMBER
                     }
