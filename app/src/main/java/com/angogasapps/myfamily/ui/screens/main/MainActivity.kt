@@ -6,11 +6,9 @@ import com.angogasapps.myfamily.ui.screens.main.adapters.MainActivityAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.os.Bundle
-import com.angogasapps.myfamily.async.LoadFamilyThread
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils
 import com.angogasapps.myfamily.ui.screens.main.adapters.ItemTouchHelperCallback
-import com.angogasapps.myfamily.utils.Async
 import android.content.Intent
 import android.view.MenuItem
 import android.view.View
@@ -34,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var itemTouchHelper: ItemTouchHelper
 
-    @Inject lateinit var userRepository: FamilyRepository
+    @Inject lateinit var familyRepository: FamilyRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         appComponent.inject(this)
         lifecycleScope.launch {
-            val res = userRepository.getFamily(USER.family)
+            val res = familyRepository.getFamily(USER.family)
             println(res)
         }
 
@@ -71,10 +69,9 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.hide()
         binding.toolbar.setOnMenuItemClickListener { item: MenuItem -> onOptionsItemSelected(item) }
         lifecycleScope.launch(Dispatchers.IO) {
-            while (!LoadFamilyThread.isEnd) { }
-            if (USER.userPhoto != null)
-                withContext(Dispatchers.Main) {
-                    binding.toolbarUserImage.setImageBitmap(USER.userPhoto)
+            familyRepository.firstDownloadIsEnd.await()
+            withContext(Dispatchers.Main) {
+                binding.toolbarUserImage.setImageBitmap(USER.userPhoto)
             }
         }
         binding.toolbarUserImage.setOnClickListener { v: View? ->

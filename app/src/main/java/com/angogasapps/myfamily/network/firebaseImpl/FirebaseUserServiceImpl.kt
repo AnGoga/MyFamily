@@ -6,6 +6,8 @@ import com.angogasapps.myfamily.models.User
 import com.angogasapps.myfamily.network.Result
 import com.angogasapps.myfamily.network.interfaces.UserService
 import kotlinx.coroutines.tasks.await
+import javax.inject.Singleton
+
 
 class FirebaseUserServiceImpl : UserService {
     override suspend fun getUser(id: String): Result<User> {

@@ -3,6 +3,7 @@ package com.angogasapps.myfamily.async
 import android.content.Intent
 import android.util.Log
 import com.angogasapps.myfamily.app.AppNotificationManager
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.async.notification.TokensManager;
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.models.family_clock.ClockObject
@@ -10,18 +11,27 @@ import com.angogasapps.myfamily.ui.screens.family_clock.ClockWakeUpperManager.Co
 import com.angogasapps.myfamily.utils.Async
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
 class FcmNotificationService : FirebaseMessagingService() {
+
+    private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+
+
     override fun onCreate() {
         AppNotificationManager.createNotificationChanel(this)
     }
 
     override fun onNewToken(token: String) {
         USER.token = token
-        Async.runInNewThread {
-            while (!LoadFamilyThread.isEnd) {}
+
+        scope.launch(Dispatchers.IO) {
+            appComponent.familyRepository.firstDownloadIsEnd.await()
             TokensManager.updateToken(token)
         }
     }

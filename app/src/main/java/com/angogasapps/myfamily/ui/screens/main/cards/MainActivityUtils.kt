@@ -3,15 +3,13 @@ package com.angogasapps.myfamily.ui.screens.main.cards
 import com.angogasapps.myfamily.ui.screens.main.cards.ActionCardUtils.getState
 import com.angogasapps.myfamily.models.ActionCardState
 import com.angogasapps.myfamily.ui.screens.main.cards.ActionCardUtils.EActionCards
-import com.angogasapps.myfamily.ui.screens.main.cards.ActionCardUtils
 import android.app.Activity
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
-import com.angogasapps.myfamily.utils.Async
-import com.angogasapps.myfamily.async.LoadFamilyThread
-import android.content.SharedPreferences
-import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils
+import com.angogasapps.myfamily.app.appComponent
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.StringBuilder
 import java.util.ArrayList
 
@@ -25,8 +23,8 @@ object MainActivityUtils {
     }
 
     fun waitEndDownloadThread(activity: Activity, adapter: RecyclerView.Adapter<*>, scope: CoroutineScope) {
-        Async.runInNewThread {
-            while (!LoadFamilyThread.isEnd) { }
+        scope.launch(Dispatchers.IO) {
+            activity.appComponent.familyRepository.firstDownloadIsEnd.await()
             activity.runOnUiThread { adapter.notifyDataSetChanged() }
         }
     }

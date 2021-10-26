@@ -9,6 +9,8 @@ import com.angogasapps.myfamily.network.repositories.UsersRepository
 import kotlinx.coroutines.tasks.await
 import java.util.ArrayList
 import javax.inject.Inject
+import javax.inject.Singleton
+
 
 class FirebaseFamilyServiceImpl @Inject constructor(
         private val usersRepository: UsersRepository
