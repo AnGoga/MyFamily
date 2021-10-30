@@ -1,5 +1,6 @@
 package com.angogasapps.myfamily.ui.screens.personal_dairy
 
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.database.DatabaseManager
 import com.angogasapps.myfamily.models.DairyObject
 import com.angogasapps.myfamily.utils.indexOfThisKey
@@ -54,7 +55,7 @@ class PersonalDairyManager private constructor(){
     }
 
     private suspend fun getDataFromRoom() = withContext(Dispatchers.Default){
-        val dairyList: List<DairyObject?>? = DatabaseManager.instance.dairyDao.getAll()
+        val dairyList: List<DairyObject?>? = appComponent.dairyDao.getAll()
         if (dairyList.isNullOrEmpty()) {
             return@withContext
         }

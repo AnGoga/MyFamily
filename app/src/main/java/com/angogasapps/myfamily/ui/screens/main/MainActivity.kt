@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         appComponent.inject(this)
         lifecycleScope.launch {
-            val res = familyRepository.getFamily(USER.family)
+            val res = familyRepository.getFamily()
             println(res)
         }
 
@@ -95,7 +95,10 @@ class MainActivity : AppCompatActivity() {
 
             lifecycleScope.launch(Dispatchers.IO) {
                 // reset all managers and services
-                DatabaseManager.resetDatabase()
+//                DatabaseManager.resetDatabase()
+
+                //TODO: reset database !!!!
+
                 withContext(Dispatchers.Main) {
                     startActivity(Intent(this@MainActivity, SplashActivity::class.java))
                     finish()

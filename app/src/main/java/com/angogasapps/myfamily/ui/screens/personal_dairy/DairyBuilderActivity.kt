@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.databinding.ActivityDairyBuilderBinding
 import com.angogasapps.myfamily.models.DairyObject
 import com.angogasapps.myfamily.objects.ChatImageShower
@@ -20,6 +21,7 @@ import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.*
 import java.util.*
+import javax.inject.Inject
 
 
 class DairyBuilderActivity : AppCompatActivity() {
@@ -30,11 +32,16 @@ class DairyBuilderActivity : AppCompatActivity() {
     var hasImage: Boolean = false
     var uri: Uri? = null
 
+    @Inject lateinit var dairyDatabaseManager: DairyDatabaseManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDairyBuilderBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        appComponent.inject(this)
+
         dairy = intent.extras?.get("data") as? DairyObject?
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -165,7 +172,7 @@ class DairyBuilderActivity : AppCompatActivity() {
         val dairy = DairyObject(key, title, body, date, smile, uri.toString())
 
         scope.launch {
-            DairyDatabaseManager.getInstance().saveDairy(dairy)
+            dairyDatabaseManager.saveDairy(dairy)
         }
 
         this.finish()
@@ -181,7 +188,7 @@ class DairyBuilderActivity : AppCompatActivity() {
                     if (int == DialogInterface.BUTTON_POSITIVE) {
                         dairy?.let { it1 ->
                             scope.launch {
-                                DairyDatabaseManager.getInstance().removeDairy(it1)
+                                dairyDatabaseManager.removeDairy(it1)
                             }
                         }
                         it.dismiss()

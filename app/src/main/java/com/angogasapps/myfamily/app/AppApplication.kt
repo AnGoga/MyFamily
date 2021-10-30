@@ -6,6 +6,7 @@ import com.angogasapps.myfamily.database.DatabaseManager
 import es.dmoral.toasty.Toasty
 import com.angogasapps.myfamily.R
 import androidx.annotation.StringRes
+import com.angogasapps.myfamily.app.AppApplication.Companion.app
 import com.angogasapps.myfamily.di.components.AppComponent
 import com.angogasapps.myfamily.di.components.DaggerAppComponent
 import java.lang.Exception
@@ -18,7 +19,6 @@ class AppApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         app = this
-        DatabaseManager.instance
         appComponent = DaggerAppComponent.create()
         AppNotificationManager.createNotificationChanel(applicationContext)
     }
@@ -47,8 +47,12 @@ class AppApplication : Application() {
     }
 }
 
-val Context.appComponent: AppComponent
-    get() = when (this) {
-        is AppApplication -> appComponent
-        else -> applicationContext.appComponent
-    }
+val appComponent: AppComponent
+    get() = app.appComponent
+
+
+//val Context.appComponent: AppComponent
+//    get() = when (this) {
+//        is AppApplication -> appComponent
+//        else -> applicationContext.appComponent
+//    }

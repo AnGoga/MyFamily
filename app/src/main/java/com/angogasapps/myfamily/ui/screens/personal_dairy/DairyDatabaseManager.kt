@@ -4,28 +4,17 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
-import com.angogasapps.myfamily.database.DatabaseManager
+import com.angogasapps.myfamily.database.DairyDao
 import com.angogasapps.myfamily.models.DairyObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.util.UUID.randomUUID
+import javax.inject.Inject
 
 
-open class DairyDatabaseManager private constructor(){
-
-    companion object{
-        private var manager: DairyDatabaseManager? = null
-
-        fun getInstance(): DairyDatabaseManager{
-            synchronized(DairyDatabaseManager::class.java) {
-                if (manager == null)
-                    manager = DairyDatabaseManager()
-                return manager!!
-            }
-        }
-    }
+class DairyDatabaseManager @Inject constructor(private val dairyDao: DairyDao) {
 
 
     suspend fun saveDairy(dairy: DairyObject) = withContext(Dispatchers.IO){
@@ -33,7 +22,7 @@ open class DairyDatabaseManager private constructor(){
         if (dairy.uri != "null") {
             dairy.uri = saveImageToAppStorage(dairy.uri)
         }
-        DatabaseManager.instance.dairyDao.insert(dairy)
+        dairyDao.insert(dairy)
         PersonalDairyManager.getInstance().addDairy(dairy)
     }
 
@@ -62,13 +51,12 @@ open class DairyDatabaseManager private constructor(){
         val uri = file.toURI()
         print(uri)
         return Uri.parse(uri.toString())
-
     }
 
     suspend fun removeDairy(dairy: DairyObject) = withContext(Dispatchers.IO){
         if (dairy.uri != "null")
             removeImage(dairy)
-        DatabaseManager.instance.dairyDao.delete(dairy)
+        dairyDao.delete(dairy)
         PersonalDairyManager.getInstance().removeDairy(dairy)
     }
 

@@ -12,8 +12,10 @@ import java.util.ArrayList
 object Family {
 
     var usersList = ArrayList<User>()
+        set(value) { usersList.clear(); usersList.addAll(value) }
     var emblemUrl = ""
     var name = ""
+
 
     fun getMemberNameById(id: String): String {
         for ((id1, _, _, name) in usersList) {

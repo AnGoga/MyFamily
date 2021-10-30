@@ -1,5 +1,6 @@
 package com.angogasapps.myfamily.network.repositories
 
+import com.angogasapps.myfamily.database.UserDao
 import com.angogasapps.myfamily.models.User
 import com.angogasapps.myfamily.network.Result
 import com.angogasapps.myfamily.network.interfaces.UserService
@@ -8,8 +9,8 @@ import javax.inject.Singleton
 
 @Singleton
 class UsersRepository @Inject constructor(
-        private val userService: UserService
-        //val userDao: UserDao
+        private val userService: UserService,
+        private val userDao: UserDao
     ) {
 
     suspend fun getUser(id: String): Result<User> {

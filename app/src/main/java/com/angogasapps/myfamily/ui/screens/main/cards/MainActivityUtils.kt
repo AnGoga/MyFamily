@@ -10,6 +10,7 @@ import com.angogasapps.myfamily.app.appComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.StringBuilder
 import java.util.ArrayList
 
@@ -24,8 +25,8 @@ object MainActivityUtils {
 
     fun waitEndDownloadThread(activity: Activity, adapter: RecyclerView.Adapter<*>, scope: CoroutineScope) {
         scope.launch(Dispatchers.IO) {
-            activity.appComponent.familyRepository.firstDownloadIsEnd.await()
-            activity.runOnUiThread { adapter.notifyDataSetChanged() }
+            appComponent.familyRepository.firstDownloadIsEnd.await()
+            withContext(Dispatchers.Main) { adapter.notifyDataSetChanged() }
         }
     }
 

@@ -11,7 +11,7 @@ class UninstallIntentReceiver: BroadcastReceiver() {
         if (packageNames != null) {
             for (packageName in packageNames) {
                 if (packageName != null && packageName == context?.applicationContext?.packageName) {
-                    OnAppDeleteMaker().deleteInternalStorage(context)
+//                    OnAppDeleteMaker().deleteInternalStorage(context)
                 }
             }
         }

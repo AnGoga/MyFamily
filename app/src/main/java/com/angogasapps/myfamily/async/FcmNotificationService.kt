@@ -29,7 +29,6 @@ class FcmNotificationService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         USER.token = token
-
         scope.launch(Dispatchers.IO) {
             appComponent.familyRepository.firstDownloadIsEnd.await()
             TokensManager.updateToken(token)
