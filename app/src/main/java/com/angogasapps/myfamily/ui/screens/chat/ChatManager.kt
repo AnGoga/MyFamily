@@ -1,5 +1,6 @@
 package com.angogasapps.myfamily.ui.screens.chat
 
+import android.net.Uri
 import android.util.Log
 import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.database.DatabaseManager
@@ -8,15 +9,18 @@ import com.angogasapps.myfamily.firebase.DATABASE_ROOT
 import com.angogasapps.myfamily.firebase.NODE_CHAT
 import com.angogasapps.myfamily.firebase.USER
 import com.angogasapps.myfamily.models.Message
+import com.angogasapps.myfamily.network.repositories.ChatRepository
 import com.angogasapps.myfamily.objects.ChatChildEventListener
 import com.google.firebase.database.ServerValue
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import java.io.File
 import java.lang.Exception
 import java.util.*
 import java.util.concurrent.locks.ReentrantLock
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class ChatManager private constructor(private val scope: CoroutineScope, val onGetMessage: (event: ChatEvent) -> Unit){
@@ -27,6 +31,8 @@ class ChatManager private constructor(private val scope: CoroutineScope, val onG
     private val chatRef = DATABASE_ROOT.child(NODE_CHAT).child(USER.family)
     private val messageDao: MessageDao = appComponent.messageDao
     private val listener: ChatChildEventListener = ChatChildEventListener(::onGetMessageFromFirebase)
+    @Inject
+    lateinit var chatRepository: ChatRepository
 
     init { init() }
 
@@ -44,8 +50,23 @@ class ChatManager private constructor(private val scope: CoroutineScope, val onG
     }
 
     fun init() {
+        appComponent.inject(this)
         getMoreMessage(startMessageCount)
     }
+
+
+    fun sendImage(photoUri: Uri) {
+        chatRepository.sendImage(photoUri)
+    }
+
+    fun sendVoice(file: File, key: String) {
+        chatRepository.sendVoice(file, key)
+    }
+
+    fun sendMessage(typeTextMessage: String, toString: String) {
+        chatRepository.sendMessage(typeTextMessage, toString)
+    }
+
 
     private fun addMessage(message: Message) {
         if (list.contains(message))
@@ -91,8 +112,8 @@ class ChatManager private constructor(private val scope: CoroutineScope, val onG
         getMessageFromFirebase()
     }
 
-    private fun getMessageFromDatabase() = scope.launch {
-        synchronized(messageDao){
+    private fun getMessageFromDatabase() = scope.launch(Dispatchers.IO) {
+        synchronized(messageDao) {
             if (databaseList.isEmpty()) {
                 databaseList = ArrayList(messageDao.all)
                 databaseList.sortBy { it.time }

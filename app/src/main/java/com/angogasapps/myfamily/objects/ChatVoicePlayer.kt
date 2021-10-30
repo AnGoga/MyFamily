@@ -2,55 +2,60 @@ package com.angogasapps.myfamily.objects
 
 import android.content.Context
 import android.media.MediaPlayer
-import com.angogasapps.myfamily.objects.ChatVoicePlayer.IOnEndPlay
-import com.angogasapps.myfamily.firebase.ChatFunks
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
-import android.media.MediaPlayer.OnCompletionListener
 import es.dmoral.toasty.Toasty
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.appComponent
+import com.angogasapps.myfamily.network.interfaces.ChatVoiceGetter
 import java.io.File
 import java.lang.Exception
+import javax.inject.Inject
 
 class ChatVoicePlayer(private val context: Context) {
     private lateinit var mMediaPlayer: MediaPlayer
     private lateinit var voiceFile: File
+    @Inject
+    lateinit var chatVoiceGetter: ChatVoiceGetter
 
-    fun play(messageKey: String, fileUrl: String, iOnEndPlay: IOnEndPlay) {
+    init {
+        appComponent.inject(this)
+    }
+
+
+    fun play(messageKey: String, fileUrl: String, onEndPlay: () -> Unit) {
         voiceFile = File(context.filesDir.absolutePath, messageKey)
         if (voiceFile.exists() && voiceFile.isFile && voiceFile.length() > 0) {
-            startPlayer(iOnEndPlay)
+            startPlayer(onEndPlay)
         } else {
             try {
                 voiceFile.createNewFile()
-                ChatFunks.getVoiceFileFromStorage(
+                chatVoiceGetter.getVoiceFileFromStorage(
                     voiceFile,
                     messageKey,
-                    object : IOnEndCommunicationWithFirebase {
-                        override fun onSuccess() {
-                            startPlayer(iOnEndPlay)
-                        }
+                    onSuccess = {
+                        startPlayer(onEndPlay)
+                    }
+                )
 
-                        override fun onFailure() {}
-                    })
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    private fun startPlayer(iOnEndPlay: IOnEndPlay) {
+    private fun startPlayer(onEndPlay: () -> Unit) {
         try {
             mMediaPlayer.setDataSource(voiceFile.absolutePath)
             mMediaPlayer.prepare()
             mMediaPlayer.start()
-            mMediaPlayer.setOnCompletionListener { mp: MediaPlayer? -> stop(iOnEndPlay) }
+            mMediaPlayer.setOnCompletionListener { mp: MediaPlayer? -> stop(onEndPlay) }
         } catch (e: Exception) {
             e.printStackTrace()
             Toasty.error(context, R.string.something_went_wrong).show()
         }
     }
 
-    fun stop(iOnEndPlay: IOnEndPlay) {
+    fun stop(onEndPlay: () -> Unit) {
         try {
             mMediaPlayer.stop()
             mMediaPlayer.reset()
@@ -58,7 +63,7 @@ class ChatVoicePlayer(private val context: Context) {
             e.printStackTrace()
             Toasty.error(context, R.string.something_went_wrong).show()
         }
-        iOnEndPlay.onEndPlay()
+        onEndPlay()
     }
 
     fun release() {
@@ -67,9 +72,5 @@ class ChatVoicePlayer(private val context: Context) {
 
     fun init() {
         mMediaPlayer = MediaPlayer()
-    }
-
-    interface IOnEndPlay {
-        fun onEndPlay()
     }
 }

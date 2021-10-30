@@ -3,9 +3,7 @@ package com.angogasapps.myfamily.ui.customview
 
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.angogasapps.myfamily.objects.ChatVoicePlayer.IOnEndPlay
 import com.angogasapps.myfamily.objects.ChatVoicePlayer
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -20,7 +18,6 @@ class ChatVoiceMessageView : LinearLayout {
     private lateinit var pauseButton: ImageView
     var messageKey: String? = null
     var voiceFileUrl: String? = null
-    private var iOnEndPlay: IOnEndPlay? = null
     private var mVoicePlayer: ChatVoicePlayer? = null
 
     constructor(context: Context) : super(context) {
@@ -61,19 +58,18 @@ class ChatVoiceMessageView : LinearLayout {
         pauseButton = findViewById(R.id.voice_message_btn_pause)
         mVoicePlayer = ChatVoicePlayer(context)
         mVoicePlayer!!.init()
-        iOnEndPlay = object : IOnEndPlay {
-            override fun onEndPlay() {
-                playButton.setVisibility(VISIBLE)
-                pauseButton.setVisibility(INVISIBLE)
-            }
+        val onEndPlay = {
+            playButton.setVisibility(VISIBLE)
+            pauseButton.setVisibility(INVISIBLE)
+
         }
         playButton.setOnClickListener { v: View? ->
-            mVoicePlayer!!.play(messageKey!!, voiceFileUrl!!, iOnEndPlay!!)
+            mVoicePlayer!!.play(messageKey!!, voiceFileUrl!!, onEndPlay)
             playButton.setVisibility(INVISIBLE)
             pauseButton.setVisibility(VISIBLE)
         }
         pauseButton.setOnClickListener { v: View? ->
-            mVoicePlayer!!.stop(iOnEndPlay!!)
+            mVoicePlayer!!.stop(onEndPlay)
             playButton.setVisibility(VISIBLE)
             pauseButton.setVisibility(INVISIBLE)
         }

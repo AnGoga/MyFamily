@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.widget.AbsListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.FragmentChatBinding
-import com.angogasapps.myfamily.firebase.ChatFunks
 import com.angogasapps.myfamily.firebase.FirebaseHelper
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.objects.ChatAudioRecorder
@@ -27,16 +27,13 @@ import kotlinx.coroutines.SupervisorJob
 import java.io.File
 
 class ChatActivity : AppCompatActivity() {
-    private val job = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.Default + job)
-
     private lateinit var binding: FragmentChatBinding
     private lateinit var mRecorder: ChatAudioRecorder
     private lateinit var adapter: ChatAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private var isScrollToBottom = true
     private var isScrolling = false
-    private val chatManager = ChatManager.getInstance(scope, this::addMessage)
+    private val chatManager = ChatManager.getInstance(lifecycleScope, this::addMessage)
     private lateinit var disposable: Disposable
 
 
@@ -94,7 +91,7 @@ class ChatActivity : AppCompatActivity() {
 
         binding.sendMessageBtn.setOnClickListener { v ->
             isScrollToBottom = true
-            ChatFunks.sendMessage(TYPE_TEXT_MESSAGE, binding.chatEditText.text.toString())
+            chatManager.sendMessage(TYPE_TEXT_MESSAGE, binding.chatEditText.text.toString())
             binding.chatEditText.setText("")
             binding.recycleView.smoothScrollToPosition(adapter.getItemCount())
         }
@@ -107,7 +104,7 @@ class ChatActivity : AppCompatActivity() {
                 } else if (event.action === MotionEvent.ACTION_UP) {
                     mRecorder.stopRecording {
                         mRecorder.file?.let {
-                            ChatFunks.sendVoice(it, mRecorder.key)
+                            chatManager.sendVoice(it, mRecorder.key)
                         }
                     }
                 }
@@ -134,7 +131,7 @@ class ChatActivity : AppCompatActivity() {
                 && resultCode == RESULT_OK) {
             val photoUri = CropImage.getActivityResult(data).uri
             if (photoUri != null)
-                ChatFunks.sendImage(photoUri)
+                chatManager.sendImage(photoUri)
             else
                 Toasty.error(this, R.string.something_went_wrong).show()
         }
