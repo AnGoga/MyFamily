@@ -10,16 +10,22 @@ import com.angogasapps.myfamily.async.notification.FcmMessageManager
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
 import com.angogasapps.myfamily.models.Message
+import com.angogasapps.myfamily.network.Result
 import com.angogasapps.myfamily.network.interfaces.ChatService
+import com.angogasapps.myfamily.objects.ChatChildEventListener
 import com.angogasapps.myfamily.ui.screens.chat.ChatEvent
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ServerValue
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.UploadTask
 import kotlinx.coroutines.*
 
 import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.tasks.await
 import java.io.File
 import java.net.URL
 import java.util.HashMap
@@ -28,13 +34,40 @@ import javax.inject.Inject
 class FirebaseChatServiceImpl @Inject constructor() : ChatService {
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 
-    private val flow = BroadcastChannel<ChatEvent>(100)
+    private val chatRef = DATABASE_ROOT.child(NODE_CHAT).child(USER.family)
 
-    override fun getMessagesFlow(): BroadcastChannel<ChatEvent> = flow
+    private var totalMessageCount = 0;
 
-    override fun getOldMessagesFrom(id: String, count: Int) {
-
+    private val listener: ValueEventListener = object: ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {}
+        override fun onCancelled(error: DatabaseError) {}
     }
+//    private val listener: ChatChildEventListener = ChatChildEventListener(::onGetMessageFromFirebase)
+
+
+
+
+    override suspend fun getMoreMessages(fromMessage: Message, count: Int): Result<List<Message>> {
+        totalMessageCount += count
+        try {
+            val res = chatRef.limitToLast(totalMessageCount - 1).get().await()
+            val list = ArrayList<Message>()
+            for (message in res.children) {
+                list.add(Message(message))
+            }
+            list.sort()
+//            val ind = if (fromMessage.id == "") count else list.indexOf(fromMessage)
+            return Result.Success(list.subList(0, count - 1)/*.also { if (it.isNotEmpty()) it.removeAt(it.size - 1) }*/)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return Result.Error(e)
+        }
+    }
+
+
+
+
+
 
     override fun sendMessage(type: String, value: String) {
         scope.launch {

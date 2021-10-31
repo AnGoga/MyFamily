@@ -2,11 +2,8 @@ package com.angogasapps.myfamily.di.components
 
 import com.angogasapps.myfamily.database.DairyDao
 import com.angogasapps.myfamily.database.MessageDao
-import com.angogasapps.myfamily.database.UserDao
 import com.angogasapps.myfamily.di.modules.AppModule
-import com.angogasapps.myfamily.network.repositories.ChatRepository
 import com.angogasapps.myfamily.network.repositories.FamilyRepository
-import com.angogasapps.myfamily.network.repositories.UsersRepository
 import com.angogasapps.myfamily.objects.ChatVoicePlayer
 import com.angogasapps.myfamily.ui.screens.chat.ChatManager
 import com.angogasapps.myfamily.ui.screens.chat.holders.ImageMessageHolder

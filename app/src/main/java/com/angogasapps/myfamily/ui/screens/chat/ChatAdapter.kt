@@ -18,6 +18,7 @@ import kotlinx.coroutines.GlobalScope
 class ChatAdapter(private val activity: Activity, val messagesList: ArrayList<Message>) : RecyclerView.Adapter<AppBaseViewHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(activity)
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppBaseViewHolder {
         return when (viewType) {
             0 -> TextMessageHolder(inflater.inflate(R.layout.text_message_holder, parent, false))
@@ -57,5 +58,9 @@ class ChatAdapter(private val activity: Activity, val messagesList: ArrayList<Me
                 notifyItemInserted(event.index)
             }
         }
+    }
+
+    fun addInRange(start: Int, end: Int) {
+        notifyItemRangeInserted(start, end)
     }
 }

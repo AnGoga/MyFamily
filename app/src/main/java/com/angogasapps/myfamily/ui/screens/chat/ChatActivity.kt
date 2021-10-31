@@ -15,16 +15,11 @@ import com.angogasapps.myfamily.firebase.FirebaseHelper
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.objects.ChatAudioRecorder
 import com.angogasapps.myfamily.objects.ChatTextWatcher
-import com.angogasapps.myfamily.ui.screens.chat.ChatManager.Companion.dangerFirstVisibleItemPosition
 import com.angogasapps.myfamily.utils.Permissions
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
 import io.reactivex.disposables.Disposable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import java.io.File
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding: FragmentChatBinding
@@ -47,14 +42,21 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
-    private fun addMessage(event: ChatEvent) = runOnUiThread {
-        adapter.update(event)
+    private fun addMessage(start: Int, end: Int) = runOnUiThread {
+        println("update range [$start; $end]")
+        adapter.addInRange(start, end)
         if (isScrollToBottom)
             binding.recycleView.smoothScrollToPosition(adapter.itemCount)
     }
 
+    /*private fun addMessage(event: ChatEvent) = runOnUiThread {
+        adapter.update(event)
+        if (isScrollToBottom)
+            binding.recycleView.smoothScrollToPosition(adapter.itemCount)
+    }*/
+
     private fun initRecycleView() {
-        adapter = ChatAdapter(this, chatManager.list)
+        adapter = ChatAdapter(this, chatManager.messagesList)
         layoutManager = object: LinearLayoutManager(this){
             override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
                 try {

@@ -1,5 +1,6 @@
 package com.angogasapps.myfamily.di.modules
 
+import com.angogasapps.myfamily.database.MessageDao
 import com.angogasapps.myfamily.network.firebaseImpl.FirebaseChatServiceImpl
 import com.angogasapps.myfamily.network.interfaces.ChatService
 import com.angogasapps.myfamily.network.interfaces.ChatVoiceGetter
@@ -20,8 +21,9 @@ class ChatModule {
     @Singleton
     @Provides
     fun provideChatRepository(
-        chatService: ChatService
-    ) : ChatRepository = ChatRepository(chatService)
+        chatService: ChatService,
+        messageDao: MessageDao
+    ) : ChatRepository = ChatRepository(chatService, messageDao)
 
     @Provides
     @Singleton
