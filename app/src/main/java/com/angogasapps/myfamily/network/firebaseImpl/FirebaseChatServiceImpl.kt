@@ -57,7 +57,7 @@ class FirebaseChatServiceImpl @Inject constructor() : ChatService {
             }
             list.sort()
 //            val ind = if (fromMessage.id == "") count else list.indexOf(fromMessage)
-            return Result.Success(list.subList(0, count - 1)/*.also { if (it.isNotEmpty()) it.removeAt(it.size - 1) }*/)
+            return Result.Success(list/*.subList(0, count - 1)*//*.also { if (it.isNotEmpty()) it.removeAt(it.size - 1) }*/)
         } catch (e: Exception) {
             e.printStackTrace()
             return Result.Error(e)

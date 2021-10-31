@@ -15,6 +15,10 @@ class ChatManager private constructor(private val scope: CoroutineScope, val onG
     private var messagesCount = 0
 
     var messagesList: ArrayList<Message> = ArrayList()
+        set(list) {
+            messagesList.clear()
+            messagesList.addAll(list)
+        }
     private var databaseList = ArrayList<Message>()
     private val messageDao: MessageDao = appComponent.messageDao
 
@@ -34,9 +38,12 @@ class ChatManager private constructor(private val scope: CoroutineScope, val onG
         val list = scope.async(Dispatchers.IO) {
             chatRepository.getMoreMessage(fromMessage, count)
         }.await()
-        messagesList.addAll(0, list)
+
+        val oldSize = messagesList.size
+        messagesList = ArrayList(list)
+//        messagesList.addAll(0, list)
         withContext(Dispatchers.Main) {
-            onGetMessage(0, list.size - 1)
+            onGetMessage(0, list.size - oldSize)
         }
     }
 
