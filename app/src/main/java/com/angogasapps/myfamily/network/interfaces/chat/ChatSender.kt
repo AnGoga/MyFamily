@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.network.interfaces
+package com.angogasapps.myfamily.network.interfaces.chat
 
 import android.net.Uri
 import java.io.File

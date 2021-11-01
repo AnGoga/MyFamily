@@ -7,7 +7,7 @@ import com.angogasapps.myfamily.ui.screens.personal_dairy.DairyDatabaseManager
 import dagger.Module
 import dagger.Provides
 
-@Module(includes = [UsersModule::class, DatabasesModule::class, DairyModule::class, ChatModule::class])
+@Module(includes = [UsersModule::class, DatabasesModule::class, DairyModule::class, ChatModule::class, BuyListModule::class])
 class AppModule {
 
     @Provides

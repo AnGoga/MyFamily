@@ -11,13 +11,11 @@ class BuyListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityByuListBinding
     private lateinit var fragment1: ListOfBuyListsFragment
     private lateinit var fragment2: BuyListFragment
-    private lateinit var buyListManager: BuyListManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityByuListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        buyListManager = BuyListManager
         fragment1 = ListOfBuyListsFragment()
         fragment2 = BuyListFragment()
         initInterfaces()

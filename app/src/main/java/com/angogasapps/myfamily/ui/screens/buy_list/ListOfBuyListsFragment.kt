@@ -7,32 +7,38 @@ import android.view.ViewGroup
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.databinding.FragmentListOfBuyListsBinding
 import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.AddBuyListDialog
 import com.angogasapps.myfamily.ui.screens.buy_list.BuyListManager
 import com.angogasapps.myfamily.models.buy_list.BuyListEvent
+import com.angogasapps.myfamily.network.repositories.BuyListRepository
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class ListOfBuyListsFragment : Fragment() {
     private lateinit var binding: FragmentListOfBuyListsBinding
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var adapter: BuyListAdapter
-    private lateinit var disposable: Disposable
+
+    @Inject
+    lateinit var buyListRepository: BuyListRepository
+    @Inject
+    lateinit var buyListManager: BuyListManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        appComponent.inject(this)
         binding = FragmentListOfBuyListsBinding.inflate(inflater, container, false)
         initOnClickListeners()
         initObserver()
         initRecyclerView()
         return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        if (!disposable.isDisposed) disposable.dispose()
     }
 
     private fun initOnClickListeners() {
@@ -42,15 +48,17 @@ class ListOfBuyListsFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = BuyListAdapter(requireContext())
+        adapter = BuyListAdapter(requireContext(), buyListRepository.buyLists)
         layoutManager = GridLayoutManager(context, 2)
         binding.recycleView.layoutManager = layoutManager
         binding.recycleView.adapter = adapter
     }
 
     private fun initObserver() {
-        disposable = BuyListManager.subject.subscribe {
-            adapter.update(it)
+        lifecycleScope.launch {
+            buyListRepository.listener.collect {
+                adapter.update(it)
+            }
         }
     }
 }

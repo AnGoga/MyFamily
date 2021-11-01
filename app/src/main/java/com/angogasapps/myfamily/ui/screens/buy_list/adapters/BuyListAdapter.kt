@@ -17,10 +17,11 @@ import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity
 import com.angogasapps.myfamily.ui.screens.buy_list.BuyListManager
 import java.util.ArrayList
 
-class BuyListAdapter(private var context: Context) : RecyclerView.Adapter<BuyListHolder>() {
+class BuyListAdapter(private val context: Context, private val buyLists: ArrayList<BuyList>) :
+    RecyclerView.Adapter<BuyListHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var buyListsArray: ArrayList<BuyList> = BuyListManager.buyLists
+    private var buyListsArray: ArrayList<BuyList> = buyLists
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BuyListHolder {
         return BuyListHolder(inflater.inflate(R.layout.buy_list_holder, parent, false))
     }

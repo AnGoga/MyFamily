@@ -1,56 +1,55 @@
-package com.angogasapps.myfamily.firebase
+package com.angogasapps.myfamily.network.firebaseImpl
 
-
-import com.angogasapps.myfamily.app.AppApplication.Companion.isOnline
-import com.angogasapps.myfamily.app.AppApplication.Companion.getInstance
-import com.angogasapps.myfamily.models.buy_list.BuyList
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
-import com.angogasapps.myfamily.models.buy_list.BuyList.Product
-import es.dmoral.toasty.Toasty
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.AppApplication
+import com.angogasapps.myfamily.firebase.*
+import com.angogasapps.myfamily.models.buy_list.BuyList
+import com.angogasapps.myfamily.network.interfaces.buy_list.BuyListService
 import com.angogasapps.myfamily.utils.BuyListUtils
 import com.google.android.gms.tasks.Task
+import es.dmoral.toasty.Toasty
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object BuyListFunks {
-    @Synchronized
-    fun addNewBuyList(buyList: BuyList, i: IOnEndCommunicationWithFirebase) {
+@Singleton
+class FirebaseBuyListServiceImpl @Inject constructor() : BuyListService {
+    override fun createNewBuyList(buyList: BuyList, onSuccess: () -> Unit, onError: () -> Unit) {
         val ref = DATABASE_ROOT.child(NODE_BUY_LIST)
             .child(USER.family)
         val key = ref.push().key
         ref.child(key!!).setValue(buyList).addOnCompleteListener { task: Task<Void?> ->
             if (task.isSuccessful) {
-                i.onSuccess()
+                onSuccess()
             } else {
                 task.exception!!.printStackTrace()
-                i.onFailure()
+                onError()
             }
         }
     }
 
-    @Synchronized
-    fun updateBuyListName(buyList: BuyList, i: IOnEndCommunicationWithFirebase) {
+    override fun updateBuyListName(buyList: BuyList, onSuccess: () -> Unit, onError: () -> Unit) {
         DATABASE_ROOT.child(NODE_BUY_LIST)
             .child(USER.family).child(buyList.id)
             .child(CHILD_NAME).setValue(buyList.name)
             .addOnCompleteListener { task: Task<Void?> ->
                 if (task.isSuccessful) {
-                    i.onSuccess()
+                    onSuccess()
                 } else {
                     task.exception!!.printStackTrace()
-                    i.onFailure()
+                    onError()
                 }
             }
     }
 
-    @Synchronized
-    fun addNewProductToBuyList(
+    override fun addNewProductToBuyList(
         buyListId: String,
-        product: Product,
-        i: IOnEndCommunicationWithFirebase
+        product: BuyList.Product,
+        onSuccess: () -> Unit,
+        onError: () -> Unit
     ) {
-        if (!isOnline) {
+        if (!AppApplication.isOnline) {
             Toasty.warning(
-                getInstance().applicationContext,
+                AppApplication.getInstance().applicationContext,
                 R.string.connection_is_not
             ).show()
         }
@@ -62,16 +61,20 @@ object BuyListFunks {
         ref.child(key!!).updateChildren(BuyListUtils.getHashMap(product))
             .addOnCompleteListener { task: Task<Void?> ->
                 if (task.isSuccessful) {
-                    i.onSuccess()
+                    onSuccess()
                 } else {
                     task.exception!!.printStackTrace()
-                    i.onFailure()
+                    onError()
                 }
             }
     }
 
-    @Synchronized
-    fun updateProduct(buyListId: String, product: Product, i: IOnEndCommunicationWithFirebase) {
+    override fun updateProduct(
+        buyListId: String,
+        product: BuyList.Product,
+        onSuccess: () -> Unit,
+        onError: () -> Unit
+    ) {
         product.from = USER.phone
         DATABASE_ROOT.child(NODE_BUY_LIST)
             .child(USER.family).child(buyListId)
@@ -79,39 +82,42 @@ object BuyListFunks {
             .updateChildren(BuyListUtils.getHashMap(product))
             .addOnCompleteListener { task: Task<Void?> ->
                 if (task.isSuccessful) {
-                    i.onSuccess()
+                    onSuccess()
                 } else {
                     task.exception!!.printStackTrace()
-                    i.onFailure()
+                    onError()
                 }
             }
     }
 
-    @Synchronized
-    fun deleteProduct(buyListId: String, product: Product, i: IOnEndCommunicationWithFirebase) {
+    override fun deleteProduct(
+        buyListId: String,
+        product: BuyList.Product,
+        onSuccess: () -> Unit,
+        onError: () -> Unit
+    ) {
         DATABASE_ROOT.child(NODE_BUY_LIST)
             .child(USER.family).child(buyListId)
             .child(CHILD_PRODUCTS).child(product.id).removeValue()
             .addOnCompleteListener { task: Task<Void?> ->
                 if (task.isSuccessful) {
-                    i.onSuccess()
+                    onSuccess()
                 } else {
-                    i.onFailure()
                     task.exception!!.printStackTrace()
+                    onError()
                 }
             }
     }
 
-    @Synchronized
-    fun deleteBuyList(buyList: BuyList, i: IOnEndCommunicationWithFirebase) {
+    override fun deleteBuyList(buyList: BuyList, onSuccess: () -> Unit, onError: () -> Unit) {
         DATABASE_ROOT.child(NODE_BUY_LIST)
             .child(USER.family).child(buyList.id)
             .removeValue().addOnCompleteListener { task: Task<Void?> ->
                 if (task.isSuccessful) {
-                    i.onSuccess()
+                    onSuccess()
                 } else {
                     task.exception!!.printStackTrace()
-                    i.onFailure()
+                    onError()
                 }
             }
     }

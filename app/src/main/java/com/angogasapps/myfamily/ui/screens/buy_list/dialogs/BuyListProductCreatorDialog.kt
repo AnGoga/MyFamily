@@ -7,15 +7,22 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.databinding.DialogNewProductBinding
 import es.dmoral.toasty.Toasty
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
-import com.angogasapps.myfamily.firebase.BuyListFunks
+import com.angogasapps.myfamily.network.repositories.BuyListRepository
+import javax.inject.Inject
 
 class BuyListProductCreatorDialog(context: Context, private val buyListId: String) :
     AlertDialog(context) {
     private lateinit var binding: DialogNewProductBinding
     private var product: Product? = null
+    @Inject
+    lateinit var buyListRepository: BuyListRepository
+
+    init {
+        appComponent.inject(this)
+    }
 
     constructor(context: Context, buyListId: String, product: Product?) : this(
         context,
@@ -54,15 +61,11 @@ class BuyListProductCreatorDialog(context: Context, private val buyListId: Strin
         val product = Product()
         product.name = binding.productName.text.toString()
         product.comment = binding.commentEditText.text.toString()
-        val i: IOnEndCommunicationWithFirebase = object : IOnEndCommunicationWithFirebase {
-            override fun onSuccess() { dismiss() }
-            override fun onFailure() { Toasty.error(context, R.string.something_went_wrong).show() }
-        }
         if (this.product == null) {
-            BuyListFunks.addNewProductToBuyList(buyListId, product, i)
+            buyListRepository.addNewProductToBuyList(buyListId, product, onSuccess = {dismiss()})
         } else {
             product.id = this.product!!.id
-            BuyListFunks.updateProduct(buyListId, product, i)
+            buyListRepository.updateProduct(buyListId, product, onSuccess = {dismiss()})
         }
     }
 }

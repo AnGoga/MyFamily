@@ -6,9 +6,11 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.angogasapps.myfamily.models.buy_list.BuyList.Product
 import com.angogasapps.myfamily.R
-import com.angogasapps.myfamily.firebase.BuyListFunks
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
+import com.angogasapps.myfamily.network.repositories.BuyListRepository
 import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.BuyListProductCreatorDialog
+import javax.inject.Inject
 
 class ChangeOrDeleteProductDialog(
     private val context: Context,
@@ -16,6 +18,12 @@ class ChangeOrDeleteProductDialog(
     private val product: Product
 ) {
     private lateinit var dialog: AlertDialog
+    @Inject
+    lateinit var buyListRepository: BuyListRepository
+
+    init {
+        appComponent.inject(this)
+    }
 
     fun show() {
         val list = arrayOf(context.getString(R.string.rename), context.getString(R.string.remove))
@@ -43,13 +51,7 @@ class ChangeOrDeleteProductDialog(
             )
             .setPositiveButton(R.string.remove) { dialog1: DialogInterface?, which: Int ->
                 if (which != AlertDialog.BUTTON_POSITIVE) return@setPositiveButton
-                BuyListFunks.deleteProduct(
-                    buyListId,
-                    product,
-                    object : IOnEndCommunicationWithFirebase {
-                        override fun onSuccess() {}
-                        override fun onFailure() {}
-                    })
+                buyListRepository.deleteProduct(buyListId, product)
             }
             .setNegativeButton(R.string.cancel) { dialog1: DialogInterface, which: Int ->
                 if (which != AlertDialog.BUTTON_NEGATIVE) return@setNegativeButton

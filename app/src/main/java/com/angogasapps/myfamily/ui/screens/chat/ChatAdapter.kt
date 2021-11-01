@@ -52,10 +52,10 @@ class ChatAdapter(private val activity: Activity, val messagesList: ArrayList<Me
         return messagesList.size
     }
 
-    fun update(event: ChatEvent) {
+    fun bindEvent(event: ChatEvent) {
         when(event.event){
             EChatEvent.added -> {
-                notifyItemInserted(event.index)
+                notifyItemInserted(messagesList.size - 1)
             }
         }
     }

@@ -6,13 +6,21 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.angogasapps.myfamily.models.buy_list.BuyList
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.AddBuyListDialog
-import com.angogasapps.myfamily.firebase.BuyListFunks
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
+import com.angogasapps.myfamily.network.repositories.BuyListRepository
 import es.dmoral.toasty.Toasty
+import javax.inject.Inject
 
 class ChangeOrDeleteBuyListDialog(private val context: Context, private val buyList: BuyList) {
     private lateinit var dialog: AlertDialog
+    @Inject
+    lateinit var buyListRepository: BuyListRepository
+
+    init {
+        appComponent.inject(this)
+    }
 
     fun show() {
         val builder = AlertDialog.Builder(
@@ -45,12 +53,7 @@ ${context.getString(R.string.change_or_delete_product_dialog_text2)}"""
             )
             .setPositiveButton(R.string.remove) { dialog1: DialogInterface?, which: Int ->
                 if (which != AlertDialog.BUTTON_POSITIVE) return@setPositiveButton
-                BuyListFunks.deleteBuyList(buyList, object : IOnEndCommunicationWithFirebase {
-                    override fun onSuccess() { /*TODO: . . .*/ }
-                    override fun onFailure() {
-                        Toasty.error(context, R.string.something_went_wrong).show()
-                    }
-                })
+                buyListRepository.deleteBuyList(buyList)
             }
             .setNegativeButton(R.string.cancel) { dialog1: DialogInterface, which: Int ->
                 if (which != AlertDialog.BUTTON_NEGATIVE) return@setNegativeButton

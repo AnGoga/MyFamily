@@ -20,6 +20,10 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding: FragmentChatBinding
@@ -29,8 +33,6 @@ class ChatActivity : AppCompatActivity() {
     private var isScrollToBottom = true
     private var isScrolling = false
     private val chatManager = ChatManager.getInstance(lifecycleScope, this::addMessage)
-    private lateinit var disposable: Disposable
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,17 @@ class ChatActivity : AppCompatActivity() {
 
         initOnClicks()
         initRecycleView()
+        initListener()
+    }
+
+    private fun initListener() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            chatManager.listener.collect {
+                withContext(Dispatchers.Main) {
+                    adapter.bindEvent(it)
+                }
+            }
+        }
     }
 
 
@@ -49,11 +62,6 @@ class ChatActivity : AppCompatActivity() {
             binding.recycleView.smoothScrollToPosition(adapter.itemCount)
     }
 
-    /*private fun addMessage(event: ChatEvent) = runOnUiThread {
-        adapter.update(event)
-        if (isScrollToBottom)
-            binding.recycleView.smoothScrollToPosition(adapter.itemCount)
-    }*/
 
     private fun initRecycleView() {
         adapter = ChatAdapter(this, chatManager.messagesList)
@@ -64,6 +72,8 @@ class ChatActivity : AppCompatActivity() {
                 } catch (e: IndexOutOfBoundsException) {}
             }
         }
+        layoutManager.stackFromEnd = true
+
         binding.recycleView.adapter = adapter
         binding.recycleView.layoutManager = layoutManager
         binding.recycleView.setHasFixedSize(true)

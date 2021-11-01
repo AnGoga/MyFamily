@@ -5,7 +5,7 @@ import android.media.MediaPlayer
 import es.dmoral.toasty.Toasty
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.app.appComponent
-import com.angogasapps.myfamily.network.interfaces.ChatVoiceGetter
+import com.angogasapps.myfamily.network.interfaces.chat.ChatVoiceGetter
 import java.io.File
 import java.lang.Exception
 import javax.inject.Inject
