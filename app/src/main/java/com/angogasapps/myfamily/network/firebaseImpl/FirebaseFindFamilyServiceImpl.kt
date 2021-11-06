@@ -1,40 +1,35 @@
-package com.angogasapps.myfamily.firebase
+package com.angogasapps.myfamily.network.firebaseImpl
 
-
-import com.angogasapps.myfamily.firebase.UserSetterFields.setFamily
-import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily
 import com.angogasapps.myfamily.firebase.*
-import com.google.firebase.database.ValueEventListener
+import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
+import com.angogasapps.myfamily.network.interfaces.FindFamilyService
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
-import com.google.android.gms.tasks.OnCompleteListener
-import com.angogasapps.myfamily.firebase.UserSetterFields
-import com.google.android.gms.tasks.Task
+import com.google.firebase.database.ValueEventListener
+import javax.inject.Inject
 
-object FindFamilyFunks {
-    @Synchronized
-    fun tryFindFamilyById(id: String, iOnFindFamily: IOnFindFamily) {
+class FirebaseFindFamilyServiceImpl @Inject constructor() : FindFamilyService {
+    override fun tryFindFamilyById(id: String, onSuccess: () -> Unit, onError: () -> Unit) {
         DATABASE_ROOT.child(NODE_FAMILIES).child(id)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.value == null) {
                         //семья с таким идентификатором не найдена
-                        iOnFindFamily.onFailure()
+                        onError()
                     } else {
                         //такая семья нашлась
-                        iOnFindFamily.onSuccess()
+                        onSuccess()
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    iOnFindFamily.onCancelled()
+                    onError()
                 }
             })
     }
 
-    @Synchronized
-    fun joinUserToFamily(id: String, iOnJoinToFamily: IOnEndCommunicationWithFirebase) {
+    override fun joinUserToFamily(id: String, onSuccess: () -> Unit, onError: () -> Unit) {
         // устанавливаем в семье данного человека как участника
         DATABASE_ROOT.child(NODE_FAMILIES).child(id)
             .child(CHILD_MEMBERS).child(UID)
@@ -42,16 +37,16 @@ object FindFamilyFunks {
             .addOnCompleteListener { task1: Task<Void?> ->
                 if (task1.isSuccessful) {
                     //устанавлеваем в юзера значение поля family
-                    setFamily(
+                    UserSetterFields.setFamily(
                         USER,
                         id,
                         object : IOnEndCommunicationWithFirebase {
                             override fun onSuccess() {
-                                iOnJoinToFamily.onSuccess()
+                                onSuccess()
                             }
 
                             override fun onFailure() {
-                                iOnJoinToFamily.onFailure()
+                                onError()
                             }
                         })
                 }

@@ -19,7 +19,7 @@ import kotlin.collections.ArrayList
 class ChatManager private constructor(private val scope: CoroutineScope, val onGetMessage: (start: Int, end: Int) -> Unit){
     private var messagesCount = 0
     var downloadedInRealTimeCount = 0
-    private set
+        private set
 
     var messagesList: ArrayList<Message> = ArrayList()
         set(list) {

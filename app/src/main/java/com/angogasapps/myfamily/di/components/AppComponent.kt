@@ -14,6 +14,7 @@ import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.ChangeOrDeleteBuyLis
 import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.ChangeOrDeleteProductDialog
 import com.angogasapps.myfamily.ui.screens.chat.ChatManager
 import com.angogasapps.myfamily.ui.screens.chat.holders.ImageMessageHolder
+import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity
 import com.angogasapps.myfamily.ui.screens.main.MainActivity
 import com.angogasapps.myfamily.ui.screens.personal_dairy.DairyBuilderActivity
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity
@@ -35,6 +36,7 @@ interface AppComponent {
     fun inject(dialog: ChangeOrDeleteBuyListDialog)
     fun inject(fragment: ListOfBuyListsFragment)
     fun inject(fragment: BuyListFragment)
+    fun inject(activity: FindOrCreateFamilyActivity)
 
 
     val familyRepository: FamilyRepository

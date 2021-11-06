@@ -9,7 +9,6 @@ import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.app.AppApplication.Companion.isOnline
 import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.async.notification.TokensManager.updateToken
-import com.angogasapps.myfamily.firebase.AuthFunctions.downloadUser
 import com.angogasapps.myfamily.firebase.FirebaseHelper
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.firebase.interfaces.IAuthUser
@@ -17,17 +16,20 @@ import com.angogasapps.myfamily.models.Family
 import com.angogasapps.myfamily.models.User
 import com.angogasapps.myfamily.network.Result
 import com.angogasapps.myfamily.network.repositories.FamilyRepository
+import com.angogasapps.myfamily.network.repositories.UsersRepository
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity
 import com.angogasapps.myfamily.ui.screens.main.MainActivity
 import com.angogasapps.myfamily.ui.screens.registeractivity.RegisterActivity
 import com.angogasapps.myfamily.utils.FamilyManager
 import es.dmoral.toasty.Toasty
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity() {
     private var familyIdParam: String = ""
     @Inject lateinit var familyRepository: FamilyRepository
+    @Inject lateinit var usersRepository: UsersRepository
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +52,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun onEndDownloadUser() {
         Log.d("tag", """$USER """.trimIndent())
-        updateToken(USER)
+//        updateToken(USER)
         if (USER.family == "") {
             val intent = Intent(this, FindOrCreateFamilyActivity::class.java)
             intent.putExtra(FamilyManager.PARAM_FAMILY_ID, familyIdParam)
@@ -62,6 +64,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun onError() {
+        AUTH.signOut()
         start()
     }
 
@@ -70,15 +73,18 @@ class SplashActivity : AppCompatActivity() {
             if (AUTH.currentUser != null) {
                 //интернет есть, пользователь аторизован
                 analysisIntent()
-                downloadUser(object : IAuthUser {
-                    override fun onEndDownloadUser() {
-                        this@SplashActivity.onEndDownloadUser()
-                    }
 
-                    override fun onError() {
-                        this@SplashActivity.onError()
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val res = usersRepository.getUser(UID)
+                    when(res){
+                        is Result.Error -> onError()
+                        is Result.Success -> {
+                            USER = res.data
+                            USER.id = UID
+                            onEndDownloadUser()
+                        }
                     }
-                })
+                }
             } else {
                 //интернет есть, пользователь не авторизован
                 startActivity(Intent(this, RegisterActivity::class.java))

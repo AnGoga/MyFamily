@@ -61,34 +61,34 @@ object AuthFunctions {
         )
     }
 
-    @JvmStatic
-    @Synchronized
-    fun downloadUser(iAuthUser: IAuthUser) {
-        DATABASE_ROOT.child(NODE_USERS).child(UID)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        //TODO:
-                        USER = snapshot.getValue(User::class.java)!!
-                        if (USER != null) {
-                            USER.id = snapshot.key?:""
-                            if (!USER.photoURL.equals("")){
-                                Async.runInNewThread {
-                                    downloadBitmapByURL(USER.photoURL).let {
-                                        USER.setBitmap(it)
-                                    }
-                                }
-                            }
-
-                            iAuthUser.onEndDownloadUser()
-                        } else {
-                            AUTH.signOut()
-                            iAuthUser.onError()
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        iAuthUser.onError()
-                    }
-                })
-    }
+//    @JvmStatic
+//    @Synchronized
+//    fun downloadUser(iAuthUser: IAuthUser) {
+//        DATABASE_ROOT.child(NODE_USERS).child(UID)
+//                .addListenerForSingleValueEvent(object : ValueEventListener {
+//                    override fun onDataChange(snapshot: DataSnapshot) {
+//                        //TODO:
+//                        USER = snapshot.getValue(User::class.java)!!
+//                        if (USER != null) {
+//                            USER.id = snapshot.key?:""
+//                            if (!USER.photoURL.equals("")){
+//                                Async.runInNewThread {
+//                                    downloadBitmapByURL(USER.photoURL).let {
+//                                        USER.setBitmap(it)
+//                                    }
+//                                }
+//                            }
+//
+//                            iAuthUser.onEndDownloadUser()
+//                        } else {
+//                            AUTH.signOut()
+//                            iAuthUser.onError()
+//                        }
+//                    }
+//
+//                    override fun onCancelled(error: DatabaseError) {
+//                        iAuthUser.onError()
+//                    }
+//                })
+//    }
 }

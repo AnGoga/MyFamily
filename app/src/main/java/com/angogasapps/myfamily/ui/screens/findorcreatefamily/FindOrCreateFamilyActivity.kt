@@ -11,30 +11,34 @@ import android.view.MenuItem
 import android.view.View
 import com.angogasapps.myfamily.utils.FamilyManager
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.databinding.ActivityFindOrCreateFamilyBinding
-import com.angogasapps.myfamily.firebase.FindFamilyFunks
 import com.angogasapps.myfamily.firebase.interfaces.IOnFindFamily
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
 import com.angogasapps.myfamily.ui.screens.main.MainActivity
 import es.dmoral.toasty.Toasty
-import com.angogasapps.myfamily.firebase.RegisterFamilyFunks
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndRegisterNewFamily
+import com.angogasapps.myfamily.network.interfaces.CreatorFamilyService
+import com.angogasapps.myfamily.network.interfaces.FindFamilyService
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity
 import java.lang.Exception
+import javax.inject.Inject
 
 class FindOrCreateFamilyActivity : AppCompatActivity() {
     private var familyIdParam: String? = null
     private lateinit var binding: ActivityFindOrCreateFamilyBinding
     private var mFamilyEmblemUri: Uri? = null
+    @Inject lateinit var findFamilyService: FindFamilyService
+    @Inject lateinit var creatorFamilyService: CreatorFamilyService
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityFindOrCreateFamilyBinding.inflate(
-            layoutInflater
-        )
+        binding = ActivityFindOrCreateFamilyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        appComponent.inject(this)
     }
 
     override fun onStart() {
@@ -63,87 +67,40 @@ class FindOrCreateFamilyActivity : AppCompatActivity() {
     }
 
     private fun joinToInviteFamily() {
-        FindFamilyFunks.tryFindFamilyById(familyIdParam!!, object : IOnFindFamily {
-            override fun onSuccess() {
-                FindFamilyFunks.joinUserToFamily(familyIdParam!!, object : IOnEndCommunicationWithFirebase {
-                    override fun onSuccess() {
-                        startActivity(
-                            Intent(
-                                this@FindOrCreateFamilyActivity,
-                                MainActivity::class.java
-                            )
-                        )
-                        finish()
-                    }
-
-                    override fun onFailure() {}
-                })
-            }
-
-            override fun onFailure() {
-                familyNotFound()
-            }
-
-            override fun onCancelled() {
-                familyNotFound()
-            }
-        })
+        findFamilyService.tryFindFamilyById(familyIdParam!!, onSuccess = {
+            findFamilyService.joinUserToFamily(familyIdParam!!, onSuccess = {
+                startActivity(
+                    Intent(this@FindOrCreateFamilyActivity, MainActivity::class.java
+                    )
+                )
+                finish()
+            })
+        }, onError = ::familyNotFound)
     }
 
     private fun familyNotFound() {
-        Toasty.error(this, R.string.link_is_not_correct).show()
+        Toasty.error(this, R.string.family_not_found).show()
     }
 
-    fun setJoinBtnOnClick() {
+    private fun setJoinBtnOnClick() {
         binding.joinBtn.setOnClickListener { v: View? ->
             val text = binding.editText.text.toString()
             if (text.isEmpty()) {
                 Toasty.warning(this@FindOrCreateFamilyActivity, R.string.enter_identification)
                     .show()
             } else {
-                FindFamilyFunks.tryFindFamilyById(text, object : IOnFindFamily {
-                    override fun onSuccess() {
-                        FindFamilyFunks.joinUserToFamily(text, object : IOnEndCommunicationWithFirebase {
-                            override fun onSuccess() {
-                                Toasty.success(
-                                    this@FindOrCreateFamilyActivity,
-                                    R.string.you_success_join_to_you_family
-                                ).show()
-                                this@FindOrCreateFamilyActivity.startActivity(
-                                    Intent(
-                                        this@FindOrCreateFamilyActivity.applicationContext,
-                                        MainActivity::class.java
-                                    )
-                                )
-                                finish()
-                            }
-
-                            override fun onFailure() {
-                                Toasty.error(
-                                    this@FindOrCreateFamilyActivity,
-                                    R.string.error
-                                ).show()
-                            }
-                        })
-                    }
-
-                    override fun onFailure() {
-                        Toasty.error(this@FindOrCreateFamilyActivity, R.string.family_not_found)
-                            .show()
-                    }
-
-                    override fun onCancelled() {
-                        Toasty.error(
-                            this@FindOrCreateFamilyActivity,
-                            R.string.you_canceled_searches
-                        ).show()
-                    }
-                })
+                findFamilyService.tryFindFamilyById(text, onSuccess = {
+                    findFamilyService.joinUserToFamily(text, onSuccess = {
+                        Toasty.success(this, R.string.you_success_join_to_you_family).show()
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    }, onError = { Toasty.error(this, R.string.error).show() })
+                }, onError = ::familyNotFound)
             }
         }
     }
 
-    fun addCreateFamilyOnClick() {
+    private fun addCreateFamilyOnClick() {
         binding.addEmblemBtn.setOnClickListener { v: View? -> addFamilyEmblem() }
         binding.createFamilyButton.setOnClickListener { v: View? ->
             val familyName = binding.familyNameEditText.text.toString()
@@ -154,22 +111,18 @@ class FindOrCreateFamilyActivity : AppCompatActivity() {
             if (mFamilyEmblemUri == null) {
                 mFamilyEmblemUri = Uri.EMPTY
             }
-            RegisterFamilyFunks.createNewFamily(
+            creatorFamilyService.createNewFamily(
                 this,
-                familyName, mFamilyEmblemUri!!,
-                object: IOnEndRegisterNewFamily{
-                    override fun onEndRegister() {
-
-                        //когда регистрация новой семьи в базе данных прошла успешно
-                        Toasty.success(
-                            this@FindOrCreateFamilyActivity.applicationContext,
-                            R.string.everything_went_well
-                        ).show()
-                        startActivity(Intent(this@FindOrCreateFamilyActivity, MainActivity::class.java))
-                        finish()
-                    }
-                }
-            )
+                familyName,
+                mFamilyEmblemUri!!, onSuccess = {
+                    //когда регистрация новой семьи в базе данных прошла успешно
+                    Toasty.success(
+                        this@FindOrCreateFamilyActivity.applicationContext,
+                        R.string.everything_went_well
+                    ).show()
+                    startActivity(Intent(this@FindOrCreateFamilyActivity, MainActivity::class.java))
+                    finish()
+                })
         }
     }
 
