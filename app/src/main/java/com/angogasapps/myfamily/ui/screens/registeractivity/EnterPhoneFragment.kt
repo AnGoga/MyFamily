@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 class EnterPhoneFragment(val onNewUserSignIn: () -> Unit, val onOldUserSignIn: () -> Unit) : Fragment() {
     private lateinit var binding: FragmentEnterPhoneBinding
     private var mPhoneNumber: String? = null
-    private var mCallback: OnVerificationStateChangedCallbacks? = null
+    private lateinit var mCallback: OnVerificationStateChangedCallbacks
 
     override fun onStart() {
         super.onStart()
@@ -64,7 +64,7 @@ class EnterPhoneFragment(val onNewUserSignIn: () -> Unit, val onOldUserSignIn: (
                 Toasty.error(requireActivity(), R.string.enter_your_number_phone).show()
             } else {
                 mPhoneNumber = binding.phoneEditText.text.toString()
-                authorizationUser(binding.phoneEditText.text.toString(), 60, TimeUnit.SECONDS, activity, mCallback)
+                authorizationUser(binding.phoneEditText.text.toString(), 60, TimeUnit.SECONDS, requireActivity(), mCallback)
             }
         }
     }

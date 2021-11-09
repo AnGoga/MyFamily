@@ -4,26 +4,28 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.databinding.ActivityStorageBinding
 import com.angogasapps.myfamily.firebase.*
-import com.angogasapps.myfamily.firebase.createFolder
-import com.angogasapps.myfamily.firebase.createStorageFile
+import com.angogasapps.myfamily.network.interfaces.family_stoarge.FamilyStorageService
 import com.angogasapps.myfamily.ui.screens.family_storage.storage_adapters.*
 import com.angogasapps.myfamily.ui.screens.family_storage.dialogs.NameGetterDialog
 import com.angogasapps.myfamily.utils.FILE_SELECT_CODE
 import com.angogasapps.myfamily.utils.showFileChooser
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
 
 class StorageActivity : AppCompatActivity() {
-    private val job = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.Default + job)
 
     lateinit var binding: ActivityStorageBinding
     lateinit var adapter: BaseStorageAdapter
     lateinit var layoutManager: LinearLayoutManager
+    @Inject
+    lateinit var storageService: FamilyStorageService
 
     lateinit var rootNode: String
 
@@ -31,6 +33,8 @@ class StorageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStorageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        appComponent.inject(this)
 
         analyzeIntent()
         initRecyclerView()
@@ -63,10 +67,10 @@ class StorageActivity : AppCompatActivity() {
         val onChangeDirectory = { name: String -> this@StorageActivity.title = name }
 
         adapter = when(rootNode){
-            NODE_NOTE_STORAGE -> NoteStorageAdapter(this, rootNode, onChangeDirectory)
-            NODE_FILE_STORAGE -> FileStorageAdapter(this, rootNode, onChangeDirectory)
-            NODE_VIDEO_STORAGE, NODE_IMAGE_STORAGE -> MediaStorageAdapter(this, rootNode, onChangeDirectory)
-            else -> BaseStorageAdapter(this, rootNode, onChangeDirectory)
+            NODE_NOTE_STORAGE -> NoteStorageAdapter(this, rootNode, onChangeDirectory, storageService)
+            NODE_FILE_STORAGE -> FileStorageAdapter(this, rootNode, onChangeDirectory, storageService)
+            NODE_VIDEO_STORAGE, NODE_IMAGE_STORAGE -> MediaStorageAdapter(this, rootNode, onChangeDirectory, storageService)
+            else -> BaseStorageAdapter(this, rootNode, onChangeDirectory, storageService)
         }
 
         layoutManager = LinearLayoutManager(this)
@@ -78,7 +82,7 @@ class StorageActivity : AppCompatActivity() {
 
     private fun updateRecyclerView() {
         binding.swipeRefresh.isRefreshing = true
-        scope.launch {
+        lifecycleScope.launch {
             StorageManager.getInstance().getData(rootNode).collect { isSuccess ->
                 if (!isSuccess) return@collect
                 withContext(Dispatchers.Main){
@@ -112,8 +116,8 @@ class StorageActivity : AppCompatActivity() {
 
 
     private fun showFolderCreateDialog() {
-        NameGetterDialog(this).show(isFolder = true){ name ->
-            createFolder(name = name, rootNode = rootNode, rootFolder = adapter.getRootFolderId())
+        NameGetterDialog(this).show(isFolder = true) { name ->
+            storageService.createFolder(name = name, rootNode = rootNode, rootFolder = adapter.getRootFolderId())
         }
     }
 
@@ -137,7 +141,7 @@ class StorageActivity : AppCompatActivity() {
             FILE_SELECT_CODE -> if (resultCode == RESULT_OK) {
                 val uri = data?.data ?: return
                 NameGetterDialog(this).show(isFolder = false){
-                    createStorageFile(uri = uri, name = it, rootFolderId = adapter.getRootFolderId())
+                    storageService.createStorageFile(uri = uri, name = it, rootFolderId = adapter.getRootFolderId())
                 }
             }
         }
@@ -148,10 +152,5 @@ class StorageActivity : AppCompatActivity() {
         if (!adapter.exitFromUpFolder()){
             super.onBackPressed()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        job.cancel()
     }
 }

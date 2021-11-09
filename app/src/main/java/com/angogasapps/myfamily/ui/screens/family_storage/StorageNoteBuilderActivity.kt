@@ -3,10 +3,12 @@ package com.angogasapps.myfamily.ui.screens.family_storage
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.databinding.ActivityStorageNoteBuilderBinding
 import com.angogasapps.myfamily.firebase.*
-import com.angogasapps.myfamily.firebase.createFile
+import com.angogasapps.myfamily.network.interfaces.family_stoarge.FamilyStorageService
 import es.dmoral.toasty.Toasty
+import javax.inject.Inject
 
 class StorageNoteBuilderActivity : AppCompatActivity() {
     lateinit var binding: ActivityStorageNoteBuilderBinding
@@ -14,13 +16,16 @@ class StorageNoteBuilderActivity : AppCompatActivity() {
     private var id: String? = null
     private var name: String? = null
     private var value: String? = null
+    @Inject
+    lateinit var storageService: FamilyStorageService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStorageNoteBuilderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        analyzeIntent();
+        appComponent.inject(this)
+        analyzeIntent()
         initOnClicks()
     }
 
@@ -50,7 +55,7 @@ class StorageNoteBuilderActivity : AppCompatActivity() {
     }
 
     private fun saveNote(title: String, value: String) {
-        createFile(
+        storageService.createFile(
                 name = title, value = value, rootNode = NODE_NOTE_STORAGE, rootFolder = rootFolder,
                 key_ = id,
                 onError = { Toasty.error(this, R.string.something_went_wrong).show() }

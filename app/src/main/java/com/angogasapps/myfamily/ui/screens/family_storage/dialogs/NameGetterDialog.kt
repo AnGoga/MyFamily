@@ -5,15 +5,9 @@ import android.content.DialogInterface
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.angogasapps.myfamily.R
-import com.angogasapps.myfamily.firebase.createFolder
 import es.dmoral.toasty.Toasty
 
-class NameGetterDialog {
-    val context: Context
-
-    constructor(context: Context) {
-        this.context = context
-    }
+class NameGetterDialog(val context: Context) {
 
      fun show(isFolder: Boolean, name: String = "", function: (name: String) -> Unit) {
          val alertDialog = androidx.appcompat.app.AlertDialog.Builder(context)

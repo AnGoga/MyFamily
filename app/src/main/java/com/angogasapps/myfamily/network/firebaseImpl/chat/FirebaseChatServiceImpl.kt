@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.network.firebaseImpl
+package com.angogasapps.myfamily.network.firebaseImpl.chat
 
 import android.graphics.BitmapFactory
 import android.net.Uri

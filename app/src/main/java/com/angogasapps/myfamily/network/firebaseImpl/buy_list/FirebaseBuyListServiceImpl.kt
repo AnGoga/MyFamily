@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.network.firebaseImpl
+package com.angogasapps.myfamily.network.firebaseImpl.buy_list
 
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.app.AppApplication

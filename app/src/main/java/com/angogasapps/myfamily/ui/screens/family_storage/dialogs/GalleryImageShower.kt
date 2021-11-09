@@ -8,18 +8,14 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.firebase.NODE_IMAGE_STORAGE
-import com.angogasapps.myfamily.firebase.removeFile
 import com.angogasapps.myfamily.models.storage.File
+import com.angogasapps.myfamily.network.interfaces.family_stoarge.FamilyStorageService
 import com.angogasapps.myfamily.objects.ChatImageShower
 import com.angogasapps.myfamily.objects.ChatImageShower.ImageShowerDialog
 
 
-class GalleryImageShower(val context: AppCompatActivity) {
-    private val dialog: GalleryImageShowerDialog
-
-    init {
-        dialog = GalleryImageShowerDialog()
-    }
+class GalleryImageShower(val context: AppCompatActivity, storageService: FamilyStorageService) {
+    private val dialog: GalleryImageShowerDialog = GalleryImageShowerDialog(storageService)
 
     fun showImage(imageView: ImageView, file: File, folderId: String) {
         dialog.init(imageView, file, folderId)
@@ -27,7 +23,8 @@ class GalleryImageShower(val context: AppCompatActivity) {
     }
 
     companion object {
-        class GalleryImageShowerDialog : ChatImageShower.ImageShowerDialog() {
+        class GalleryImageShowerDialog(val storageService: FamilyStorageService) :
+            ChatImageShower.ImageShowerDialog() {
             var file: File? = null
             var folderId: String? = null
 
@@ -51,7 +48,11 @@ class GalleryImageShower(val context: AppCompatActivity) {
                 when (item.itemId) {
                     R.id.remove -> {
                         try {
-                            removeFile(file = file!!, folderId = folderId!!, rootNode = NODE_IMAGE_STORAGE)
+                            storageService.removeFile(
+                                file = file!!,
+                                folderId = folderId!!,
+                                rootNode = NODE_IMAGE_STORAGE
+                            )
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

@@ -3,14 +3,15 @@ package com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.angogasapps.myfamily.R
-import com.angogasapps.myfamily.app.AppApplication
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.databinding.ActivityImageGalleryBinding
 import com.angogasapps.myfamily.firebase.*
-import com.angogasapps.myfamily.firebase.createImageFile
 import com.angogasapps.myfamily.models.storage.ArrayFolder
+import com.angogasapps.myfamily.network.interfaces.family_stoarge.FamilyStorageService
 import com.angogasapps.myfamily.ui.screens.family_storage.StorageManager
 import com.angogasapps.myfamily.ui.screens.family_storage.gallery_storage_adapters.MediaGalleryStorageAdapter
 import com.angogasapps.myfamily.utils.showInDevelopingToast
@@ -19,10 +20,9 @@ import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
+import javax.inject.Inject
 
 class MediaGalleryStorageActivity : AppCompatActivity() {
-    protected val job = SupervisorJob()
-    protected val scope = CoroutineScope(Dispatchers.Default + job)
 
     protected lateinit var binding: ActivityImageGalleryBinding
     protected lateinit var layoutManager: StaggeredGridLayoutManager
@@ -30,12 +30,15 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
     protected lateinit var folder: ArrayFolder
     protected lateinit var folderId: String
     protected lateinit var rootNode: String
+    @Inject
+    lateinit var storageService: FamilyStorageService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityImageGalleryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        appComponent.inject(this)
         analyzeIntent()
         initRecyclerView()
         initOnClicks()
@@ -49,7 +52,7 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
     }
 
     private fun updateRecycler() {
-        scope.launch {
+        lifecycleScope.launch {
             StorageManager.getInstance().getData(rootNode).collect { isSuccess ->
                 withContext(Dispatchers.Main){
                     adapter.update()
@@ -75,7 +78,7 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         layoutManager = StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
-        adapter = MediaGalleryStorageAdapter(this, scope, folder, rootNode)
+        adapter = MediaGalleryStorageAdapter(this, lifecycleScope, folder, rootNode, storageService)
 
         binding.recycleView.layoutManager = layoutManager
         binding.recycleView.adapter = adapter
@@ -109,7 +112,7 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
             val uri = CropImage.getActivityResult(data).uri
 
             if (uri != null) {
-                createImageFile(
+                storageService.createImageFile(
                         rootNode = NODE_IMAGE_STORAGE,
                         rootFolder = folderId,
                         value = uri,
@@ -120,10 +123,5 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
                 onError()
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        job.cancel()
     }
 }

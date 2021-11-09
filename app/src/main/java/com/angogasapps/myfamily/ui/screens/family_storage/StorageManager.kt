@@ -25,7 +25,7 @@ class StorageManager private constructor() {
 
 
     @ExperimentalCoroutinesApi
-    fun getData(node: String): Flow<Boolean> = callbackFlow{
+    fun getData(node: String): Flow<Boolean> = callbackFlow {
         DATABASE_ROOT.child(node).child(USER.family)
                 .addListenerForSingleValueEvent(object: ValueEventListener{
                     override fun onCancelled(error: DatabaseError) {

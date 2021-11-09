@@ -7,20 +7,27 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.app.AppApplication
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.databinding.StorageViewHolderBinding
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
 import com.angogasapps.myfamily.models.storage.StorageObject
+import com.angogasapps.myfamily.network.interfaces.family_stoarge.FamilyStorageService
 import com.angogasapps.myfamily.ui.screens.family_storage.StorageManager
 import com.angogasapps.myfamily.ui.screens.family_storage.showOnLongClickFileDialog
 import com.angogasapps.myfamily.ui.screens.family_storage.showOnLongClickFolderDialog
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-open class BaseStorageAdapter(val context: Context, val rootNode: String, var onChangeDirectory: (dirName: String) -> Unit)
-        : RecyclerView.Adapter<BaseStorageAdapter.StorageHolder>() {
-    companion object{
+open class BaseStorageAdapter(
+    val context: Context,
+    val rootNode: String,
+    var onChangeDirectory: (dirName: String) -> Unit,
+    val storageService: FamilyStorageService
+) : RecyclerView.Adapter<BaseStorageAdapter.StorageHolder>() {
+    companion object {
         val fileDraw = AppApplication.app.resources.getDrawable(R.drawable.ic_file)
         val folderDraw = AppApplication.app.resources.getDrawable(R.drawable.ic_folder)
     }
@@ -52,9 +59,9 @@ open class BaseStorageAdapter(val context: Context, val rootNode: String, var on
         namesStack.push(AppApplication.app.getString(R.string.app_name))
         val cashStack = Stack<String>()
 
-        for (id in stack){
-            for (obj in list){
-                if (obj.id == id){
+        for (id in stack) {
+            for (obj in list) {
+                if (obj.id == id) {
                     this.list = (obj as ArrayFolder).value
                     cashStack.push(id)
                     namesStack.push(obj.name)
@@ -66,9 +73,9 @@ open class BaseStorageAdapter(val context: Context, val rootNode: String, var on
         notifyDataSetChanged()
     }
 
-    fun showFolder(id: String){
+    fun showFolder(id: String) {
         stack.push(id)
-        for (obj in list){
+        for (obj in list) {
             if (obj.id == id) {
                 this.list = (obj as ArrayFolder).value
                 namesStack.push(obj.name)
@@ -90,8 +97,10 @@ open class BaseStorageAdapter(val context: Context, val rootNode: String, var on
         return true
     }
 
-    protected open fun onFileClick(file: File){}
-    protected open fun onFolderClick(folder: ArrayFolder){showFolder(folder.id)}
+    protected open fun onFileClick(file: File) {}
+    protected open fun onFolderClick(folder: ArrayFolder) {
+        showFolder(folder.id)
+    }
 
     inner class StorageHolder : RecyclerView.ViewHolder {
         val binding: StorageViewHolderBinding
@@ -103,15 +112,21 @@ open class BaseStorageAdapter(val context: Context, val rootNode: String, var on
         fun update(obj: StorageObject) {
             binding.text.text = obj.name
             binding.root.setOnClickListener(null)
-            if (obj.isFile()){
+            if (obj.isFile()) {
                 val file = obj as File
                 binding.image.setImageDrawable(fileDraw)
                 binding.root.setOnClickListener { onFileClick(file) }
                 binding.root.setOnLongClickListener {
-                    showOnLongClickFileDialog(context = context, file = file, rootNode = rootNode, rootFolderId = getRootFolderId())
+                    showOnLongClickFileDialog(
+                        context = context,
+                        file = file,
+                        rootNode = rootNode,
+                        rootFolderId = getRootFolderId(),
+                        storageService = storageService
+                    )
                     return@setOnLongClickListener true
                 }
-            }else if (obj.isFolder()){
+            } else if (obj.isFolder()) {
                 binding.image.setImageDrawable(folderDraw)
                 val folder = obj as ArrayFolder
 
@@ -119,7 +134,7 @@ open class BaseStorageAdapter(val context: Context, val rootNode: String, var on
                     onFolderClick(folder)
                 }
                 binding.root.setOnLongClickListener {
-                    showOnLongClickFolderDialog(context, folder, rootNode, getRootFolderId())
+                    showOnLongClickFolderDialog(context, folder, rootNode, getRootFolderId(), storageService)
                     return@setOnLongClickListener true
                 }
             }

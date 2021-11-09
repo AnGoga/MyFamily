@@ -14,6 +14,10 @@ import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.ChangeOrDeleteBuyLis
 import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.ChangeOrDeleteProductDialog
 import com.angogasapps.myfamily.ui.screens.chat.ChatManager
 import com.angogasapps.myfamily.ui.screens.chat.holders.ImageMessageHolder
+import com.angogasapps.myfamily.ui.screens.family_storage.CreateImageFileActivity
+import com.angogasapps.myfamily.ui.screens.family_storage.StorageActivity
+import com.angogasapps.myfamily.ui.screens.family_storage.StorageNoteBuilderActivity
+import com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity.MediaGalleryStorageActivity
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity
 import com.angogasapps.myfamily.ui.screens.main.MainActivity
 import com.angogasapps.myfamily.ui.screens.personal_dairy.DairyBuilderActivity
@@ -37,6 +41,10 @@ interface AppComponent {
     fun inject(fragment: ListOfBuyListsFragment)
     fun inject(fragment: BuyListFragment)
     fun inject(activity: FindOrCreateFamilyActivity)
+    fun inject(activity: StorageActivity)
+    fun inject(activity: StorageNoteBuilderActivity)
+    fun inject(activity: CreateImageFileActivity)
+    fun inject(activity: MediaGalleryStorageActivity)
 
 
     val familyRepository: FamilyRepository

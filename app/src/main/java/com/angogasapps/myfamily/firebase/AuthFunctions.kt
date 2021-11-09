@@ -48,15 +48,15 @@ object AuthFunctions {
 
     @JvmStatic
     @Synchronized
-    fun authorizationUser(mPhoneNumber: String?, I: Long, timeUnit: TimeUnit?,
-                          activity: Activity?, mCallback: OnVerificationStateChangedCallbacks?) {
+    fun authorizationUser(mPhoneNumber: String, I: Long, timeUnit: TimeUnit,
+                          activity: Activity, mCallback: OnVerificationStateChangedCallbacks) {
         PhoneAuthProvider.verifyPhoneNumber(
                 PhoneAuthOptions
                         .newBuilder(FirebaseAuth.getInstance())
-                        .setActivity(activity!!)
-                        .setPhoneNumber(mPhoneNumber!!)
-                        .setTimeout(I, timeUnit!!)
-                        .setCallbacks(mCallback!!)
+                        .setActivity(activity)
+                        .setPhoneNumber(mPhoneNumber)
+                        .setTimeout(I, timeUnit)
+                        .setCallbacks(mCallback)
                         .build()
         )
     }

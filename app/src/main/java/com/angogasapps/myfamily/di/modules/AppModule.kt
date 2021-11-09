@@ -6,7 +6,7 @@ import com.angogasapps.myfamily.di.annotations.AppContext
 import dagger.Module
 import dagger.Provides
 
-@Module(includes = [UsersAndFamiliesModule::class, DatabasesModule::class, DairyModule::class, ChatModule::class, BuyListModule::class])
+@Module(includes = [UsersAndFamiliesModule::class, DatabasesModule::class, DairyModule::class, ChatModule::class, BuyListModule::class, FamilyStorageModule::class])
 class AppModule {
 
     @Provides

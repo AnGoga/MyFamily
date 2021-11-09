@@ -1,8 +1,8 @@
 package com.angogasapps.myfamily.di.modules
 
 import com.angogasapps.myfamily.database.MessageDao
-import com.angogasapps.myfamily.network.firebaseImpl.FirebaseChatListenerImpl
-import com.angogasapps.myfamily.network.firebaseImpl.FirebaseChatServiceImpl
+import com.angogasapps.myfamily.network.firebaseImpl.chat.FirebaseChatListenerImpl
+import com.angogasapps.myfamily.network.firebaseImpl.chat.FirebaseChatServiceImpl
 import com.angogasapps.myfamily.network.interfaces.chat.ChatService
 import com.angogasapps.myfamily.network.interfaces.chat.ChatVoiceGetter
 import com.angogasapps.myfamily.network.interfaces.ImageDownloader

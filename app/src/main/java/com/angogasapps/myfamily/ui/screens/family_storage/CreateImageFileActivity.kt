@@ -5,22 +5,27 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.databinding.ActivityCreateImageFileBinding
 import com.angogasapps.myfamily.firebase.*
-import com.angogasapps.myfamily.firebase.createImageFile
+import com.angogasapps.myfamily.network.interfaces.family_stoarge.FamilyStorageService
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
+import javax.inject.Inject
 
 class CreateImageFileActivity : AppCompatActivity() {
     lateinit var binding: ActivityCreateImageFileBinding
     private var uri: Uri? = null
     private var rootFolder: String? = null
+    @Inject
+    lateinit var storageService: FamilyStorageService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateImageFileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        appComponent.inject(this)
         analyzeIntent()
         initOnClicks()
     }
@@ -70,7 +75,7 @@ class CreateImageFileActivity : AppCompatActivity() {
 
 
     private fun createNewImageFile() {
-        createImageFile(
+        storageService.createImageFile(
                 name = binding.editText.text.toString().trim(),
                 rootNode = NODE_IMAGE_STORAGE,
                 rootFolder = rootFolder?: CHILD_BASE_FOLDER,

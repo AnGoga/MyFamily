@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.network.firebaseImpl
+package com.angogasapps.myfamily.network.firebaseImpl.chat
 
 import com.angogasapps.myfamily.firebase.DATABASE_ROOT
 import com.angogasapps.myfamily.firebase.NODE_CHAT
