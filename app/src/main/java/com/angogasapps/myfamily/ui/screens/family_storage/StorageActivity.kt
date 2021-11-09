@@ -83,13 +83,13 @@ class StorageActivity : AppCompatActivity() {
     private fun updateRecyclerView() {
         binding.swipeRefresh.isRefreshing = true
         lifecycleScope.launch {
-            StorageManager.getInstance().getData(rootNode).collect { isSuccess ->
-                if (!isSuccess) return@collect
-                withContext(Dispatchers.Main){
-                    adapter.update()
-                    binding.swipeRefresh.isRefreshing = false
-                }
+            val isSuccess = StorageManager.getInstance().getData(rootNode)
+            if (!isSuccess) return@launch
+            withContext(Dispatchers.Main) {
+                adapter.update()
+                binding.swipeRefresh.isRefreshing = false
             }
+
         }
     }
 

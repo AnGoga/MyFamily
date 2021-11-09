@@ -4,12 +4,22 @@ import android.net.Uri
 import android.os.Environment
 import com.angogasapps.myfamily.app.AppApplication
 import com.angogasapps.myfamily.firebase.*
-import com.angogasapps.myfamily.models.storage.ArrayFolder
-import com.angogasapps.myfamily.models.storage.File
-import com.angogasapps.myfamily.models.storage.TYPE_FILE
-import com.angogasapps.myfamily.models.storage.TYPE_FOLDER
+import com.angogasapps.myfamily.models.storage.*
+import com.angogasapps.myfamily.network.Result
 import com.angogasapps.myfamily.network.interfaces.family_stoarge.FamilyStorageService
+import com.angogasapps.myfamily.ui.screens.family_storage.FirebaseStorageParser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.trySendBlocking
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class FirebaseFamilyStorageServiceImpl @Inject constructor() : FamilyStorageService {
@@ -243,4 +253,16 @@ class FirebaseFamilyStorageServiceImpl @Inject constructor() : FamilyStorageServ
         }
     }
 
+    override suspend fun getStorageContent(node: String): Result<ArrayList<StorageObject>> {
+        try {
+            val res = DATABASE_ROOT.child(node).child(USER.family).get().await()
+                ?: throw Exception("resultat of download family storage is null !!!")
+            println(res.toString())
+            val list = FirebaseStorageParser.parse(res)
+            return Result.Success(list)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return Result.Error(e)
+        }
+    }
 }

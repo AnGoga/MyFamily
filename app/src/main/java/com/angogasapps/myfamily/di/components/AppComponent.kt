@@ -16,6 +16,7 @@ import com.angogasapps.myfamily.ui.screens.chat.ChatManager
 import com.angogasapps.myfamily.ui.screens.chat.holders.ImageMessageHolder
 import com.angogasapps.myfamily.ui.screens.family_storage.CreateImageFileActivity
 import com.angogasapps.myfamily.ui.screens.family_storage.StorageActivity
+import com.angogasapps.myfamily.ui.screens.family_storage.StorageManager
 import com.angogasapps.myfamily.ui.screens.family_storage.StorageNoteBuilderActivity
 import com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity.MediaGalleryStorageActivity
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity
@@ -45,6 +46,7 @@ interface AppComponent {
     fun inject(activity: StorageNoteBuilderActivity)
     fun inject(activity: CreateImageFileActivity)
     fun inject(activity: MediaGalleryStorageActivity)
+    fun inject(manager: StorageManager)
 
 
     val familyRepository: FamilyRepository

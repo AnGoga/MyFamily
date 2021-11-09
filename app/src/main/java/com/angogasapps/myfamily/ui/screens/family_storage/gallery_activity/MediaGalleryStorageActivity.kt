@@ -53,11 +53,11 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
 
     private fun updateRecycler() {
         lifecycleScope.launch {
-            StorageManager.getInstance().getData(rootNode).collect { isSuccess ->
-                withContext(Dispatchers.Main){
-                    adapter.update()
-                    binding.swipeRefresh.isRefreshing = false
-                }
+            val isSuccess = StorageManager.getInstance().getData(rootNode)
+            if (!isSuccess) return@launch
+            withContext(Dispatchers.Main) {
+                adapter.update()
+                binding.swipeRefresh.isRefreshing = false
             }
         }
     }

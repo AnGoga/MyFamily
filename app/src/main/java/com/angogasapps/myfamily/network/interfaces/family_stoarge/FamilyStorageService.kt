@@ -3,6 +3,8 @@ package com.angogasapps.myfamily.network.interfaces.family_stoarge
 import android.net.Uri
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
+import com.angogasapps.myfamily.models.storage.StorageObject
+import com.angogasapps.myfamily.network.Result
 
 interface FamilyStorageService {
     fun createFolder(
@@ -55,5 +57,5 @@ interface FamilyStorageService {
         onError: () -> Unit = {}
     )
 
-//    fun getStorage()
+    suspend fun getStorageContent(node: String): Result<ArrayList<StorageObject>>
 }
