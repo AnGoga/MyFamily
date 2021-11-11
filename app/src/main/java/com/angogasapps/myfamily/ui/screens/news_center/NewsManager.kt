@@ -1,72 +1,50 @@
 package com.angogasapps.myfamily.ui.screens.news_center
 
-import com.angogasapps.myfamily.models.events.NewsObject.Companion.from
-import com.angogasapps.myfamily.models.events.NewsObject.Companion.isCanLife
-import com.angogasapps.myfamily.utils.getIndexOfDeleteNews
-import io.reactivex.subjects.PublishSubject
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.models.events.NewsEvent
-import com.google.firebase.database.ChildEventListener
 import com.angogasapps.myfamily.models.events.NewsObject
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.angogasapps.myfamily.firebase.*
-import com.angogasapps.myfamily.firebase.NewsCenterFunks
+import com.angogasapps.myfamily.network.interfaces.news_center.NewsCenterListener
+import com.angogasapps.myfamily.utils.getIndexOfDeleteNews
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.ArrayList
+import javax.inject.Inject
 
 object NewsManager {
-    val subject = PublishSubject.create<NewsEvent>()
-    private lateinit var listener: ChildEventListener
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private val _flow = MutableSharedFlow<NewsEvent>()
+    val flow
+        get() = _flow.asSharedFlow()
 
     val allNews = ArrayList<NewsObject>()
-
-
+    private val newsCenterListener: NewsCenterListener = appComponent.newsCenterListener
 
     init {
-        initManager()
+        initListener()
     }
 
-
-    private fun initManager() {
-        listener = object : ChildEventListener {
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                this@NewsManager.onChildAdded(snapshot)
+    private fun initListener() {
+        scope.launch {
+            newsCenterListener.listener.collect {
+                when(it.event) {
+                    NewsEvent.ENewsEvents.added -> {
+                        allNews.add(it.value)
+                        it.index = allNews.size - 1
+                    }
+                    NewsEvent.ENewsEvents.removed -> {
+                        val index = getIndexOfDeleteNews(allNews, it.value)
+                        if (index == -1) return@collect
+                        allNews.removeAt(index)
+                    }
+                    NewsEvent.ENewsEvents.changed -> {}
+                }
+                _flow.emit(it)
             }
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-                this@NewsManager.onChildRemoved(snapshot)
-            }
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-            override fun onCancelled(error: DatabaseError) {}
         }
-        DATABASE_ROOT.child(NODE_NEWS)
-            .child(USER.family).addChildEventListener(listener)
-    }
-
-    @Synchronized
-    private fun onChildAdded(snapshot: DataSnapshot) {
-        val obj = from(snapshot)
-        if (isCanLife(obj)) {
-            allNews.add(obj)
-            val event = NewsEvent()
-            event.event = NewsEvent.ENewsEvents.added
-            event.newsId = obj.id
-            event.index = allNews.size - 1
-            subject.onNext(event)
-        } else {
-            NewsCenterFunks.deleteNewsObject(obj)
-        }
-    }
-
-    @Synchronized
-    private fun onChildRemoved(snapshot: DataSnapshot) {
-        val obj = from(snapshot)
-        val index = getIndexOfDeleteNews(allNews, obj)
-        if (index == -1) return
-        allNews.removeAt(index)
-        val event = NewsEvent()
-        event.index = index
-        event.newsId = obj.id
-        event.event = NewsEvent.ENewsEvents.removed
-        subject.onNext(event)
     }
 }

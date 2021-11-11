@@ -3,6 +3,8 @@ package com.angogasapps.myfamily.di.components
 import com.angogasapps.myfamily.database.DairyDao
 import com.angogasapps.myfamily.database.MessageDao
 import com.angogasapps.myfamily.di.modules.AppModule
+import com.angogasapps.myfamily.network.firebaseImpl.news_center.FirebaseNewsCenterListenerImpl
+import com.angogasapps.myfamily.network.interfaces.news_center.NewsCenterListener
 import com.angogasapps.myfamily.network.repositories.BuyListRepository
 import com.angogasapps.myfamily.network.repositories.FamilyRepository
 import com.angogasapps.myfamily.objects.ChatVoicePlayer
@@ -21,6 +23,8 @@ import com.angogasapps.myfamily.ui.screens.family_storage.StorageNoteBuilderActi
 import com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity.MediaGalleryStorageActivity
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity
 import com.angogasapps.myfamily.ui.screens.main.MainActivity
+import com.angogasapps.myfamily.ui.screens.news_center.CreateNewNewsActivity
+import com.angogasapps.myfamily.ui.screens.news_center.NewsManager
 import com.angogasapps.myfamily.ui.screens.personal_dairy.DairyBuilderActivity
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity
 import dagger.Component
@@ -47,9 +51,12 @@ interface AppComponent {
     fun inject(activity: CreateImageFileActivity)
     fun inject(activity: MediaGalleryStorageActivity)
     fun inject(manager: StorageManager)
+    fun inject(activity: CreateNewNewsActivity)
+    fun inject(listenerImpl: FirebaseNewsCenterListenerImpl)
 
 
     val familyRepository: FamilyRepository
     val messageDao: MessageDao
     val dairyDao: DairyDao
+    val newsCenterListener: NewsCenterListener
 }

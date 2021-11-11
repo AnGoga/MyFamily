@@ -133,9 +133,6 @@ class StorageActivity : AppCompatActivity() {
         }
     }
 
-
-
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             FILE_SELECT_CODE -> if (resultCode == RESULT_OK) {

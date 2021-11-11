@@ -16,14 +16,16 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class NewsCenterLayout : ConstraintLayout {
+    private lateinit var scope: CoroutineScope
     private val viewPager: ViewPager2
     private val tabLayout: TabLayout
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private lateinit var activity: Activity
     private lateinit var adapter: NewsAdapter
-    private var disposable: Disposable? = null
 
     init {
         val root = inflater.inflate(R.layout.news_center_layout, this)
@@ -39,6 +41,7 @@ class NewsCenterLayout : ConstraintLayout {
 
     fun setUpCenter(activity: Activity, scope: CoroutineScope){
         this.activity = activity
+        this.scope = scope
         adapter = NewsAdapter(activity, NewsManager.allNews)
         viewPager.adapter = adapter
         setupTabMediator()
@@ -54,17 +57,19 @@ class NewsCenterLayout : ConstraintLayout {
         }.attach()
     }
 
-    private fun setupSubscribe(){
-        disposable = NewsManager.subject.subscribe { event: NewsEvent ->
-            if (NewsManager.allNews.size == 0) {
+    private fun setupSubscribe() {
+        scope.launch {
+            NewsManager.flow.collect { event: NewsEvent ->
+                if (NewsManager.allNews.size == 0) {
+                    adapter.update(event)
+                    showQuote()
+                    return@collect
+                }
+                if (NewsManager.allNews.size == 2 && event.event == NewsEvent.ENewsEvents.added && NewsManager.allNews[0].id == QUOTE_ID) {
+                    hideQuote()
+                }
                 adapter.update(event)
-                showQuote()
-                return@subscribe
             }
-            if (NewsManager.allNews.size == 2 && event.event == NewsEvent.ENewsEvents.added && NewsManager.allNews[0].id == QUOTE_ID) {
-                hideQuote()
-            }
-            adapter.update(event)
         }
     }
 
@@ -76,9 +81,5 @@ class NewsCenterLayout : ConstraintLayout {
         adapter.hideQuote()
     }
 
-    fun destroyCenter(){
-        if (!disposable?.isDisposed!!)
-            disposable?.dispose()
-    }
-
+    fun destroyCenter() { /* . . . */ }
 }
