@@ -5,7 +5,7 @@ import com.angogasapps.myfamily.network.firebaseImpl.chat.FirebaseChatListenerIm
 import com.angogasapps.myfamily.network.firebaseImpl.chat.FirebaseChatServiceImpl
 import com.angogasapps.myfamily.network.interfaces.chat.ChatService
 import com.angogasapps.myfamily.network.interfaces.chat.ChatVoiceGetter
-import com.angogasapps.myfamily.network.interfaces.ImageDownloader
+import com.angogasapps.myfamily.network.interfaces.chat.ImageDownloader
 import com.angogasapps.myfamily.network.interfaces.chat.ChatListener
 import com.angogasapps.myfamily.network.repositories.ChatRepository
 import dagger.Module

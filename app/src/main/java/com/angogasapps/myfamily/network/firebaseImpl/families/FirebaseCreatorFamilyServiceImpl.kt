@@ -1,18 +1,19 @@
-package com.angogasapps.myfamily.network.firebaseImpl
+package com.angogasapps.myfamily.network.firebaseImpl.families
 
 import android.content.Context
 import android.net.Uri
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
-import com.angogasapps.myfamily.network.interfaces.CreatorFamilyService
+import com.angogasapps.myfamily.network.interfaces.families.CreatorFamilyService
 import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import es.dmoral.toasty.Toasty
 import java.util.HashMap
+import javax.inject.Inject
 
-class FirebaseCreatorFamilyServiceImpl() : CreatorFamilyService {
+class FirebaseCreatorFamilyServiceImpl @Inject constructor() : CreatorFamilyService {
 
     override fun createNewFamily(
         context: Context,

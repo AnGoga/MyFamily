@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.network.interfaces
+package com.angogasapps.myfamily.network.interfaces.families
 
 import com.angogasapps.myfamily.models.Family
 import com.angogasapps.myfamily.network.Result

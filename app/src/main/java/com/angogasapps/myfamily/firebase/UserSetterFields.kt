@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.Task
 import java.util.*
 
 object UserSetterFields {
+
     @Synchronized
     fun <T> setField(
         userId: String?, fieldName: String?, value: T,

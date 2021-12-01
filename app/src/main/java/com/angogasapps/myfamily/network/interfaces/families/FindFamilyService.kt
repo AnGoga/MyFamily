@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.network.interfaces
+package com.angogasapps.myfamily.network.interfaces.families
 
 
 interface FindFamilyService {

@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.app.appComponent
-import com.angogasapps.myfamily.network.interfaces.ImageDownloader
+import com.angogasapps.myfamily.network.interfaces.chat.ImageDownloader
 import javax.inject.Inject
 
 class ImageMessageHolder(rootView: View) : AppBaseViewHolder(rootView) {

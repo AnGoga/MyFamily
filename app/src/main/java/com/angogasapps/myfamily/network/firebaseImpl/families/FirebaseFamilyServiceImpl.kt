@@ -1,15 +1,13 @@
-package com.angogasapps.myfamily.network.firebaseImpl
+package com.angogasapps.myfamily.network.firebaseImpl.families
 
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.models.Family
-import com.angogasapps.myfamily.models.User
 import com.angogasapps.myfamily.network.Result
-import com.angogasapps.myfamily.network.interfaces.FamilyService
+import com.angogasapps.myfamily.network.interfaces.families.FamilyService
 import com.angogasapps.myfamily.network.repositories.UsersRepository
 import kotlinx.coroutines.tasks.await
 import java.util.ArrayList
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
 class FirebaseFamilyServiceImpl @Inject constructor(

@@ -1,13 +1,14 @@
-package com.angogasapps.myfamily.network.firebaseImpl
+package com.angogasapps.myfamily.network.firebaseImpl.families
 
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
-import com.angogasapps.myfamily.network.interfaces.FindFamilyService
+import com.angogasapps.myfamily.network.interfaces.families.FindFamilyService
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import javax.inject.Inject
+
 
 class FirebaseFindFamilyServiceImpl @Inject constructor() : FindFamilyService {
     override fun tryFindFamilyById(id: String, onSuccess: () -> Unit, onError: () -> Unit) {

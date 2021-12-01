@@ -15,12 +15,16 @@ import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.databinding.FragmentEnterPersonalDataBinding
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.firebase.RegisterUserFunks
+import com.angogasapps.myfamily.network.interfaces.users.UserService
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
 import java.util.*
+import javax.inject.Inject
 
 class EnterPersonalDataFragment(val onOldUserSignIn: () -> Unit) : Fragment() {
+    @Inject
+    lateinit var userService: UserService
     private lateinit var binding: FragmentEnterPersonalDataBinding
     private var timeContainer: Calendar = Calendar.getInstance()
     private var mTimeMillisBirthday = 0L
@@ -50,6 +54,7 @@ class EnterPersonalDataFragment(val onOldUserSignIn: () -> Unit) : Fragment() {
                 context?.let { Toasty.error(it, getString(R.string.enter_birhday)) }
                 return@setOnClickListener
             }
+
 
             RegisterUserFunks.registerNewUser(mUserName, mTimeMillisBirthday, userPhotoUri, onOldUserSignIn, onError = {
                 if (it != null) {

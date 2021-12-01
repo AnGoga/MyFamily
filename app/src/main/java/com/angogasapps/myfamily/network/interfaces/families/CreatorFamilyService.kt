@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.network.interfaces
+package com.angogasapps.myfamily.network.interfaces.families
 
 import android.content.Context
 import android.net.Uri

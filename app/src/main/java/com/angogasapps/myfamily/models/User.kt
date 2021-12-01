@@ -29,6 +29,16 @@ data class User(
     get() = field
     public set
 
+    constructor(user: User) : this() {
+        this.id = user.id
+        this.phone = user.phone
+        this.family = user.family
+        this.name = user.name
+        this.birthday = user.birthday
+        this.photoURL = user.photoURL
+        this.role = user.role
+    }
+
     companion object {
         @JvmField
         val default_user_photo: Bitmap = BitmapFactory.decodeResource(
@@ -42,6 +52,8 @@ data class User(
             user.id = snapshot.key!!
             return user
         }
+
+
     }
 
     fun setBitmap(bitmap: Bitmap?) {

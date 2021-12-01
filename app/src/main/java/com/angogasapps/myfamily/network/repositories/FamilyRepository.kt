@@ -1,22 +1,19 @@
 package com.angogasapps.myfamily.network.repositories
 
-import com.angogasapps.myfamily.database.FamilyDao
 import com.angogasapps.myfamily.database.UserDao
 import com.angogasapps.myfamily.firebase.USER
 import com.angogasapps.myfamily.models.Family
 import com.angogasapps.myfamily.models.User
 import com.angogasapps.myfamily.network.Result
-import com.angogasapps.myfamily.network.interfaces.FamilyService
+import com.angogasapps.myfamily.network.interfaces.families.FamilyService
 import kotlinx.coroutines.*
-import kotlinx.coroutines.sync.Mutex
-import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FamilyRepository @Inject constructor(
-        private val familyService: FamilyService,
-        private val userDao: UserDao
+    private val familyService: FamilyService,
+    private val userDao: UserDao
 //        val familyDao: FamilyDao
     ) {
 

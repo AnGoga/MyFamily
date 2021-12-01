@@ -2,7 +2,6 @@ package com.angogasapps.myfamily.network.interfaces.chat
 
 import com.angogasapps.myfamily.models.Message
 import com.angogasapps.myfamily.network.Result
-import com.angogasapps.myfamily.network.interfaces.ImageDownloader
 
 interface ChatService : ChatSender, ChatVoiceGetter, ImageDownloader {
     suspend fun getMoreMessages(fromMessage: Message, count: Int): Result<List<Message>>
