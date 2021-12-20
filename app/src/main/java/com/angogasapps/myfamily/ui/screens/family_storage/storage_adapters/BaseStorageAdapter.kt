@@ -14,18 +14,17 @@ import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
 import com.angogasapps.myfamily.models.storage.StorageObject
 import com.angogasapps.myfamily.network.interfaces.family_stoarge.FamilyStorageService
-import com.angogasapps.myfamily.ui.screens.family_storage.StorageManager
+import com.angogasapps.myfamily.ui.screens.family_storage.StorageViewModel
 import com.angogasapps.myfamily.ui.screens.family_storage.showOnLongClickFileDialog
 import com.angogasapps.myfamily.ui.screens.family_storage.showOnLongClickFolderDialog
 import java.util.*
-import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 open class BaseStorageAdapter(
     val context: Context,
     val rootNode: String,
     var onChangeDirectory: (dirName: String) -> Unit,
-    val storageService: FamilyStorageService
+    val storageService: FamilyStorageService,
 ) : RecyclerView.Adapter<BaseStorageAdapter.StorageHolder>() {
     companion object {
         val fileDraw = AppApplication.app.resources.getDrawable(R.drawable.ic_file)
@@ -36,6 +35,7 @@ open class BaseStorageAdapter(
     val namesStack: Stack<String> = Stack()
     var list: ArrayList<StorageObject> = ArrayList()
     val inflater: LayoutInflater = LayoutInflater.from(context)
+    val viewModel: StorageViewModel = appComponent.storageViewModel
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StorageHolder {
@@ -54,7 +54,7 @@ open class BaseStorageAdapter(
 
 
     fun update() {
-        this.list = StorageManager.getInstance().list
+        this.list = viewModel.list
         namesStack.clear()
         namesStack.push(AppApplication.app.getString(R.string.app_name))
         val cashStack = Stack<String>()
@@ -90,7 +90,7 @@ open class BaseStorageAdapter(
     fun exitFromUpFolder(): Boolean {
         if (stack.isEmpty()) return false
         stack.pop()
-        this.list = StorageManager.getInstance().getListByStack(stack)
+        this.list = viewModel.getListByStack(stack)
         namesStack.pop()
         onChangeDirectory(namesStack.peek())
         notifyDataSetChanged()

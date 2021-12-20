@@ -1,5 +1,8 @@
 package com.angogasapps.myfamily.ui.screens.news_center
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.models.events.NewsEvent
 import com.angogasapps.myfamily.models.events.NewsObject
@@ -14,9 +17,10 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 import javax.inject.Inject
+import javax.inject.Singleton
 
-object NewsManager {
-    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+@Singleton
+class NewsManager @Inject constructor(application: Application) : AndroidViewModel(application) {
     private val _flow = MutableSharedFlow<NewsEvent>()
     val flow
         get() = _flow.asSharedFlow()
@@ -29,7 +33,7 @@ object NewsManager {
     }
 
     private fun initListener() {
-        scope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             newsCenterListener.listener.collect {
                 when(it.event) {
                     NewsEvent.ENewsEvents.added -> {

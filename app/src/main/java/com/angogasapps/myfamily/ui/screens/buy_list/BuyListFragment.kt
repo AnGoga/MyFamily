@@ -14,11 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.databinding.FragmentBuyListBinding
 import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.BuyListProductCreatorDialog
-import com.angogasapps.myfamily.ui.screens.buy_list.BuyListManager
 import com.angogasapps.myfamily.models.buy_list.BuyListEvent
 import com.angogasapps.myfamily.network.repositories.BuyListRepository
-import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity
-import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject

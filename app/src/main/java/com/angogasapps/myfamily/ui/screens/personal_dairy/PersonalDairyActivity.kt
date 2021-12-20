@@ -4,12 +4,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.angogasapps.myfamily.databinding.ActivityPersonalDairyBinding
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consumeEach
+import javax.inject.Inject
 
 class PersonalDairyActivity : AppCompatActivity() {
     private val job = SupervisorJob()
@@ -19,12 +21,12 @@ class PersonalDairyActivity : AppCompatActivity() {
     private lateinit var adapter: DairyAdapter
     private lateinit var layoutManager: LinearLayoutManager
 
-    private lateinit var manager: PersonalDairyManager
+    @Inject
+    lateinit var viewModel: PersonalDairyViewModel
     private lateinit var channel: ReceiveChannel<DairyEvent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        manager = PersonalDairyManager.getInstance()
-        channel = manager.channel.openSubscription()
+        channel = viewModel.channel.openSubscription()
 
         super.onCreate(savedInstanceState)
         binding = ActivityPersonalDairyBinding.inflate(layoutInflater)
@@ -65,7 +67,7 @@ class PersonalDairyActivity : AppCompatActivity() {
                 }
             }
         }
-        adapter = DairyAdapter(this, manager.list, scope)
+        adapter = DairyAdapter(this, viewModel.list, scope)
         binding.recycleView.adapter = adapter
         binding.recycleView.layoutManager = layoutManager
     }

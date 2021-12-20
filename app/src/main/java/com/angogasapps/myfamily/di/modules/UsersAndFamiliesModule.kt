@@ -10,7 +10,6 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-
 @Module
 abstract class UsersAndFamiliesModule {
 
@@ -18,30 +17,8 @@ abstract class UsersAndFamiliesModule {
     @Singleton
     abstract fun provideUserService(service: FirebaseUserServiceImpl): UserService
 
-//    @Provides
-//    @Singleton
-//    fun provideUsersRepository(
-//        userService: UserService,
-//        userDao: UserDao
-//    ): UsersRepository = UsersRepository(userService, userDao)
-
     @Binds
     @Singleton
-    abstract fun provideFamilyService(usersRepository: UsersRepository): FamilyService
-
-//    @Provides
-//    @Singleton
-//    fun provideFamilyRepository(
-//        familyService: FamilyService,
-//        userDao: UserDao
-//    ) : FamilyRepository = FamilyRepository(familyService, userDao)
-
-//    @Provides
-//    @Singleton
-//    fun provideFindFamilyService(): FindFamilyService = FirebaseFindFamilyServiceImpl()
-
-//    @Provides
-//    @Singleton
-//    fun provideCreatorFamilyService(): CreatorFamilyService = FirebaseCreatorFamilyServiceImpl()
+    abstract fun provideFamilyService(familyService: FirebaseFamilyServiceImpl): FamilyService
 
 }

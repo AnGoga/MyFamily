@@ -1,36 +1,28 @@
 package com.angogasapps.myfamily.ui.screens.personal_dairy
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import com.angogasapps.myfamily.app.AppApplication
 import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.database.DatabaseManager
 import com.angogasapps.myfamily.models.DairyObject
 import com.angogasapps.myfamily.utils.indexOfThisKey
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BroadcastChannel
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PersonalDairyManager private constructor(){
-    private val job = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.Default + job)
-
+@Singleton
+class PersonalDairyViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
     var list: ArrayList<DairyObject> = ArrayList()
     val channel = BroadcastChannel<DairyEvent>(1)
 
     init {
-        scope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getDataFromRoom()
         }
     }
-
-    companion object{
-        private var manager: PersonalDairyManager? = null
-        fun getInstance(): PersonalDairyManager{
-            synchronized(PersonalDairyManager::class.java){
-                if (manager == null)
-                    manager = PersonalDairyManager()
-                return manager!!
-            }
-        }
-    }
-
 
     fun addDairy(dairy: DairyObject){
         var index = list.indexOfThisKey(dairy)

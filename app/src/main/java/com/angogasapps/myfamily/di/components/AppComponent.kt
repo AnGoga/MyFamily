@@ -5,9 +5,9 @@ import com.angogasapps.myfamily.database.MessageDao
 import com.angogasapps.myfamily.di.modules.AppModule
 import com.angogasapps.myfamily.network.firebaseImpl.news_center.FirebaseNewsCenterListenerImpl
 import com.angogasapps.myfamily.network.interfaces.news_center.NewsCenterListener
-import com.angogasapps.myfamily.network.repositories.BuyListRepository
 import com.angogasapps.myfamily.network.repositories.FamilyRepository
 import com.angogasapps.myfamily.objects.ChatVoicePlayer
+import com.angogasapps.myfamily.ui.customview.news_center.NewsCenterLayout
 import com.angogasapps.myfamily.ui.screens.buy_list.BuyListFragment
 import com.angogasapps.myfamily.ui.screens.buy_list.ListOfBuyListsFragment
 import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.AddBuyListDialog
@@ -18,13 +18,12 @@ import com.angogasapps.myfamily.ui.screens.chat.ChatManager
 import com.angogasapps.myfamily.ui.screens.chat.holders.ImageMessageHolder
 import com.angogasapps.myfamily.ui.screens.family_storage.CreateImageFileActivity
 import com.angogasapps.myfamily.ui.screens.family_storage.StorageActivity
-import com.angogasapps.myfamily.ui.screens.family_storage.StorageManager
+import com.angogasapps.myfamily.ui.screens.family_storage.StorageViewModel
 import com.angogasapps.myfamily.ui.screens.family_storage.StorageNoteBuilderActivity
 import com.angogasapps.myfamily.ui.screens.family_storage.gallery_activity.MediaGalleryStorageActivity
 import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamilyActivity
 import com.angogasapps.myfamily.ui.screens.main.MainActivity
 import com.angogasapps.myfamily.ui.screens.news_center.CreateNewNewsActivity
-import com.angogasapps.myfamily.ui.screens.news_center.NewsManager
 import com.angogasapps.myfamily.ui.screens.personal_dairy.DairyBuilderActivity
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity
 import dagger.Component
@@ -50,13 +49,14 @@ interface AppComponent {
     fun inject(activity: StorageNoteBuilderActivity)
     fun inject(activity: CreateImageFileActivity)
     fun inject(activity: MediaGalleryStorageActivity)
-    fun inject(manager: StorageManager)
     fun inject(activity: CreateNewNewsActivity)
     fun inject(listenerImpl: FirebaseNewsCenterListenerImpl)
+    fun inject(newsCenterLayout: NewsCenterLayout)
 
 
     val familyRepository: FamilyRepository
     val messageDao: MessageDao
     val dairyDao: DairyDao
     val newsCenterListener: NewsCenterListener
+    val storageViewModel: StorageViewModel
 }

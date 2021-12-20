@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.models.QUOTE_ID
 import com.angogasapps.myfamily.models.events.NewsEvent
 import com.angogasapps.myfamily.ui.screens.main.cards.MainActivityUtils
@@ -18,6 +19,7 @@ import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class NewsCenterLayout : ConstraintLayout {
     private lateinit var scope: CoroutineScope
@@ -26,11 +28,14 @@ class NewsCenterLayout : ConstraintLayout {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private lateinit var activity: Activity
     private lateinit var adapter: NewsAdapter
+    @Inject
+    lateinit var newsManager: NewsManager
 
     init {
         val root = inflater.inflate(R.layout.news_center_layout, this)
         viewPager = root.findViewById(R.id.view_pager)
         tabLayout = root.findViewById(R.id.tab_layout)
+        appComponent.inject(this)
     }
 
     constructor(context: Context): super(context)
@@ -42,7 +47,7 @@ class NewsCenterLayout : ConstraintLayout {
     fun setUpCenter(activity: Activity, scope: CoroutineScope){
         this.activity = activity
         this.scope = scope
-        adapter = NewsAdapter(activity, NewsManager.allNews)
+        adapter = NewsAdapter(activity, newsManager.allNews)
         viewPager.adapter = adapter
         setupTabMediator()
         viewPager.offscreenPageLimit = 3
@@ -59,13 +64,13 @@ class NewsCenterLayout : ConstraintLayout {
 
     private fun setupSubscribe() {
         scope.launch {
-            NewsManager.flow.collect { event: NewsEvent ->
-                if (NewsManager.allNews.size == 0) {
+            newsManager.flow.collect { event: NewsEvent ->
+                if (newsManager.allNews.size == 0) {
                     adapter.update(event)
                     showQuote()
                     return@collect
                 }
-                if (NewsManager.allNews.size == 2 && event.event == NewsEvent.ENewsEvents.added && NewsManager.allNews[0].id == QUOTE_ID) {
+                if (newsManager.allNews.size == 2 && event.event == NewsEvent.ENewsEvents.added && newsManager.allNews[0].id == QUOTE_ID) {
                     hideQuote()
                 }
                 adapter.update(event)

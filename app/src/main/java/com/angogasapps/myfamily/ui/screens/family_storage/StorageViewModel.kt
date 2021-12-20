@@ -1,6 +1,8 @@
 package com.angogasapps.myfamily.ui.screens.family_storage
 
+import android.app.Application
 import androidx.annotation.NonNull
+import androidx.lifecycle.AndroidViewModel
 import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.models.storage.ArrayFolder
@@ -20,24 +22,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class StorageManager private constructor() {
-    private val job = SupervisorJob()
-    private val scope = CoroutineScope(Dispatchers.IO + job)
+@Singleton
+class StorageViewModel @Inject constructor(
+    private val storageService: FamilyStorageService,
+    application: Application
+) : AndroidViewModel(application) {
 
     var list: ArrayList<StorageObject> = ArrayList()
-    @Inject
-    lateinit var storageService: FamilyStorageService
 
-    init {
-        appComponent.inject(this)
-    }
 
     suspend fun getData(node: String): Boolean {
         val res = storageService.getStorageContent(node)
-        when(res) {
+        when (res) {
             is Result.Error -> return false
             is Result.Success -> {
                 list = res.data
@@ -68,7 +68,7 @@ class StorageManager private constructor() {
         awaitClose {  }
      */
 
-    fun getListByStack(stack: Stack<String>): ArrayList<StorageObject>{
+    fun getListByStack(stack: Stack<String>): ArrayList<StorageObject> {
         var result: ArrayList<StorageObject> = list
         for (id: String in stack) {
             for (storageObj in result) {
@@ -80,19 +80,6 @@ class StorageManager private constructor() {
         }
 
         return result
-    }
-
-
-        companion object {
-        private var manager: StorageManager? = null
-        fun getInstance(): StorageManager {
-            synchronized(StorageManager::class.java) {
-                if (manager == null) {
-                    manager = StorageManager()
-                }
-                return manager!!
-            }
-        }
     }
 }
 

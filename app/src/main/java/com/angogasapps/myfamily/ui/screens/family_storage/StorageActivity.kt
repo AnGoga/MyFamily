@@ -15,17 +15,17 @@ import com.angogasapps.myfamily.ui.screens.family_storage.dialogs.NameGetterDial
 import com.angogasapps.myfamily.utils.FILE_SELECT_CODE
 import com.angogasapps.myfamily.utils.showFileChooser
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 
 class StorageActivity : AppCompatActivity() {
-
     lateinit var binding: ActivityStorageBinding
     lateinit var adapter: BaseStorageAdapter
     lateinit var layoutManager: LinearLayoutManager
     @Inject
     lateinit var storageService: FamilyStorageService
+    @Inject
+    lateinit var viewModel: StorageViewModel
 
     lateinit var rootNode: String
 
@@ -82,8 +82,8 @@ class StorageActivity : AppCompatActivity() {
 
     private fun updateRecyclerView() {
         binding.swipeRefresh.isRefreshing = true
-        lifecycleScope.launch {
-            val isSuccess = StorageManager.getInstance().getData(rootNode)
+        lifecycleScope.launch(Dispatchers.IO) {
+            val isSuccess = viewModel.getData(rootNode)
             if (!isSuccess) return@launch
             withContext(Dispatchers.Main) {
                 adapter.update()

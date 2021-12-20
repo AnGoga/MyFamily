@@ -14,7 +14,7 @@ import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.models.storage.File
 import com.angogasapps.myfamily.network.interfaces.family_stoarge.FamilyStorageService
 import com.angogasapps.myfamily.objects.ChatImageShower
-import com.angogasapps.myfamily.ui.screens.family_storage.StorageManager
+import com.angogasapps.myfamily.ui.screens.family_storage.StorageViewModel
 import com.angogasapps.myfamily.ui.screens.family_storage.showAcceptRemoveImageDialog
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
@@ -25,7 +25,8 @@ class MediaGalleryStorageAdapter(
     val scope: CoroutineScope,
     var folder: ArrayFolder,
     val rootNode: String,
-    val storageService: FamilyStorageService
+    val storageService: FamilyStorageService,
+    val viewModel: StorageViewModel
 ) : RecyclerView.Adapter<MediaGalleryStorageAdapter.BaseStorageGalleryHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -64,7 +65,7 @@ class MediaGalleryStorageAdapter(
     }
 
     fun update() {
-        for (obj in StorageManager.getInstance().list) {
+        for (obj in viewModel.list) {
             if (obj.id == folder.id) {
                 folder = obj as ArrayFolder
                 notifyDataSetChanged()

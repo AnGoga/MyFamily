@@ -12,14 +12,13 @@ import com.angogasapps.myfamily.databinding.ActivityImageGalleryBinding
 import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.models.storage.ArrayFolder
 import com.angogasapps.myfamily.network.interfaces.family_stoarge.FamilyStorageService
-import com.angogasapps.myfamily.ui.screens.family_storage.StorageManager
+import com.angogasapps.myfamily.ui.screens.family_storage.StorageViewModel
 import com.angogasapps.myfamily.ui.screens.family_storage.gallery_storage_adapters.MediaGalleryStorageAdapter
 import com.angogasapps.myfamily.utils.showInDevelopingToast
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class MediaGalleryStorageActivity : AppCompatActivity() {
@@ -32,6 +31,8 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
     protected lateinit var rootNode: String
     @Inject
     lateinit var storageService: FamilyStorageService
+    @Inject
+    lateinit var viewModel: StorageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +54,7 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
 
     private fun updateRecycler() {
         lifecycleScope.launch {
-            val isSuccess = StorageManager.getInstance().getData(rootNode)
+            val isSuccess = viewModel.getData(rootNode)
             if (!isSuccess) return@launch
             withContext(Dispatchers.Main) {
                 adapter.update()
@@ -65,7 +66,7 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
     private fun analyzeIntent() {
         rootNode = intent.extras?.getString(CHILD_ROOT_NODE)?: NODE_IMAGE_STORAGE
         folderId = intent.extras?.getString(CHILD_ID, " ")!!
-        for (obj in StorageManager.getInstance().list) {
+        for (obj in viewModel.list) {
             if (obj.id == folderId) {
                 folder = obj as ArrayFolder
                 title = folder.name
@@ -78,7 +79,7 @@ class MediaGalleryStorageActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         layoutManager = StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
-        adapter = MediaGalleryStorageAdapter(this, lifecycleScope, folder, rootNode, storageService)
+        adapter = MediaGalleryStorageAdapter(this, lifecycleScope, folder, rootNode, storageService, viewModel)
 
         binding.recycleView.layoutManager = layoutManager
         binding.recycleView.adapter = adapter

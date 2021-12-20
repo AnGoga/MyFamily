@@ -9,12 +9,9 @@ import android.view.View
 import com.angogasapps.myfamily.models.buy_list.BuyList
 import android.view.ViewGroup
 import com.angogasapps.myfamily.R
-import android.view.View.OnLongClickListener
 import com.angogasapps.myfamily.databinding.BuyListHolderBinding
 import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.ChangeOrDeleteBuyListDialog
 import com.angogasapps.myfamily.models.buy_list.BuyListEvent
-import com.angogasapps.myfamily.ui.screens.buy_list.BuyListActivity
-import com.angogasapps.myfamily.ui.screens.buy_list.BuyListManager
 import java.util.ArrayList
 
 class BuyListAdapter(private val context: Context, private val buyLists: ArrayList<BuyList>) :

@@ -11,10 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.databinding.FragmentListOfBuyListsBinding
 import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.AddBuyListDialog
-import com.angogasapps.myfamily.ui.screens.buy_list.BuyListManager
-import com.angogasapps.myfamily.models.buy_list.BuyListEvent
 import com.angogasapps.myfamily.network.repositories.BuyListRepository
-import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,7 +24,7 @@ class ListOfBuyListsFragment : Fragment() {
     @Inject
     lateinit var buyListRepository: BuyListRepository
     @Inject
-    lateinit var buyListManager: BuyListManager
+    lateinit var viewModel: BuyListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
