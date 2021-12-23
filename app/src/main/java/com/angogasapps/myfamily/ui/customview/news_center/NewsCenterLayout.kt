@@ -15,7 +15,6 @@ import com.angogasapps.myfamily.ui.screens.news_center.NewsManager
 import com.angogasapps.myfamily.ui.screens.news_center.QuoteManager
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

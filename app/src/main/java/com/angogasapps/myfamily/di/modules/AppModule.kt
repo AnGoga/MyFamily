@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.angogasapps.myfamily.app.AppApplication
 import com.angogasapps.myfamily.di.annotations.AppContext
+import com.angogasapps.myfamily.di.modules.network.NetworkModule
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -13,7 +14,7 @@ import dagger.Provides
         AppModule.BindsAppModule::class,
         UsersAndFamiliesModule::class, DatabasesModule::class, DairyModule::class,
         ChatModule::class, BuyListModule::class, FamilyStorageModule::class,
-        NewsCenterModule::class, FamilyDoingsModule::class
+        NewsCenterModule::class, FamilyDoingsModule::class, NetworkModule::class
     ]
 )
 class AppModule {

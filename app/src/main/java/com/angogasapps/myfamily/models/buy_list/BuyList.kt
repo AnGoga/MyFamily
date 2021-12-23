@@ -2,9 +2,10 @@ package com.angogasapps.myfamily.models.buy_list
 
 import android.util.Log
 import com.google.firebase.database.DataSnapshot
+import com.squareup.moshi.JsonClass
 import java.util.*
 
-
+@JsonClass(generateAdapter = true)
 data class BuyList(
     var id: String = "",
     var name: String = "",
@@ -22,7 +23,7 @@ data class BuyList(
         products.add(product)
     }
 
-
+    @JsonClass(generateAdapter = true)
     data class Product(
         var id: String = "",
         var name: String = "",
