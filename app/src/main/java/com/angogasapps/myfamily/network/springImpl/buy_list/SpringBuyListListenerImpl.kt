@@ -22,8 +22,10 @@ import javax.inject.Singleton
 @Singleton
 class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
     override val buyLists = ArrayList<BuyList>()
+
     @Inject
     lateinit var stomp: StompClient
+
     @Inject
     lateinit var moshi: Moshi
     var adapter: JsonAdapter<BuyListResponse>
@@ -40,43 +42,74 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
         scope.launch {
             stomp.connect()
             val disp = stomp.lifecycle().subscribe {
-                scope.launch {
-                    when (it.type) {
-                        LifecycleEvent.Type.OPENED -> {
-                            println("buyList was connected")
-                            subscribeTopics()
-                        }
-                        LifecycleEvent.Type.CLOSED -> {
-                            println("buyList was closed")
-                        }
-                        LifecycleEvent.Type.ERROR -> {
-                            Toasty.error(appComponent.context, R.string.something_went_wrong).show()
-                        }
-                        LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
-                            Toasty.error(appComponent.context, R.string.something_went_wrong).show()
-                        }
+
+                when (it.type) {
+                    LifecycleEvent.Type.OPENED -> {
+                        println("buyList was connected")
+                        subscribeTopics()
+                    }
+                    LifecycleEvent.Type.CLOSED -> {
+                        println("buyList was closed")
+                    }
+                    LifecycleEvent.Type.ERROR -> {
+                        Toasty.error(appComponent.context, R.string.something_went_wrong).show()
+                    }
+                    LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
+                        Toasty.error(appComponent.context, R.string.something_went_wrong).show()
                     }
                 }
             }
         }
+
     }
 
-    private suspend fun subscribeTopics() {
+    private fun subscribeTopics() {
         topic = stomp.topic("/topic/buy_lists/changes/${USER.family}").subscribe {
             println("Новое сообщение: \n$it\n")
             adapter.fromJson(it.payload)?.let { it1 -> handleMessage(it1) }
         }
     }
 
-    private fun handleMessage(message: BuyListResponse) {
-        when(message.event) {
-            BuyListEvent.EBuyListEvents.productAdded -> TODO()
-            BuyListEvent.EBuyListEvents.productRemoved -> TODO()
-            BuyListEvent.EBuyListEvents.productChanged -> TODO()
-            BuyListEvent.EBuyListEvents.buyListRemoved -> TODO()
-            BuyListEvent.EBuyListEvents.buyListAdded -> TODO()
-            BuyListEvent.EBuyListEvents.buyListChanged -> TODO()
+    private fun handleMessage(message: BuyListResponse) = synchronized(this) {
+        buyLists.indexOfFirst { it.id == message.buyList.id }.also {
+            try {
+                when (message.event) {
+                    BuyListEvent.EBuyListEvents.productAdded -> {
+                        buyLists[it].addProduct(message.buyList.products[0])
+                    }
+                    BuyListEvent.EBuyListEvents.productRemoved -> {
+                        buyLists[it].removeProductById(message.buyList.products[0].id)
+                    }
+                    BuyListEvent.EBuyListEvents.productChanged -> {
+                        for (i in 0 until buyLists[it].products.size) {
+                            if (buyLists[it].products[i].id == message.buyList.products[0].id) {
+                                buyLists[it].products[i] = message.buyList.products[0]
+                                break
+                            }
+                        }
+                    }
+                    BuyListEvent.EBuyListEvents.buyListRemoved -> {
+                        buyLists.removeAt(it)
+                    }
+                    BuyListEvent.EBuyListEvents.buyListAdded -> {
+                        buyLists.add(message.buyList)
+                    }
+                    BuyListEvent.EBuyListEvents.buyListChanged -> {
+                        buyLists[it].name = message.buyList.name
+                    }
+                }
+                scope.launch {
+                    val event = BuyListEvent(
+                            index = if (it >= 0) it else buyLists.size - 1,
+                            event = message.event,
+                            buyListId = message.buyList.id
+                    )
+                    flow.emit(event)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
-
 }
+

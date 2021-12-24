@@ -23,6 +23,15 @@ data class BuyList(
         products.add(product)
     }
 
+    fun removeProductById(id: String) {
+        for (i: Int in 0 until products.size) {
+            if (products[i].id == id) {
+                products.removeAt(i)
+                return
+            }
+        }
+    }
+
     @JsonClass(generateAdapter = true)
     data class Product(
         var id: String = "",
