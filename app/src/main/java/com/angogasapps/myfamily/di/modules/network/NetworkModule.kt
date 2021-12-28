@@ -1,6 +1,7 @@
 package com.angogasapps.myfamily.di.modules.network
 
 import com.angogasapps.myfamily.di.annotations.StompBuyList
+import com.angogasapps.myfamily.utils.moshi.adapters.ListAdapter
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -18,13 +19,16 @@ class NetworkModule {
     @StompBuyList
     @Provides
     fun provideStompBuyList(): StompClient {
-        return Stomp.over(Stomp.ConnectionProvider.OKHTTP, "ws://localhost:8091/websockets/buy_lists");
+        return Stomp.over(
+            Stomp.ConnectionProvider.OKHTTP,
+            "ws://192.168.1.11:8091/websockets/buy_lists"
+        );
     }
 
     @Singleton
     @Provides
     fun provideMoshi(): Moshi {
-        return Moshi.Builder().build()
+        return Moshi.Builder().add(ListAdapter()).build()
     }
 
     @Singleton

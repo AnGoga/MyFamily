@@ -8,14 +8,14 @@ import java.util.*
 @JsonClass(generateAdapter = true)
 data class BuyList(
     var id: String = "",
-    var name: String = "",
-    var products: ArrayList<Product> = ArrayList<Product>()
+    var title: String = "",
+    var products: MutableList<Product> = ArrayList<Product>()
 ) {
     constructor(str: String) : this(id = str) {
 
     }
 
-    constructor(buyList: BuyList) : this(id = buyList.id, name = buyList.name) {
+    constructor(buyList: BuyList) : this(id = buyList.id, title = buyList.title) {
         products.addAll(buyList.products)
     }
 
@@ -35,7 +35,7 @@ data class BuyList(
     @JsonClass(generateAdapter = true)
     data class Product(
         var id: String = "",
-        var name: String = "",
+        var title: String = "",
         var comment: String = "",
         var from: String = ""
     )

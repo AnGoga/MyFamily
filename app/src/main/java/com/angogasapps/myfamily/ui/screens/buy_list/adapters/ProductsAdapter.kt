@@ -8,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.angogasapps.myfamily.R
-import com.angogasapps.myfamily.models.buy_list.BuyList.Product
 import com.angogasapps.myfamily.utils.BuyListUtils
-import android.view.View.OnLongClickListener
 import com.angogasapps.myfamily.databinding.ProductInBuyListHolderBinding
 import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.ChangeOrDeleteProductDialog
 import com.angogasapps.myfamily.models.buy_list.BuyListEvent
@@ -29,7 +27,7 @@ class ProductsAdapter(private val context: Context, private val buyList: BuyList
 
     override fun onBindViewHolder(holder: ProductHolder, position: Int) {
         val product = buyList.products[position]
-        holder.binding.textName.text = product.name
+        holder.binding.textName.text = product.title
         holder.binding.commentText.text = BuyListUtils.getCorrectComment(product)
         holder.binding.root.setOnLongClickListener {
             ChangeOrDeleteProductDialog(context, buyList.id, product).show()

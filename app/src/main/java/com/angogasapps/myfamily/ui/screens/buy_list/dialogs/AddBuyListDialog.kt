@@ -37,7 +37,7 @@ class AddBuyListDialog(private val context: Context) {
         )
         input.layoutParams = lp
         if (buyList != null) {
-            input.setText(buyList!!.name)
+            input.setText(buyList!!.title)
         }
         alertDialog.setView(input)
         alertDialog.setPositiveButton(
@@ -50,11 +50,11 @@ class AddBuyListDialog(private val context: Context) {
             if (name != "") {
                 val inputBuyList: BuyList
                 if (buyList == null) {
-                    inputBuyList = BuyList(name = name)
+                    inputBuyList = BuyList(title = name)
                     buyListRepository.createNewBuyList(inputBuyList)
                 } else {
                     inputBuyList = BuyList(buyList!!)
-                    inputBuyList.name = name
+                    inputBuyList.title = name
                     buyListRepository.updateBuyListName(inputBuyList)
                 }
             } else {

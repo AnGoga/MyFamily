@@ -42,7 +42,7 @@ class BuyListProductCreatorDialog(context: Context, private val buyListId: Strin
 
     private fun initFields() {
         product?.let {
-            binding.productName.setText(it.name)
+            binding.productName.setText(it.title)
             binding.commentEditText.setText(it.comment)
             binding.buttonAddProduct.text = context.getString(R.string.change)
         }
@@ -58,7 +58,7 @@ class BuyListProductCreatorDialog(context: Context, private val buyListId: Strin
             return
         }
         val product = Product()
-        product.name = binding.productName.text.toString()
+        product.title = binding.productName.text.toString()
         product.comment = binding.commentEditText.text.toString()
         if (this.product == null) {
             buyListRepository.createProduct(buyListId, product, onSuccess = {dismiss()})

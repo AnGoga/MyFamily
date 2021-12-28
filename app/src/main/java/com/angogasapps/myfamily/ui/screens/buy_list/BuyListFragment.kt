@@ -38,7 +38,7 @@ class BuyListFragment : Fragment() {
         initOnClickListeners()
         initObserver()
         initRecyclerView()
-        requireActivity().title = buyList.name
+        requireActivity().title = buyList.title
         return binding.root
     }
 

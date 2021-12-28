@@ -2,14 +2,11 @@ package com.angogasapps.myfamily.ui.screens.buy_list.dialogs
 
 import android.content.Context
 import android.content.DialogInterface
-import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.angogasapps.myfamily.models.buy_list.BuyList.Product
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.app.appComponent
-import com.angogasapps.myfamily.firebase.interfaces.IOnEndCommunicationWithFirebase
 import com.angogasapps.myfamily.network.repositories.BuyListRepository
-import com.angogasapps.myfamily.ui.screens.buy_list.dialogs.BuyListProductCreatorDialog
 import javax.inject.Inject
 
 class ChangeOrDeleteProductDialog(
@@ -46,7 +43,7 @@ class ChangeOrDeleteProductDialog(
         )
             .setTitle(R.string.remove_product)
             .setMessage(
-                context.getString(R.string.change_or_delete_product_dialog_text1) + "\"" + product.name + "\"" + "?" +
+                context.getString(R.string.change_or_delete_product_dialog_text1) + "\"" + product.title + "\"" + "?" +
                         context.getString(R.string.change_or_delete_product_dialog_text2)
             )
             .setPositiveButton(R.string.remove) { dialog1: DialogInterface?, which: Int ->

@@ -5,9 +5,7 @@ import com.angogasapps.myfamily.firebase.*
 import com.angogasapps.myfamily.models.Family.getNameByPhone
 import com.google.firebase.database.DataSnapshot
 import com.angogasapps.myfamily.models.buy_list.BuyList
-import com.angogasapps.myfamily.utils.BuyListUtils
 import com.angogasapps.myfamily.models.buy_list.BuyList.Product
-import com.angogasapps.myfamily.models.Family
 import java.util.ArrayList
 import java.util.HashMap
 
@@ -33,7 +31,7 @@ object BuyListUtils {
     fun parseBuyList(snapshot: DataSnapshot): BuyList {
         val buyList = BuyList()
         buyList.id = snapshot.key!!
-        buyList.name = snapshot.child(CHILD_NAME).getValue(String::class.java)!!
+        buyList.title = snapshot.child(CHILD_NAME).getValue(String::class.java)!!
         buyList.products = getProductsList(snapshot)
         return buyList
     }
@@ -55,7 +53,7 @@ object BuyListUtils {
 
     fun getHashMap(product: Product): HashMap<String, Any> {
         val map = HashMap<String, Any>()
-        map[CHILD_NAME] = product.name
+        map[CHILD_NAME] = product.title
         map[CHILD_FROM] = product.from
         map[CHILD_COMMENT] = product.comment
         return map
@@ -75,8 +73,8 @@ object BuyListUtils {
     }
 
     fun getIndexOfRemoveProduct(
-        oldBuyList: ArrayList<Product>,
-        newBuyList: ArrayList<Product>
+        oldBuyList: MutableList<Product>,
+        newBuyList: MutableList<Product>
     ): Int {
         for (i in newBuyList.indices) {
             if (oldBuyList[i].id != newBuyList[i].id) {
@@ -87,8 +85,8 @@ object BuyListUtils {
     }
 
     fun getIndexOfChangeProduct(
-        oldBuyList: ArrayList<Product>,
-        newBuyList: ArrayList<Product>
+        oldBuyList: MutableList<Product>,
+        newBuyList: MutableList<Product>
     ): Int {
         for (i in newBuyList.indices) {
             if (oldBuyList[i] != newBuyList[i]) {

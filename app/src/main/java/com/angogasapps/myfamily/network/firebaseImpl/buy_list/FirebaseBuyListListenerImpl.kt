@@ -97,8 +97,8 @@ class FirebaseBuyListListenerImpl @Inject constructor() : BuyListListener() {
             for (i in buyLists.indices) {
                 val oldBuyList = buyLists[i]
                 if (oldBuyList.id == id) {
-                    if (oldBuyList.name != name) {
-                        oldBuyList.name = name
+                    if (oldBuyList.title != name) {
+                        oldBuyList.title = name
                         event.buyListId = id
                         event.index = i
                         event.event = BuyListEvent.EBuyListEvents.buyListChanged

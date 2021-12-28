@@ -25,7 +25,7 @@ class BuyListAdapter(private val context: Context, private val buyLists: ArrayLi
 
     override fun onBindViewHolder(holder: BuyListHolder, position: Int) {
         synchronized(this) {
-            holder.setTextName(buyListsArray[position].name)
+            holder.setTextName(buyListsArray[position].title)
             holder.binding.root.setOnLongClickListener {
                 ChangeOrDeleteBuyListDialog(context, buyListsArray[holder.position]).show()
                 true

@@ -5,6 +5,7 @@ import com.angogasapps.myfamily.firebase.USER
 import com.angogasapps.myfamily.models.buy_list.BuyList
 import com.angogasapps.myfamily.network.interfaces.buy_list.BuyListService
 import com.angogasapps.myfamily.network.retrofit.ApiInterfaces.BuyListAPI
+import com.angogasapps.myfamily.network.utils.IdGenerator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -19,6 +20,8 @@ class SpringBuyListServiceImpl @Inject constructor() : BuyListService {
 
     @Inject
     lateinit var apiInterface: BuyListAPI
+    @Inject
+    lateinit var idGenerator: IdGenerator
 
     init {
         appComponent.inject(this)
@@ -26,17 +29,20 @@ class SpringBuyListServiceImpl @Inject constructor() : BuyListService {
 
     override fun createNewBuyList(buyList: BuyList, onSuccess: () -> Unit, onError: () -> Unit) {
         scope.launch {
-            val response = apiInterface.createBuyList(
-                familyId = USER.family,
-                buyListId = buyList.id,
-                buyList = buyList
-            )
-            if (response.isSuccessful) {
-                onSuccess()
-            } else {
-                System.err.println(response.errorBody())
-                onError()
-            }
+            try {
+                buyList.id = idGenerator.randomId()
+                val response = apiInterface.createBuyList(
+                    familyId = USER.family,
+                    buyListId = buyList.id,
+                    buyList = buyList
+                )
+                if (response.isSuccessful) {
+                    onSuccess()
+                } else {
+                    System.err.println(response.code().toString() + "\n" + response.body())
+                    onError()
+                }
+            } catch (e: Exception){ e.printStackTrace() }
         }
     }
 
@@ -45,7 +51,7 @@ class SpringBuyListServiceImpl @Inject constructor() : BuyListService {
             val response = apiInterface.updateBuyListName(
                 familyId = USER.family,
                 buyListId = buyList.id,
-                newName = buyList.name
+                newName = buyList.title
             )
             if (response.isSuccessful) {
                 onSuccess()
@@ -78,6 +84,7 @@ class SpringBuyListServiceImpl @Inject constructor() : BuyListService {
         onError: () -> Unit
     ) {
         scope.launch {
+            product.id = idGenerator.randomId()
             val response = apiInterface.createProduct(
                 familyId = USER.family,
                 buyListId = buyListId,

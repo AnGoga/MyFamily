@@ -1,6 +1,8 @@
 package com.angogasapps.myfamily.models.buy_list
 
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 class BuyListEvent(
         var index: Int = 0,
         var event: EBuyListEvents? = null,

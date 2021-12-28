@@ -66,6 +66,7 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
     private fun subscribeTopics() {
         topic = stomp.topic("/topic/buy_lists/changes/${USER.family}").subscribe {
             println("Новое сообщение: \n$it\n")
+            println("${it.payload}\n")
             adapter.fromJson(it.payload)?.let { it1 -> handleMessage(it1) }
         }
     }
@@ -95,7 +96,7 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
                         buyLists.add(message.buyList)
                     }
                     BuyListEvent.EBuyListEvents.buyListChanged -> {
-                        buyLists[it].name = message.buyList.name
+                        buyLists[it].title = message.buyList.title
                     }
                 }
                 scope.launch {

@@ -30,7 +30,7 @@ class FirebaseBuyListServiceImpl @Inject constructor() : BuyListService {
     override fun updateBuyListName(buyList: BuyList, onSuccess: () -> Unit, onError: () -> Unit) {
         DATABASE_ROOT.child(NODE_BUY_LIST)
             .child(USER.family).child(buyList.id)
-            .child(CHILD_NAME).setValue(buyList.name)
+            .child(CHILD_NAME).setValue(buyList.title)
             .addOnCompleteListener { task: Task<Void?> ->
                 if (task.isSuccessful) {
                     onSuccess()
