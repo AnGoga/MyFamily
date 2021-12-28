@@ -16,8 +16,8 @@ class FirebaseBuyListServiceImpl @Inject constructor() : BuyListService {
     override fun createNewBuyList(buyList: BuyList, onSuccess: () -> Unit, onError: () -> Unit) {
         val ref = DATABASE_ROOT.child(NODE_BUY_LIST)
             .child(USER.family)
-        val key = ref.push().key
-        ref.child(key!!).setValue(buyList).addOnCompleteListener { task: Task<Void?> ->
+        val key = ref.push().key!!
+        ref.child(key).setValue(buyList).addOnCompleteListener { task: Task<Void?> ->
             if (task.isSuccessful) {
                 onSuccess()
             } else {
@@ -41,7 +41,7 @@ class FirebaseBuyListServiceImpl @Inject constructor() : BuyListService {
             }
     }
 
-    override fun addNewProductToBuyList(
+    override fun createProduct(
         buyListId: String,
         product: BuyList.Product,
         onSuccess: () -> Unit,

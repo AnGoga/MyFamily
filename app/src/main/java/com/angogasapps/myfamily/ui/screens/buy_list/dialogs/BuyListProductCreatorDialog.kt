@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import com.angogasapps.myfamily.models.buy_list.BuyList.Product
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.app.appComponent
@@ -62,7 +61,7 @@ class BuyListProductCreatorDialog(context: Context, private val buyListId: Strin
         product.name = binding.productName.text.toString()
         product.comment = binding.commentEditText.text.toString()
         if (this.product == null) {
-            buyListRepository.addNewProductToBuyList(buyListId, product, onSuccess = {dismiss()})
+            buyListRepository.createProduct(buyListId, product, onSuccess = {dismiss()})
         } else {
             product.id = this.product!!.id
             buyListRepository.updateProduct(buyListId, product, onSuccess = {dismiss()})

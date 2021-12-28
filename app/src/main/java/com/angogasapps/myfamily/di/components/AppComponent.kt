@@ -3,11 +3,13 @@ package com.angogasapps.myfamily.di.components
 import android.content.Context
 import com.angogasapps.myfamily.database.DairyDao
 import com.angogasapps.myfamily.database.MessageDao
+import com.angogasapps.myfamily.di.annotations.AppContext
 import com.angogasapps.myfamily.di.modules.AppModule
 import com.angogasapps.myfamily.network.firebaseImpl.news_center.FirebaseNewsCenterListenerImpl
 import com.angogasapps.myfamily.network.interfaces.news_center.NewsCenterListener
 import com.angogasapps.myfamily.network.repositories.FamilyRepository
 import com.angogasapps.myfamily.network.springImpl.buy_list.SpringBuyListListenerImpl
+import com.angogasapps.myfamily.network.springImpl.buy_list.SpringBuyListServiceImpl
 import com.angogasapps.myfamily.objects.ChatVoicePlayer
 import com.angogasapps.myfamily.ui.customview.news_center.NewsCenterLayout
 import com.angogasapps.myfamily.ui.screens.buy_list.BuyListFragment
@@ -55,6 +57,7 @@ interface AppComponent {
     fun inject(listenerImpl: FirebaseNewsCenterListenerImpl)
     fun inject(newsCenterLayout: NewsCenterLayout)
     fun inject(springBuyListListenerImpl: SpringBuyListListenerImpl)
+    fun inject(springBuyListServiceImpl: SpringBuyListServiceImpl)
 
 
     val familyRepository: FamilyRepository

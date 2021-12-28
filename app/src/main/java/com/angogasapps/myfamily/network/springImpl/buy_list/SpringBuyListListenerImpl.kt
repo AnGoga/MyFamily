@@ -2,6 +2,7 @@ package com.angogasapps.myfamily.network.springImpl.buy_list
 
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.app.appComponent
+import com.angogasapps.myfamily.di.annotations.StompBuyList
 import com.angogasapps.myfamily.firebase.USER
 import com.angogasapps.myfamily.models.buy_list.BuyList
 import com.angogasapps.myfamily.models.buy_list.BuyListEvent
@@ -14,7 +15,6 @@ import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.launch
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
-import ua.naiksoftware.stomp.dto.StompMessage
 import java.util.ArrayList
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,6 +24,7 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
     override val buyLists = ArrayList<BuyList>()
 
     @Inject
+    @StompBuyList
     lateinit var stomp: StompClient
 
     @Inject
@@ -60,7 +61,6 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
                 }
             }
         }
-
     }
 
     private fun subscribeTopics() {
@@ -100,9 +100,9 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
                 }
                 scope.launch {
                     val event = BuyListEvent(
-                            index = if (it >= 0) it else buyLists.size - 1,
-                            event = message.event,
-                            buyListId = message.buyList.id
+                        index = if (it >= 0) it else buyLists.size - 1,
+                        event = message.event,
+                        buyListId = message.buyList.id
                     )
                     flow.emit(event)
                 }

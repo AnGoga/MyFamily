@@ -4,13 +4,15 @@ import com.angogasapps.myfamily.network.firebaseImpl.buy_list.FirebaseBuyListLis
 import com.angogasapps.myfamily.network.firebaseImpl.buy_list.FirebaseBuyListServiceImpl
 import com.angogasapps.myfamily.network.interfaces.buy_list.BuyListListener
 import com.angogasapps.myfamily.network.interfaces.buy_list.BuyListService
+import com.angogasapps.myfamily.network.retrofit.ApiInterfaces.BuyListAPI
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
 class BuyListModule {
-
     @Provides
     @Singleton
     fun provideBuyListService(service: FirebaseBuyListServiceImpl): BuyListService = service
@@ -18,4 +20,10 @@ class BuyListModule {
     @Provides
     @Singleton
     fun provideBuyListListener(listener: FirebaseBuyListListenerImpl): BuyListListener = listener
+
+    @Provides
+    @Singleton
+    fun provideBuyListApiInterface(retrofit: Retrofit) : BuyListAPI {
+        return retrofit.create(BuyListAPI::class.java)
+    }
 }

@@ -11,7 +11,7 @@ import dagger.Provides
 
 @Module(
     includes = [
-        AppModule.BindsAppModule::class,
+//        AppModule.BindsAppModule::class,
         UsersAndFamiliesModule::class, DatabasesModule::class, DairyModule::class,
         ChatModule::class, BuyListModule::class, FamilyStorageModule::class,
         NewsCenterModule::class, FamilyDoingsModule::class, NetworkModule::class
@@ -22,13 +22,19 @@ class AppModule {
     @Provides
     fun provideApplication(): Application = AppApplication.app
 
+    @Provides
+    fun provideContext(app: Application): Context = app
+
+    @Provides
+    @AppContext
+    fun provideAppContext(app: Application): Context = app
     
 
-    @Module
-    interface BindsAppModule {
-        @Binds
-        @AppContext
-        abstract fun bindContext(app: Application): Context
-
-    }
+//    @Module
+//    interface BindsAppModule {
+//        @Binds
+//        @AppContext
+//        abstract fun bindContext(app: Application): Context
+//
+//    }
 }

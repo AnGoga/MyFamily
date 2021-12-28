@@ -6,7 +6,7 @@ import com.angogasapps.myfamily.models.buy_list.BuyList
 interface BuyListService {
     fun createNewBuyList(buyList: BuyList, onSuccess: () -> Unit = {}, onError: () -> Unit = {})
     fun updateBuyListName(buyList: BuyList, onSuccess: () -> Unit = {}, onError: () -> Unit = {})
-    fun addNewProductToBuyList(
+    fun createProduct(
         buyListId: String,
         product: BuyList.Product,
         onSuccess: () -> Unit = {},
