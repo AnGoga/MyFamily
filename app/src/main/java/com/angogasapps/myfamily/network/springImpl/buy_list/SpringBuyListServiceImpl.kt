@@ -51,7 +51,7 @@ class SpringBuyListServiceImpl @Inject constructor() : BuyListService {
             val response = apiInterface.updateBuyListName(
                 familyId = USER.family,
                 buyListId = buyList.id,
-                newName = buyList.title
+                buyList = BuyList(id = buyList.id, title = buyList.title)
             )
             if (response.isSuccessful) {
                 onSuccess()

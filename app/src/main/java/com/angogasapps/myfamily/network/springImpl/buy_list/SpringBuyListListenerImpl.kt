@@ -53,10 +53,10 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
                         println("buyList was closed")
                     }
                     LifecycleEvent.Type.ERROR -> {
-                        Toasty.error(appComponent.context, R.string.something_went_wrong).show()
+                        println(it.exception.message.toString())
                     }
                     LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
-                        Toasty.error(appComponent.context, R.string.something_went_wrong).show()
+                        println(it.exception.message.toString())
                     }
                 }
             }
@@ -74,17 +74,20 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
     private fun handleMessage(message: BuyListResponse) = synchronized(this) {
         buyLists.indexOfFirst { it.id == message.buyList.id }.also {
             try {
+                var index = it;
                 when (message.event) {
                     BuyListEvent.EBuyListEvents.productAdded -> {
+                        index = buyLists[it].products.size
                         buyLists[it].addProduct(message.buyList.products[0])
                     }
                     BuyListEvent.EBuyListEvents.productRemoved -> {
-                        buyLists[it].removeProductById(message.buyList.products[0].id)
+                        index = buyLists[it].removeProductById(message.buyList.products[0].id)
                     }
                     BuyListEvent.EBuyListEvents.productChanged -> {
                         for (i in 0 until buyLists[it].products.size) {
                             if (buyLists[it].products[i].id == message.buyList.products[0].id) {
                                 buyLists[it].products[i] = message.buyList.products[0]
+                                index = i
                                 break
                             }
                         }
@@ -101,7 +104,7 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
                 }
                 scope.launch {
                     val event = BuyListEvent(
-                        index = if (it >= 0) it else buyLists.size - 1,
+                        index = if (index >= 0) index else buyLists.size - 1,
                         event = message.event,
                         buyListId = message.buyList.id
                     )
