@@ -1,6 +1,5 @@
 package com.angogasapps.myfamily.network.springImpl.buy_list
 
-import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.di.annotations.StompBuyList
 import com.angogasapps.myfamily.firebase.USER
@@ -10,7 +9,7 @@ import com.angogasapps.myfamily.network.interfaces.buy_list.BuyListListener
 import com.angogasapps.myfamily.network.spring_models.buy_list.BuyListResponse
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
-import es.dmoral.toasty.Toasty
+import com.squareup.moshi.Types
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.launch
 import ua.naiksoftware.stomp.StompClient
@@ -30,12 +29,21 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
     @Inject
     lateinit var moshi: Moshi
     var adapter: JsonAdapter<BuyListResponse>
+    var listAdapter: JsonAdapter<MutableList<BuyList>>
+
+    private var firstMessageIsDownloaded = false
 
     private lateinit var topic: Disposable
 
     init {
         appComponent.inject(this)
         adapter = moshi.adapter(BuyListResponse::class.java)
+
+        val listMyData = Types.newParameterizedType(
+            MutableList::class.java,
+            BuyList::class.java
+        )
+        listAdapter = moshi.adapter(listMyData)
         initListener()
     }
 
@@ -66,8 +74,14 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
     private fun subscribeTopics() {
         topic = stomp.topic("/topic/buy_lists/changes/${USER.family}").subscribe {
             println("Новое сообщение: \n$it\n")
-            println("${it.payload}\n")
-            adapter.fromJson(it.payload)?.let { it1 -> handleMessage(it1) }
+            synchronized(firstMessageIsDownloaded) {
+                if (!firstMessageIsDownloaded) {
+                    firstMessageIsDownloaded = true
+                    handleFirstMessage(it.payload ?: "[]")
+                    return@subscribe
+                }
+                adapter.fromJson(it.payload)?.let { it1 -> handleMessage(it1) }
+            }
         }
     }
 
@@ -114,6 +128,22 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun handleFirstMessage(message: String) {
+        val startSize = buyLists.size
+        listAdapter.fromJson(message)?.also { buyLists.addAll(it) }
+            ?.forEachIndexed { index, buyList ->
+                scope.launch {
+                    flow.emit(
+                        BuyListEvent(
+                            buyListId = buyList.id,
+                            event = BuyListEvent.EBuyListEvents.buyListAdded,
+                            index = index + startSize
+                        )
+                    )
+                }
+            }
     }
 }
 

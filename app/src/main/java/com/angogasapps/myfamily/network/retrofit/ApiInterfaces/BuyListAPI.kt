@@ -10,20 +10,20 @@ interface BuyListAPI {
         @Path("familyId") familyId: String,
         @Path("buyListId") buyListId: String,
         @Body buyList: BuyList
-    ) : Response<Void>
+    ): Response<Void>
 
     @DELETE("buy_lists/{familyId}/{buyListId}")
     suspend fun deleteBuyList(
         @Path("familyId") familyId: String,
         @Path("buyListId") buyListId: String,
-    ) : Response<Void>
+    ): Response<Void>
 
     @PATCH("buy_lists/{familyId}/{buyListId}")
     suspend fun updateBuyListName(
         @Path("familyId") familyId: String,
         @Path("buyListId") buyListId: String,
         @Body buyList: BuyList
-    ) : Response<Void>
+    ): Response<Void>
 
 
     @POST("buy_lists/{familyId}/{buyListId}/{productId}")
@@ -32,14 +32,14 @@ interface BuyListAPI {
         @Path("buyListId") buyListId: String,
         @Path("productId") productId: String,
         @Body product: BuyList.Product
-    ) : Response<Void>
+    ): Response<Void>
 
     @DELETE("buy_lists/{familyId}/{buyListId}/{productId}")
     suspend fun deleteProduct(
         @Path("familyId") familyId: String,
         @Path("buyListId") buyListId: String,
         @Path("productId") productId: String
-    ) : Response<Void>
+    ): Response<Void>
 
     @PATCH("buy_lists/{familyId}/{buyListId}/{productId}")
     suspend fun updateProduct(
@@ -47,5 +47,10 @@ interface BuyListAPI {
         @Path("buyListId") buyListId: String,
         @Path("productId") productId: String,
         @Body product: BuyList.Product
-    ) : Response<Void>
+    ): Response<Void>
+
+    @GET("buy_lists/{familyId}")
+    suspend fun getAllBuyLists(
+        @Path("familyId") familyId: String
+    ): Response<MutableList<BuyList>>
 }
