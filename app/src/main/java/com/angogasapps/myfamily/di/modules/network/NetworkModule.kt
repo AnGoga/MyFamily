@@ -21,7 +21,7 @@ class NetworkModule {
     fun provideStompBuyList(): StompClient {
         return Stomp.over(
             Stomp.ConnectionProvider.OKHTTP,
-            "ws://192.168.1.6:8091/websockets/buy_lists"
+            "ws://192.168.1.11:8091/websockets/buy_lists"
         )
     }
 
@@ -41,7 +41,7 @@ class NetworkModule {
     @Provides
     fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.1.6:8760/")
+            .baseUrl("http://192.168.1.11:8760/")
             .addConverterFactory(MoshiConverterFactory.create())
             .client(client)
             .build()

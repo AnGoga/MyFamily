@@ -11,9 +11,17 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.reactive.asFlow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
+import ua.naiksoftware.stomp.dto.StompMessage
 import java.util.ArrayList
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -32,8 +40,9 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
     var listAdapter: JsonAdapter<MutableList<BuyList>>
 
     private var firstMessageIsDownloaded = false
+    private val mutex = Mutex()
 
-    private lateinit var topic: Disposable
+    private lateinit var topic: Flow<StompMessage>
 
     init {
         appComponent.inject(this)
@@ -48,11 +57,10 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
     }
 
     private fun initListener() {
-        scope.launch {
+        scope.launch(Dispatchers.IO) {
             stomp.connect()
             val disp = stomp.lifecycle().subscribe {
-
-                when (it.type) {
+                when (it.type ?: return@subscribe) {
                     LifecycleEvent.Type.OPENED -> {
                         println("buyList was connected")
                         subscribeTopics()
@@ -72,20 +80,23 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
     }
 
     private fun subscribeTopics() {
-        topic = stomp.topic("/topic/buy_lists/changes/${USER.family}").subscribe {
-            println("Новое сообщение: \n$it\n")
-            synchronized(firstMessageIsDownloaded) {
-                if (!firstMessageIsDownloaded) {
-                    firstMessageIsDownloaded = true
-                    handleFirstMessage(it.payload ?: "[]")
-                    return@subscribe
+        scope.launch(Dispatchers.IO) {
+            topic = stomp.topic("/topic/buy_lists/changes/${USER.family}").asFlow()
+            topic.collect {
+                println("Новое сообщение: \n$it\n")
+                mutex.withLock {
+                    if (!firstMessageIsDownloaded) {
+                        firstMessageIsDownloaded = true
+                        handleFirstMessage(it.payload ?: "[]")
+                        return@collect
+                    }
+                    adapter.fromJson(it.payload)?.let { it1 -> handleMessage(it1) }
                 }
-                adapter.fromJson(it.payload)?.let { it1 -> handleMessage(it1) }
             }
         }
     }
 
-    private fun handleMessage(message: BuyListResponse) = synchronized(this) {
+    private suspend fun handleMessage(message: BuyListResponse) {
         buyLists.indexOfFirst { it.id == message.buyList.id }.also {
             try {
                 var index = it;
@@ -116,25 +127,24 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
                         buyLists[it].title = message.buyList.title
                     }
                 }
-                scope.launch {
-                    val event = BuyListEvent(
-                        index = if (index >= 0) index else buyLists.size - 1,
-                        event = message.event,
-                        buyListId = message.buyList.id
-                    )
-                    flow.emit(event)
-                }
+                val event = BuyListEvent(
+                    index = if (index >= 0) index else buyLists.size - 1,
+                    event = message.event,
+                    buyListId = message.buyList.id
+                )
+                flow.emit(event)
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    private fun handleFirstMessage(message: String) {
+    private suspend fun handleFirstMessage(message: String) {
         val startSize = buyLists.size
-        listAdapter.fromJson(message)?.also { buyLists.addAll(it) }
-            ?.forEachIndexed { index, buyList ->
-                scope.launch {
+        try {
+            listAdapter.fromJson(message)?.also { buyLists.addAll(it) }
+                ?.forEachIndexed { index, buyList ->
                     flow.emit(
                         BuyListEvent(
                             buyListId = buyList.id,
@@ -143,7 +153,12 @@ class SpringBuyListListenerImpl @Inject constructor() : BuyListListener() {
                         )
                     )
                 }
-            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
 
+fun a() {
+    System.currentTimeMillis()
+}

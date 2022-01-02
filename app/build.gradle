@@ -107,8 +107,6 @@ dependencies {
 
     //room
     def room_version = "2.2.6"
-
-
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
@@ -128,16 +126,19 @@ dependencies {
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
 
     implementation 'com.github.bumptech.glide:glide:4.12.0'
+
+    //Kotlin Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2'
-
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.6.0'
+    
     //dagger 2
     implementation 'com.google.dagger:dagger:2.38.1'
     kapt 'com.google.dagger:dagger-compiler:2.38.1'
 
     //Moshi
-    implementation 'com.squareup.moshi:moshi:1.11.0'
-    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.11.0'
+    implementation 'com.squareup.moshi:moshi:1.12.0'
+    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.12.0'
 
     //Retrofit 2
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
