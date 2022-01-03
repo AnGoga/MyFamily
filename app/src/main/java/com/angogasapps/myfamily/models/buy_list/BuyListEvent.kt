@@ -9,6 +9,6 @@ class BuyListEvent(
         var buyListId: String = ""
 ) {
     enum class EBuyListEvents {
-        productAdded, productRemoved, productChanged, buyListRemoved, buyListAdded, buyListChanged
+        productAdded, productRemoved, productChanged, buyListRemoved, buyListAdded, buyListChanged, initMessage
     }
 }

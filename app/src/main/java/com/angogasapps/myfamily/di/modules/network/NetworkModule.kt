@@ -1,5 +1,9 @@
 package com.angogasapps.myfamily.di.modules.network
 
+import android.app.Application
+import com.angogasapps.myfamily.R
+import com.angogasapps.myfamily.di.annotations.ServerIp
+import com.angogasapps.myfamily.di.annotations.ServerPort
 import com.angogasapps.myfamily.di.annotations.StompBuyList
 import com.angogasapps.myfamily.utils.moshi.adapters.ListAdapter
 import com.squareup.moshi.Moshi
@@ -16,12 +20,26 @@ import javax.inject.Singleton
 class NetworkModule {
 
     @Singleton
+    @Provides
+    @ServerIp
+    fun provideServerIp(app: Application): String {
+        return app.getString(R.string.server_api_gateway_ip)
+    }
+
+    @Singleton
+    @Provides
+    @ServerPort
+    fun provideServerPort(app: Application): String {
+        return app.getString(R.string.server_api_gateway_port)
+    }
+
+    @Singleton
     @StompBuyList
     @Provides
-    fun provideStompBuyList(): StompClient {
+    fun provideStompBuyList(@ServerIp ip: String, @ServerPort port: String): StompClient {
         return Stomp.over(
             Stomp.ConnectionProvider.OKHTTP,
-            "ws://192.168.1.11:8091/websockets/buy_lists"
+            "ws://${ip}:8091/websockets/buy_lists"
         )
     }
 
@@ -39,9 +57,13 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(client: OkHttpClient): Retrofit {
+    fun provideRetrofit(
+        client: OkHttpClient,
+        @ServerIp ip: String,
+        @ServerPort port: String
+    ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.1.11:8760/")
+            .baseUrl("http://${ip}:${port}/")
             .addConverterFactory(MoshiConverterFactory.create())
             .client(client)
             .build()
