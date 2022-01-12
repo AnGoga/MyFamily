@@ -4,7 +4,7 @@ import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.firebase.USER
 import com.angogasapps.myfamily.models.buy_list.BuyList
 import com.angogasapps.myfamily.network.interfaces.buy_list.BuyListService
-import com.angogasapps.myfamily.network.retrofit.ApiInterfaces.BuyListAPI
+import com.angogasapps.myfamily.network.retrofit.apiInterfaces.BuyListAPI
 import com.angogasapps.myfamily.network.utils.IdGenerator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

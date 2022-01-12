@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.network.retrofit.ApiInterfaces
+package com.angogasapps.myfamily.network.retrofit.apiInterfaces
 
 import com.angogasapps.myfamily.models.buy_list.BuyList
 import retrofit2.Response
