@@ -5,8 +5,10 @@ import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.di.annotations.ServerIp
 import com.angogasapps.myfamily.di.annotations.ServerPort
 import com.angogasapps.myfamily.di.annotations.StompBuyList
+import com.angogasapps.myfamily.di.annotations.StompChat
 import com.angogasapps.myfamily.network.retrofit.apiInterfaces.BuyListAPI
 import com.angogasapps.myfamily.network.retrofit.apiInterfaces.ChatAPI
+import com.angogasapps.myfamily.network.retrofit.apiInterfaces.MediaStorageAPI
 import com.angogasapps.myfamily.utils.moshi.adapters.ListAdapter
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -35,13 +37,23 @@ class NetworkModule {
         return app.getString(R.string.server_api_gateway_port)
     }
 
+    @Provides
     @Singleton
     @StompBuyList
-    @Provides
     fun provideStompBuyList(@ServerIp ip: String, @ServerPort port: String): StompClient {
         return Stomp.over(
             Stomp.ConnectionProvider.OKHTTP,
             "ws://${ip}:8091/websockets/buy_lists"
+        )
+    }
+
+    @Provides
+    @Singleton
+    @StompChat
+    fun provideChatStomp(@ServerIp ip: String, @ServerPort port: String): StompClient {
+        return Stomp.over(
+            Stomp.ConnectionProvider.OKHTTP,
+            "ws://${ip}:8093/chat/websockets/endpoint"
         )
     }
 
@@ -81,6 +93,12 @@ class NetworkModule {
     @Singleton
     fun provideChatApiInterface(retrofit: Retrofit): ChatAPI {
         return retrofit.create(ChatAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMediaStorageApiInterface(retrofit: Retrofit): MediaStorageAPI {
+        return retrofit.create(MediaStorageAPI::class.java)
     }
 
 }

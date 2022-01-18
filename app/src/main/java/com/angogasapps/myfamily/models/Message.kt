@@ -3,8 +3,10 @@ package com.angogasapps.myfamily.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.firebase.database.DataSnapshot
+import com.squareup.moshi.JsonClass
 
 @Entity
+@JsonClass(generateAdapter = true)
 data class Message(
     @PrimaryKey
     var id: String = "",

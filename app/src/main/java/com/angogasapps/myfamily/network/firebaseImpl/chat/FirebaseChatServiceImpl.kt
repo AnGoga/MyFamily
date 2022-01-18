@@ -75,7 +75,7 @@ class FirebaseChatServiceImpl @Inject constructor() : ChatService {
         }
     }
 
-    override fun sendMessageWithKey(type: String, value: String, key: String) {
+    fun sendMessageWithKey(type: String, value: String, key: String) {
         var value = value
         val path = DATABASE_ROOT.child(NODE_CHAT).child(USER.family)
         if (type == TYPE_TEXT_MESSAGE) {

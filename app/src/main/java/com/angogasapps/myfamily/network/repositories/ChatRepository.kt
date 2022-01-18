@@ -15,7 +15,7 @@ import kotlinx.coroutines.sync.withLock
 
 @Singleton
 class ChatRepository @Inject constructor(
-    private val chatService: ChatService,
+    val chatService: ChatService,
     private val messageDao: MessageDao
     ): ChatSender by chatService, ChatGetter {
 
@@ -32,6 +32,7 @@ class ChatRepository @Inject constructor(
 
             return when (val res = def.await()) {
                 is Result.Error -> {
+                    res.e.printStackTrace()
                     ArrayList()
                 }
                 is Result.Success -> {

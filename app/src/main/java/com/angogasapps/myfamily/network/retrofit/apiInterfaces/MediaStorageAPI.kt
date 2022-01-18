@@ -1,21 +1,28 @@
 package com.angogasapps.myfamily.network.retrofit.apiInterfaces
 
+import android.widget.ImageView
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.network.spring_models.chat.MediaFileInfo
 import com.angogasapps.myfamily.network.spring_models.chat.MediaResponse
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Multipart
-import retrofit2.http.POST
+import com.bumptech.glide.Glide
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.http.*
+import java.io.InputStream
 
 interface MediaStorageAPI {
     @POST("/media_storage/media/storage/upload")
     @Multipart
     suspend fun sendFileToServer(
-
+        @Part("info") infoStr: MediaFileInfo,
+        @Part/*("file")*/ body: MultipartBody.Part
     ): MediaResponse
 
-    @GET("/media_storage/media/storage/get")
-    suspend fun getFileFromServer(
+//    @Headers("Content-Type: image/jpeg")
+    @POST("/media_storage/media/storage/get/image")
+    suspend fun getImageFromServer(
         @Body fileInfo: MediaFileInfo
-    )//: ??? Resource?
+    ): Response<ResponseBody>
 }

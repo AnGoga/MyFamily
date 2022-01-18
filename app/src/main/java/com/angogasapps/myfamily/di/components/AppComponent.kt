@@ -31,6 +31,7 @@ import com.angogasapps.myfamily.ui.screens.news_center.CreateNewNewsActivity
 import com.angogasapps.myfamily.ui.screens.personal_dairy.DairyBuilderActivity
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity
 import dagger.Component
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Singleton
@@ -66,4 +67,5 @@ interface AppComponent {
     val newsCenterListener: NewsCenterListener
     val storageViewModel: StorageViewModel
     val context: Context
+    val retrofit: Retrofit
 }

@@ -70,9 +70,9 @@ class ChatActivity : AppCompatActivity() {
                     super.onLayoutChildren(recycler, state)
                 } catch (e: IndexOutOfBoundsException) {}
             }
+
         }
         layoutManager.stackFromEnd = true
-
         binding.recycleView.adapter = adapter
         binding.recycleView.layoutManager = layoutManager
         binding.recycleView.setHasFixedSize(true)

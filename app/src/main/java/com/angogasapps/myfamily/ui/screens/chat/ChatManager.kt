@@ -4,6 +4,7 @@ import android.net.Uri
 import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.database.MessageDao
 import com.angogasapps.myfamily.models.Message
+import com.angogasapps.myfamily.network.firebaseImpl.chat.FirebaseChatServiceImpl
 import com.angogasapps.myfamily.network.interfaces.chat.ChatListener
 import com.angogasapps.myfamily.network.repositories.ChatRepository
 import kotlinx.coroutines.*
@@ -43,19 +44,28 @@ class ChatManager private constructor(private val scope: CoroutineScope, val onG
 
 
     private suspend fun getMoreMessage(count: Int) = withContext(Dispatchers.IO) {
-        messagesCount += count
-
-        val fromMessage = if (messagesList.isEmpty()) Message() else messagesList[messagesList.size - 1]
-
-        val list = scope.async(Dispatchers.IO) {
-            chatRepository.getMoreMessage(fromMessage, count)
-        }.await()
-
-        val oldSize = messagesList.size
-        messagesList = ArrayList(list)
+        if (chatRepository.chatService is FirebaseChatServiceImpl) {
+            messagesCount += count
+            val fromMessage =
+                if (messagesList.isEmpty()) Message() else messagesList[messagesList.size - 1]
+            val list = scope.async(Dispatchers.IO) {
+                chatRepository.getMoreMessage(fromMessage, count)
+            }.await()
+            val oldSize = messagesList.size
+            messagesList = ArrayList(list)
 //        messagesList.addAll(0, list)
-        withContext(Dispatchers.Main) {
-            onGetMessage(0, list.size - oldSize - downloadedInRealTimeCount)
+            withContext(Dispatchers.Main) {
+                onGetMessage(0, list.size - oldSize - downloadedInRealTimeCount)
+            }
+        } else {
+            val fromMessage = if (messagesList.isEmpty()) Message() else messagesList[0]
+            val list = scope.async(Dispatchers.IO) {
+                chatRepository.getMoreMessage(fromMessage, count)
+            }.await()
+            messagesList.addAll(0, list)
+            withContext(Dispatchers.Main) {
+                onGetMessage(0, list.size)
+            }
         }
     }
 
