@@ -3,4 +3,4 @@ package com.angogasapps.myfamily.di.annotations
 import javax.inject.Qualifier
 
 @Qualifier
-annotation class ServerPort()
+annotation class ServerPort

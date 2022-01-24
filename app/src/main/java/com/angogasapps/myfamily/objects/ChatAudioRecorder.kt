@@ -17,6 +17,7 @@ class ChatAudioRecorder(
         private set
 
     private val recorder: MediaRecorder = MediaRecorder()
+
     fun startRecording() {
         object : Thread() {
             override fun run() {
@@ -44,14 +45,21 @@ class ChatAudioRecorder(
     @Throws(IOException::class)
     private fun prepareRecorder() {
         recorder.reset()
-        recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT)
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT)
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT)
+
+//        recorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT)
+//        recorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT)
+//        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT)
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+
+
         recorder.setOutputFile(file!!.absolutePath)
         recorder.prepare()
     }
 
     private fun createNewFile(): File {
+//        val file = File(activity.filesDir, "$key.mp3")
         val file = File(activity.filesDir, key)
         try {
             file.createNewFile()

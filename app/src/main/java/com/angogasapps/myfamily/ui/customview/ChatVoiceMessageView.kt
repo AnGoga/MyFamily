@@ -64,7 +64,8 @@ class ChatVoiceMessageView : LinearLayout {
 
         }
         playButton.setOnClickListener { v: View? ->
-            mVoicePlayer!!.play(messageKey!!, voiceFileUrl!!, onEndPlay)
+//            mVoicePlayer!!.play(messageKey!!, voiceFileUrl!!, onEndPlay)
+            mVoicePlayer!!.play(voiceFileUrl!!, voiceFileUrl!!, onEndPlay)
             playButton.setVisibility(INVISIBLE)
             pauseButton.setVisibility(VISIBLE)
         }

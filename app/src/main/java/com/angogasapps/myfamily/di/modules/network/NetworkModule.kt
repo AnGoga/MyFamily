@@ -18,7 +18,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import okhttp3.logging.HttpLoggingInterceptor
+
+
+
 
 @Module
 class NetworkModule {
@@ -66,7 +71,16 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideClient(): OkHttpClient {
-        return OkHttpClient().newBuilder().build()
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.apply { interceptor.level = HttpLoggingInterceptor.Level.BODY }
+
+        val builder = OkHttpClient().newBuilder()
+        builder
+            .addInterceptor(interceptor)
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS) // write timeout
+            .readTimeout(15, TimeUnit.SECONDS); // read timeout
+        return builder.build()
     }
 
     @Singleton

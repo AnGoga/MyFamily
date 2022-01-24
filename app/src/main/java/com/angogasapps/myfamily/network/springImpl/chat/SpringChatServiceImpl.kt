@@ -111,8 +111,10 @@ class SpringChatServiceImpl @Inject constructor(
     ) {
         scope.launch {
             try {
-                val info = MediaFileInfo(familyId = USER.family, type = EMediaType.CHAT_VOICE)
+                val info = MediaFileInfo(familyId = USER.family, type = EMediaType.CHAT_VOICE, id = key)
                 storageService.getFileFromServer(info, file)
+                //.mgp и .amr
+//                file.renameTo(File(file.name + ".amr"))
                 onSuccess()
             } catch (e: Exception) {
                 onFailure()
@@ -124,30 +126,13 @@ class SpringChatServiceImpl @Inject constructor(
     override fun downloadImageMessageAndSetBitmap(path: String, key: String, imageView: ImageView) {
         scope.launch {
             try {
-//                val info = MediaFileInfo(id = key, familyId = USER.family, type = EMediaType.CHAT_IMAGE)
                 val info =
                     MediaFileInfo(id = path, familyId = USER.family, type = EMediaType.CHAT_IMAGE)
-
-                downloadImageAndSetBitmap(info, imageView)
-
-//                val bitmap = storageService.getImageFromServer(info)
-//                withContext(Dispatchers.Main) {
-//                    imageView.setImageBitmap(bitmap)
-//                }
+                storageService.getImageFromServerAndSetBitmap(info, imageView)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    private suspend fun downloadImageAndSetBitmap(info: MediaFileInfo, image: ImageView) {
-        withContext(Dispatchers.Main) {
-            Glide.with(image)
-                .load(
-                    appComponent.retrofit.baseUrl().url()
-                        .toString() + "media_storage/media/storage/get/image/families/${info.familyId}/types/${info.type}/ids/${info.id}"
-                )
-                .into(image)
-        }
-    }
 }

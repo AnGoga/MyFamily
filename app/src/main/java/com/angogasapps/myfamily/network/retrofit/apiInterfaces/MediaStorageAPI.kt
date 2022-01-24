@@ -21,8 +21,11 @@ interface MediaStorageAPI {
     ): MediaResponse
 
 //    @Headers("Content-Type: image/jpeg")
-    @POST("/media_storage/media/storage/get/image")
-    suspend fun getImageFromServer(
+    @Streaming
+    @Headers("Content-Type: application/json", "Accept: application/octet-stream")
+    @POST("/media_storage/media/storage/get/file")
+//    @Headers("Content-Type:application/octet-stream")
+    suspend fun getFileFromServer(
         @Body fileInfo: MediaFileInfo
     ): Response<ResponseBody>
 }

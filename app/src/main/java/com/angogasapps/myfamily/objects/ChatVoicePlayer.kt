@@ -1,11 +1,16 @@
 package com.angogasapps.myfamily.objects
 
 import android.content.Context
+import android.media.MediaDataSource
 import android.media.MediaPlayer
+import android.media.MediaRecorder
 import es.dmoral.toasty.Toasty
 import com.angogasapps.myfamily.R
 import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.network.interfaces.chat.ChatVoiceGetter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.lang.Exception
 import javax.inject.Inject
@@ -45,13 +50,17 @@ class ChatVoicePlayer(private val context: Context) {
 
     private fun startPlayer(onEndPlay: () -> Unit) {
         try {
-            mMediaPlayer.setDataSource(voiceFile.absolutePath)
+            mMediaPlayer.setDataSource(voiceFile.absolutePath /*+ ".mp3"*/)
+
+
             mMediaPlayer.prepare()
             mMediaPlayer.start()
             mMediaPlayer.setOnCompletionListener { mp: MediaPlayer? -> stop(onEndPlay) }
         } catch (e: Exception) {
             e.printStackTrace()
-            Toasty.error(context, R.string.something_went_wrong).show()
+            GlobalScope.launch(Dispatchers.Main) {
+                Toasty.error(context, R.string.something_went_wrong).show()
+            }
         }
     }
 
