@@ -45,28 +45,6 @@ class StorageViewModel @Inject constructor(
         }
     }
 
-    /*
-    DATABASE_ROOT.child(node).child(USER.family)
-                .addListenerForSingleValueEvent(object: ValueEventListener{
-                    override fun onCancelled(error: DatabaseError) {
-                        error.toException().printStackTrace()
-                        this@callbackFlow.trySendBlocking(false)
-                    }
-
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        println(snapshot.toString())
-                        try {
-                            list = FirebaseStorageParser.parse(snapshot)
-//                            map = list.toMapFolder()
-                            this@callbackFlow.trySendBlocking(true)
-                        }catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                    }
-                })
-        awaitClose {  }
-     */
-
     fun getListByStack(stack: Stack<String>): ArrayList<StorageObject> {
         var result: ArrayList<StorageObject> = list
         for (id: String in stack) {
@@ -77,8 +55,28 @@ class StorageViewModel @Inject constructor(
                 }
             }
         }
-
         return result
     }
 }
 
+/*
+DATABASE_ROOT.child(node).child(USER.family)
+            .addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onCancelled(error: DatabaseError) {
+                    error.toException().printStackTrace()
+                    this@callbackFlow.trySendBlocking(false)
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    println(snapshot.toString())
+                    try {
+                        list = FirebaseStorageParser.parse(snapshot)
+//                            map = list.toMapFolder()
+                        this@callbackFlow.trySendBlocking(true)
+                    }catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            })
+    awaitClose {  }
+ */

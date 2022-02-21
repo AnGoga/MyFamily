@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="server_api_gateway_ip">192.168.1.7</string>
+<!--    <string name="server_api_gateway_ip">192.168.1.6</string>-->
+    <string name="server_api_gateway_ip">89.108.83.179</string>
     <string name="server_api_gateway_port">8760</string>
 
 </resources>

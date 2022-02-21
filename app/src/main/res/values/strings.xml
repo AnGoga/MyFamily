@@ -139,5 +139,6 @@
     <string name="time">Время</string>
     <string name="selected_time_is_end">Указанное время прошло</string>
     <string name="notone_not_selected">Ни один из членов семьи не выбран</string>
+    <string name="needed_permission_not_got">Нужное разрешение не получено!</string>
 
 </resources>

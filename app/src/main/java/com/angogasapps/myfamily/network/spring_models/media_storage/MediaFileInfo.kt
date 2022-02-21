@@ -1,4 +1,4 @@
-package com.angogasapps.myfamily.network.spring_models.chat
+package com.angogasapps.myfamily.network.spring_models.media_storage
 
 import com.squareup.moshi.JsonClass
 
@@ -12,5 +12,9 @@ data class MediaFileInfo(
 enum class EMediaType {
     NOTHING,
     CHAT_IMAGE, CHAT_VOICE, CHAT_FILE,
-    USER_IMAGE;
+    USER_IMAGE,
+    STORAGE_IMAGE,
+    STORAGE_NOTE,
+    STORAGE_FILE,
+    STORAGE_VIDEO;
 }

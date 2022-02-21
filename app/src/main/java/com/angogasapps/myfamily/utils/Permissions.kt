@@ -7,6 +7,13 @@ import androidx.core.content.ContextCompat
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 
+import android.content.Intent
+import android.os.Environment
+import android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
+import android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION
+import com.angogasapps.myfamily.app.appComponent
+
+
 object Permissions {
     const val AUDIO_RECORD_PERM = Manifest.permission.RECORD_AUDIO
     const val READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE
@@ -20,5 +27,17 @@ object Permissions {
           } else {
               true
         }
+    }
+
+    fun hasStoragePermission(activity: Activity): Boolean {
+        if (Build.VERSION.SDK_INT >= 30) {
+            if (!Environment.isExternalStorageManager()) {
+                val intent = Intent()
+                intent.action = ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION
+                activity.startActivity(intent)
+            }
+            return Environment.isExternalStorageManager()
+        }
+        return true
     }
 }

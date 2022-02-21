@@ -7,14 +7,13 @@ import javax.inject.Singleton
 
 import android.widget.ImageView
 import com.angogasapps.myfamily.app.appComponent
-import com.angogasapps.myfamily.network.spring_models.chat.EMediaType
-import com.angogasapps.myfamily.network.spring_models.chat.MediaFileInfo
-import com.angogasapps.myfamily.network.spring_models.chat.MediaResponse
+import com.angogasapps.myfamily.network.spring_models.family_storage.CreateFileRequest
+import com.angogasapps.myfamily.network.spring_models.media_storage.MediaFileInfo
+import com.angogasapps.myfamily.network.spring_models.media_storage.MediaResponse
 import com.bumptech.glide.Glide
 import com.google.common.io.ByteStreams
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 
 import okhttp3.RequestBody
@@ -27,10 +26,10 @@ import java.lang.Exception
 @Singleton
 class MediaStorageService @Inject constructor(private val storageAPI: MediaStorageAPI) {
 
-    suspend fun uploadFile(file: File, fileInfo: MediaFileInfo): MediaResponse {
+    suspend fun uploadFile(file: File, fileInfo: MediaFileInfo, request: CreateFileRequest? = null): MediaResponse {
         val requestFile = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
         val body = MultipartBody.Part.createFormData("file", fileInfo.id, requestFile)
-        return storageAPI.sendFileToServer(infoStr = fileInfo, body = body)
+        return storageAPI.sendFileToServer(infoStr = fileInfo, body = body, request = request)
     }
 
     suspend fun getImageFromServerAndSetBitmap(info: MediaFileInfo, imageView: ImageView) {

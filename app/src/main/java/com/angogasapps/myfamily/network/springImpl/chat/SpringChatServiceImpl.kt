@@ -2,7 +2,6 @@ package com.angogasapps.myfamily.network.springImpl.chat
 
 import android.net.Uri
 import android.widget.ImageView
-import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.firebase.TYPE_IMAGE_MESSAGE
 import com.angogasapps.myfamily.firebase.TYPE_VOICE_MESSAGE
 import com.angogasapps.myfamily.firebase.USER
@@ -13,16 +12,9 @@ import com.angogasapps.myfamily.network.retrofit.apiInterfaces.ChatAPI
 import com.angogasapps.myfamily.network.retrofit.apiInterfaces.MediaStorageAPI
 import com.angogasapps.myfamily.network.springImpl.media_storage.MediaStorageService
 import com.angogasapps.myfamily.network.spring_models.chat.ChatPagingRequest
-import com.angogasapps.myfamily.network.spring_models.chat.EMediaType
-import com.angogasapps.myfamily.network.spring_models.chat.MediaFileInfo
-import com.bumptech.glide.Glide
-import com.bumptech.glide.GlideBuilder
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.Headers
+import com.angogasapps.myfamily.network.spring_models.media_storage.EMediaType
+import com.angogasapps.myfamily.network.spring_models.media_storage.MediaFileInfo
 import kotlinx.coroutines.*
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.databinding.ActivityPersonalDairyBinding
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -24,6 +25,10 @@ class PersonalDairyActivity : AppCompatActivity() {
     @Inject
     lateinit var viewModel: PersonalDairyViewModel
     private lateinit var channel: ReceiveChannel<DairyEvent>
+
+    init {
+        appComponent.inject(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         channel = viewModel.channel.openSubscription()

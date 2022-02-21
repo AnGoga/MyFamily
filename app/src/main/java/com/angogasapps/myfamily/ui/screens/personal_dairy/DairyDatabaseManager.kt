@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Environment
 import com.angogasapps.myfamily.database.DairyDao
 import com.angogasapps.myfamily.models.DairyObject
+import com.angogasapps.myfamily.utils.Permissions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -43,6 +44,7 @@ class DairyDatabaseManager @Inject constructor(
 
         val file = File(myDir, randomUUID().toString())
         if (file.exists()) file.delete()
+        file.createNewFile()
         try {
             val out = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)

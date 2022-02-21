@@ -1,9 +1,6 @@
 package com.angogasapps.myfamily.models.storage
 
-import android.os.Parcelable
-import com.angogasapps.myfamily.firebase.CHILD_TYPE
-import com.google.firebase.database.DataSnapshot
-import kotlinx.android.parcel.Parcelize
+
 
 
 const val TYPE_FOLDER = "folder"
@@ -21,7 +18,6 @@ data class File(override var id: String, override var name: String, var value: S
         get() = TYPE_FILE
 
 
-
     override fun isFile(): Boolean = true
     override fun isFolder(): Boolean = false
 }
@@ -35,5 +31,6 @@ abstract class Folder(override var id: String, override var name: String) : Stor
 data class MapFolder(override var id: String, override var name: String, var files: HashMap<String, StorageObject>): Folder(id, name)
 data class ArrayFolder(override var id: String, override var name: String, var value: ArrayList<StorageObject>): Folder(id, name)
 
+typealias StorageFolder = ArrayFolder
 
 

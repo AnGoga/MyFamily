@@ -29,6 +29,7 @@ import com.angogasapps.myfamily.ui.screens.findorcreatefamily.FindOrCreateFamily
 import com.angogasapps.myfamily.ui.screens.main.MainActivity
 import com.angogasapps.myfamily.ui.screens.news_center.CreateNewNewsActivity
 import com.angogasapps.myfamily.ui.screens.personal_dairy.DairyBuilderActivity
+import com.angogasapps.myfamily.ui.screens.personal_dairy.PersonalDairyActivity
 import com.angogasapps.myfamily.ui.screens.splash.SplashActivity
 import dagger.Component
 import retrofit2.Retrofit
@@ -59,6 +60,7 @@ interface AppComponent {
     fun inject(newsCenterLayout: NewsCenterLayout)
     fun inject(springBuyListListenerImpl: SpringBuyListListenerImpl)
     fun inject(springBuyListServiceImpl: SpringBuyListServiceImpl)
+    fun inject(personalDairyActivity: PersonalDairyActivity)
 
 
     val familyRepository: FamilyRepository

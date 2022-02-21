@@ -60,7 +60,11 @@ class DairyBuilderActivity : AppCompatActivity() {
     private fun initOnClicks() {
         binding.terminalBtn.setOnClickListener {
             if (Permissions.havePermission(Permissions.WRITE_EXTERNAL_STORAGE, this))
-                buildDairy()
+                if (Permissions.hasStoragePermission(this)) {
+                    buildDairy()
+                } else {
+                    Toasty.error(this, getString(R.string.needed_permission_not_got)).show()
+                }
         }
 
         binding.removeImage.setOnClickListener {

@@ -21,7 +21,9 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class FirebaseFamilyStorageServiceImpl @Inject constructor() : FamilyStorageService {
 
     override fun createFolder(
