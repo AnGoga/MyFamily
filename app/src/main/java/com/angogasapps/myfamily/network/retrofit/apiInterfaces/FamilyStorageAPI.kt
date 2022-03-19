@@ -1,7 +1,9 @@
 package com.angogasapps.myfamily.network.retrofit.apiInterfaces
 
 import com.angogasapps.myfamily.models.storage.ArrayFolder
+import com.angogasapps.myfamily.models.storage.JsonStorageObject
 import com.angogasapps.myfamily.models.storage.StorageFolder
+import com.angogasapps.myfamily.models.storage.StorageObject
 import com.angogasapps.myfamily.network.spring_models.family_storage.CreateFileRequest
 import com.angogasapps.myfamily.network.spring_models.family_storage.CreateFolderRequest
 import com.angogasapps.myfamily.network.spring_models.media_storage.MediaFileInfo
@@ -14,7 +16,7 @@ interface FamilyStorageAPI {
     suspend fun getContent(
         @Path("familyId") familyId: String,
         @Path("storageType") storageType: String
-    ): StorageFolder
+    ): JsonStorageObject
 
     @POST("/family_storage/data/families/{familyId}/data/{storageType}/create/folder")
     suspend fun createFolder(
@@ -22,6 +24,31 @@ interface FamilyStorageAPI {
         @Path("storageType") storageType: String,
         @Body request: CreateFolderRequest
     ): Response<ResponseBody>
+
+    @HTTP(method = "DELETE", path = "/family_storage/data/families/{familyId}/data/none/remove/file", hasBody = true)
+    suspend fun removeFile(
+        @Path("familyId") familyId: String,
+        @Body request: MediaFileInfo
+    ): ResponseBody
+
+    @DELETE("/family_storage/data/families/{familyId}/data/none/remove/folder")
+    suspend fun removeFolder(
+        @Path("familyId") familyId: String,
+        @Body request: MediaFileInfo
+    ): ResponseBody
+
+    @PATCH("/family_storage/data/families/{familyId}/data/none/update/name")
+    suspend fun renameServerObject(
+        @Path("familyId") familyId: String,
+        @Body request: MediaFileInfo
+    ): ResponseBody
+
+    @POST("/family_storage/data/families/{familyId}/data/{storageType}/create/file")
+    suspend fun createFile(
+        @Path("familyId") familyId: String,
+        @Path("storageType") storageType: String,
+        @Body request: MediaFileInfo
+    ): ResponseBody
 
 
 /*

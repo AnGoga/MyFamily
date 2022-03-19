@@ -39,14 +39,14 @@ class StorageViewModel @Inject constructor(
         when (res) {
             is Result.Error -> return false
             is Result.Success -> {
-                list = res.data
+                list = ArrayList(res.data)
                 return true
             }
         }
     }
 
-    fun getListByStack(stack: Stack<String>): ArrayList<StorageObject> {
-        var result: ArrayList<StorageObject> = list
+    fun getListByStack(stack: Stack<String>): List<StorageObject> {
+        var result: List<StorageObject> = list
         for (id: String in stack) {
             for (storageObj in result) {
                 if (storageObj.id == id) {

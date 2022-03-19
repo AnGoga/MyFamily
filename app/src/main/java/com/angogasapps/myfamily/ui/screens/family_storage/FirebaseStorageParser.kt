@@ -8,7 +8,7 @@ import com.google.firebase.database.DataSnapshot
 class FirebaseStorageParser private constructor(){
 
     companion object {
-        fun parse(snapshot: DataSnapshot): ArrayList<StorageObject> {
+        fun parse(snapshot: DataSnapshot): List<StorageObject> {
             return parseFolder(snapshot, snapshot.child(CHILD_BASE_FOLDER)).value
         }
 

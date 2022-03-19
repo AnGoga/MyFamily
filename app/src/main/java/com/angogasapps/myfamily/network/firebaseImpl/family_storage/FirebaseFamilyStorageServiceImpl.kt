@@ -74,8 +74,13 @@ class FirebaseFamilyStorageServiceImpl @Inject constructor() : FamilyStorageServ
     }
 
     override fun createFile(
-        name: String, value: String, rootNode: String, rootFolder: String,
-        onSuccess: (value: String, key: String) -> Unit, onError: () -> Unit, key_: String?
+        name: String,
+        value: String,
+        rootNode: String,
+        rootFolder: String,
+        onSuccess: (value: String, key: String) -> Unit,
+        onError: () -> Unit,
+        key_: String?
     ) {
 
         val ref = DATABASE_ROOT.child(rootNode).child(USER.family).child(rootFolder).child(
@@ -177,7 +182,7 @@ class FirebaseFamilyStorageServiceImpl @Inject constructor() : FamilyStorageServ
                 removeFolder(obj as ArrayFolder, rootNode, folder.id)
             }
         }
-        folder.value.clear()
+        (folder.value).clear()
         removeEmptyFolder(folder, rootNode, rootFolderId)
     }
 
@@ -255,7 +260,7 @@ class FirebaseFamilyStorageServiceImpl @Inject constructor() : FamilyStorageServ
         }
     }
 
-    override suspend fun getStorageContent(node: String): Result<ArrayList<StorageObject>> {
+    override suspend fun getStorageContent(node: String): Result<List<StorageObject>> {
         try {
             val res = DATABASE_ROOT.child(node).child(USER.family).get().await()
                 ?: throw Exception("resultat of download family storage is null !!!")

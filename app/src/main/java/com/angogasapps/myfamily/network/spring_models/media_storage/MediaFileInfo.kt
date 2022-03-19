@@ -6,7 +6,10 @@ import com.squareup.moshi.JsonClass
 data class MediaFileInfo(
     val id: String = "",
     val type: EMediaType = EMediaType.NOTHING,
-    val familyId: String = ""
+    val familyId: String = "",
+    val name: String = "",
+    val value: String = "",
+    val rootFolder: String = ""
 )
 
 enum class EMediaType {

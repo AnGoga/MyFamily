@@ -137,7 +137,7 @@ class StorageActivity : AppCompatActivity() {
         when (requestCode) {
             FILE_SELECT_CODE -> if (resultCode == RESULT_OK) {
                 val uri = data?.data ?: return
-                NameGetterDialog(this).show(isFolder = false){
+                NameGetterDialog(this).show(isFolder = false) {
                     storageService.createStorageFile(uri = uri, name = it, rootFolderId = adapter.getRootFolderId())
                 }
             }

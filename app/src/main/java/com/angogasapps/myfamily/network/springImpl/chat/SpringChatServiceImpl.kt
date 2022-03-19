@@ -120,6 +120,7 @@ class SpringChatServiceImpl @Inject constructor(
             try {
                 val info =
                     MediaFileInfo(id = path, familyId = USER.family, type = EMediaType.CHAT_IMAGE)
+                println(info)
                 storageService.getImageFromServerAndSetBitmap(info, imageView)
             } catch (e: Exception) {
                 e.printStackTrace()

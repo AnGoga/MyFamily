@@ -57,5 +57,5 @@ interface FamilyStorageService {
         onError: () -> Unit = {}
     )
 
-    suspend fun getStorageContent(node: String): Result<ArrayList<StorageObject>>
+    suspend fun getStorageContent(node: String): Result<List<StorageObject>>
 }

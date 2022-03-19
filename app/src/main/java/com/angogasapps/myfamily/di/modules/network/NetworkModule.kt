@@ -11,7 +11,9 @@ import com.angogasapps.myfamily.network.retrofit.apiInterfaces.ChatAPI
 import com.angogasapps.myfamily.network.retrofit.apiInterfaces.FamilyStorageAPI
 import com.angogasapps.myfamily.network.retrofit.apiInterfaces.MediaStorageAPI
 import com.angogasapps.myfamily.utils.moshi.adapters.ListAdapter
+import com.angogasapps.myfamily.utils.moshi.adapters.StorageObjectAdapter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -66,7 +68,11 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideMoshi(): Moshi {
-        return Moshi.Builder().add(ListAdapter()).build()
+        return Moshi.Builder()
+            .add(ListAdapter())
+            .add(KotlinJsonAdapterFactory())
+            .add(StorageObjectAdapter())
+            .build()
     }
 
     @Singleton
@@ -89,11 +95,12 @@ class NetworkModule {
     fun provideRetrofit(
         client: OkHttpClient,
         @ServerIp ip: String,
-        @ServerPort port: String
+        @ServerPort port: String,
+        moshi: Moshi
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl("http://${ip}:${port}/")
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(client)
             .build()
     }

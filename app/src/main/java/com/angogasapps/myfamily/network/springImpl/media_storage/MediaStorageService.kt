@@ -10,6 +10,7 @@ import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.network.spring_models.family_storage.CreateFileRequest
 import com.angogasapps.myfamily.network.spring_models.media_storage.MediaFileInfo
 import com.angogasapps.myfamily.network.spring_models.media_storage.MediaResponse
+import com.angogasapps.myfamily.utils.getImageUrlFromMediaFileInfo
 import com.bumptech.glide.Glide
 import com.google.common.io.ByteStreams
 import kotlinx.coroutines.Dispatchers
@@ -35,10 +36,7 @@ class MediaStorageService @Inject constructor(private val storageAPI: MediaStora
     suspend fun getImageFromServerAndSetBitmap(info: MediaFileInfo, imageView: ImageView) {
         withContext(Dispatchers.Main) {
             Glide.with(imageView)
-                .load(
-                    appComponent.retrofit.baseUrl().toUrl()
-                        .toString() + "media_storage/media/storage/get/image/families/${info.familyId}/types/${info.type}/ids/${info.id}"
-                )
+                .load(getImageUrlFromMediaFileInfo(info))
                 .into(imageView)
         }
     }

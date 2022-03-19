@@ -33,7 +33,7 @@ open class BaseStorageAdapter(
 
     var stack: Stack<String> = Stack()
     val namesStack: Stack<String> = Stack()
-    var list: ArrayList<StorageObject> = ArrayList()
+    var list: List<StorageObject> = ArrayList()
     val inflater: LayoutInflater = LayoutInflater.from(context)
     val viewModel: StorageViewModel = appComponent.storageViewModel
 
