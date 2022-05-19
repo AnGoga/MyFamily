@@ -14,8 +14,8 @@ class FamilyStorageModule {
     @Provides
     @Singleton
     fun provideFamilyStorageService(service:
-                                    SpringFamilyStorageServiceImpl
-                                    //FirebaseFamilyStorageServiceImpl
+//                                    SpringFamilyStorageServiceImpl
+                                    FirebaseFamilyStorageServiceImpl
     ): FamilyStorageService =
         service
 }

@@ -1,6 +1,5 @@
 package com.angogasapps.myfamily.utils
 
-import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
@@ -9,14 +8,12 @@ import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
-import androidx.loader.content.CursorLoader
 
 
 object RealPathUtil {
     fun getRealPath(context: Context, fileUri: Uri): String? {
         return getRealPathFromURI_API19(context, fileUri)
     }
-
 
     private fun getRealPathFromURI_API19(context: Context, uri: Uri): String? {
         val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT

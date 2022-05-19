@@ -2,7 +2,6 @@ package com.angogasapps.myfamily.network.springImpl.family_storage
 
 import android.net.Uri
 import android.os.Environment
-import androidx.core.net.toFile
 import com.angogasapps.myfamily.app.AppApplication
 import com.angogasapps.myfamily.app.appComponent
 import com.angogasapps.myfamily.firebase.NODE_CHAT
@@ -22,8 +21,7 @@ import com.angogasapps.myfamily.network.spring_models.media_storage.EMediaType
 import com.angogasapps.myfamily.network.spring_models.media_storage.MediaFileInfo
 import com.angogasapps.myfamily.utils.RealPathUtil
 import com.angogasapps.myfamily.utils.getImageUrlFromMediaFileInfo
-import com.angogasapps.myfamily.utils.getRealPathFromURI
-import com.bumptech.glide.Glide
+
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.*
 import javax.inject.Inject
