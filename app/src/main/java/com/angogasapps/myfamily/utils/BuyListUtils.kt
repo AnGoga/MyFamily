@@ -39,15 +39,16 @@ object BuyListUtils {
     private fun getProductsList(snapshot: DataSnapshot): ArrayList<Product> {
         val list = ArrayList<Product>()
         for (productSnapshot in snapshot.child(CHILD_PRODUCTS).children) {
-            list.add(getProduct(productSnapshot)!!)
+            list.add(getProduct(productSnapshot))
         }
         return list
     }
 
-    private fun getProduct(snapshot: DataSnapshot): Product? {
+    private fun getProduct(snapshot: DataSnapshot): Product {
         println(snapshot)
-        val product = snapshot.getValue(Product::class.java)
-        product!!.id = snapshot.key!!
+        val product = snapshot.getValue(Product::class.java)!!
+        product.title = snapshot.child(CHILD_NAME).getValue(String::class.java)!!
+        product.id = snapshot.key!!
         return product
     }
 

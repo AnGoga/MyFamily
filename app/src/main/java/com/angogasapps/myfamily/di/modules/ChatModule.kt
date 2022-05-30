@@ -40,14 +40,14 @@ class ChatModule {
 
     @Provides
     @Singleton
-//    fun provideChatListener(chatListener: FirebaseChatListenerImpl): ChatListener = chatListener
-    fun provideChatListener(chatListener: SpringChatListenerImpl): ChatListener = chatListener
+    fun provideChatListener(chatListener: FirebaseChatListenerImpl): ChatListener = chatListener
+//    fun provideChatListener(chatListener: SpringChatListenerImpl): ChatListener = chatListener
 
     @Module
     interface ChatModuleBinder {
         @Singleton
         @Binds
-        fun provideChatService(service: SpringChatServiceImpl) : ChatService
+        fun provideChatService(service: FirebaseChatServiceImpl) : ChatService
 
     }
 
